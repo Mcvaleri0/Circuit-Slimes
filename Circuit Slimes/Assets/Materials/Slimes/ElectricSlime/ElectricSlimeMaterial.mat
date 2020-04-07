@@ -8,10 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ElectricSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: 9d98b1f7b2d388647ac4262476df0270, type: 3}
+  m_Shader: {fileID: 4800000, guid: 02726343fc8fbe943b92418af03381c2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -19,133 +19,29 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Albedo:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Back:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _CausticsTexture:
         m_Texture: {fileID: 2800000, guid: d85b3c19dd309a84d9f47f9de16cbae6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EyeMask:
-        m_Texture: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _FaceEmission:
-        m_Texture: {fileID: 2800000, guid: b4f91b98b507edb47a6000cca2a5b6ef, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7dde2c7fb377a084ba4436f623a28ce8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceMask:
-        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
+        m_Texture: {fileID: 2800000, guid: 503735f12f3c6a94daf5ce78ee32c1ca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
         m_Texture: {fileID: 2800000, guid: 64c1e1a0b32d115469a69023fe41d68e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Front:
-        m_Texture: {fileID: 2800000, guid: c72e14d1483ea504c8c3d5378d978ac7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Height:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _HeightMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c72e14d1483ea504c8c3d5378d978ac7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Mask:
-        m_Texture: {fileID: 2800000, guid: 16d574e53541bba44a84052fa38778df, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Metallic:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Mid:
-        m_Texture: {fileID: 2800000, guid: c72e14d1483ea504c8c3d5378d978ac7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Occlusion:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Roughness:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Tex:
-        m_Texture: {fileID: 0}
+    - _LightningTexture:
+        m_Texture: {fileID: 2800000, guid: 01244fb4003e60142a0571daf8673fa2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture0:
-        m_Texture: {fileID: 2800000, guid: fd7f6593e2e185a4e8c133abb7983f8c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 01244fb4003e60142a0571daf8673fa2, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture1:
-        m_Texture: {fileID: 2800000, guid: 92d8bff09500e0145a6380c5c308faf9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Texture3:
-        m_Texture: {fileID: 2800000, guid: 92d8bff09500e0145a6380c5c308faf9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: d85b3c19dd309a84d9f47f9de16cbae6, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureSample1:
-        m_Texture: {fileID: 2800000, guid: b4f91b98b507edb47a6000cca2a5b6ef, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TextureSample2:
-        m_Texture: {fileID: 2800000, guid: 7885e3415da600848bfdbd49d64c6d71, type: 3}
-        m_Scale: {x: 3.66, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample3:
         m_Texture: {fileID: 2800000, guid: 01244fb4003e60142a0571daf8673fa2, type: 3}
@@ -155,84 +51,34 @@ Material:
         m_Texture: {fileID: 2800000, guid: 01244fb4003e60142a0571daf8673fa2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _caust00:
-        m_Texture: {fileID: 2800000, guid: 92d8bff09500e0145a6380c5c308faf9, type: 3}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: d4914433835b3a1439ce5d8fa9dfa27c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _texcoord3:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ASEOutlineWidth: 0.03
-    - _AlphaCutoff: 0.5
-    - _BackDark: 0.7
-    - _BackDepthScale: 0
-    - _BumpScale: 1
-    - _ChromaticAberration: 0.1
-    - _CurvFix: 1
-    - _CurvatureU: 0
-    - _CurvatureV: 0
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _EYEness: 200
-    - _EdgeLength: 4.1
-    - _Encapsulation: 242
-    - _Float0: 1
-    - _Float1: 0.02
-    - _Float2: 0
-    - _FresnelMaxPower: 2.1
-    - _FresnelMinPower: 2.6019728
+    - _EmissionStrength: 1.07
     - _FresnelPower: 3.48
     - _FresnelScale: 6.59
-    - _GlossMapScale: 1
-    - _Glossiness: 0.82
-    - _GlossyReflections: 1
-    - _Height: 0
-    - _LightPower: 0.46
-    - _Metallic: 0.04
-    - _MidDark: 0.3
-    - _MidDepthScale: 0.3
-    - _Mode: 0
-    - _NormalOffset: 0.5143618
-    - _NormalScale: 0.5
-    - _NormalStrength: 1.4
-    - _OcclusionStrength: 1
-    - _Opacity: 1
-    - _Parallax: 0.02
-    - _RoughScale: 0.5
-    - _Scale: 0.4247461
-    - _Size: 1
-    - _Smoothness: 0.74
-    - _SmoothnessTextureChannel: 0
-    - _Specular: 0.45
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _TessValue: 4.1
-    - _TransAmbient: 0.2
-    - _TransDirect: 1
-    - _TransNormalDistortion: 0.1
-    - _TransScattering: 2
-    - _TransShadow: 0.9
-    - _Translucency: 1
-    - _UVSec: 0
-    - _WaterIntensity: 0.581
-    - _WaterSpeed: 0.138
-    - _ZWrite: 1
+    - _LightPower: 0.36841422
+    - _LightningFresnelPower: 3.48
+    - _LightninglFresnelScale: 6.59
+    - _RimOffset: 0.71
+    - _RimPower: 0
+    - _ShadowOffset: 0.48
+    - _ShadowScale: 1.04
+    - _SpecularGloss: 0.62
+    - _SpecularIntensity: 0.43
+    - _WaterIntensity: 1
+    - _WaterSpeed: 0.1294118
     - __dirty: 0
-    - _normaloffset: 0.32641175
-    - _posterization: 56.64
-    - _power: 2.9
-    - _scale: 1.9
-    - _translucency: 0.181
     m_Colors:
-    - _ASEOutlineColor: {r: 0.8962264, g: 0.5688522, b: 0, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 0.27429688, g: 0.6321367, b: 0.8679245, a: 1}
-    - _EmissionColor: {r: 1, g: 0.78442526, b: 0, a: 1}
-    - _FresnelColor: {r: 1, g: 0.69142795, b: 0.023584902, a: 1}
+    - _ASEOutlineColor: {r: 0.85490197, g: 0.35328937, b: 0.0235294, a: 1}
+    - _Color0: {r: 1, g: 0.7844253, b: 0, a: 1}
+    - _EmissionColor: {r: 0.52358484, g: 1, b: 0.9553949, a: 0}
+    - _LightningColor: {r: 1, g: 0.7815126, b: 0, a: 1}
+    - _RimLightColor: {r: 1, g: 1, b: 1, a: 0}

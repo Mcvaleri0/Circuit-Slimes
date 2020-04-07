@@ -38,6 +38,7 @@ namespace Puzzle.Board
             this.Rows = new Dictionary<int, Row>();
         }
 
+
         #region === Piece Methods ===
         public void PlacePiece(int x, int y, Piece piece)
         {
@@ -106,6 +107,74 @@ namespace Puzzle.Board
             }
 
             return false;
+        }
+        #endregion
+
+
+        #region === Tile Methods ===
+        public void PlaceTile(int x, int y, Tile tile)
+        {
+            if (OutOfBounds(x, y))
+            {
+                throw new System.Exception("Piece out of bounds");
+            }
+
+            Row row;
+            try
+            {
+                row = this.Rows[y];
+            }
+            catch (KeyNotFoundException)
+            {
+                row = new Row();
+                this.Rows[y] = row;
+            }
+
+            row.PlaceTile(x, tile);
+            tile.Coords = new Vector2(x, y);
+        }
+
+        public Tile RemoveTile(int x, int y)
+        {
+            var row = this.Rows[y];
+
+            if (row != null)
+            {
+                var tile = row.RemoveTile(x);
+
+                tile.Coords = new Vector2(-1, -1);
+
+                return tile;
+            }
+
+            return null;
+        }
+
+        public Tile GetTile(int x, int y)
+        {
+            Row row = null;
+            this.Rows.TryGetValue(y, out row);
+
+            if (row != null)
+            {
+                return row.GetTile(x);
+            }
+
+            return null;
+        }
+
+        public List<Tile> GetAllTiles()
+        {
+            var tiles = new List<Tile>();
+
+            var rows = new List<Row>(this.Rows.Values);
+
+            foreach(var row in rows)
+            {
+                tiles.AddRange(row.GetAllTiles());
+            }
+
+            return tiles;
         }
         #endregion
 

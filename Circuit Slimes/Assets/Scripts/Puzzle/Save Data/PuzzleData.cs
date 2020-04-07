@@ -17,6 +17,7 @@ namespace Puzzle.Data
     {
         public BoardData Board;
         public PieceData[] Pieces;
+        public TileData[] Tiles;
 
 
         public PuzzleData(Puzzle puzzle)
@@ -28,6 +29,15 @@ namespace Puzzle.Data
             for (int i = 0; i < nPieces; i++)
             {
                 this.Pieces[i] = new PieceData(puzzle.Pieces[i]);
+            }
+
+            var tiles = puzzle.Board.GetAllTiles();
+
+            int nTiles = tiles.Count;
+            this.Tiles = new TileData[nTiles];
+            for (int i = 0; i < nTiles; i++)
+            {
+                this.Tiles[i] = new TileData(tiles[i]);
             }
         }
 
@@ -51,17 +61,37 @@ namespace Puzzle.Data
             GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
             var puzzle = puzzleObj.GetComponent<Puzzle>();
 
+            #region Pieces
             GameObject piecesObj = new GameObject("Pieces");
             piecesObj.transform.parent = puzzleObj.transform;
 
             var pieceList = new List<Piece>();
 
-            foreach (PieceData pieceData in puzzleData.Pieces)
+            if(puzzleData.Pieces != null)
             {
-                pieceList.Add(pieceData.CreatePiece(piecesObj.transform, board));
+                foreach (PieceData pieceData in puzzleData.Pieces)
+                {
+                    pieceList.Add(pieceData.CreatePiece(piecesObj.transform, board));
+                }
             }
+            #endregion
 
-            puzzle.Initialize(board, pieceList);
+            #region Tiles
+            GameObject tilesObj = new GameObject("Tiles");
+            tilesObj.transform.parent = puzzleObj.transform;
+
+            var tileList = new List<Tile>();
+
+            if(puzzleData.Tiles != null)
+            {
+                foreach (TileData tileData in puzzleData.Tiles)
+                {
+                    tileList.Add(tileData.CreateTile(tilesObj.transform, board));
+                }
+            }
+            #endregion
+
+            puzzle.Initialize(board, pieceList, tileList);
 
             return puzzle;
         }

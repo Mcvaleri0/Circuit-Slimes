@@ -15,7 +15,8 @@ namespace Puzzle
         {
             None,
             Slime,
-            Component
+            Component,
+            Candy
         }
 
         public enum SlimeTypes

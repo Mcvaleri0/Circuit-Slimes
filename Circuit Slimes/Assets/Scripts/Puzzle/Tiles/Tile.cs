@@ -1,19 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Puzzle.Board;
 
 namespace Puzzle
 {
     public class Tile : MonoBehaviour
     {
-        public int X { get; protected set; }
-        public int Y { get; protected set; }
+        private LevelBoard Board;
 
+        public Vector2 Coords { get; set; }
 
-        public void Initialize(int x, int y)
+        public enum Types
         {
-            this.X = x;
-            this.Y = y;
+            None,
+            Solder
+        }
+
+        public Types Type { get; protected set; }
+
+
+        public static GameObject Instantiate(Transform parent, Types type, Vector2 coords)
+        {
+            var prefabName = "";
+
+            switch (type)
+            {
+                default:
+                case Types.None:
+                    break;
+
+                case Types.Solder:
+                    prefabName = "SolderTile";
+                    break;
+            }
+
+            var position = LevelBoard.WorldCoords(coords);
+
+            var rotation = Quaternion.identity;
+
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
+        }
+
+        public void Initialize(LevelBoard board, Vector2 coords, Types type)
+        {
+            this.Board = board;
+
+            this.Type = type;
+
+            this.Coords = coords;
         }
 
         // Start is called before the first frame update

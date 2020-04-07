@@ -17,10 +17,10 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>());
+            Initialize(board, new List<Piece>(), new List<Tile>());
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles)
         {
             this.Board  = board;
             this.Pieces = pieces;
@@ -29,12 +29,22 @@ namespace Puzzle
             {
                 this.Board.PlacePiece((int) piece.Coords.x, (int) piece.Coords.y, piece);
             }
+
+            foreach (var tile in tiles)
+            {
+                this.Board.PlaceTile((int)tile.Coords.x, (int)tile.Coords.y, tile);
+            }
         }
 
         public void AddPiece(Piece piece)
         {
             this.Pieces.Add(piece);
             this.Board.PlacePiece((int)piece.Coords.x, (int)piece.Coords.y, piece);
+        }
+
+        public void AddTile(Tile tile)
+        {
+            this.Board.PlaceTile((int)tile.Coords.x, (int)tile.Coords.y, tile);
         }
 
         public void Destroy()

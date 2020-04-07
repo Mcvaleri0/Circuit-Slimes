@@ -48,6 +48,8 @@ namespace Puzzle
         // Update is called once per frame
         void Update()
         {
+            //if (Input.GetKeyDown(KeyCode.P)) this.SavePuzzle(1);
+
             switch(this.State)
             {
                 default:
@@ -192,6 +194,10 @@ namespace Puzzle
         #region === Save and Load Functions ===
         public void SavePuzzle(int level)
         {
+            Debug.Log("Saving level " + level + ".");
+
+            //level = 1;
+
             LevelBoard b = new LevelBoard(8, 8);
 
             this.Puzzle = new Puzzle();
@@ -200,15 +206,30 @@ namespace Puzzle
             Piece p;
             var positions = new ArrayList();
             positions.Add(new Vector2(0, 0));
-            positions.Add(new Vector2(0, 1));
-            positions.Add(new Vector2(1, 0));
-            positions.Add(new Vector2(1, 1));
+            //positions.Add(new Vector2(0, 1));
+            //positions.Add(new Vector2(1, 0));
+            //positions.Add(new Vector2(1, 1));
 
             for (int i = 0; i < 1; i++)
             {
                 p = new Piece();
                 p.Initialize(b, (Vector2) positions[i], Piece.SlimeTypes.Electric);
                 this.Puzzle.AddPiece(p);
+            }
+
+            Tile t;
+            positions = new ArrayList();
+            positions.Add(new Vector2(0, 0));
+            positions.Add(new Vector2(0, 1));
+            positions.Add(new Vector2(0, 2));
+            positions.Add(new Vector2(1, 2));
+            positions.Add(new Vector2(2, 2));
+
+            for (int i = 0; i < 5; i++)
+            {
+                t = new Tile();
+                t.Initialize(b, (Vector2)positions[i], Tile.Types.Solder);
+                this.Puzzle.AddTile(t);
             }
 
             // FIXME: not sure if this works on a phone
