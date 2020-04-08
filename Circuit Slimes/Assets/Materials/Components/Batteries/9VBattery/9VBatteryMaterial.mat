@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AABatteryMaterial
+  m_Name: 9VBatteryMaterial
   m_Shader: {fileID: 4800000, guid: 40c376627da63ec41a5077b52850d84c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
@@ -20,11 +20,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: e87a1d5e227436848a7de13b91e7b730, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9dd57f4f906cc1041ad7160a9a308064, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTexture:
-        m_Texture: {fileID: 2800000, guid: 0454aff73353f304498b8f417c8b2c3b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 24fb97131d3fc424287384429e2e6d2b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecMap:
-        m_Texture: {fileID: 2800000, guid: 4fa05da7cd24dfc47a1b4409e0c66512, type: 3}
+        m_Texture: {fileID: 2800000, guid: 802766653923aed4b9316c723f49a46d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:

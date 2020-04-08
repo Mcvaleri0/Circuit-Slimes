@@ -64,7 +64,7 @@ Material:
     - _EmissionStrength: 1.07
     - _FresnelPower: 3.48
     - _FresnelScale: 6.59
-    - _LightPower: 0.36841422
+    - _LightPower: 0.2
     - _LightningFresnelPower: 3.48
     - _LightninglFresnelScale: 6.59
     - _RimOffset: 0.62
@@ -80,5 +80,5 @@ Material:
     - _ASEOutlineColor: {r: 0.85490197, g: 0.35328937, b: 0.0235294, a: 1}
     - _Color0: {r: 1, g: 0.7844253, b: 0, a: 1}
     - _EmissionColor: {r: 0.52358484, g: 1, b: 0.9553949, a: 0}
-    - _LightningColor: {r: 1, g: 0.7815126, b: 0, a: 1}
+    - _LightningColor: {r: 1, g: 0.8228512, b: 0.2028302, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
