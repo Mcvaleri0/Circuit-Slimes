@@ -58,14 +58,14 @@ Material:
     - _LightPower: 0.3118221
     - _LightningFresnelPower: 0.5
     - _LightninglFresnelScale: 0.5
-    - _MetalLightness: 13.57
+    - _MetalLightness: 4.68
     - _MetalLightness1: 13.57
     - _RimOffset: 0.62
     - _RimPower: 0
     - _ShadowOffset: 0.48
     - _ShadowScale: 1.04
     - _SpecularGloss: 0.58
-    - _SpecularIntensity: 0.37
+    - _SpecularIntensity: 0.21
     - __dirty: 0
     m_Colors:
     - _ASEOutlineColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
