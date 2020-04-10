@@ -11,7 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 7d7e05388df975449b03b1952ef3feca, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -96,6 +96,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightningTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -204,6 +208,7 @@ Material:
     - _AlphaCutoff: 0.5
     - _BackDark: 0.7
     - _BackDepthScale: 0
+    - _Bias: 0
     - _BumpScale: 1
     - _ChromaticAberration: 0.1
     - _CurvFix: 1
@@ -225,6 +230,9 @@ Material:
     - _Glossiness: 0.82
     - _GlossyReflections: 1
     - _Height: 0
+    - _LightPower: 0.3118221
+    - _LightningFresnelPower: 0.5
+    - _LightninglFresnelScale: 0.5
     - _Metallic: 0.04
     - _MidDark: 0.3
     - _MidDepthScale: 0.3
@@ -238,7 +246,8 @@ Material:
     - _RimOffset: 0.71
     - _RimPower: 0
     - _RoughScale: 0.5
-    - _Scale: 0.4247461
+    - _Scale: 3.14
+    - _ScaleFactor: 58.43
     - _ShadowOffset: 0.45
     - _ShadowScale: 1.04
     - _Size: 1
@@ -269,10 +278,14 @@ Material:
     - _scale: 1.9
     - _translucency: 0.181
     m_Colors:
-    - _ASEOutlineColor: {r: 0, g: 0.49865103, b: 1, a: 1}
+    - _ASEOutlineColor: {r: 0, g: 0.27846202, b: 0.764151, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0, g: 0.91298866, b: 1, a: 0}
     - _EmissionColor: {r: 0.514151, g: 0.95808357, b: 1, a: 0}
+    - _FaceOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _FaceOffset1: {r: 0, g: 0, b: 0, a: 0}
+    - _FaceTilling: {r: 3.86, g: 1.43, b: 0, a: 0}
     - _FresnelColor: {r: 0.22352934, g: 0.8963526, b: 1, a: 1}
+    - _LightningColor: {r: 0.3396226, g: 0.3396226, b: 0.3396226, a: 0}
     - _RimLightColor: {r: 0.38207522, g: 1, b: 0.9830373, a: 0}
     - _Tint: {r: 0, g: 0, b: 0, a: 0}
