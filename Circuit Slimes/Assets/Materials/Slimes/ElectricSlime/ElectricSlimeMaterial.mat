@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ElectricSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: 02726343fc8fbe943b92418af03381c2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 62ee0edc4735aca48800e8b91bd3c964, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -69,7 +69,7 @@ Material:
     - _LightninglFresnelScale: 6.59
     - _RimOffset: 0.62
     - _RimPower: 0
-    - _ShadowOffset: 0.48
+    - _ShadowOffset: 0.45
     - _ShadowScale: 1.04
     - _SpecularGloss: 0.62
     - _SpecularIntensity: 0.67

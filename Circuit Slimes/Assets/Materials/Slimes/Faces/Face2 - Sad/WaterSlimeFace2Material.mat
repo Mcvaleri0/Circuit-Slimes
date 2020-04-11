@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SlimeFace1Material
+  m_Name: WaterSlimeFace2Material
   m_Shader: {fileID: 4800000, guid: 45965cacc80dfaf4da0359d69f3e5573, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
@@ -52,11 +52,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
-        m_Texture: {fileID: 2800000, guid: 45590d454fb37c444866c18ea64776b7, type: 3}
+        m_Texture: {fileID: 2800000, guid: efcc365c3a75b72428286cf3dd5d78c1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTextureBlink:
-        m_Texture: {fileID: 2800000, guid: a6f091067eb9ee143b5fa93b3149e0ae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7aed6c1c1b6672a4297ea484f5f362ae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -115,5 +115,5 @@ Material:
     - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.6839622, g: 1, b: 0.95916903, a: 1}
-    - _FaceOffset: {r: -0.1, g: -0.02, b: 0, a: 0}
+    - _FaceOffset: {r: 0, g: 0, b: 0, a: 0}
     - _RimLightColor: {r: 0, g: 0.95156765, b: 1, a: 0}

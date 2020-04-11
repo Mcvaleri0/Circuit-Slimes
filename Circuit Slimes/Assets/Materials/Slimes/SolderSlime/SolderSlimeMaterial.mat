@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SolderSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: b3d1552966f94794e9ea5b80b7b75f3a, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3131fadb990f60f40b9f062cfa53f868, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0

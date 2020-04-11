@@ -1,11 +1,8 @@
 fileFormatVersion: 2
-guid: 02726343fc8fbe943b92418af03381c2
+guid: 62ee0edc4735aca48800e8b91bd3c964
 ShaderImporter:
   externalObjects: {}
-  defaultTextures:
-  - _EyeMask: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
-  - _FaceTexture: {fileID: 2800000, guid: 45590d454fb37c444866c18ea64776b7, type: 3}
-  - _FaceMask: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
+  defaultTextures: []
   nonModifiableTextures: []
   userData: 
   assetBundleName: 
