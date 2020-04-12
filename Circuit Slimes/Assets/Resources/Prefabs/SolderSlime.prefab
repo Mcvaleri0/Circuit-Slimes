@@ -29,37 +29,37 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.862
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.029999971
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.708
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9629611
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.26964056
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
@@ -74,7 +74,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 148.714
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
@@ -98,9 +98,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: d76710852ee10a9478013cff09efa8e7,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9be9bee5bad8e75428ac6e63e6cbefb0, type: 2}
+      objectReference: {fileID: 2100000, guid: 8ec582633619b4f4399aae9515650c19, type: 2}
+    - target: {fileID: -1504981713932161579, guid: d76710852ee10a9478013cff09efa8e7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d4cc1ae8c8febf04185df73375314625, type: 2}
     - target: {fileID: -927199367670048503, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_Name

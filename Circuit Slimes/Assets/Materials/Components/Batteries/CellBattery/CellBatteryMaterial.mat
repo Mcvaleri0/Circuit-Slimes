@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AABatteryMaterial
+  m_Name: CellBatteryMaterial
   m_Shader: {fileID: 4800000, guid: 40c376627da63ec41a5077b52850d84c, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
@@ -20,19 +20,19 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: e87a1d5e227436848a7de13b91e7b730, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6c8873d5d1e93fe45acfe936c4ae087f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTexture:
-        m_Texture: {fileID: 2800000, guid: 0454aff73353f304498b8f417c8b2c3b, type: 3}
+        m_Texture: {fileID: 2800000, guid: a5886a4b84296984ab1a4e5d517b35a8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: da0fe5f6f1c43554492252fa77e2c2bb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecMap:
-        m_Texture: {fileID: 2800000, guid: 4fa05da7cd24dfc47a1b4409e0c66512, type: 3}
+        m_Texture: {fileID: 2800000, guid: 01512ab5a7e871d499f7f71a2e2fc5d0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
@@ -61,22 +61,22 @@ Material:
     - _EmissionStrength: 1
     - _Float0: -0.51
     - _Gloss: 0.4
-    - _NomalMapStrength: 1
-    - _NormalScale: 1
-    - _RimOffset: 0.44
-    - _RimPower: 1.29
+    - _NomalMapStrength: 11.36
+    - _NormalScale: -0.46
+    - _RimOffset: 0.74
+    - _RimPower: 0.49
     - _ShadowOffset: 0.21
     - _ShadowScale: 0.43
     - _SpecMax: 3.06
     - _SpecMin: 1
-    - _SpecularGloss: 1
-    - _SpecularIntensity: 1
+    - _SpecularGloss: 0.67
+    - _SpecularIntensity: 0.24
     - _Specularity: 15.87
     - __dirty: 0
     m_Colors:
-    - _ASEOutlineColor: {r: 0.3773585, g: 0.28058165, b: 0.21181916, a: 1}
+    - _ASEOutlineColor: {r: 0.3584906, g: 0.3053451, b: 0.26548594, a: 1}
     - _Color0: {r: 1, g: 0, b: 0.9104991, a: 0}
-    - _EmissionColor: {r: 0.9952283, g: 1, b: 0, a: 1}
-    - _RimLightColor: {r: 1, g: 0.6201182, b: 0.078431316, a: 0}
+    - _EmissionColor: {r: 1, g: 0.9397107, b: 0, a: 1}
+    - _RimLightColor: {r: 0.5471698, g: 0.45989412, b: 0.33294767, a: 0}
     - _SpecRange: {r: 1.29, g: 1.87, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 0}
