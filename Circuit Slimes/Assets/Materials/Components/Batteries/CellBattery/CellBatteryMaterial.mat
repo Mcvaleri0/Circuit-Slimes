@@ -62,15 +62,15 @@ Material:
     - _Float0: -0.51
     - _Gloss: 0.4
     - _NomalMapStrength: 11.36
-    - _NormalScale: -0.46
+    - _NormalScale: -0.5
     - _RimOffset: 0.74
     - _RimPower: 0.49
     - _ShadowOffset: 0.21
     - _ShadowScale: 0.43
     - _SpecMax: 3.06
     - _SpecMin: 1
-    - _SpecularGloss: 0.67
-    - _SpecularIntensity: 0.24
+    - _SpecularGloss: 0.52
+    - _SpecularIntensity: 0.31
     - _Specularity: 15.87
     - __dirty: 0
     m_Colors:
