@@ -66,7 +66,7 @@ namespace Puzzle
 
             var rotation = Quaternion.identity;
 
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
         public static GameObject Instantiate(Transform parent, ComponentTypes type, Vector2 coords)
