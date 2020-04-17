@@ -79,6 +79,12 @@ namespace Puzzle
                             {
                                 agent.State = Pieces.Agent.States.Think;
                             }
+                            else if(agent.State == Pieces.Agent.States.Inactive)
+                            {
+                                agent.SaveState();
+
+                                agent.Turn++;
+                            }
                         }
                     }
 
@@ -123,6 +129,7 @@ namespace Puzzle
                     }
 
                     this.State = RunState.Paused;
+                    if (this.Turn == 0) this.State = RunState.Start;
                     break;
 
                 case RunState.Resetting:
@@ -139,8 +146,6 @@ namespace Puzzle
             {
                 this.State = RunState.Running;
             }
-
-            Debug.Log("Start: " + this.State);
         }
 
         public void Pause()
@@ -153,8 +158,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepForward;
             }
-
-            Debug.Log("Pause: " + this.State);
         }
 
         public void StepForward()
@@ -164,8 +167,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepForward;
             }
-
-            Debug.Log("Step Foward: " + this.State);
         }
 
         public void StepBack()
@@ -175,8 +176,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepBack;
             }
-
-            Debug.Log("Step Back: " + this.State);
         }
 
         public void Restart()
@@ -193,8 +192,6 @@ namespace Puzzle
                     agent.State = Pieces.Agent.States.Restart;
                 }
             }
-
-            Debug.Log("Restart: " + this.State);
         }
         #endregion
 

@@ -34,10 +34,17 @@ namespace Puzzle
             Battery
         }
 
+        public enum CandyTypes
+        {
+            None,
+            Water,
+            Solder
+        }
+
         public Categories Category;
         public SlimeTypes SlimeType;
         public ComponentTypes ComponentType;
-
+        public CandyTypes CandyType;
 
         public static GameObject Instantiate(Transform parent, SlimeTypes type, Vector2 coords)
         {
@@ -87,13 +94,37 @@ namespace Puzzle
                     break;
             }
 
-            var position = new Vector3(1f, 1f, 1f);
-            position.x = coords.x + 1f;
-            position.z = coords.y + 1f;
+            var position = LevelBoard.WorldCoords(coords);
 
             var rotation = Quaternion.identity;
 
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
+        }
+
+        public static GameObject Instantiate(Transform parent, CandyTypes type, Vector2 coords)
+        {
+            var prefabName = "";
+
+            switch (type)
+            {
+                default:
+                case CandyTypes.None:
+                    break;
+
+                case CandyTypes.Water:
+                    prefabName = "WaterCandy";
+                    break;
+
+                case CandyTypes.Solder:
+                    prefabName = "SolderCandy";
+                    break;
+            }
+
+            var position = LevelBoard.WorldCoords(coords);
+
+            var rotation = Quaternion.identity;
+
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
 
@@ -126,6 +157,7 @@ namespace Puzzle
         }
         #endregion
 
+
         #region === Unity Methods ===
         // Start is called before the first frame update
         protected virtual void Start()
@@ -137,6 +169,30 @@ namespace Puzzle
         protected virtual void Update()
         {
             
+        }
+        #endregion
+
+
+        #region === Piece Methods ===
+        public bool TypeMatches(Piece other)
+        {
+            if(other.Category == this.Category)
+            {
+                switch(this.Category)
+                {
+                    default:
+                        return true;
+
+                    case Categories.Slime:
+                    case Categories.Candy:
+                        return other.SlimeType == this.SlimeType;
+
+                    case Categories.Component:
+                        return other.ComponentType == this.ComponentType;
+                }
+            }
+
+            return false;
         }
         #endregion
     }

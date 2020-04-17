@@ -21,6 +21,8 @@ namespace Puzzle.Data
 
         public Piece.ComponentTypes ComponentType;
 
+        public Piece.CandyTypes CandyType;
+
         public PieceData(Piece piece)
         {
             this.Coords = piece.Coords;
@@ -30,12 +32,14 @@ namespace Puzzle.Data
             this.SlimeType = piece.SlimeType;
 
             this.ComponentType = piece.ComponentType;
+
+            this.CandyType = piece.CandyType;
         }
 
 
         public Piece CreatePiece(Transform parent, LevelBoard board)
         {
-            GameObject obj = null;
+            GameObject obj;
 
             switch(this.Category)
             {
@@ -66,6 +70,18 @@ namespace Puzzle.Data
                     }
                     
                     return component;
+
+                case Piece.Categories.Candy:
+                    obj = Piece.Instantiate(parent, this.CandyType, this.Coords);
+
+                    var candy = obj.GetComponent<Pieces.Candy>();
+
+                    if(candy != null)
+                    {
+                        candy.Initialize(board, this.Coords, this.CandyType);
+                    }
+
+                    return candy;
             }
         }
 

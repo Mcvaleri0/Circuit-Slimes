@@ -17,7 +17,24 @@ namespace Puzzle.Pieces.Slimes
         {
             base.Start();
 
+            this.KnownActions.Add(new SeekTarget(new Candy(CandyTypes.Water)));
+
             this.Stats = new Statistics(10, 10, 10);
+        }
+
+        override protected void Update()
+        {
+            base.Update();
+
+            if(Input.GetKeyUp(KeyCode.T))
+            {
+                List<Piece> inSight = this.PiecesInSight(3);
+
+                foreach(Piece piece in inSight)
+                {
+                    Debug.Log(piece.Coords);
+                }
+            }
         }
 
         //
