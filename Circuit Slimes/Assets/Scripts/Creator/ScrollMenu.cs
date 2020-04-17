@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Puzzle;
+using Puzzle.Board;
 
 
 
@@ -23,11 +25,24 @@ namespace Creator
 
         #endregion
 
+        #region /* Puzzle Attibutes */
 
-        public ScrollMenu(Transform menu)
+        private Dictionary<string, Object> BoardItens { get; set; }
+        private Puzzle.Puzzle Puzzle { get; set; }
+        private Transform PuzzleObj { get; set; }
+
+        #endregion
+
+
+        public ScrollMenu(Transform menu, Transform content, Transform puzzleObj, Puzzle.Puzzle puzzle)
         {
             this.Menu = menu;
-            this.MenuContent = this.Menu.Find("Viewport").Find("Content");
+            this.MenuContent = content;
+
+            this.Puzzle    = puzzle;
+            this.PuzzleObj = puzzleObj;
+
+            this.BoardItens  = new Dictionary<string, Object>();
 
             this.Initialize();
         }
@@ -56,20 +71,18 @@ namespace Creator
             foreach (Object icon in icons)
             {
                 this.InstantiateOption(icon.name, button);
+
+                this.BoardItens.Add(icon.name, icon);
             }
+
         }
 
         #endregion
 
         #region === Instantiate Methods ===
 
-        private void InstantiateOption(string text, Object button=null)
+        private void InstantiateOption(string text, Object button)
         {
-            if (button == null)
-            {
-                button = Resources.Load(BUTTON_PATH);
-            }
-
             GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
@@ -79,6 +92,20 @@ namespace Creator
         private void InstantiateBoardItem(string name)
         {
             Debug.Log("Instantiating " + name);
+
+            Transform parent;
+            if (name.Contains("Tile"))
+            {
+                parent = this.PuzzleObj.Find("Tiles");
+            }
+            else
+            {
+                parent = this.PuzzleObj.Find("Pieces");
+            }
+
+            Vector2 coords = Vector2.zero;
+
+            //Piece.Instantiate(parent, type, coords);
         }
 
         #endregion

@@ -60,6 +60,7 @@ namespace Puzzle.Data
 
             // Instantiate Puzzle
             GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
+            puzzleObj.name = "Puzzle";
             var puzzle = puzzleObj.GetComponent<Puzzle>();
 
             // Create Board
