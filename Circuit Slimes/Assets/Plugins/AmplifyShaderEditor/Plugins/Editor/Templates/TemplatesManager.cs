@@ -537,6 +537,30 @@ namespace AmplifyShaderEditor
 			if( m_sortedTemplates == null || m_sortedTemplates.Count == 0 )
 				return;
 
+			// change names for duplicates
+			for( int i = 0; i < m_sortedTemplates.Count; i++ )
+			{
+				for( int j = 0; j < i; j++ )
+				{
+					if( m_sortedTemplates[ i ].Name == m_sortedTemplates[ j ].Name )
+					{
+						var match = Regex.Match( m_sortedTemplates[ i ].Name, @".+(\d+)" );
+						if( match.Success )
+						{
+							string strNumber = match.Groups[ 1 ].Value;
+							int number = int.Parse( strNumber ) + 1;
+							string firstPart = m_sortedTemplates[ i ].Name.Substring( 0, match.Groups[ 1 ].Index );
+							string secondPart = m_sortedTemplates[ i ].Name.Substring( match.Groups[ 1 ].Index + strNumber.Length );
+							m_sortedTemplates[ i ].Name = firstPart + number + secondPart;
+						}
+						else
+						{
+							m_sortedTemplates[ i ].Name += " 1";
+						}
+					}
+				}
+			}
+
 			System.Text.StringBuilder fileContents = new System.Text.StringBuilder();
 			fileContents.Append( "// Amplify Shader Editor - Visual Shader Editing Tool\n" );
 			fileContents.Append( "// Copyright (c) Amplify Creations, Lda <info@amplify.pt>\n" );
