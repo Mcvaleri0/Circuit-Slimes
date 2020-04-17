@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Pieces;
+using Puzzle.Board;
 
 namespace Puzzle.Actions
 {
@@ -19,42 +20,22 @@ namespace Puzzle.Actions
 
 
         #region === AUX Methods ===
-        protected static ArrayList CheckAdjacents(Agent agent)
+        protected static ArrayList CheckCrossAdjacents(Agent agent)
         {
             ArrayList adjacents = new ArrayList();
 
-            var x = (int)agent.Coords.x;
-            var y = (int)agent.Coords.y;
-
-            // Right
-            if (agent.IsFree(x + 1, y))
+            for (var i = 0; i < 4; i++)
             {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
+                var ind = i * 2;
 
-            // Up
-            if (agent.IsFree(x, y - 1))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
+                var coords = agent.Coords + LevelBoard.DirectionalVectors[ind];
 
-            // Down
-            if (agent.IsFree(x, y + 1))
-            {
-                adjacents.Add(true);
+                if (agent.IsFree(coords))
+                {
+                    adjacents.Add(true);
+                }
+                else adjacents.Add(false);
             }
-            else adjacents.Add(false);
-
-            // Left
-            if (agent.IsFree(x - 1, y))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            if (adjacents.Count == 0) return null;
 
             return adjacents;
         }

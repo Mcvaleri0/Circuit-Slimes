@@ -50,7 +50,7 @@ namespace Puzzle.Pieces
 
         protected struct AgentState
         {
-            public Vector2 Coords { get; private set; }
+            public Vector2Int Coords { get; private set; }
 
             public Statistics Stats { get; private set; }
 
@@ -58,7 +58,7 @@ namespace Puzzle.Pieces
 
             public Action ChosenAction { get; private set; }
 
-            public AgentState(Vector2 coords, Statistics stats, LevelBoard.Directions ori, Action chosen)
+            public AgentState(Vector2Int coords, Statistics stats, LevelBoard.Directions ori, Action chosen)
             {
                 this.Coords = coords;
 
@@ -74,7 +74,7 @@ namespace Puzzle.Pieces
 
 
         // Init Method
-        public virtual void Initialize(LevelBoard board, Vector2 coords, Categories category,
+        public virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
             base.Initialize(board, coords, category);
@@ -174,9 +174,9 @@ namespace Puzzle.Pieces
 
         #region === Perceptor Methods ===
         // Returns true if at the coordinates, on the board, there is no Piece
-        public bool IsFree(int x, int y)
+        public bool IsFree(Vector2Int coords)
         {
-            return this.Board.GetPiece(x, y) == null;
+            return !this.Board.OutOfBounds(coords) && this.Board.GetPiece(coords) == null;
         }
         #endregion
 
@@ -216,7 +216,7 @@ namespace Puzzle.Pieces
         {
             var state = this.StateLog[this.Turn];
 
-            this.Board.MovePiece((int)state.Coords.x, (int)state.Coords.y, this);
+            this.Board.MovePiece(state.Coords, this);
 
             this.transform.position = LevelBoard.WorldCoords(this.Coords);
 
@@ -224,7 +224,7 @@ namespace Puzzle.Pieces
 
             this.Orientation = state.Orientation;
 
-            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, ((int) this.Orientation) * -45, this.transform.eulerAngles.z);
+            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, ((int) this.Orientation) * 45, this.transform.eulerAngles.z);
 
             this.ChosenAction = state.ChosenAction;
         }

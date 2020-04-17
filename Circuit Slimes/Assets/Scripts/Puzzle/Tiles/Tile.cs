@@ -9,7 +9,7 @@ namespace Puzzle
     {
         private LevelBoard Board;
 
-        public Vector2 Coords { get; set; }
+        public Vector2Int Coords { get; set; }
 
         public enum Types
         {
@@ -20,7 +20,7 @@ namespace Puzzle
         public Types Type { get; protected set; }
 
 
-        public static GameObject Instantiate(Transform parent, Types type, Vector2 coords)
+        public static GameObject Instantiate(Transform parent, Types type, Vector2Int coords)
         {
             var prefabName = "";
 
@@ -42,7 +42,7 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
         }
 
-        public void Initialize(LevelBoard board, Vector2 coords, Types type)
+        public void Initialize(LevelBoard board, Vector2Int coords, Types type)
         {
             this.Board = board;
 

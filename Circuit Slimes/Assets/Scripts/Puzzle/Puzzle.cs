@@ -27,19 +27,19 @@ namespace Puzzle
 
             foreach(var piece in pieces)
             {
-                this.Board.PlacePiece((int) piece.Coords.x, (int) piece.Coords.y, piece);
+                this.Board.PlacePiece(piece.Coords, piece);
             }
 
             foreach (var tile in tiles)
             {
-                this.Board.PlaceTile((int)tile.Coords.x, (int)tile.Coords.y, tile);
+                this.Board.PlaceTile(tile.Coords, tile);
             }
         }
 
         public void AddPiece(Piece piece)
         {
             this.Pieces.Add(piece);
-            this.Board.PlacePiece((int)piece.Coords.x, (int)piece.Coords.y, piece);
+            this.Board.PlacePiece(piece.Coords, piece);
         }
 
         public void AddTile(Tile tile)
@@ -58,8 +58,7 @@ namespace Puzzle
 
             this.Pieces.Clear();
 
-            GameObject.Destroy(this.Board.Plane);
-            this.Board = null;
+            GameObject.Destroy(this.Board.gameObject);
 
             GameObject.Destroy(this.gameObject);
         }

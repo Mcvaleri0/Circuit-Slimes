@@ -5,7 +5,7 @@ using Puzzle.Actions;
 
 namespace Puzzle.Pieces.Slimes
 {
-    public class WaterSlime : Slime
+    public class SolderSlime : Slime
     {
 
         //

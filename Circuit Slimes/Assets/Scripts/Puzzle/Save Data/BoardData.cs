@@ -18,16 +18,25 @@ namespace Puzzle.Data
 
         public BoardData(LevelBoard board)
         {
-            this.Width = board.Width;
+            this.Width  = board.Width;
             this.Height = board.Height;
         }
 
 
-        public LevelBoard CreateBoard()
+        public LevelBoard CreateBoard(Transform parent = null)
         {
-            var board = new LevelBoard(this.Width, this.Height);
+            GameObject boardObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Board"));
+            boardObj.transform.parent = parent;
 
-            board.Draw(null, this.Width * 2, this.Height * 2);
+            var inSceneWidth  = this.Width  * LevelBoard.SpaceSize;
+            var inSceneHeight = this.Height * LevelBoard.SpaceSize;
+
+            boardObj.transform.position   = new Vector3(inSceneHeight / 2, 0.5f, inSceneWidth / 2);
+            boardObj.transform.localScale = new Vector3(inSceneHeight, 1, inSceneWidth);
+
+            var board = boardObj.GetComponent<LevelBoard>();
+
+            board.Initialize(this.Width, this.Height);
 
             return board;
         }

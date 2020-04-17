@@ -6,10 +6,14 @@ namespace Puzzle.Board
 {
     public class Row
     {
+        private int Id;
+
         private Dictionary<int, Space> Spaces;
 
-        public Row()
+        public Row(int id)
         {
+            this.Id = id;
+
             this.Spaces = new Dictionary<int, Space>();
         }
 
@@ -24,7 +28,7 @@ namespace Puzzle.Board
             }
             catch (KeyNotFoundException)
             {
-                space = new Space();
+                space = new Space(new Vector2(x, this.Id));
                 this.Spaces[x] = space;
             }
 
@@ -48,8 +52,7 @@ namespace Puzzle.Board
 
         public Piece GetPiece(int x)
         {
-            Space space = null;
-            this.Spaces.TryGetValue(x, out space);
+            this.Spaces.TryGetValue(x, out Space space);
 
             if(space != null)
             {
@@ -71,7 +74,7 @@ namespace Puzzle.Board
             }
             catch (KeyNotFoundException)
             {
-                space = new Space();
+                space = new Space(new Vector2(x, this.Id));
                 this.Spaces[x] = space;
             }
 

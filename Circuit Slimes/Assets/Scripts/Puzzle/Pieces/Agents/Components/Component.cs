@@ -9,7 +9,7 @@ namespace Puzzle.Pieces.Components
     public class Component : Agent
     {
         // Init Method
-        public void Initialize(LevelBoard board, Vector2 coords, ComponentTypes type,
+        public void Initialize(LevelBoard board, Vector2Int coords, ComponentTypes type,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
             base.Initialize(board, coords, Categories.Component, ori, turn);

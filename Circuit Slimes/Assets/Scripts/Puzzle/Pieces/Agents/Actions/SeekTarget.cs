@@ -20,13 +20,11 @@ namespace Puzzle.Actions
             this.Target = target;
         }
 
-        //
-        // - Action Methods
-        //
 
+        #region Action Methods
         public override Action Available(Agent agent)
         {
-            ArrayList freeSpots = CheckAdjacents(agent);
+            ArrayList freeSpots = CheckCrossAdjacents(agent);
 
             if(freeSpots != null)
             {
@@ -58,81 +56,8 @@ namespace Puzzle.Actions
 
         public override bool Execute(Agent agent)
         {
-            var current = agent.transform.position;
-
-            var angle = ((int) this.Direction) * -45;
-
-            agent.transform.eulerAngles = new Vector3(agent.transform.eulerAngles.x, angle, agent.transform.eulerAngles.z);
-
-            if (Vector3.Distance(current, this.TargetPosition) > agent.Stats.Speed / 100f)
-            {
-                var dX = this.TargetPosition.x - current.x;
-                var dZ = this.TargetPosition.z - current.z;
-
-                var norm = (new Vector2(dX, dZ)).normalized;
-
-                current.x += norm.x * (agent.Stats.Speed / 100f);
-                current.z += norm.y * (agent.Stats.Speed / 100f);
-            }
-            else
-            {
-                current.x = this.TargetPosition.x;
-                current.z = this.TargetPosition.y;
-
-                agent.Board.MovePiece((int) this.TargetCoords.x, (int) this.TargetCoords.y, agent);
-
-                agent.Orientation = this.Direction;
-
-                return true;
-            }
-
-            agent.transform.position = current;
-
             return false;
         }
-
-        //
-        // - Aux Methods
-        //
-
-        private static ArrayList CheckAdjacents(Agent agent)
-        {
-            ArrayList adjacents = new ArrayList();
-
-            var x = (int) agent.Coords.x;
-            var y = (int) agent.Coords.y;
-
-            // Right
-            if (agent.IsFree(x + 1, y))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Up
-            if (agent.IsFree(x, y - 1))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Down
-            if (agent.IsFree(x, y + 1))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Left
-            if (agent.IsFree(x - 1, y))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            if (adjacents.Count == 0) return null;
-
-            return adjacents;
-        }
+        #endregion
     }
 }

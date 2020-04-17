@@ -19,6 +19,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6611444027774080399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5495734301860686262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324978d2898674742ab88eef779b899f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 1
+  SlimeType: 2
+  ComponentType: 0
+  Turn: 0
+  State: 0
 --- !u!1001 &4568101569506750655
 PrefabInstance:
   m_ObjectHideFlags: 0

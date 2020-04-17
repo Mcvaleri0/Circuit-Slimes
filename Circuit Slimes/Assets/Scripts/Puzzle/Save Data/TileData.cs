@@ -12,9 +12,10 @@ namespace Puzzle.Data
     [System.Serializable]
     public class TileData
     {
-        public Vector2 Coords;
+        public Vector2Int Coords;
 
         public Tile.Types Type;
+
 
         public TileData(Tile tile)
         {

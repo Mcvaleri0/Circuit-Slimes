@@ -33,7 +33,7 @@ namespace Puzzle.Actions
 
         public override Action Available(Agent agent)
         {
-            ArrayList freeSpots = CheckAdjacents(agent);
+            ArrayList freeSpots = CheckCrossAdjacents(agent);
 
             if(freeSpots != null) //FIXME: here we should be checking for charge left
             {
@@ -45,7 +45,7 @@ namespace Puzzle.Actions
                     {
                         var tdir = (LevelBoard.Directions) (dir * 2);
 
-                        var tcoords = agent.Board.GetAdjacentCoords((int)agent.Coords.x, (int)agent.Coords.y, tdir);
+                        var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, tdir);
                         
                         var tposition = LevelBoard.WorldCoords(tcoords);
 
