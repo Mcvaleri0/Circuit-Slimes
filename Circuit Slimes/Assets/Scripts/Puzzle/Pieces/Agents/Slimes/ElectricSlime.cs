@@ -17,7 +17,7 @@ namespace Puzzle.Pieces.Slimes
         {
             base.Start();
 
-            this.KnownActions.Add(new CardinalMove());
+            this.KnownActions.Add(new ElectricMovement());
 
             this.Stats = new Statistics(10, 10, 10);
         }

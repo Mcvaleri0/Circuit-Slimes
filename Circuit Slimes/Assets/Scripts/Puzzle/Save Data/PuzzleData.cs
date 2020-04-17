@@ -15,9 +15,9 @@ namespace Puzzle.Data
     [System.Serializable]
     public class PuzzleData
     {
-        public BoardData Board;
+        public BoardData   Board;
         public PieceData[] Pieces;
-        public TileData[] Tiles;
+        public TileData[]  Tiles;
 
 
         public PuzzleData(Puzzle puzzle)
@@ -48,20 +48,24 @@ namespace Puzzle.Data
             System.IO.File.WriteAllText(path + "/" + name + ".json", data);
         }
 
+
         public static Puzzle Load(string path, string name)
         {
             StreamReader reader = new StreamReader(path + "/" + name + ".json");
             string jsonData = reader.ReadToEnd();
             reader.Close();
 
+            // Load Data
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonData);
 
-            LevelBoard board = puzzleData.Board.CreateBoard();
-            
+            // Instantiate Puzzle
             GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
             var puzzle = puzzleObj.GetComponent<Puzzle>();
 
-            #region Pieces
+            // Create Board
+            var board = puzzleData.Board.CreateBoard(puzzleObj.transform);
+
+            #region Create Pieces
             GameObject piecesObj = new GameObject("Pieces");
             piecesObj.transform.parent = puzzleObj.transform;
 
@@ -76,7 +80,7 @@ namespace Puzzle.Data
             }
             #endregion
 
-            #region Tiles
+            #region Create Tiles
             GameObject tilesObj = new GameObject("Tiles");
             tilesObj.transform.parent = puzzleObj.transform;
 
@@ -91,6 +95,7 @@ namespace Puzzle.Data
             }
             #endregion
 
+            // Initialiaze Puzzle
             puzzle.Initialize(board, pieceList, tileList);
 
             return puzzle;

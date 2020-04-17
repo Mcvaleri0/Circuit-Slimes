@@ -33,7 +33,7 @@ namespace Puzzle.Actions
 
         public override Action Available(Agent agent)
         {
-            ArrayList freeSpots = CheckAdjacents(agent);
+            ArrayList freeSpots = CheckCrossAdjacents(agent);
 
             if(freeSpots != null) //FIXME: here we should be checking for charge left
             {
@@ -45,7 +45,7 @@ namespace Puzzle.Actions
                     {
                         var tdir = (LevelBoard.Directions) (dir * 2);
 
-                        var tcoords = agent.Board.GetAdjacentCoords((int)agent.Coords.x, (int)agent.Coords.y, tdir);
+                        var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, tdir);
                         
                         var tposition = LevelBoard.WorldCoords(tcoords);
 
@@ -62,50 +62,6 @@ namespace Puzzle.Actions
             //Piece.Instantiate(Puzzle.Pieces, Piece.SlimeTypes.Electric, new Vector2(this.TargetPosition.x, this.TargetPosition.z));
 
             return false;
-        }
-
-        //
-        // - Aux Methods
-        //
-
-        private static ArrayList CheckAdjacents(Agent agent)
-        {
-            ArrayList adjacents = new ArrayList();
-
-            var x = (int)agent.Coords.x;
-            var y = (int)agent.Coords.y;
-
-            // Right
-            if (agent.IsFree(x + 1, y))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Up
-            if (agent.IsFree(x, y - 1))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Down
-            if (agent.IsFree(x, y + 1))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            // Left
-            if (agent.IsFree(x - 1, y))
-            {
-                adjacents.Add(true);
-            }
-            else adjacents.Add(false);
-
-            if (adjacents.Count == 0) return null;
-
-            return adjacents;
         }
     }
 }

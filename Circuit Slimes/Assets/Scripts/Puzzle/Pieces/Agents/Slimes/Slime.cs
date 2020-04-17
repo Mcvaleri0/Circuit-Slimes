@@ -9,7 +9,7 @@ namespace Puzzle.Pieces.Slimes
     public class Slime : Agent
     {
         // Init Method
-        public void Initialize(LevelBoard board, Vector2 coords, SlimeTypes type,
+        public void Initialize(LevelBoard board, Vector2Int coords, SlimeTypes type,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
             base.Initialize(board, coords, Categories.Slime, ori, turn);

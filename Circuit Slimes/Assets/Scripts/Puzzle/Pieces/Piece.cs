@@ -9,7 +9,7 @@ namespace Puzzle
     {
         public LevelBoard Board { get; private set; }
 
-        public Vector2 Coords { get; set; }
+        public Vector2Int Coords { get; set; }
 
         public enum Categories
         {
@@ -98,7 +98,7 @@ namespace Puzzle
 
 
         #region === Init ===
-        protected virtual void Initialize(LevelBoard board, Vector2 coords, Categories category)
+        protected virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category)
         {
             this.Board = board;
 
@@ -107,7 +107,7 @@ namespace Puzzle
             this.Category = category;
         }
 
-        public virtual void Initialize(LevelBoard board, Vector2 coords, SlimeTypes type = SlimeTypes.None)
+        public virtual void Initialize(LevelBoard board, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
         {
             this.Initialize(board, coords, Categories.Slime);
 
@@ -116,7 +116,7 @@ namespace Puzzle
             this.ComponentType = ComponentTypes.None;
         }
 
-        public virtual void Initialize(LevelBoard board, Vector2 coords, ComponentTypes type = ComponentTypes.None)
+        public virtual void Initialize(LevelBoard board, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
         {
             this.Initialize(board, coords, Categories.Component);
 

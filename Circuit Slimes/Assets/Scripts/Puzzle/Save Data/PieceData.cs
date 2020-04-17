@@ -13,7 +13,7 @@ namespace Puzzle.Data
     [System.Serializable]
     public class PieceData
     {
-        public Vector2 Coords;
+        public Vector2Int Coords;
 
         public Piece.Categories Category;
 
@@ -48,8 +48,11 @@ namespace Puzzle.Data
 
                     var slime = obj.GetComponent<Pieces.Slimes.Slime>();
 
-                    slime.Initialize(board, this.Coords, this.SlimeType);
-
+                    if(slime != null)
+                    {
+                        slime.Initialize(board, this.Coords, this.SlimeType);
+                    }
+                    
                     return slime;
 
                 case Piece.Categories.Component:
@@ -57,8 +60,11 @@ namespace Puzzle.Data
 
                     var component = obj.GetComponent<Pieces.Components.Component>();
 
-                    component.Initialize(board, this.Coords, this.ComponentType);
-
+                    if(component != null)
+                    {
+                        component.Initialize(board, this.Coords, this.ComponentType);
+                    }
+                    
                     return component;
             }
         }
