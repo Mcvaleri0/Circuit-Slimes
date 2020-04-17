@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Puzzle;
-using Puzzle.Board;
 
 
 
@@ -105,7 +104,25 @@ namespace Creator
 
             Vector2 coords = Vector2.zero;
 
-            //Piece.Instantiate(parent, type, coords);
+            Piece.Categories cat = Piece.GetCategory(name);
+
+            switch (cat)
+            {
+                case Piece.Categories.Slime:
+                    Piece.SlimeTypes slimeType = Piece.GetSlimeType(name);
+                    Piece.Instantiate(parent, slimeType, coords);
+                    break;
+
+                case Piece.Categories.Component:
+                    Piece.ComponentTypes compType = Piece.GetComponentType(name);
+                    Piece.Instantiate(parent, compType, coords);
+                    break;
+
+                case Piece.Categories.Candy:
+                    Piece.CandyTypes candyType = Piece.GetCandyType(name);
+                    Piece.Instantiate(parent, candyType, coords);
+                    break;
+            }
         }
 
         #endregion

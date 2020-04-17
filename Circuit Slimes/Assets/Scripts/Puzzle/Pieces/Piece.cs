@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
 
+
+
 namespace Puzzle
 {
     public class Piece : MonoBehaviour
@@ -10,6 +12,8 @@ namespace Puzzle
         public LevelBoard Board { get; private set; }
 
         public Vector2Int Coords { get; set; }
+
+        #region /* Enums */
 
         public enum Categories
         {
@@ -30,8 +34,15 @@ namespace Puzzle
         public enum ComponentTypes
         {
             None,
-            LED,
-            Battery
+            GreenLED,
+            RedLED,
+            CellBattery,
+            AABattery,
+            V9Battery,
+            SingleChip,
+            DoubleChip,
+            SquareChip,
+            SolderTile
         }
 
         public enum CandyTypes
@@ -41,10 +52,15 @@ namespace Puzzle
             Solder
         }
 
+        #endregion
+
         public Categories Category;
         public SlimeTypes SlimeType;
         public ComponentTypes ComponentType;
         public CandyTypes CandyType;
+
+
+        #region === Instantiate ===
 
         public static GameObject Instantiate(Transform parent, SlimeTypes type, Vector2 coords)
         {
@@ -86,11 +102,40 @@ namespace Puzzle
                 case ComponentTypes.None:
                     break;
 
-                case ComponentTypes.LED:
+                case ComponentTypes.GreenLED:
+                    prefabName = "GreenLED";
                     break;
 
-                case ComponentTypes.Battery:
-                    prefabName = "Battery";
+                case ComponentTypes.RedLED:
+                    prefabName = "RedLED";
+                    break;
+
+                case ComponentTypes.CellBattery:
+                    prefabName = "CellBattery";
+                    break;
+
+                case ComponentTypes.AABattery:
+                    prefabName = "AABattery";
+                    break;
+
+                case ComponentTypes.V9Battery:
+                    prefabName = "9VBattery";
+                    break;
+                
+                case ComponentTypes.SingleChip:
+                    prefabName = "SingleChip";
+                    break;
+
+                case ComponentTypes.DoubleChip:
+                    prefabName = "DoubleChip";
+                    break;
+
+                case ComponentTypes.SquareChip:
+                    prefabName = "SquareChip";
+                    break;
+
+                case ComponentTypes.SolderTile:
+                    prefabName = "SolderTile";
                     break;
             }
 
@@ -127,6 +172,96 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
+        #endregion
+
+        #region === Enums Methods ===
+        
+        public static Categories GetCategory(string prefabName)
+        {
+            if (prefabName.Contains("Slime"))
+            {
+                return Categories.Slime;
+            }
+            else if (prefabName.Contains("Candy"))
+            {
+                return Categories.Candy;
+            }
+            else
+            {
+                return Categories.Component;
+            }
+        }
+
+        public static SlimeTypes GetSlimeType(string prefabName)
+        {
+            switch(prefabName)
+            {
+                case "ElectricSlime":
+                    return SlimeTypes.Electric;
+
+                case "WaterSlime":
+                    return SlimeTypes.Water;
+
+                case "SolderSlime":
+                    return SlimeTypes.Solder;
+
+                default:
+                    return SlimeTypes.None;
+            }
+        }
+
+        public static ComponentTypes GetComponentType(string prefabName)
+        {
+            switch(prefabName)
+            {
+                case "GreenLED":
+                    return ComponentTypes.GreenLED;
+
+                case "RedLED":
+                    return ComponentTypes.RedLED;
+
+                case "CellBattery":
+                    return ComponentTypes.CellBattery;
+
+                case "AABattery":
+                    return ComponentTypes.AABattery;
+
+                case "9VBattery":
+                    return ComponentTypes.V9Battery;
+
+                case "SingleChip":
+                    return ComponentTypes.SingleChip;
+
+                case "DoubleChip":
+                    return ComponentTypes.DoubleChip;
+
+                case "SquareChip":
+                    return ComponentTypes.SquareChip;
+
+                case "SolderTile":
+                    return ComponentTypes.SolderTile;
+
+                default:
+                    return ComponentTypes.None;
+            }
+        }
+
+        public static CandyTypes GetCandyType(string prefabName)
+        {
+            switch(prefabName)
+            {
+                case "WaterCandy":
+                    return CandyTypes.Water;
+
+                case "SolderCandy":
+                    return CandyTypes.Solder;
+
+                default:
+                    return CandyTypes.None;
+            }
+        }
+
+        #endregion
 
         #region === Init ===
         protected virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category)
