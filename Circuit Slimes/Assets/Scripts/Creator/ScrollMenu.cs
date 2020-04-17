@@ -52,13 +52,33 @@ namespace Creator
         {
             Object[] icons = Resources.LoadAll(ITEMS_PATH);
             Object button  = Resources.Load(BUTTON_PATH);
-            GameObject newObj;
 
             foreach (Object icon in icons)
             {
-                newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
-                newObj.GetComponentInChildren<Text>().text = icon.name;
+                this.InstantiateOption(icon.name, button);
             }
+        }
+
+        #endregion
+
+        #region === Instantiate Methods ===
+
+        private void InstantiateOption(string text, Object button=null)
+        {
+            if (button == null)
+            {
+                button = Resources.Load(BUTTON_PATH);
+            }
+
+            GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
+            newObj.GetComponentInChildren<Text>().text = text;
+
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.InstantiateBoardItem(text); });
+        }
+
+        private void InstantiateBoardItem(string name)
+        {
+            Debug.Log("Instantiating " + name);
         }
 
         #endregion
