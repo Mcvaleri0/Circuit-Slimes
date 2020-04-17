@@ -19,7 +19,8 @@ namespace Puzzle.Pieces
             Act,
             Rewind,
             Restart,
-            Waiting
+            Waiting,
+            Inactive
         };
 
         public States State;
@@ -94,19 +95,20 @@ namespace Puzzle.Pieces
 
         #region === Unity Methods ===
         // Use this for initialization
-        protected virtual void Start()
+        new protected virtual void Start()
         {
             this.State = States.Idle;
         }
 
         // Update is called once per frame
-        override protected void Update()
+        new protected virtual void Update()
         {
             switch (this.State)
             {
                 default:
                 case States.Idle:
                 case States.Waiting:
+                case States.Inactive:
                     break;
 
                 case States.Think:
@@ -138,6 +140,8 @@ namespace Puzzle.Pieces
                     {
                         // Go to waiting
                         this.State = States.Waiting;
+
+                        this.ChosenAction = null;
 
                         this.Turn++;
                     }
@@ -178,11 +182,136 @@ namespace Puzzle.Pieces
         {
             return !this.Board.OutOfBounds(coords) && this.Board.GetPiece(coords) == null;
         }
+
+        public List<Piece> PiecesInSight(float range)
+        {
+            float toExplore = range;
+
+            List<Piece> pieces = new List<Piece>();
+
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            queue.Enqueue(this.Coords);
+
+            Dictionary<Vector2Int, LevelBoard.Directions> toExpand = new Dictionary<Vector2Int, LevelBoard.Directions>
+            {
+                { this.Coords, LevelBoard.Directions.None }
+            };
+
+            Queue<Vector2Int> nextQueue;
+            Dictionary<Vector2Int, LevelBoard.Directions> toExpandNext;
+
+            while (toExplore > 0f)
+            {
+                nextQueue = new Queue<Vector2Int>();
+                toExpandNext = new Dictionary<Vector2Int, LevelBoard.Directions>();
+
+                while (queue.Count > 0)
+                {
+                    Vector2Int coords = queue.Dequeue();
+                    if (!toExpand.TryGetValue(coords, out LevelBoard.Directions originDir)) continue;
+                    toExpand.Remove(coords);
+
+                    int dirId = (int)originDir;
+
+                    Vector2Int adjCoords;
+                    Piece found;
+
+                    switch (originDir)
+                    {
+                        case LevelBoard.Directions.None:
+                            for (int i = 0; i < 8; i++)
+                            {
+                                LevelBoard.Directions checkDir = (LevelBoard.Directions)(i % 8);
+                                adjCoords = this.Board.GetAdjacentCoords(coords, checkDir);
+
+                                // Out of Bounds
+                                if (adjCoords.x == -1) continue;
+
+                                if (i % 2 == 0 && toExplore - 1 >= 0f ||
+                                    i % 2 == 1 && toExplore - 1 >= 0.5f)
+                                {
+                                    nextQueue.Enqueue(adjCoords);          // Queue position to be checked
+                                    toExpandNext.Add(adjCoords, checkDir); // List direction it was reached from
+                                }
+
+                                found = this.Board.GetPiece(adjCoords);
+
+                                // No Piece in the space
+                                if (found == null) continue;
+
+                                pieces.Add(found); // Add Piece to the list
+                            }
+                            break;
+
+                        case LevelBoard.Directions.East:
+                        case LevelBoard.Directions.South:
+                        case LevelBoard.Directions.West:
+                        case LevelBoard.Directions.North:
+                            for (int i = dirId - 1; i <= dirId + 1; i++)
+                            {
+                                LevelBoard.Directions checkDir = (LevelBoard.Directions)(i % 8);
+                                if (checkDir == LevelBoard.Directions.None) checkDir = LevelBoard.Directions.SouthEast;
+
+                                // Get adjacent space coordinates
+                                adjCoords = this.Board.GetAdjacentCoords(coords, checkDir);
+
+                                // Out of Bounds
+                                if (adjCoords.x == -1) continue;
+
+                                if (toExplore - 1 >= 0f)
+                                {
+                                    nextQueue.Enqueue(adjCoords);          // Queue position to be checked
+                                    toExpandNext.Add(adjCoords, checkDir); // List direction it was reached from
+                                }
+
+                                found = this.Board.GetPiece(adjCoords);
+
+                                // No Piece in the space
+                                if (found == null) continue;
+
+                                pieces.Add(found); // Add Piece to the list
+                            }
+                            break;
+
+                        case LevelBoard.Directions.SouthEast:
+                        case LevelBoard.Directions.SouthWest:
+                        case LevelBoard.Directions.NorthEast:
+                        case LevelBoard.Directions.NorthWest:
+                            adjCoords = this.Board.GetAdjacentCoords(coords, originDir);
+
+                            // Out of Bounds
+                            if (adjCoords.x == -1) continue;
+
+                            if (toExplore - 1 >= 0.5f)
+                            {
+                                nextQueue.Enqueue(adjCoords);           // Queue position to be checked
+                                toExpandNext.Add(adjCoords, originDir); // List direction it was reached from
+                            }
+
+                            found = this.Board.GetPiece(adjCoords);
+
+                            // No Piece in the space
+                            if (found == null) continue;
+
+                            pieces.Add(found); // Add Piece to the list
+                            break;
+
+                    }
+                }
+
+                queue    = nextQueue;
+                toExpand = toExpandNext;
+
+                toExplore--;
+            }
+
+            return pieces;
+        }
         #endregion
 
 
         #region === State Methods ===
-        protected void SaveState()
+        public void SaveState()
         {
             var state = new AgentState(this.Coords, this.Stats, this.Orientation, this.ChosenAction);
 
