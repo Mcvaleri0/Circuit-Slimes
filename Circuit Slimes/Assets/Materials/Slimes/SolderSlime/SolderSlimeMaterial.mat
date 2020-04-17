@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SolderSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: b3d1552966f94794e9ea5b80b7b75f3a, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3131fadb990f60f40b9f062cfa53f868, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -20,15 +20,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _EyeMask:
-        m_Texture: {fileID: 2800000, guid: a8f49a97d39b7b242baffb284e632f4e, type: 3}
+        m_Texture: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceMask:
-        m_Texture: {fileID: 2800000, guid: b75eb0031eaad3a4791653eb28b13d60, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
-        m_Texture: {fileID: 2800000, guid: a3b7ef34dcb18ac449363241fa2e114c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 90b01d4d59617364fad33ca8a99b5b04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LightningTexture:
@@ -36,7 +36,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRamp:
-        m_Texture: {fileID: 2800000, guid: d4914433835b3a1439ce5d8fa9dfa27c, type: 3}
+        m_Texture: {fileID: 2800000, guid: a01b538848797dc4ab5c717ee3b99fc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -60,16 +60,17 @@ Material:
     - _LightninglFresnelScale: 0.5
     - _MetalLightness: 4.68
     - _MetalLightness1: 13.57
-    - _RimOffset: 0.62
+    - _RimOffset: 0.7
     - _RimPower: 0
     - _ShadowOffset: 0.48
     - _ShadowScale: 1.04
     - _SpecularGloss: 0.58
     - _SpecularIntensity: 0.21
-    - __dirty: 0
+    - __dirty: 1
     m_Colors:
     - _ASEOutlineColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor1: {r: 1, g: 1, b: 1, a: 0}
+    - _FaceOffset1: {r: 0, g: 0, b: 0, a: 0}
     - _LightningColor: {r: 1, g: 0.8505845, b: 0.033018887, a: 0}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 0}

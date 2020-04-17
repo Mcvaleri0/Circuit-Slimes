@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ElectricSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: 02726343fc8fbe943b92418af03381c2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 62ee0edc4735aca48800e8b91bd3c964, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -24,15 +24,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EyeMask:
-        m_Texture: {fileID: 2800000, guid: 7dde2c7fb377a084ba4436f623a28ce8, type: 3}
+        m_Texture: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceMask:
-        m_Texture: {fileID: 2800000, guid: 503735f12f3c6a94daf5ce78ee32c1ca, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
-        m_Texture: {fileID: 2800000, guid: 64c1e1a0b32d115469a69023fe41d68e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 11fafa0a9a17ebb47954dea4f03dd997, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LightningTexture:
@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ToonRamp:
-        m_Texture: {fileID: 2800000, guid: d4914433835b3a1439ce5d8fa9dfa27c, type: 3}
+        m_Texture: {fileID: 2800000, guid: a01b538848797dc4ab5c717ee3b99fc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -64,12 +64,12 @@ Material:
     - _EmissionStrength: 1.07
     - _FresnelPower: 3.48
     - _FresnelScale: 6.59
-    - _LightPower: 0.36841422
+    - _LightPower: 0.2
     - _LightningFresnelPower: 3.48
     - _LightninglFresnelScale: 6.59
     - _RimOffset: 0.62
     - _RimPower: 0
-    - _ShadowOffset: 0.48
+    - _ShadowOffset: 0.45
     - _ShadowScale: 1.04
     - _SpecularGloss: 0.62
     - _SpecularIntensity: 0.67
@@ -77,8 +77,9 @@ Material:
     - _WaterSpeed: 0.1294118
     - __dirty: 0
     m_Colors:
-    - _ASEOutlineColor: {r: 0.85490197, g: 0.35328937, b: 0.0235294, a: 1}
+    - _ASEOutlineColor: {r: 0.8396226, g: 0.37692744, b: 0, a: 1}
     - _Color0: {r: 1, g: 0.7844253, b: 0, a: 1}
     - _EmissionColor: {r: 0.52358484, g: 1, b: 0.9553949, a: 0}
-    - _LightningColor: {r: 1, g: 0.7815126, b: 0, a: 1}
+    - _FaceOffset1: {r: 0, g: 0, b: 0, a: 0}
+    - _LightningColor: {r: 1, g: 0.8228512, b: 0.2028302, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}

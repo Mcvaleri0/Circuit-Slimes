@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: oldWaterSlimeMaterial
-  m_Shader: {fileID: 4800000, guid: e3ee2b779b11617489f96408faea4d80, type: 3}
+  m_Shader: {fileID: 4800000, guid: 7d7e05388df975449b03b1952ef3feca, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 1
@@ -35,6 +35,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: d85b3c19dd309a84d9f47f9de16cbae6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CausticsTexture1:
+        m_Texture: {fileID: 2800000, guid: d85b3c19dd309a84d9f47f9de16cbae6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,7 +55,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _EmissionTexture:
+        m_Texture: {fileID: 2800000, guid: a8f49a97d39b7b242baffb284e632f4e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EyeMask:
+        m_Texture: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EyeMask1:
         m_Texture: {fileID: 2800000, guid: ce02c6bba51f71349bd1782d79c9bf23, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -63,7 +75,15 @@ Material:
         m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FaceMask1:
+        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _FaceTexture:
+        m_Texture: {fileID: 2800000, guid: 45590d454fb37c444866c18ea64776b7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FaceTexture1:
         m_Texture: {fileID: 2800000, guid: 45590d454fb37c444866c18ea64776b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -76,6 +96,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LightningTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -103,6 +127,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Occlusion:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -117,6 +145,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Roughness:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecMap:
+        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Tex:
@@ -136,7 +168,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: d85b3c19dd309a84d9f47f9de16cbae6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0c1158d9d4389144eb45ff513591a518, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample1:
@@ -153,6 +185,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _TextureSample4:
         m_Texture: {fileID: 2800000, guid: 1fde31c9170150940b3513a2d25061f5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: a01b538848797dc4ab5c717ee3b99fc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _caust00:
@@ -172,6 +208,7 @@ Material:
     - _AlphaCutoff: 0.5
     - _BackDark: 0.7
     - _BackDepthScale: 0
+    - _Bias: 0
     - _BumpScale: 1
     - _ChromaticAberration: 0.1
     - _CurvFix: 1
@@ -182,6 +219,7 @@ Material:
     - _DstBlend: 0
     - _EYEness: 200
     - _EdgeLength: 4.1
+    - _EmissionStrength: 1
     - _Encapsulation: 242
     - _Float0: 1
     - _Float1: 0.02
@@ -192,6 +230,9 @@ Material:
     - _Glossiness: 0.82
     - _GlossyReflections: 1
     - _Height: 0
+    - _LightPower: 0.3118221
+    - _LightningFresnelPower: 0.5
+    - _LightninglFresnelScale: 0.5
     - _Metallic: 0.04
     - _MidDark: 0.3
     - _MidDepthScale: 0.3
@@ -202,13 +243,20 @@ Material:
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Parallax: 0.02
+    - _RimOffset: 0.71
+    - _RimPower: 0
     - _RoughScale: 0.5
-    - _Scale: 0.4247461
+    - _Scale: 3.14
+    - _ScaleFactor: 58.43
+    - _ShadowOffset: 0.45
+    - _ShadowScale: 1.04
     - _Size: 1
     - _Smoothness: 0.696
     - _SmoothnessTextureChannel: 0
     - _Specular: 0.45
+    - _SpecularGloss: 0.62
     - _SpecularHighlights: 1
+    - _SpecularIntensity: 0.12
     - _SrcBlend: 1
     - _TessValue: 4.1
     - _TransAmbient: 0.2
@@ -219,7 +267,9 @@ Material:
     - _Translucency: 1
     - _UVSec: 0
     - _WaterIntensity: 0.5
-    - _WaterSpeed: 0.15
+    - _WaterIntensity1: 0.5
+    - _WaterSpeed: 0.2
+    - _WaterSpeed1: 0.2
     - _ZWrite: 1
     - __dirty: 0
     - _normaloffset: 0.32641175
@@ -228,8 +278,14 @@ Material:
     - _scale: 1.9
     - _translucency: 0.181
     m_Colors:
-    - _ASEOutlineColor: {r: 0, g: 0.49865103, b: 1, a: 1}
+    - _ASEOutlineColor: {r: 0, g: 0.27846202, b: 0.764151, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 0.27429688, g: 0.6321367, b: 0.8679245, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0.22352928, g: 0.8963526, b: 1, a: 1}
+    - _Color0: {r: 0, g: 0.91298866, b: 1, a: 0}
+    - _EmissionColor: {r: 0.514151, g: 0.95808357, b: 1, a: 0}
+    - _FaceOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _FaceOffset1: {r: 0, g: 0, b: 0, a: 0}
+    - _FaceTilling: {r: 3.86, g: 1.43, b: 0, a: 0}
+    - _FresnelColor: {r: 0.22352934, g: 0.8963526, b: 1, a: 1}
+    - _LightningColor: {r: 0.3396226, g: 0.3396226, b: 0.3396226, a: 0}
+    - _RimLightColor: {r: 0.38207522, g: 1, b: 0.9830373, a: 0}
+    - _Tint: {r: 0, g: 0, b: 0, a: 0}
