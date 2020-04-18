@@ -39,7 +39,7 @@ namespace Puzzle
         // Start is called before the first frame update
         void Start()
         {
-            this.CurrentLevel = 0;
+            this.CurrentLevel = 2;
 
             this.State = RunState.Idle;
 
@@ -48,8 +48,12 @@ namespace Puzzle
             this.LoadPuzzle(this.CurrentLevel);
 
             // TODO: remove this when creator mode is able to choose level
-            CreatorController create = GameObject.Find("CreatorController").GetComponent<CreatorController>();
-            create.Initialize();
+            GameObject create = GameObject.Find("CreatorController");
+            if (create != null)
+            {
+                CreatorController controller = create.GetComponent<CreatorController>();
+                controller.Initialize();
+            }
         }
 
         // Update is called once per frame

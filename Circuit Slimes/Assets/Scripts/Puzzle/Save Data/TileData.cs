@@ -27,23 +27,7 @@ namespace Puzzle.Data
 
         public Tile CreateTile(Transform parent, LevelBoard board)
         {
-            GameObject obj = null;
-
-            switch(this.Type)
-            {
-                default:
-                case Tile.Types.None:
-                    return null;
-
-                case Tile.Types.Solder:
-                    obj = Tile.Instantiate(parent, this.Type, this.Coords);
-
-                    var tile = obj.GetComponent<Tile>();
-
-                    tile.Initialize(board, this.Coords, this.Type);
-
-                    return tile;
-            }
+            return Tile.CreateTile(parent, board, this.Coords, this.Type);
         }
 
     }

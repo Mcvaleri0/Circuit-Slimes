@@ -92,8 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ca1228ebac3c2458ddf0f74339f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Category: 0
+  Category: 2
   SlimeType: 0
-  ComponentType: 0
+  ComponentType: 4
+  CandyType: 0
   Turn: 0
   State: 0

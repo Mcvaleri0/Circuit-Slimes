@@ -13,7 +13,7 @@ namespace Creator
         #region /* Constants */
 
         private const string ITEMS_PATH  = "Prefabs/Board Items";
-        private const string BUTTON_PATH = "Prefabs/Button";
+        private const string BUTTON_PATH = "Prefabs/Creator/Button";
 
         #endregion
 
@@ -92,37 +92,23 @@ namespace Creator
         {
             Debug.Log("Instantiating " + name);
 
+            // TODO: make the player choose where he wants the item
+            Vector2Int coords = new Vector2Int(1, 0);
+
             Transform parent;
             if (name.Contains("Tile"))
             {
                 parent = this.PuzzleObj.Find("Tiles");
+                Tile newTile = Tile.CreateTile(parent, this.Puzzle.Board, coords, name);
+                this.Puzzle.AddTile(newTile);
             }
             else
             {
                 parent = this.PuzzleObj.Find("Pieces");
+                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
+                this.Puzzle.AddPiece(newPiece);
             }
 
-            Vector2 coords = Vector2.zero;
-
-            Piece.Categories cat = Piece.GetCategory(name);
-
-            switch (cat)
-            {
-                case Piece.Categories.Slime:
-                    Piece.SlimeTypes slimeType = Piece.GetSlimeType(name);
-                    Piece.Instantiate(parent, slimeType, coords);
-                    break;
-
-                case Piece.Categories.Component:
-                    Piece.ComponentTypes compType = Piece.GetComponentType(name);
-                    Piece.Instantiate(parent, compType, coords);
-                    break;
-
-                case Piece.Categories.Candy:
-                    Piece.CandyTypes candyType = Piece.GetCandyType(name);
-                    Piece.Instantiate(parent, candyType, coords);
-                    break;
-            }
         }
 
         #endregion

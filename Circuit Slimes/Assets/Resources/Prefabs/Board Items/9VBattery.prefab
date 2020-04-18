@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7461548333587744289}
   - component: {fileID: 1934216953487490071}
   - component: {fileID: 5326405382000804078}
+  - component: {fileID: 8125364339199370320}
   m_Layer: 0
-  m_Name: 9voltbattery
+  m_Name: 9VBattery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,3 +80,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8125364339199370320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897436730091451442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ca1228ebac3c2458ddf0f74339f582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 2
+  SlimeType: 0
+  ComponentType: 5
+  CandyType: 0
+  Turn: 0
+  State: 0
