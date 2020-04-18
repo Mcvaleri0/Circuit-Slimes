@@ -13,7 +13,7 @@ namespace Creator
         #region /* Constants */
 
         private const string ITEMS_PATH  = "Prefabs/Board Items";
-        private const string BUTTON_PATH = "Prefabs/Button";
+        private const string BUTTON_PATH = "Prefabs/Creator/Button";
 
         #endregion
 
@@ -102,27 +102,9 @@ namespace Creator
                 parent = this.PuzzleObj.Find("Pieces");
             }
 
-            Vector2 coords = Vector2.zero;
+            Vector2Int coords = Vector2Int.zero;
 
-            Piece.Categories cat = Piece.GetCategory(name);
-
-            switch (cat)
-            {
-                case Piece.Categories.Slime:
-                    Piece.SlimeTypes slimeType = Piece.GetSlimeType(name);
-                    Piece.Instantiate(parent, slimeType, coords);
-                    break;
-
-                case Piece.Categories.Component:
-                    Piece.ComponentTypes compType = Piece.GetComponentType(name);
-                    Piece.Instantiate(parent, compType, coords);
-                    break;
-
-                case Piece.Categories.Candy:
-                    Piece.CandyTypes candyType = Piece.GetCandyType(name);
-                    Piece.Instantiate(parent, candyType, coords);
-                    break;
-            }
+            Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
         }
 
         #endregion
