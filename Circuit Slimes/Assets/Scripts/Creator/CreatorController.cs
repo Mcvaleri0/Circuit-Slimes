@@ -51,8 +51,9 @@ namespace Creator
             float y = (Screen.height / 2) - (saveRect.sizeDelta.y / 2) - 5;
             saveRect.anchoredPosition = new Vector2(x, y);
 
+            // add click listener
             int level = controller.CurrentLevel;
-            save.GetComponent<Button>().onClick.AddListener(delegate { controller.SavePuzzle(level); } );
+            save.GetComponent<Button>().onClick.AddListener(delegate { controller.SavePuzzle(level); });
         }
 
         #endregion
