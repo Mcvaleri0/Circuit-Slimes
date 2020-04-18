@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Puzzle;
 
 
 
 namespace Creator
 {
-    public class CreatorController : MonoBehaviour
+    public class CreatorController : MonoBehaviour, IPointerClickHandler
     {
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
+
+        #endregion
+
+        #region /* detection Atributes */
+
+        private const int clickCount = 2;
 
         #endregion
 
@@ -22,6 +29,15 @@ namespace Creator
         void Start()
         {
         }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.clickCount >= clickCount)
+            {
+                Debug.Log("Click " + eventData.clickCount);
+            }
+        }
+
 
         #endregion
 
@@ -57,7 +73,6 @@ namespace Creator
         }
 
         #endregion
-
 
     }
 }
