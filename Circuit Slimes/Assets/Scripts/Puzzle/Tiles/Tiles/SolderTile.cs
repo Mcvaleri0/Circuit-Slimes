@@ -71,7 +71,7 @@ namespace Puzzle.Tiles
         {
 
             //update adjacent info
-            var adjacent_tiles = (bool[]) this.checkCrossAdjacentsTiles(this.Coords, this.Type).ToArray(typeof(bool));
+            var adjacent_tiles = (bool[]) this.CheckCrossAdjacentsTiles(this.Coords, this.Type).ToArray(typeof(bool));
 
             AdjacentInfo = new BitArray( adjacent_tiles);
             var adjacent = getIntFromBitArray(AdjacentInfo);
@@ -186,7 +186,6 @@ namespace Puzzle.Tiles
         //update tile
         public override void UpdateTile()
         {
-            Debug.Log("This Happened");
             this.UpdateMesh();
         }
 
@@ -207,13 +206,6 @@ namespace Puzzle.Tiles
             this.meshCross = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCross");
             this.meshLine = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderLine");
             this.meshTShape = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderTShape");
-        }
-        
-
-        // Start is called before the first frame update
-        protected override void Start()
-        {
-            base.Start();
         }
 
 

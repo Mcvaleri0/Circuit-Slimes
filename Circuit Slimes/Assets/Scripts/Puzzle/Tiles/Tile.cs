@@ -48,11 +48,11 @@ namespace Puzzle
 
         #endregion
 
-        #region === Ceeate Tile ===
+        #region === Create Tile ===
 
         public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, Types type)
         {
-            GameObject obj = null;
+            GameObject obj;
 
             switch (type)
             {
@@ -104,6 +104,9 @@ namespace Puzzle
             this.Type = type;
 
             this.Coords = coords;
+
+            this.UpdateTile();
+            this.UpdateCrossTiles();
         }
 
         #endregion
@@ -111,7 +114,7 @@ namespace Puzzle
         #region === Tile Methods ===
 
         // Checks if space on board has tile of a certain type or not
-        public bool hasTile(Vector2Int coords, Types type)
+        public bool HasTile(Vector2Int coords, Types type)
         {
             if (this.Board.OutOfBounds(coords)) return false;
 
@@ -121,7 +124,7 @@ namespace Puzzle
         }
 
         // Checks the cross adjacent spaces for tiles of the specified type
-        public ArrayList checkCrossAdjacentsTiles(Vector2Int coords, Types type)
+        public ArrayList CheckCrossAdjacentsTiles(Vector2Int coords, Types type)
         {
             ArrayList adjacents = new ArrayList();
 
@@ -131,7 +134,7 @@ namespace Puzzle
 
                 var xy = coords + LevelBoard.DirectionalVectors[ind];
 
-                adjacents.Add(this.hasTile(xy, type));
+                adjacents.Add(this.HasTile(xy, type));
             }
 
             return adjacents;
@@ -149,15 +152,13 @@ namespace Puzzle
         //Mark the tiles arround this one, in 4 directions, has needing an update
         public virtual void UpdateCrossTiles()
         {
-            ArrayList adjacents = new ArrayList();
-
             for (var i = 0; i < 4; i++)
             {
                 var ind = i * 2;
 
                 var xy = this.Coords + LevelBoard.DirectionalVectors[ind];
 
-                if(this.hasTile(xy, this.Type))
+                if(this.HasTile(xy, this.Type))
                 {
                     this.Board.GetTile(xy).NeedsUpdate = true;
                 }
@@ -172,11 +173,16 @@ namespace Puzzle
         //Update this Tile and Tiles around if created/enable
         protected virtual void OnEnable()
         {
+            if (this.Board == null) return;
+
             this.UpdateTile();
             this.UpdateCrossTiles();
         }
+
         protected virtual void Start()
         {
+            if (this.Board == null) return;
+
             this.UpdateTile();
             this.UpdateCrossTiles();
         }
@@ -186,6 +192,7 @@ namespace Puzzle
         protected virtual void OnDisable() {
             this.UpdateCrossTiles();
         }
+
         protected virtual void OnDestroy()
         {
             this.UpdateCrossTiles();
