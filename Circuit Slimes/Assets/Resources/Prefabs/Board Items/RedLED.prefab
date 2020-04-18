@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7830970756223838435}
   - component: {fileID: 4580647916900340762}
   - component: {fileID: 6092385237619817236}
+  - component: {fileID: -7028249621141256333}
   m_Layer: 0
   m_Name: RedLED
   m_TagString: Untagged
@@ -94,3 +95,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnMaterial: {fileID: 2100000, guid: c71ebc4f2978b9649bad07587aadb036, type: 2}
   OffMaterial: {fileID: 2100000, guid: b1b55ea1d6f445b42977ed47292215c9, type: 2}
+--- !u!114 &-7028249621141256333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2859061246998110406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5cd5b31675ace84895a256991e010ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 2
+  SlimeType: 0
+  ComponentType: 2
+  CandyType: 0
+  Turn: 0
+  State: 0

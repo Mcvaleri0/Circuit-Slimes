@@ -31,9 +31,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d90b737b2c658641b9ede4ed722ed3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Category: 0
-  SlimeType: 0
+  Category: 1
+  SlimeType: 1
   ComponentType: 0
+  CandyType: 0
   Turn: 0
   State: 0
 --- !u!1001 &6123292072759295444

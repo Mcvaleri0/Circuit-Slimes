@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2400324073081624123}
   - component: {fileID: 6635118065872169997}
   - component: {fileID: 1092164496528347380}
+  - component: {fileID: 8041204955536642765}
   m_Layer: 0
   m_Name: CellBattery
   m_TagString: Untagged
@@ -79,3 +80,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8041204955536642765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663222297320727592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ca1228ebac3c2458ddf0f74339f582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 2
+  SlimeType: 0
+  ComponentType: 3
+  CandyType: 0
+  Turn: 0
+  State: 0

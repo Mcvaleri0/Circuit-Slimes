@@ -99,13 +99,19 @@ namespace Creator
             {
                 parent = this.PuzzleObj.Find("Tiles");
                 Tile newTile = Tile.CreateTile(parent, this.Puzzle.Board, coords, name);
-                this.Puzzle.AddTile(newTile);
+                
+                // TODO: falta adicionar o script as pecas e por causa disso eles nao estao inicializados
+                //       como nao estao inicializados nao da para adicionar
+                //this.Puzzle.AddTile(newTile);
             }
             else
             {
                 parent = this.PuzzleObj.Find("Pieces");
                 Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
-                this.Puzzle.AddPiece(newPiece);
+
+                // TODO: falta adicionar o script as pecas e por causa disso eles nao estao inicializados
+                //       como nao estao inicializados nao da para adicionar
+                //this.Puzzle.AddPiece(newPiece);
             }
 
         }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 885957978331578658}
   - component: {fileID: 6878975189630811611}
   - component: {fileID: 3776897653880440369}
+  - component: {fileID: 5950217933017758267}
   m_Layer: 0
   m_Name: GreenLED
   m_TagString: Untagged
@@ -94,3 +95,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnMaterial: {fileID: 2100000, guid: 7cf0cd2bdc118034597cc1103e53d1cd, type: 2}
   OffMaterial: {fileID: 2100000, guid: 82170735a2d0f214ebf7e40b5970511f, type: 2}
+--- !u!114 &5950217933017758267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137430085912578311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5cd5b31675ace84895a256991e010ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 2
+  SlimeType: 0
+  ComponentType: 1
+  CandyType: 0
+  Turn: 0
+  State: 0
