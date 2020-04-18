@@ -92,26 +92,21 @@ namespace Creator
         {
             Debug.Log("Instantiating " + name);
 
-            Vector2Int coords = Vector2Int.one;
+            // TODO: make the player choose where he wants the item
+            Vector2Int coords = new Vector2Int(1, 0);
 
             Transform parent;
             if (name.Contains("Tile"))
             {
                 parent = this.PuzzleObj.Find("Tiles");
                 Tile newTile = Tile.CreateTile(parent, this.Puzzle.Board, coords, name);
-                
-                // TODO: falta adicionar o script as pecas e por causa disso eles nao estao inicializados
-                //       como nao estao inicializados nao da para adicionar
-                //this.Puzzle.AddTile(newTile);
+                this.Puzzle.AddTile(newTile);
             }
             else
             {
                 parent = this.PuzzleObj.Find("Pieces");
                 Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
-
-                // TODO: falta adicionar o script as pecas e por causa disso eles nao estao inicializados
-                //       como nao estao inicializados nao da para adicionar
-                //this.Puzzle.AddPiece(newPiece);
+                this.Puzzle.AddPiece(newPiece);
             }
 
         }
