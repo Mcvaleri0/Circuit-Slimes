@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Puzzle.Board;
+using Creator;
+
 
 
 namespace Puzzle
@@ -12,10 +14,11 @@ namespace Puzzle
     {
         public const string LEVELS_PATH = "./Assets/Resources/Levels";
 
-        private Puzzle Puzzle { get; set; }
+        public Puzzle Puzzle { get; private set; }
 
-        private int CurrentLevel { get; set; }
-        public  int nLevels;
+        public int CurrentLevel { get; private set; }
+        public int nLevels;
+
 
         private enum RunState
         {
@@ -44,6 +47,10 @@ namespace Puzzle
             this.Turn = 0;
 
             this.LoadPuzzle(this.CurrentLevel);
+
+            // TODO: remove this when creator mode is able to choose level
+            CreatorController create = GameObject.Find("CreatorController").GetComponent<CreatorController>();
+            create.Initialize();
         }
 
         // Update is called once per frame
@@ -71,6 +78,12 @@ namespace Puzzle
                                agent.State == Pieces.Agent.States.Waiting)
                             {
                                 agent.State = Pieces.Agent.States.Think;
+                            }
+                            else if(agent.State == Pieces.Agent.States.Inactive)
+                            {
+                                agent.SaveState();
+
+                                agent.Turn++;
                             }
                         }
                     }
@@ -116,6 +129,7 @@ namespace Puzzle
                     }
 
                     this.State = RunState.Paused;
+                    if (this.Turn == 0) this.State = RunState.Start;
                     break;
 
                 case RunState.Resetting:
@@ -132,8 +146,6 @@ namespace Puzzle
             {
                 this.State = RunState.Running;
             }
-
-            Debug.Log("Start: " + this.State);
         }
 
         public void Pause()
@@ -146,8 +158,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepForward;
             }
-
-            Debug.Log("Pause: " + this.State);
         }
 
         public void StepForward()
@@ -157,8 +167,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepForward;
             }
-
-            Debug.Log("Step Foward: " + this.State);
         }
 
         public void StepBack()
@@ -168,8 +176,6 @@ namespace Puzzle
             {
                 this.State = RunState.StepBack;
             }
-
-            Debug.Log("Step Back: " + this.State);
         }
 
         public void Restart()
@@ -186,8 +192,6 @@ namespace Puzzle
                     agent.State = Pieces.Agent.States.Restart;
                 }
             }
-
-            Debug.Log("Restart: " + this.State);
         }
         #endregion
 
@@ -199,40 +203,40 @@ namespace Puzzle
 
             //level = 1;
 
-            LevelBoard b = new LevelBoard();
-            b.Initialize(8,8);
+            //LevelBoard b = new LevelBoard();
+            //b.Initialize(8,8);
 
-            this.Puzzle = new Puzzle();
-            this.Puzzle.Initialize(b);
+            //this.Puzzle = new Puzzle();
+            //this.Puzzle.Initialize(b);
 
-            Piece p;
-            var positions = new ArrayList();
-            positions.Add(new Vector2Int(0, 0));
-            //positions.Add(new Vector2(0, 1));
-            //positions.Add(new Vector2(1, 0));
-            //positions.Add(new Vector2(1, 1));
+            //Piece p;
+            //var positions = new ArrayList();
+            //positions.Add(new Vector2Int(0, 0));
+            ////positions.Add(new Vector2(0, 1));
+            ////positions.Add(new Vector2(1, 0));
+            ////positions.Add(new Vector2(1, 1));
 
-            for (int i = 0; i < 1; i++)
-            {
-                p = new Piece();
-                p.Initialize(b, (Vector2Int) positions[i], Piece.SlimeTypes.Electric);
-                this.Puzzle.AddPiece(p);
-            }
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    p = new Piece();
+            //    p.Initialize(b, (Vector2Int) positions[i], Piece.SlimeTypes.Electric);
+            //    this.Puzzle.AddPiece(p);
+            //}
 
-            Tile t;
-            positions = new ArrayList();
-            positions.Add(new Vector2Int(0, 0));
-            positions.Add(new Vector2Int(0, 1));
-            positions.Add(new Vector2Int(0, 2));
-            positions.Add(new Vector2Int(1, 2));
-            positions.Add(new Vector2Int(2, 2));
+            //Tile t;
+            //positions = new ArrayList();
+            //positions.Add(new Vector2Int(0, 0));
+            //positions.Add(new Vector2Int(0, 1));
+            //positions.Add(new Vector2Int(0, 2));
+            //positions.Add(new Vector2Int(1, 2));
+            //positions.Add(new Vector2Int(2, 2));
 
-            for (int i = 0; i < 5; i++)
-            {
-                t = new Tile();
-                t.Initialize(b, (Vector2Int) positions[i], Tile.Types.Solder);
-                this.Puzzle.AddTile(t);
-            }
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    t = new Tile();
+            //    t.Initialize(b, (Vector2Int) positions[i], Tile.Types.Solder);
+            //    this.Puzzle.AddTile(t);
+            //}
 
             // FIXME: not sure if this works on a phone
             // the exemple used Application.persistentDataPath

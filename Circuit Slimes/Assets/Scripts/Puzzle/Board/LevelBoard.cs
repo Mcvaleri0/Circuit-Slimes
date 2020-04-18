@@ -275,6 +275,19 @@ namespace Puzzle.Board
         {
             return new Vector3((coords.y + 0.5f) * SpaceSize, 1f, (coords.x + 0.5f) * SpaceSize);
         }
+
+        public static LevelBoard.Directions GetDirection(Vector2Int origin, Vector2Int target)
+        {
+            Vector2Int move = target - origin;
+
+            if (move.sqrMagnitude == 0f) return LevelBoard.Directions.None;
+
+            float angle = 360 - (Mathf.Rad2Deg * Mathf.Atan(move.y / (float) move.x) - 22.5f) % 360f;
+
+            int intAngle = (int) (angle / 45f);
+
+            return (LevelBoard.Directions) intAngle;
+        }
         #endregion
     }
 }

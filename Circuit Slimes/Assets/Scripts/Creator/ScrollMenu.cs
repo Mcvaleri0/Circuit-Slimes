@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Puzzle;
 
 
 
@@ -23,11 +24,24 @@ namespace Creator
 
         #endregion
 
+        #region /* Puzzle Attibutes */
 
-        public ScrollMenu(Transform menu)
+        private Dictionary<string, Object> BoardItens { get; set; }
+        private Puzzle.Puzzle Puzzle { get; set; }
+        private Transform PuzzleObj { get; set; }
+
+        #endregion
+
+
+        public ScrollMenu(Transform menu, Transform content, Transform puzzleObj, Puzzle.Puzzle puzzle)
         {
             this.Menu = menu;
-            this.MenuContent = this.Menu.Find("Viewport").Find("Content");
+            this.MenuContent = content;
+
+            this.Puzzle    = puzzle;
+            this.PuzzleObj = puzzleObj;
+
+            this.BoardItens  = new Dictionary<string, Object>();
 
             this.Initialize();
         }
@@ -52,12 +66,62 @@ namespace Creator
         {
             Object[] icons = Resources.LoadAll(ITEMS_PATH);
             Object button  = Resources.Load(BUTTON_PATH);
-            GameObject newObj;
 
             foreach (Object icon in icons)
             {
-                newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
-                newObj.GetComponentInChildren<Text>().text = icon.name;
+                this.InstantiateOption(icon.name, button);
+
+                this.BoardItens.Add(icon.name, icon);
+            }
+
+        }
+
+        #endregion
+
+        #region === Instantiate Methods ===
+
+        private void InstantiateOption(string text, Object button)
+        {
+            GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
+            newObj.GetComponentInChildren<Text>().text = text;
+
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.InstantiateBoardItem(text); });
+        }
+
+        private void InstantiateBoardItem(string name)
+        {
+            Debug.Log("Instantiating " + name);
+
+            Transform parent;
+            if (name.Contains("Tile"))
+            {
+                parent = this.PuzzleObj.Find("Tiles");
+            }
+            else
+            {
+                parent = this.PuzzleObj.Find("Pieces");
+            }
+
+            Vector2 coords = Vector2.zero;
+
+            Piece.Categories cat = Piece.GetCategory(name);
+
+            switch (cat)
+            {
+                case Piece.Categories.Slime:
+                    Piece.SlimeTypes slimeType = Piece.GetSlimeType(name);
+                    Piece.Instantiate(parent, slimeType, coords);
+                    break;
+
+                case Piece.Categories.Component:
+                    Piece.ComponentTypes compType = Piece.GetComponentType(name);
+                    Piece.Instantiate(parent, compType, coords);
+                    break;
+
+                case Piece.Categories.Candy:
+                    Piece.CandyTypes candyType = Piece.GetCandyType(name);
+                    Piece.Instantiate(parent, candyType, coords);
+                    break;
             }
         }
 

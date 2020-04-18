@@ -26,6 +26,7 @@ namespace Puzzle.Data
         public LevelBoard CreateBoard(Transform parent = null)
         {
             GameObject boardObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Board"));
+            boardObj.name = "Board";
             boardObj.transform.parent = parent;
 
             var inSceneWidth  = this.Width  * LevelBoard.SpaceSize;

@@ -20,13 +20,13 @@ namespace Puzzle.Pieces.Components
 
         #region === Unity Events ===
         // Start is called before the first frame update
-        override protected void Start()
+        new protected virtual void Start()
         {
             base.Start();
         }
 
         // Update is called once per frame
-        override protected void Update()
+        new protected virtual void Update()
         {
             
         }
