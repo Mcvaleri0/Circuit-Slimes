@@ -9,7 +9,7 @@ using Puzzle;
 
 namespace Creator
 {
-    public class CreatorController : MonoBehaviour, IPointerClickHandler
+    public class CreatorController : MonoBehaviour
     {
         #region /* UI Atributes */
 
@@ -19,25 +19,20 @@ namespace Creator
 
         #region /* detection Atributes */
 
-        private const int clickCount = 2;
+
 
         #endregion
 
 
         #region === Unity Events ===
 
-        void Start()
+        void Update()
         {
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (eventData.clickCount >= clickCount)
+            if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Click " + eventData.clickCount);
+                Debug.Log("Click");
             }
         }
-
 
         #endregion
 
