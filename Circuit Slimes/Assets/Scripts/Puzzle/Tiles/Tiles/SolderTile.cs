@@ -110,7 +110,6 @@ namespace Puzzle.Tiles
                     meshTransform.localEulerAngles = new Vector3(0, (int)TileSetDir.Up, 0); break;
                 case (int)TilesetNum.RU:
                     meshTransform.localEulerAngles = new Vector3(0, (int)TileSetDir.Right, 0); break;
-                    break;
                 
                 //t-shape
                 case (int)TilesetNum.RDL:
@@ -130,6 +129,7 @@ namespace Puzzle.Tiles
                 default:
                     break;
             }
+
             #endregion
 
             #region Load Correct Mesh
