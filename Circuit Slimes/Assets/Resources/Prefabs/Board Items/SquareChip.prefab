@@ -167,6 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2598729070581858579}
+  - component: {fileID: -2067573645161551464}
   m_Layer: 0
   m_Name: SquareChip
   m_TagString: Untagged
@@ -189,6 +190,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2067573645161551464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764307710151762390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a8c54cd7e448d409f3e62d785c4feb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Category: 2
+  SlimeType: 0
+  ComponentType: 8
+  CandyType: 0
+  Turn: 0
+  State: 0
 --- !u!1 &2872619582643774169
 GameObject:
   m_ObjectHideFlags: 0
