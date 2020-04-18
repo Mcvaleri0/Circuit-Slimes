@@ -7,7 +7,7 @@ namespace Puzzle
 {
     public class Tile : MonoBehaviour
     {
-        private LevelBoard Board;
+        public LevelBoard Board { get; private set; } 
 
         public Vector2Int Coords { get; set; }
 
@@ -49,6 +49,29 @@ namespace Puzzle
             this.Type = type;
 
             this.Coords = coords;
+        }
+
+        // Checks if space on board has tile of a certain type or not
+        public bool hasTile(Vector2Int coords, Types type)
+        {
+            return !this.Board.OutOfBounds(coords) && this.Board.GetTile(coords) != null && this.Board.GetTile(coords).Type == type;
+        }
+
+        // Checks the cross adjacent spaces for tiles of the specified type
+        public ArrayList checkCrossAdjacentsTiles(Types type)
+        {
+            ArrayList adjacents = new ArrayList();
+
+            for (var i = 0; i < 4; i++)
+            {
+                var ind = i * 2;
+
+                var coords = this.Coords + LevelBoard.DirectionalVectors[ind];
+
+                adjacents.Add(this.hasTile(coords, type));
+            }
+
+            return adjacents;
         }
 
         // Start is called before the first frame update
