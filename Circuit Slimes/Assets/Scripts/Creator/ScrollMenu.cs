@@ -92,19 +92,21 @@ namespace Creator
         {
             Debug.Log("Instantiating " + name);
 
+            Vector2Int coords = Vector2Int.zero;
+
             Transform parent;
             if (name.Contains("Tile"))
             {
                 parent = this.PuzzleObj.Find("Tiles");
+                Tile newTile = Tile.CreateTile(parent, this.Puzzle.Board, coords, name);
+
             }
             else
             {
                 parent = this.PuzzleObj.Find("Pieces");
+                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
             }
 
-            Vector2Int coords = Vector2Int.zero;
-
-            Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
         }
 
         #endregion
