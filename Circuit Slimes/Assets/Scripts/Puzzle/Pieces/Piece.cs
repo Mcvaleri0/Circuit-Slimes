@@ -174,6 +174,7 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Enums Methods ===
         
         public static Categories GetCategory(string prefabName)
@@ -263,6 +264,7 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Init ===
         protected virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category)
         {
@@ -273,6 +275,7 @@ namespace Puzzle
             this.Category = category;
         }
 
+
         public virtual void Initialize(LevelBoard board, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
         {
             this.Initialize(board, coords, Categories.Slime);
@@ -281,6 +284,7 @@ namespace Puzzle
 
             this.ComponentType = ComponentTypes.None;
         }
+
 
         public virtual void Initialize(LevelBoard board, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
         {

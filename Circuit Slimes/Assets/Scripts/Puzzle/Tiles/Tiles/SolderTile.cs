@@ -42,7 +42,6 @@ namespace Puzzle.Tiles
             Up   = 270 
         }
 
-
         //Mesh stuff
         private Transform  meshTransform;
         private MeshFilter meshFilter;
@@ -67,12 +66,12 @@ namespace Puzzle.Tiles
         }
 
 
-        //update tile mesh
-        void UpdateMesh()
+        //update mesh
+        private void UpdateMesh()
         {
 
             //update adjacent info
-            var adjacent_tiles = (bool[]) this.checkCrossAdjacentsTiles(Types.Solder).ToArray(typeof(bool));
+            var adjacent_tiles = (bool[]) this.checkCrossAdjacentsTiles(this.Coords, this.Type).ToArray(typeof(bool));
 
             AdjacentInfo = new BitArray( adjacent_tiles);
             var adjacent = getIntFromBitArray(AdjacentInfo);
@@ -184,29 +183,47 @@ namespace Puzzle.Tiles
         }
 
 
-        // Start is called before the first frame update
-        void Start()
+        //update tile
+        public override void UpdateTile()
+        {
+            Debug.Log("This Happened");
+            this.UpdateMesh();
+        }
+
+
+        #region === Unity Methods ===
+       
+        //Load Meshes
+        private void Awake()
         {
             this.Type = Types.Solder;
 
-            this.meshTransform  = transform.GetChild(0);
-            this.meshFilter     = gameObject.GetComponentInChildren<MeshFilter>();
+            this.meshTransform = transform.GetChild(0);
+            this.meshFilter = gameObject.GetComponentInChildren<MeshFilter>();
 
-            this.meshCircle     = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCircle");
-            this.meshBend       = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderBend");
+            this.meshCircle = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCircle");
+            this.meshBend = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderBend");
             this.meshCircleLine = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCircleLine");
-            this.meshCross      = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCross");
-            this.meshLine       = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderLine");
-            this.meshTShape     = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderTShape");
+            this.meshCross = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderCross");
+            this.meshLine = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderLine");
+            this.meshTShape = Resources.Load<Mesh>("Meshes/Tiles/Solder/SolderTShape");
+        }
+        
+
+        // Start is called before the first frame update
+        protected override void Start()
+        {
+            base.Start();
         }
 
 
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
-            //FIXME:this should only be called in specific circumstances
-            UpdateMesh();
+            base.Update();
         }
+
+        #endregion
 
     }
 }

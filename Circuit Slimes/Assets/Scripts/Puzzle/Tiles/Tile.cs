@@ -19,6 +19,8 @@ namespace Puzzle
 
         public Types Type { get; protected set; }
 
+        private bool NeedsUpdate = false;
+
 
         public static GameObject Instantiate(Transform parent, Types type, Vector2Int coords)
         {
@@ -42,6 +44,7 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
         }
 
+
         public void Initialize(LevelBoard board, Vector2Int coords, Types type)
         {
             this.Board = board;
@@ -51,14 +54,21 @@ namespace Puzzle
             this.Coords = coords;
         }
 
+
+        #region === Aux Methods ===
+
         // Checks if space on board has tile of a certain type or not
         public bool hasTile(Vector2Int coords, Types type)
         {
-            return !this.Board.OutOfBounds(coords) && this.Board.GetTile(coords) != null && this.Board.GetTile(coords).Type == type;
+            if (this.Board.OutOfBounds(coords)) return false;
+
+            var tile = this.Board.GetTile(coords);
+
+            return (tile != null) && tile.isActiveAndEnabled && tile.Type == type;
         }
 
         // Checks the cross adjacent spaces for tiles of the specified type
-        public ArrayList checkCrossAdjacentsTiles(Types type)
+        public ArrayList checkCrossAdjacentsTiles(Vector2Int coords, Types type)
         {
             ArrayList adjacents = new ArrayList();
 
@@ -66,24 +76,76 @@ namespace Puzzle
             {
                 var ind = i * 2;
 
-                var coords = this.Coords + LevelBoard.DirectionalVectors[ind];
+                var xy = coords + LevelBoard.DirectionalVectors[ind];
 
-                adjacents.Add(this.hasTile(coords, type));
+                adjacents.Add(this.hasTile(xy, type));
             }
 
             return adjacents;
         }
 
-        // Start is called before the first frame update
-        void Start()
-        {
+        #endregion
 
+
+        #region === TileUpdate Methods ===
+
+        //update a tile's mesh
+        public virtual void UpdateTile() {}
+
+
+        //Mark the tiles arround this one, in 4 directions, has needing an update
+        public virtual void UpdateCrossTiles()
+        {
+            ArrayList adjacents = new ArrayList();
+
+            for (var i = 0; i < 4; i++)
+            {
+                var ind = i * 2;
+
+                var xy = this.Coords + LevelBoard.DirectionalVectors[ind];
+
+                if(this.hasTile(xy, this.Type))
+                {
+                    this.Board.GetTile(xy).NeedsUpdate = true;
+                }
+            }
         }
+
+        #endregion
+
+
+        #region === Unity Methods ===
+
+        //Update this Tile and Tiles around if created/enable
+        protected virtual void OnEnable()
+        {
+            this.UpdateTile();
+            this.UpdateCrossTiles();
+        }
+        protected virtual void Start()
+        {
+            this.UpdateTile();
+            this.UpdateCrossTiles();
+        }
+
+
+        //Update Tiles arround this tile if destroyed/disabled
+        protected virtual void OnDisable() {
+            this.UpdateCrossTiles();
+        }
+        protected virtual void OnDestroy()
+        {
+            this.UpdateCrossTiles();
+        }
+
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
-
+            if (NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
         }
+
+        #endregion
+
     }
 }
