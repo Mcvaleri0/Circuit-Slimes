@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Puzzle.Board;
+using Puzzle.Pieces;
 using Creator;
 
 
@@ -22,27 +22,26 @@ namespace Puzzle
 
         private enum RunState
         {
-            Start,
-            Running,
-            Waiting,
+            Idle,
             StepForward,
             StepBack,
-            Paused,
-            Resetting,
             Done
         }
 
         private RunState State;
 
-        private int Turn;
+        private int Turn     =   0;
+        private int MaxTurn  = 250;
+        private int GoalTurn =   0;
 
+        private int CurrentAgent;
 
         // Start is called before the first frame update
         void Start()
         {
             this.CurrentLevel = 2;
 
-            this.State = RunState.Start;
+            this.State = RunState.Idle;
 
             this.Turn = 0;
 
@@ -65,135 +64,143 @@ namespace Puzzle
             switch(this.State)
             {
                 default:
-                case RunState.Start:
-                case RunState.Paused:
-                case RunState.Done:
                     break;
 
-                case RunState.Running:
+                case RunState.Idle:
+                    if (this.GoalTurn > this.Turn)
+                    {
+                        this.State = RunState.StepForward;
+                    }
+                    else if (this.GoalTurn < this.Turn)
+                    {
+                        this.CurrentAgent = this.Puzzle.Agents.Count - 1;
+                        this.State = RunState.StepBack;
+                    }
+                    break;
+
                 case RunState.StepForward:
-                    foreach(var piece in this.Puzzle.Pieces)
+                    if (this.RunAgents())
                     {
-                        if(piece is Pieces.Agent)
-                        {
-                            var agent = (Pieces.Agent) piece;
-
-                            if(agent.State == Pieces.Agent.States.Idle ||
-                               agent.State == Pieces.Agent.States.Waiting)
-                            {
-                                agent.State = Pieces.Agent.States.Think;
-                            }
-                            else if(agent.State == Pieces.Agent.States.Inactive)
-                            {
-                                agent.SaveState();
-
-                                agent.Turn++;
-                            }
-                        }
-                    }
-
-                    this.Turn++;
-
-                    if (this.State == RunState.Running)     this.State = RunState.Waiting;
-                    if (this.State == RunState.StepForward) this.State = RunState.Paused;
-                    break;
-
-                case RunState.Waiting:
-                    var done = true;
-
-                    foreach (var piece in this.Puzzle.Pieces)
-                    {
-                        if (piece is Pieces.Agent agent)
-                        {
-                            if (agent.State != Pieces.Agent.States.Waiting)
-                            {
-                                done = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(done)
-                    {
-                        this.State = RunState.Running;
-                    }
+                        this.State = RunState.Idle;
+                        this.Turn++;
+                    }   
                     break;
 
                 case RunState.StepBack:
-                    this.Turn -= 1;
-
-                    foreach (var piece in this.Puzzle.Pieces)
+                    if (this.RewindAgents())
                     {
-                        if(piece is Pieces.Agent)
-                        {
-                            var agent = (Pieces.Agent) piece;
-
-                            agent.State = Pieces.Agent.States.Rewind;
-                        }
+                        this.State = RunState.Idle;
+                        this.Turn--;
                     }
-
-                    this.State = RunState.Paused;
-                    if (this.Turn == 0) this.State = RunState.Start;
-                    break;
-
-                case RunState.Resetting:
                     break;
             }
         }
+
+
+        #region === Simulation Aux Methods ===
+        public bool RunAgents()
+        {
+            if(this.CurrentAgent < this.Puzzle.Agents.Count)
+            {
+                Agent agent = this.Puzzle.Agents[this.CurrentAgent];
+
+                if (agent.Turn > this.Turn)
+                {
+                    this.CurrentAgent++;
+
+                    return false;
+                }
+
+                if(!agent.Active)
+                {
+                    agent.SaveState();
+
+                    agent.Turn++;
+
+                    this.CurrentAgent++;
+
+                    return false;
+                }
+
+                if (agent.State == Agent.States.Idle ||
+                    agent.State == Agent.States.Waiting)
+                {
+                    agent.State = Agent.States.Think;
+                }
+            }
+            else
+            {
+                this.CurrentAgent = 0;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RewindAgents()
+        {
+            if (this.CurrentAgent >= 0)
+            {
+                Agent agent = this.Puzzle.Agents[this.CurrentAgent];
+
+                if (agent.Turn < this.Turn)
+                {
+                    this.CurrentAgent--;
+
+                    return false;
+                }
+
+                agent.State = Agent.States.Rewind;
+            }
+            else
+            {
+                this.CurrentAgent = 0;
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
 
 
         #region === Simulation Control Functions ===
         public void Play()
         {
-            if(this.State == RunState.Start ||
-               this.State == RunState.Paused)
-            {
-                this.State = RunState.Running;
-            }
+            this.GoalTurn = this.MaxTurn;
         }
 
         public void Pause()
         {
-            if (this.State == RunState.Waiting)
+            if(this.Turn + 1 < this.GoalTurn)
             {
-                this.State = RunState.Paused;
-            }
-            else if(this.State == RunState.Running)
-            {
-                this.State = RunState.StepForward;
+                this.GoalTurn = this.Turn + 1;
             }
         }
 
         public void StepForward()
         {
-            if (this.State == RunState.Start ||
-               this.State == RunState.Paused)
-            {
-                this.State = RunState.StepForward;
-            }
+            this.GoalTurn = this.Turn + 1;
+            this.GoalTurn = Mathf.Min(this.GoalTurn, this.MaxTurn);
         }
 
         public void StepBack()
         {
-            if (this.State == RunState.Done ||
-               this.State == RunState.Paused)
-            {
-                this.State = RunState.StepBack;
-            }
+            this.GoalTurn = this.Turn - 1;
+            this.GoalTurn = Mathf.Max(this.GoalTurn, 0);
         }
 
         public void Restart()
         {
-            this.State = RunState.Start;
+            this.State = RunState.Idle;
             this.Turn = 0;
+            this.GoalTurn = 0;
+            this.CurrentAgent = 0;
 
             foreach(var piece in this.Puzzle.Pieces)
             {
-                if(piece is Pieces.Agent)
+                if(piece is Agent agent)
                 {
-                    var agent = (Pieces.Agent) piece;
-
-                    agent.State = Pieces.Agent.States.Restart;
+                    agent.State = Agent.States.Restart;
                 }
             }
         }
@@ -279,7 +286,7 @@ namespace Puzzle
 
         public void NextLevel()
         {
-            this.State = RunState.Start;
+            this.State = RunState.Idle;
 
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
@@ -289,7 +296,7 @@ namespace Puzzle
         
         public void PreviousLevel()
         {
-            this.State = RunState.Start;
+            this.State = RunState.Idle;
 
             this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
 

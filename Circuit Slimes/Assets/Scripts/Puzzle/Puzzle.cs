@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
-
+using Puzzle.Pieces;
 
 namespace Puzzle
 {
     public class Puzzle : MonoBehaviour
     {
         public List<Piece> Pieces { get; private set; }
+
+        public List<Agent> Agents { get; private set; }
 
         public LevelBoard Board { get; private set; }
 
@@ -25,9 +27,13 @@ namespace Puzzle
             this.Board  = board;
             this.Pieces = pieces;
 
+            this.Agents = new List<Agent>();
+
             foreach(var piece in pieces)
             {
                 this.Board.PlacePiece(piece.Coords, piece);
+
+                if (piece is Agent agent) this.Agents.Add(agent);
             }
 
             foreach (var tile in tiles)
@@ -39,6 +45,7 @@ namespace Puzzle
         public void AddPiece(Piece piece)
         {
             this.Pieces.Add(piece);
+            if (piece is Agent agent) this.Agents.Add(agent);
             this.Board.PlacePiece(piece.Coords, piece);
         }
 

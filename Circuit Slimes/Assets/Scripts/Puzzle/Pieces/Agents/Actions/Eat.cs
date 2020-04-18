@@ -6,60 +6,65 @@ using Puzzle.Pieces;
 
 namespace Puzzle.Actions
 {
-    public class Eat : Action
+    public class Eat : SeekTarget
     {
-        public LevelBoard.Directions Direction { get; private set; }
-        
-        public Vector2 TargetCoords { get; private set; }
-        public Vector3 TargetPosition { get; private set; }
+        new public Candy Target { get; private set; }
 
-        public Eat()
+        private bool GonnaEat = false;
+
+        private bool Removed = false;
+
+        public Eat(Candy target) : base(target) 
         {
-            this.Direction = LevelBoard.Directions.None;
+            this.Target = target;
         }
 
-        public Eat(LevelBoard.Directions dir, Vector2 tcoords, Vector3 tposition)
+        public Eat(Candy target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
         {
-            this.Direction = dir;
+            this.Target = target;
 
-            this.TargetCoords = tcoords;
-
-            this.TargetPosition = tposition;
+            this.GonnaEat = target.Coords == tcoords;
         }
 
         //
         // - Action Methods
         //
 
-        public override Action Available(Agent agent)
+        override public Action Available(Agent agent)
         {
-            ArrayList freeSpots = CheckCrossAdjacents(agent);
+            SeekTarget baseAction = (SeekTarget) base.Available(agent);
 
-            if(freeSpots != null) //FIXME: here we should be checking for charge left
+            if(baseAction != null)
             {
-                for(var i = 0; i < 4; i++)
-                {
-                    var dir = ((int) agent.Orientation + 3 + i) % 4;
-
-                    if((bool) freeSpots[dir] == true)
-                    {
-                        var tdir = (LevelBoard.Directions) (dir * 2);
-
-                        var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, tdir);
-                        
-                        var tposition = LevelBoard.WorldCoords(tcoords);
-
-                        return new SpawnSlime(tdir, tcoords, tposition);
-                    }
-                }
+                return new Eat((Candy) baseAction.Target, baseAction.TargetCoords, baseAction.Direction);
             }
 
             return null;
         }
 
-        public override bool Execute(Agent agent)
+        override public bool Execute(Agent agent)
         {
-            //Piece.Instantiate(Puzzle.Pieces, Piece.SlimeTypes.Electric, new Vector2(this.TargetPosition.x, this.TargetPosition.z));
+            if(this.GonnaEat)
+            {
+                if(!this.Removed)
+                {
+                    this.Removed = agent.Board.RemovePiece(this.Target.Coords);
+                }
+
+                if(this.RotateAgent(agent))
+                {
+                    if(this.MoveAgent(agent))
+                    {
+                        GameObject.Destroy(this.Target.gameObject);
+
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return base.Execute(agent);
+            }
 
             return false;
         }

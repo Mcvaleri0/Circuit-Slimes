@@ -22,6 +22,23 @@ namespace Puzzle.Pieces.Slimes
             this.Stats = new Statistics(10, 10, 10);
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            if (Input.GetKeyUp(KeyCode.T) && (this.Coords.x == 0 || this.Coords.x == -1))
+            {
+                if(this.Active)
+                {
+                    this.Deactivate();
+                }
+                else
+                {
+                    this.Reactivate(this.Coords);
+                }
+            }
+        }
+
         //
         // - Slime Methods
         //
