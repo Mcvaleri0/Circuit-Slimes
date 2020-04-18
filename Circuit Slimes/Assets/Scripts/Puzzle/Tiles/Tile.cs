@@ -22,6 +22,8 @@ namespace Puzzle
         private bool NeedsUpdate = false;
 
 
+        #region === Instantiate ===
+
         public static GameObject Instantiate(Transform parent, Types type, Vector2Int coords)
         {
             var prefabName = "";
@@ -41,9 +43,59 @@ namespace Puzzle
 
             var rotation = Quaternion.identity;
 
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/" + prefabName), position, rotation, parent);
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
+        #endregion
+
+        #region === Ceeate Tile ===
+
+        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, Types type)
+        {
+            GameObject obj = null;
+
+            switch (type)
+            {
+                default:
+                case Types.None:
+                    return null;
+
+                case Types.Solder:
+                    obj = Tile.Instantiate(parent, type, coords);
+
+                    var tile = obj.GetComponent<Tile>();
+
+                    tile.Initialize(board, coords, type);
+
+                    return tile;
+            }
+        }
+
+        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        {
+            Types type = GetType(prefabName);
+
+            return CreateTile(parent, board, coords, type);
+        }
+        #endregion
+
+        #region === Enum Methods ===
+
+        public static Types GetType(string prefabName)
+        {
+            if (prefabName.Contains("Solder"))
+            {
+                return Types.Solder;
+            }
+            else
+            {
+                return Types.None;
+            }
+        }
+
+        #endregion
+
+        #region === Init ===
 
         public void Initialize(LevelBoard board, Vector2Int coords, Types type)
         {
@@ -54,8 +106,9 @@ namespace Puzzle
             this.Coords = coords;
         }
 
+        #endregion
 
-        #region === Aux Methods ===
+        #region === Tile Methods ===
 
         // Checks if space on board has tile of a certain type or not
         public bool hasTile(Vector2Int coords, Types type)

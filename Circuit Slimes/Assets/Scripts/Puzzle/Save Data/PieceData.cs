@@ -39,52 +39,8 @@ namespace Puzzle.Data
 
         public Piece CreatePiece(Transform parent, LevelBoard board)
         {
-            GameObject obj;
-
-            switch(this.Category)
-            {
-                default:
-                case Piece.Categories.None:
-                    return null;
-
-                case Piece.Categories.Slime:
-                    obj = Piece.Instantiate(parent, this.SlimeType, this.Coords);
-
-                    var slime = obj.GetComponent<Pieces.Slimes.Slime>();
-
-                    if(slime != null)
-                    {
-                        slime.Initialize(board, this.Coords, this.SlimeType);
-                    }
-                    
-                    return slime;
-
-                case Piece.Categories.Component:
-                    obj = Piece.Instantiate(parent, this.ComponentType, this.Coords);
-
-                    var component = obj.GetComponent<Pieces.Components.Component>();
-
-                    if(component != null)
-                    {
-                        component.Initialize(board, this.Coords, this.ComponentType);
-                    }
-                    
-                    return component;
-
-                case Piece.Categories.Candy:
-                    obj = Piece.Instantiate(parent, this.CandyType, this.Coords);
-
-                    var candy = obj.GetComponent<Pieces.Candy>();
-
-                    if(candy != null)
-                    {
-                        candy.Initialize(board, this.Coords, this.CandyType);
-                    }
-
-                    return candy;
-            }
+            return Piece.CreatePiece(parent, board, this.Coords, this.Category, this.SlimeType, this.ComponentType, this.CandyType);
         }
 
     }
-
 }

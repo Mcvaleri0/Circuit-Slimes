@@ -169,14 +169,79 @@ namespace Puzzle
 
             var rotation = Quaternion.identity;
 
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
+            return GameObject.Instantiate((GameObject) Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
         #endregion
 
+        #region === Create Piece ===
+
+        public static Piece CreatePiece(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        {
+            Categories cat          = GetCategory(prefabName);
+            SlimeTypes slimeType    = GetSlimeType(prefabName);
+            ComponentTypes compType = GetComponentType(prefabName);
+            CandyTypes candyType    = GetCandyType(prefabName);
+
+            return CreatePiece(parent, board, coords, cat, slimeType, compType, candyType);
+        }
+
+        public static Piece CreatePiece(Transform parent, LevelBoard board, Vector2Int coords, 
+                                        Categories category, SlimeTypes slimeType, 
+                                        ComponentTypes compType, CandyTypes candyType)
+        {
+            GameObject obj;
+
+            switch (category)
+            {
+                default:
+                case Categories.None:
+                    return null;
+
+                case Categories.Slime:
+                    obj = Instantiate(parent, slimeType, coords);
+
+                    var slime = obj.GetComponent<Pieces.Slimes.Slime>();
+
+                    if (slime != null)
+                    {
+                        slime.Initialize(board, coords, slimeType);
+                    }
+
+                    return slime;
+
+                case Categories.Component:
+                    obj = Instantiate(parent, compType, coords);
+
+                    var component = obj.GetComponent<Pieces.Components.Component>();
+
+                    if (component != null)
+                    {
+                        component.Initialize(board, coords, compType);
+                    }
+
+                    return component;
+
+                case Categories.Candy:
+                    obj = Instantiate(parent, candyType, coords);
+
+                    var candy = obj.GetComponent<Pieces.Candy>();
+
+                    if (candy != null)
+                    {
+                        candy.Initialize(board, coords, candyType);
+                    }
+
+                    return candy;
+            }
+
+        }
+
+        
+        #endregion
 
         #region === Enums Methods ===
-        
+
         public static Categories GetCategory(string prefabName)
         {
             if (prefabName.Contains("Slime"))
@@ -264,7 +329,6 @@ namespace Puzzle
 
         #endregion
 
-
         #region === Init ===
         protected virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category)
         {
@@ -275,7 +339,6 @@ namespace Puzzle
             this.Category = category;
         }
 
-
         public virtual void Initialize(LevelBoard board, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
         {
             this.Initialize(board, coords, Categories.Slime);
@@ -284,7 +347,6 @@ namespace Puzzle
 
             this.ComponentType = ComponentTypes.None;
         }
-
 
         public virtual void Initialize(LevelBoard board, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
         {
@@ -295,8 +357,7 @@ namespace Puzzle
             this.SlimeType = SlimeTypes.None;
         }
         #endregion
-
-
+        
         #region === Unity Methods ===
         // Start is called before the first frame update
         protected virtual void Start()
@@ -310,8 +371,7 @@ namespace Puzzle
             
         }
         #endregion
-
-
+        
         #region === Piece Methods ===
         public bool TypeMatches(Piece other)
         {
