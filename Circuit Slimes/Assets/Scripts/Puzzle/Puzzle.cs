@@ -106,6 +106,11 @@ namespace Puzzle
             this.Board.RemoveTile(tile.Coords);
         }
 
+        public bool MoveTile(Vector2Int coords, Tile tile)
+        {
+            return this.Board.MoveTile(coords, tile);
+        }
+
         public Tile GetTile(Vector2Int coords)
         {
             return this.Board.GetTile(coords);

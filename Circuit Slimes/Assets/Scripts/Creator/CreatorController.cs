@@ -195,6 +195,7 @@ namespace Creator
                 }
                 else
                 {
+                    this.Puzzle.MoveTile(newPos, this.TileSelected);
                 }
             }
         }

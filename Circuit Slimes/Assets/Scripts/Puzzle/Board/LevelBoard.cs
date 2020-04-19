@@ -175,6 +175,21 @@ namespace Puzzle.Board
             return null;
         }
 
+        public bool MoveTile(Vector2Int coords, Tile tile)
+        {
+            // If destination Space is free
+            if (this.GetTile(coords) == null)
+            {
+                this.RemoveTile(tile.Coords);
+
+                this.PlaceTile(coords, tile);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public Tile GetTile(Vector2Int coords)
         {
             this.Rows.TryGetValue(coords.y, out Row row);
