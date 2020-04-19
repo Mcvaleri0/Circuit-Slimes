@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Puzzle;
-using Puzzle.Board;
 
 
 
@@ -35,6 +34,10 @@ namespace Creator
 
         private SelectionManager SelectionManager { get; set; }
         private Transform Selected { get; set; }
+
+        private Piece PieceSelected { get; set; }
+        private Tile TileSelected { get; set; }
+
         private bool MouseHolded { get; set; }
         private Vector3 PosInScreenSpace { get; set; }
         private Vector3 Offset { get; set; }
@@ -171,12 +174,29 @@ namespace Creator
 
                 Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
                 this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+
+                // one of them is always null
+                this.PieceSelected = this.Selected.GetComponent<Piece>();
+                this.TileSelected  = this.Selected.GetComponent<Tile>();
             }
         }
 
         private void EndDrag()
         {
             this.MouseHolded = false;
+
+            if (this.Selected != null)
+            {
+                Vector2Int newPos = this.Puzzle.Discretize(this.Selected.position);
+
+                if (this.PieceSelected != null)
+                {
+                    this.Puzzle.MovePiece(newPos, this.PieceSelected);
+                }
+                else
+                {
+                }
+            }
         }
 
         #endregion

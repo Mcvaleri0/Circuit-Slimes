@@ -82,6 +82,11 @@ namespace Puzzle
             this.Board.RemovePiece(piece.Coords);
         }
 
+        public bool MovePiece(Vector2Int coords, Piece piece)
+        {
+            return this.Board.MovePiece(coords, piece);
+        }
+
         public Piece GetPiece(Vector2Int coords)
         {
             return this.Board.GetPiece(coords);
@@ -113,6 +118,11 @@ namespace Puzzle
         public Vector3 AtBoardSurface(Vector3 coords)
         {
             return this.Board.AtBoardSurface(coords);
+        }
+
+        public Vector2Int Discretize(Vector3 position)
+        {
+            return LevelBoard.Discretize(position);
         }
 
         #endregion
