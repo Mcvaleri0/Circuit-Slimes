@@ -9,6 +9,8 @@ namespace Puzzle
 {
     public class Piece : MonoBehaviour
     {
+        public Puzzle Puzzle { get; private set; }
+
         public LevelBoard Board { get; private set; }
 
         public Vector2Int Coords { get; set; }
@@ -174,19 +176,20 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Create Piece ===
 
-        public static Piece CreatePiece(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
         {
-            Categories cat          = GetCategory(prefabName);
-            SlimeTypes slimeType    = GetSlimeType(prefabName);
-            ComponentTypes compType = GetComponentType(prefabName);
-            CandyTypes candyType    = GetCandyType(prefabName);
+            Categories     cat       = GetCategory(prefabName);
+            SlimeTypes     slimeType = GetSlimeType(prefabName);
+            ComponentTypes compType  = GetComponentType(prefabName);
+            CandyTypes     candyType = GetCandyType(prefabName);
 
-            return CreatePiece(parent, board, coords, cat, slimeType, compType, candyType);
+            return CreatePiece(parent, puzzle, coords, cat, slimeType, compType, candyType);
         }
 
-        public static Piece CreatePiece(Transform parent, LevelBoard board, Vector2Int coords, 
+        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, 
                                         Categories category, SlimeTypes slimeType, 
                                         ComponentTypes compType, CandyTypes candyType)
         {
@@ -205,7 +208,7 @@ namespace Puzzle
 
                     if (slime != null)
                     {
-                        slime.Initialize(board, coords, slimeType);
+                        slime.Initialize(puzzle, coords, slimeType);
                     }
 
                     return slime;
@@ -213,11 +216,11 @@ namespace Puzzle
                 case Categories.Component:
                     obj = Instantiate(parent, compType, coords);
 
-                    var component = obj.GetComponent<Pieces.Components.Component>();
+                    var component = obj.GetComponent<Pieces.Components.CircuitComponent>();
 
                     if (component != null)
                     {
-                        component.Initialize(board, coords, compType);
+                        component.Initialize(puzzle, coords, compType);
                     }
 
                     return component;
@@ -229,7 +232,7 @@ namespace Puzzle
 
                     if (candy != null)
                     {
-                        candy.Initialize(board, coords, candyType);
+                        candy.Initialize(puzzle, coords, candyType);
                     }
 
                     return candy;
@@ -239,6 +242,7 @@ namespace Puzzle
 
         
         #endregion
+
 
         #region === Enums Methods ===
 
@@ -329,28 +333,31 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Init ===
-        protected virtual void Initialize(LevelBoard board, Vector2Int coords, Categories category)
+        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Categories category)
         {
-            this.Board = board;
+            this.Puzzle = puzzle;
+
+            this.Board = puzzle.Board;
 
             this.Coords = coords;
 
             this.Category = category;
         }
 
-        public virtual void Initialize(LevelBoard board, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
+        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
         {
-            this.Initialize(board, coords, Categories.Slime);
+            this.Initialize(puzzle, coords, Categories.Slime);
 
             this.SlimeType = type;
 
             this.ComponentType = ComponentTypes.None;
         }
 
-        public virtual void Initialize(LevelBoard board, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
+        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
         {
-            this.Initialize(board, coords, Categories.Component);
+            this.Initialize(puzzle, coords, Categories.Component);
 
             this.ComponentType = type;
 
@@ -358,6 +365,7 @@ namespace Puzzle
         }
         #endregion
         
+
         #region === Unity Methods ===
         // Start is called before the first frame update
         protected virtual void Start()
@@ -372,6 +380,7 @@ namespace Puzzle
         }
         #endregion
         
+
         #region === Piece Methods ===
         public bool TypeMatches(Piece other)
         {

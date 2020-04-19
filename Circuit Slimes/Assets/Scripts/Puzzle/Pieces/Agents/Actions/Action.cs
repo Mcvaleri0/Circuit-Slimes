@@ -18,6 +18,11 @@ namespace Puzzle.Actions
             return true;
         }
 
+        public virtual void Undo(Agent agent)
+        {
+            return;
+        }
+
 
         #region === AUX Methods ===
         protected static ArrayList CheckCrossAdjacents(Agent agent)

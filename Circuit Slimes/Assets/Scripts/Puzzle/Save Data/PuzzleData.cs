@@ -76,7 +76,7 @@ namespace Puzzle.Data
             {
                 foreach (PieceData pieceData in puzzleData.Pieces)
                 {
-                    pieceList.Add(pieceData.CreatePiece(piecesObj.transform, board));
+                    pieceList.Add(pieceData.CreatePiece(piecesObj.transform, puzzle));
                 }
             }
             #endregion
@@ -91,7 +91,7 @@ namespace Puzzle.Data
             {
                 foreach (TileData tileData in puzzleData.Tiles)
                 {
-                    tileList.Add(tileData.CreateTile(tilesObj.transform, board));
+                    tileList.Add(tileData.CreateTile(tilesObj.transform, puzzle));
                 }
             }
             #endregion

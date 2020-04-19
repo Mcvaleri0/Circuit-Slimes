@@ -35,6 +35,7 @@ namespace Puzzle.Actions
             return null;
         }
 
+
         public override bool Execute(Agent agent)
         {
             if(RotateAgent(agent))
@@ -50,7 +51,7 @@ namespace Puzzle.Actions
         protected bool RotateAgent(Agent agent)
         {
             float currentAngle = agent.transform.eulerAngles.y;
-            float targetAngle  = 360 - ((int) this.Direction) * 45;
+            float targetAngle  = 360 - ((float) this.Direction) * 45f;
             if (targetAngle == 360) targetAngle = 0;
 
             currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, 0.33f);
@@ -59,7 +60,7 @@ namespace Puzzle.Actions
 
             agent.transform.eulerAngles = new Vector3(agent.transform.eulerAngles.x, currentAngle, agent.transform.eulerAngles.z);
 
-            if(currentAngle == targetAngle)
+            if(currentAngle == targetAngle || currentAngle - targetAngle == 360)
             {
                 // Update their Orientation
                 agent.Orientation = this.Direction;
@@ -94,7 +95,6 @@ namespace Puzzle.Actions
             {
                 agent.transform.position = this.TargetPosition; // Set their position to the Target Position
 
-                // Move the Piece on the Board
                 agent.Board.MovePiece(this.TargetCoords, agent);
 
                 return true;

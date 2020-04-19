@@ -38,8 +38,8 @@ namespace Puzzle.Actions
                     if (this.Target.TypeMatches(piece))
                     {
                         Vector2Int moveCoords = piece.Coords - agent.Coords;
-                        moveCoords.x = Mathf.Min(moveCoords.x, 1);
-                        moveCoords.y = Mathf.Min(moveCoords.y, 1);
+                        moveCoords.x = (int) Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);
+                        moveCoords.y = (int) Mathf.Sign(moveCoords.y) * Mathf.Min(Mathf.Abs(moveCoords.y), 1);
 
                         Vector2Int targetCoords = agent.Coords + moveCoords;
 

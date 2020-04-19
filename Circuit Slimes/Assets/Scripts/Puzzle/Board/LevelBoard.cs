@@ -101,17 +101,29 @@ namespace Puzzle.Board
 
         public bool MovePiece(Vector2Int coords, Piece piece)
         {
+            // If destination Space is free
             if(this.GetPiece(coords) == null)
             {
-                var foundPiece = this.RemovePiece(piece.Coords);
+                var foundPiece = this.GetPiece(piece.Coords);
 
-                //FIXME - You should check that what you found is what you were meant to find
+                // If the Piece was where it should be
+                if(foundPiece == piece)
+                {
+                    this.RemovePiece(foundPiece.Coords);
 
-                this.PlacePiece(coords, foundPiece);
+                    this.PlacePiece(coords, foundPiece);
 
-                foundPiece.Coords = coords;
+                    return true;
+                }
+                else if(piece is Pieces.Agent agent)
+                {
+                    if(!agent.Active)
+                    {
+                        this.PlacePiece(coords, foundPiece);
 
-                return true;
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -147,11 +159,6 @@ namespace Puzzle.Board
             tile.Coords = coords;
         }
 
-        public void PlaceTile(int x, int y, Tile tile)
-        {
-            PlaceTile(new Vector2Int(x, y), tile);
-        }
-
         public Tile RemoveTile(Vector2Int coords)
         {
             var row = this.Rows[coords.y];
@@ -168,11 +175,6 @@ namespace Puzzle.Board
             return null;
         }
 
-        public Tile RemoveTile(int x, int y)
-        {
-            return RemoveTile(new Vector2Int(x, y));
-        }
-
         public Tile GetTile(Vector2Int coords)
         {
             this.Rows.TryGetValue(coords.y, out Row row);
@@ -183,11 +185,6 @@ namespace Puzzle.Board
             }
 
             return null;
-        }
-
-        public Tile GetTile(int x, int y)
-        {
-            return GetTile(new Vector2Int(x, y));
         }
 
         public List<Tile> GetAllTiles()
@@ -282,7 +279,7 @@ namespace Puzzle.Board
 
             if (move.sqrMagnitude == 0f) return LevelBoard.Directions.None;
 
-            float angle = 360 - (Mathf.Rad2Deg * Mathf.Atan(move.y / (float) move.x) - 22.5f) % 360f;
+            float angle = (360 - Mathf.Rad2Deg * Mathf.Atan2(move.y, move.x)) % 360;
 
             int intAngle = (int) (angle / 45f);
 

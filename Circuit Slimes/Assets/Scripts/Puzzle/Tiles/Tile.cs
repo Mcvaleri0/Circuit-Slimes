@@ -7,7 +7,9 @@ namespace Puzzle
 {
     public class Tile : MonoBehaviour
     {
-        public LevelBoard Board { get; private set; } 
+        public Puzzle Puzzle { get; private set; }
+
+        public LevelBoard Board { get; private set; }
 
         public Vector2Int Coords { get; set; }
 
@@ -18,6 +20,8 @@ namespace Puzzle
         }
 
         public Types Type { get; protected set; }
+
+        private bool NeedsUpdate = false;
 
 
         #region === Instantiate ===
@@ -46,11 +50,12 @@ namespace Puzzle
 
         #endregion
 
-        #region === Ceeate Tile ===
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, Types type)
+        #region === Create Tile ===
+
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, Types type)
         {
-            GameObject obj = null;
+            GameObject obj;
 
             switch (type)
             {
@@ -63,19 +68,20 @@ namespace Puzzle
 
                     var tile = obj.GetComponent<Tile>();
 
-                    tile.Initialize(board, coords, type);
+                    tile.Initialize(puzzle, coords, type);
 
                     return tile;
             }
         }
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
         {
             Types type = GetType(prefabName);
 
-            return CreateTile(parent, board, coords, type);
+            return CreateTile(parent, puzzle, coords, type);
         }
         #endregion
+
 
         #region === Enum Methods ===
 
@@ -93,29 +99,40 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Init ===
 
-        public void Initialize(LevelBoard board, Vector2Int coords, Types type)
+        public void Initialize(Puzzle puzzle, Vector2Int coords, Types type)
         {
-            this.Board = board;
+            this.Puzzle = puzzle;
+
+            this.Board = puzzle.Board;
 
             this.Type = type;
 
             this.Coords = coords;
+
+            this.UpdateTile();
+            this.UpdateCrossTiles();
         }
 
         #endregion
 
+
         #region === Tile Methods ===
 
         // Checks if space on board has tile of a certain type or not
-        public bool hasTile(Vector2Int coords, Types type)
+        public bool HasTile(Vector2Int coords, Types type)
         {
-            return !this.Board.OutOfBounds(coords) && this.Board.GetTile(coords) != null && this.Board.GetTile(coords).Type == type;
+            if (this.Board.OutOfBounds(coords)) return false;
+
+            var tile = this.Board.GetTile(coords);
+
+            return (tile != null) && tile.isActiveAndEnabled && tile.Type == type;
         }
 
         // Checks the cross adjacent spaces for tiles of the specified type
-        public ArrayList checkCrossAdjacentsTiles(Types type)
+        public ArrayList CheckCrossAdjacentsTiles(Vector2Int coords, Types type)
         {
             ArrayList adjacents = new ArrayList();
 
@@ -123,9 +140,9 @@ namespace Puzzle
             {
                 var ind = i * 2;
 
-                var coords = this.Coords + LevelBoard.DirectionalVectors[ind];
+                var xy = coords + LevelBoard.DirectionalVectors[ind];
 
-                adjacents.Add(this.hasTile(coords, type));
+                adjacents.Add(this.HasTile(xy, type));
             }
 
             return adjacents;
@@ -133,20 +150,70 @@ namespace Puzzle
 
         #endregion
 
-        #region === Unity Methods ===
 
-        // Start is called before the first frame update
-        void Start()
+        #region === TileUpdate Methods ===
+
+        //update a tile's mesh
+        public virtual void UpdateTile() {}
+
+
+        //Mark the tiles arround this one, in 4 directions, has needing an update
+        public virtual void UpdateCrossTiles()
         {
+            for (var i = 0; i < 4; i++)
+            {
+                var ind = i * 2;
 
-        }
+                var xy = this.Coords + LevelBoard.DirectionalVectors[ind];
 
-        // Update is called once per frame
-        void Update()
-        {
-
+                if(this.HasTile(xy, this.Type))
+                {
+                    this.Board.GetTile(xy).NeedsUpdate = true;
+                }
+            }
         }
 
         #endregion
+
+
+        #region === Unity Methods ===
+
+        //Update this Tile and Tiles around if created/enable
+        protected virtual void OnEnable()
+        {
+            if (this.Board == null) return;
+
+            this.UpdateTile();
+            this.UpdateCrossTiles();
+        }
+
+        protected virtual void Start()
+        {
+            if (this.Board == null) return;
+
+            this.UpdateTile();
+            this.UpdateCrossTiles();
+        }
+
+
+        //Update Tiles arround this tile if destroyed/disabled
+        protected virtual void OnDisable() {
+            this.UpdateCrossTiles();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            this.UpdateCrossTiles();
+        }
+
+
+        // Update is called once per frame
+        protected virtual void Update()
+        {
+            if (NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
+        }
+
+        #endregion
+
     }
 }
