@@ -8,6 +8,8 @@ namespace Puzzle
 {
     public class Puzzle : MonoBehaviour
     {
+        #region /* Attributes */
+
         public List<Piece> Pieces { get; private set; }
 
         public List<Agent> Agents { get; private set; }
@@ -16,6 +18,10 @@ namespace Puzzle
 
         public GameObject PuzzleObj { get; private set; }
 
+        #endregion
+
+
+        #region === Initialization Methods ===
 
         public void Initialize(LevelBoard board)
         {
@@ -42,6 +48,26 @@ namespace Puzzle
             }
         }
 
+        public void Destroy()
+        {
+            GameObject.Destroy(this.PuzzleObj);
+
+            foreach (var piece in this.Pieces)
+            {
+                GameObject.Destroy(piece.gameObject);
+            }
+
+            this.Pieces.Clear();
+
+            GameObject.Destroy(this.Board.gameObject);
+
+            GameObject.Destroy(this.gameObject);
+        }
+
+        #endregion
+
+        #region === Piece Methods ===
+
         public void AddPiece(Piece piece)
         {
             this.Pieces.Add(piece);
@@ -56,10 +82,19 @@ namespace Puzzle
             this.Board.RemovePiece(piece.Coords);
         }
 
+        public bool MovePiece(Vector2Int coords, Piece piece)
+        {
+            return this.Board.MovePiece(coords, piece);
+        }
+
         public Piece GetPiece(Vector2Int coords)
         {
             return this.Board.GetPiece(coords);
         }
+
+        #endregion
+
+        #region === Tile Methods ===
 
         public void AddTile(Tile tile)
         {
@@ -71,25 +106,30 @@ namespace Puzzle
             this.Board.RemoveTile(tile.Coords);
         }
 
+        public bool MoveTile(Vector2Int coords, Tile tile)
+        {
+            return this.Board.MoveTile(coords, tile);
+        }
+
         public Tile GetTile(Vector2Int coords)
         {
             return this.Board.GetTile(coords);
         }
 
-        public void Destroy()
+        #endregion
+
+        #region === Utility ===
+
+        public Vector3 AtBoardSurface(Vector3 coords)
         {
-            GameObject.Destroy(this.PuzzleObj);
-
-            foreach(var piece in this.Pieces)
-            {
-                GameObject.Destroy(piece.gameObject);
-            }
-
-            this.Pieces.Clear();
-
-            GameObject.Destroy(this.Board.gameObject);
-
-            GameObject.Destroy(this.gameObject);
+            return this.Board.AtBoardSurface(coords);
         }
+
+        public Vector2Int Discretize(Vector3 position)
+        {
+            return LevelBoard.Discretize(position);
+        }
+
+        #endregion
     }
 }

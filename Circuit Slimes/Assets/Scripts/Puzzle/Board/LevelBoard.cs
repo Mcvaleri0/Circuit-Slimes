@@ -175,6 +175,21 @@ namespace Puzzle.Board
             return null;
         }
 
+        public bool MoveTile(Vector2Int coords, Tile tile)
+        {
+            // If destination Space is free
+            if (this.GetTile(coords) == null)
+            {
+                this.RemoveTile(tile.Coords);
+
+                this.PlaceTile(coords, tile);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public Tile GetTile(Vector2Int coords)
         {
             this.Rows.TryGetValue(coords.y, out Row row);
@@ -210,6 +225,14 @@ namespace Puzzle.Board
             if (coords.y < 0 || coords.y >= this.Height) return true;
 
             return false;
+        }
+
+        public Vector2Int Clamp(Vector2Int coords)
+        {
+            int x = Mathf.Clamp(coords.x, 0, this.Width - 1);
+            int y = Mathf.Clamp(coords.y, 0, this.Height - 1);
+
+            return new Vector2Int(x, y);
         }
 
         // Returns the coordinates of the space next to the one provided in a direction
@@ -271,6 +294,14 @@ namespace Puzzle.Board
         public static Vector3 WorldCoords(Vector2 coords)
         {
             return new Vector3((coords.y + 0.5f) * SpaceSize, 1f, (coords.x + 0.5f) * SpaceSize);
+        }
+
+        public Vector3 AtBoardSurface(Vector3 coords)
+        {
+            Vector2Int coordsBoard = Discretize(coords);
+            coordsBoard = this.Clamp(coordsBoard);
+
+            return WorldCoords(coordsBoard);
         }
 
         public static LevelBoard.Directions GetDirection(Vector2Int origin, Vector2Int target)
