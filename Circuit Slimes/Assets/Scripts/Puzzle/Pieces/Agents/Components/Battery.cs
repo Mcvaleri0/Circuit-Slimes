@@ -27,12 +27,7 @@ namespace Puzzle.Pieces.Components
 
         override public Action Think()
         {
-            foreach(var action in this.KnownActions)
-            {
-                return action.Available(this);
-            }
-
-            return null;
+            return base.Think();
         }
         #endregion
     }

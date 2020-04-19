@@ -66,6 +66,8 @@ namespace Puzzle.Data
             // Create Board
             var board = puzzleData.Board.CreateBoard(puzzleObj.transform);
 
+            puzzle.Initialize(board);
+
             #region Create Pieces
             GameObject piecesObj = new GameObject("Pieces");
             piecesObj.transform.parent = puzzleObj.transform;

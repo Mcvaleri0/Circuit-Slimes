@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Pieces.Slimes;
 using Puzzle.Board;
+using Puzzle.Actions;
 
 namespace Puzzle.Pieces.Components
 {
@@ -37,16 +38,36 @@ namespace Puzzle.Pieces.Components
         {
             base.Start();
         }
-
-        // Update is called once per frame
-        new protected virtual void Update()
-        {
-            
-        }
         #endregion
 
 
+        #region === Agent Methods ===
+        public override Action Think()
+        {
+            this.UpdateConnections();
+
+            return base.Think();
+        }
+        #endregion
+
         #region === Component Methods ===
+        protected void UpdateConnections()
+        {
+            this.Connections.Clear();
+
+            for(var i = 0; i < 4; i++)
+            {
+                int dirId = i * 2;
+
+                Tile tile = this.Board.GetTile(this.Coords + LevelBoard.DirectionalVectors[dirId]);
+
+                if(tile != null && tile.Type == Tile.Types.Solder)
+                {
+                    this.Connections.Add((LevelBoard.Directions) dirId, tile.Coords);
+                }
+            }
+        }
+ 
         public Vector2Int RouteEnergy(LevelBoard.Directions entryDir)
         {
             int dirId = (int) entryDir;
