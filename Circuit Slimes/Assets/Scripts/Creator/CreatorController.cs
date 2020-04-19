@@ -17,12 +17,21 @@ namespace Creator
 
         #endregion
 
-        #region /* Detection Atributes */
+        #region /* Puzzle Atributes */
+
+        private PuzzleController PuzzleController { get; set; }
+        private Puzzle.Puzzle Puzzle { get; set; }
+
+        #endregion
+
+        #region /* Selection Atributes */
 
         private const float DOUBLE_CLICK_WINDOW = 0.5f;
 
         private bool SingleClick { get; set; }
         private float TimeFirstClick { get; set; }
+
+        private SelectionManager SelectionManager { get; set; }
 
         #endregion
 
@@ -34,16 +43,7 @@ namespace Creator
             if (this.DoubleClick())
             {
                 Debug.Log("Double Click");
-
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit))
-                {
-                    Debug.DrawLine(ray.origin, hit.point);
-
-                    Debug.Log("Hit -> " + hit.transform.name);
-                }
+                Debug.Log("Board Coords: " + this.SelectionManager.BoardCoords);
             }
         }
 
@@ -54,20 +54,27 @@ namespace Creator
         public void Initialize()
         {
             Transform canvas = this.transform.Find("Canvas");
+            this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
+            this.Puzzle = this.PuzzleController.Puzzle;
+
+            this.InitializeScrollMenu(canvas);
+
+            this.InitializeButtons(canvas);
+
+            this.InitializeSelectionSystem();
+        }
+
+        private void InitializeScrollMenu(Transform canvas)
+        {
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
             Transform puzzleObj = GameObject.Find("Puzzle").transform;
-            PuzzleController puzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
 
-            this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, puzzleController.Puzzle);
-
-            this.InitializeButtons(canvas, puzzleController);
-
-            this.SingleClick = false;
+            this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, this.Puzzle);
         }
 
-        private void InitializeButtons(Transform canvas, PuzzleController controller)
+        private void InitializeButtons(Transform canvas)
         {
             // Change SaveButton Location
             Transform save = canvas.Find("Save Button");
@@ -78,13 +85,19 @@ namespace Creator
             saveRect.anchoredPosition = new Vector2(x, y);
 
             // add click listener
-            int level = controller.CurrentLevel;
-            save.GetComponent<Button>().onClick.AddListener(delegate { controller.SavePuzzle(level); });
+            int level = this.PuzzleController.CurrentLevel;
+            save.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+        }
+
+        private void InitializeSelectionSystem()
+        {
+            this.SingleClick = false;
+            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
         }
 
         #endregion
 
-        #region === Detection Methods ===
+        #region === Selection Methods ===
 
         private bool DoubleClick()
         {
@@ -104,7 +117,6 @@ namespace Creator
                     else
                     {
                         SingleClick = false;
-
                         return true;
                     }
                 }
