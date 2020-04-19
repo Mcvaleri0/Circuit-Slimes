@@ -8,12 +8,11 @@ public class SelectionManager : MonoBehaviour
     private IRayProvider       RayProvider;
     private ISelector          Selector;
     private ISelectionResponse SelectionResponse;
-    private BoardCoordGetter BoardCoordGetter;
+    private BoardCoordGetter   BoardCoordGetter;
 
     public Puzzle.PuzzleController PuzzleController { get; private set; }
     public Transform PuzzleObj { get; private set; }
     public Transform BoardTransform { get; private set; }
-
 
     //Outward facing info, fed to the CreatorController
     public Transform CurrentSelection { get; private set; }
@@ -70,11 +69,11 @@ public class SelectionManager : MonoBehaviour
         }
 
         //Get Coords from board
-        this.BoardCoords = this.GetBoardCoords(ray);
+        this.BoardCoords = this.GetBoardCoords(ray);    
         this.BoardHover = this.GetBoardHover();
 
         //Debug.Log(CurrentSelection);
-        //Debug.Log(BoardCoords);
+        Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
     }
 

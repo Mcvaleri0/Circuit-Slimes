@@ -131,6 +131,11 @@ namespace Puzzle
             return LevelBoard.Discretize(position);
         }
 
+        public Vector3 WorldCoords(Vector2Int position)
+        {
+            return LevelBoard.WorldCoords(position);
+        }
+
         #endregion
     }
 }
