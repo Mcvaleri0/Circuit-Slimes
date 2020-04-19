@@ -4,14 +4,7 @@ using Puzzle;
 public class RayCastBasedTagSelector : MonoBehaviour, ISelector
 {
     public string Tag = "Selectable";
-
   
-
-    public void Start()
-    {
-      
-    }
-
     public Transform Check(Ray ray)
     {
         if (Physics.Raycast(ray, out var hit))
@@ -31,4 +24,5 @@ public class RayCastBasedTagSelector : MonoBehaviour, ISelector
 
         return null;
     }
+
 }
