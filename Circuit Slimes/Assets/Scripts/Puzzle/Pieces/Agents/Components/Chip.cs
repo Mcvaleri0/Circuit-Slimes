@@ -10,9 +10,7 @@ namespace Puzzle.Pieces.Components
 
         //private int ChargeCount = 5;
 
-        //
-        // - Unity Events
-        //
+        #region === Unity Events ===
 
         // Start is called before the first frame update
         override protected void Start()
@@ -21,14 +19,14 @@ namespace Puzzle.Pieces.Components
 
             this.KnownActions.Add(new Discharge());
         }
+        #endregion
 
-        //
-        // - Component Methods
-        //
+        #region === Agent Methods ===
 
         override public Action Think()
         {
             return base.Think();
         }
+        #endregion
     }
 }

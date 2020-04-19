@@ -6,18 +6,9 @@ using Puzzle.Pieces;
 
 namespace Puzzle.Actions
 {
-    public class DropSolder : SeekTarget
+    public class DropSolder : Eat
     {
-        new public Candy Target { get; private set; }
-
-        private bool GonnaEat = false;
-
-        private bool Removed = false;
-
-        public DropSolder(Candy target) : base(target) 
-        {
-            this.Target = target;
-        }
+        public DropSolder() : base(new Candy(Piece.CandyTypes.Solder)) { }
 
         public DropSolder(Candy target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
         {
@@ -26,47 +17,42 @@ namespace Puzzle.Actions
             this.GonnaEat = target.Coords == tcoords;
         }
 
-        //
-        // - Action Methods
-        //
 
-        override public Action Available(Agent agent)
+        #region === Action Methods
+
+        public override Action Available(Agent agent)
         {
-            SeekTarget baseAction = (SeekTarget) base.Available(agent);
+            var eat = (Eat) base.Available(agent);
 
-            if(baseAction != null)
+            if (eat != null)
             {
-                return new Eat((Candy) baseAction.Target, baseAction.TargetCoords, baseAction.Direction);
-            }
-
-            return null;
-        }
-
-        override public bool Execute(Agent agent)
-        {
-            if(this.GonnaEat)
-            {
-                if(!this.Removed)
-                {
-                    this.Removed = agent.Board.RemovePiece(this.Target.Coords);
-                }
-
-                if(agent.Rotate(this.Direction))
-                {
-                    if(agent.Move(this.TargetCoords))
-                    {
-                        GameObject.Destroy(this.Target.gameObject);
-
-                        return true;
-                    }
-                }
+                return new DropSolder(eat.Target, eat.TargetCoords, eat.Direction);
             }
             else
             {
-                return base.Execute(agent);
+                return null;
+            }
+        }
+
+
+        override public bool Execute(Agent agent)
+        {
+            if(base.Execute(agent))
+            {
+                if (agent.Stats.Food >= agent.Stats.MaxFood)
+                {
+                    var tile = Tile.CreateTile(null, agent.Puzzle, agent.Coords, Tile.Types.Solder);
+
+                    agent.Puzzle.AddTile(tile);
+
+                    agent.Stats.Food--;
+                }
+
+                return true;
             }
 
             return false;
         }
+        #endregion
     }
 }

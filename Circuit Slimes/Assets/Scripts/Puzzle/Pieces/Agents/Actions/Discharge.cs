@@ -91,26 +91,5 @@ namespace Puzzle.Actions
             return true;
         }
         #endregion
-
-
-        #region === AUX Methods ===
-        private static Vector2Int ConnectionAvailable(CircuitComponent component, LevelBoard.Directions inputDirection)
-        {
-            var start = ((int) inputDirection) / 2;
-
-            for (var i = 0; i < 4; i++)
-            {
-                var ind = ((start + i + 3) % 4) * 2;
-                var dir = (LevelBoard.Directions) ind;
-
-                if(component.Connections.TryGetValue(dir, out var coords))
-                {
-                    return coords;
-                }
-            }
-
-            return new Vector2Int(-1, -1);
-        }
-        #endregion
     }
 }

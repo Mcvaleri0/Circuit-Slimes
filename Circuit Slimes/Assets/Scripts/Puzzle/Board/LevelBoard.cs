@@ -53,7 +53,7 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Piece out of bounds - ( " + coords.x + ", " + coords.y + ")");
+                throw new System.Exception("Tried to place a Piece Out of Bounds");
             }
 
             Row row;
@@ -78,16 +78,26 @@ namespace Puzzle.Board
 
         public Piece RemovePiece(Vector2Int coords)
         {
-            var row = this.Rows[coords.y];
-
-            if (row != null)
+            if (OutOfBounds(coords))
             {
-                var piece = row.RemovePiece(coords.x);
-
-                piece.Coords = new Vector2Int(-1, -1);
-
-                return piece;
+                throw new System.Exception("Tried to remove a Piece Out of Bounds - " + coords);
             }
+
+            Row row;
+            try
+            {
+                row = this.Rows[coords.y];
+
+                if (row != null)
+                {
+                    var piece = row.RemovePiece(coords.x);
+
+                    piece.Coords = new Vector2Int(-1, -1);
+
+                    return piece;
+                }
+            }
+            catch (KeyNotFoundException) { }
 
             return null;
         }
@@ -96,24 +106,19 @@ namespace Puzzle.Board
         {
             if(this.GetPiece(piece.Coords) == piece)
             {
-                var row = this.Rows[piece.Coords.y];
-
-                if (row != null)
-                {
-                    piece = row.RemovePiece(piece.Coords.x);
-
-                    piece.Coords = new Vector2Int(-1, -1);
-
-                    return piece;
-                }
+                return this.RemovePiece(piece.Coords);
             }
 
             return null;
         }
 
-
         public Piece GetPiece(Vector2Int coords)
         {
+            if (OutOfBounds(coords))
+            {
+                throw new System.Exception("Tried to get a Piece Out of Bounds");
+            }
+
             this.Rows.TryGetValue(coords.y, out Row row);
 
             if(row != null)
@@ -166,7 +171,7 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Piece out of bounds");
+                throw new System.Exception("Tried to place a Tile Out of Bounds");
             }
 
             Row row;
@@ -186,16 +191,26 @@ namespace Puzzle.Board
 
         public Tile RemoveTile(Vector2Int coords)
         {
-            var row = this.Rows[coords.y];
-
-            if (row != null)
+            if (OutOfBounds(coords))
             {
-                var tile = row.RemoveTile(coords.x);
-
-                tile.Coords = new Vector2Int(-1, -1);
-
-                return tile;
+                throw new System.Exception("Tried to remove a Tile Out of Bounds");
             }
+
+            Row row;
+            try
+            {
+                row = this.Rows[coords.y];
+
+                if (row != null)
+                {
+                    var tile = row.RemoveTile(coords.x);
+
+                    tile.Coords = new Vector2Int(-1, -1);
+
+                    return tile;
+                }
+            }
+            catch (KeyNotFoundException) { }
 
             return null;
         }
@@ -217,6 +232,11 @@ namespace Puzzle.Board
 
         public Tile GetTile(Vector2Int coords)
         {
+            if (OutOfBounds(coords))
+            {
+                throw new System.Exception("Tried to get a Tile Out of Bounds");
+            }
+
             this.Rows.TryGetValue(coords.y, out Row row);
 
             if (row != null)

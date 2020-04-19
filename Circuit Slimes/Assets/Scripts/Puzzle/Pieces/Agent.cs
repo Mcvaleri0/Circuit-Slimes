@@ -26,7 +26,9 @@ namespace Puzzle.Pieces
 
         protected List<Action> KnownActions;
 
-        protected Action ChosenAction;
+        public Action ChosenAction { get; protected set; }
+
+        public bool NoAction { get; protected set; }
 
         public struct Statistics
         {
@@ -40,7 +42,7 @@ namespace Puzzle.Pieces
                 this.Speed = speed;
 
                 this.MaxFood = maxfood;
-                this.Food = maxfood;
+                this.Food = 0;
             }
         }
 
@@ -117,6 +119,8 @@ namespace Puzzle.Pieces
                     break;
 
                 case States.Think:
+                    this.NoAction = false;
+
                     // Decide on an Action
                     this.ChosenAction = Think();
 
@@ -126,6 +130,8 @@ namespace Puzzle.Pieces
                     if (this.ChosenAction == null)
                     {
                         this.State = States.Waiting;
+
+                        this.NoAction = true;
 
                         this.Turn++;
                     }
