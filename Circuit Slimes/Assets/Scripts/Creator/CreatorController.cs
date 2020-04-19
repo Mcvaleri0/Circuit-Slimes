@@ -17,9 +17,12 @@ namespace Creator
 
         #endregion
 
-        #region /* detection Atributes */
+        #region /* Detection Atributes */
 
+        private const float DOUBLE_CLICK_WINDOW = 0.5f;
 
+        private bool SingleClick { get; set; }
+        private float TimeFirstClick { get; set; }
 
         #endregion
 
@@ -28,9 +31,9 @@ namespace Creator
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (this.DoubleClick())
             {
-                Debug.Log("Click");
+                Debug.Log("Double Click");
             }
         }
 
@@ -50,6 +53,8 @@ namespace Creator
             this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, puzzleController.Puzzle);
 
             this.InitializeButtons(canvas, puzzleController);
+
+            this.SingleClick = false;
         }
 
         private void InitializeButtons(Transform canvas, PuzzleController controller)
@@ -65,6 +70,37 @@ namespace Creator
             // add click listener
             int level = controller.CurrentLevel;
             save.GetComponent<Button>().onClick.AddListener(delegate { controller.SavePuzzle(level); });
+        }
+
+        #endregion
+
+        #region === Detection Methods ===
+
+        private bool DoubleClick()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (!SingleClick)
+                {
+                    TimeFirstClick = Time.time;
+                    SingleClick = true;
+                }
+                else
+                {
+                    if ((Time.time - TimeFirstClick) > DOUBLE_CLICK_WINDOW)
+                    {
+                        TimeFirstClick = Time.time;
+                    }
+                    else
+                    {
+                        SingleClick = false;
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         #endregion
