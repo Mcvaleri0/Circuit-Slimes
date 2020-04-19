@@ -102,6 +102,8 @@ namespace Creator
         {
             this.SingleClick = false;
             this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
+
+            this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
         }
 
         #region = Initialization Aux Methods =
