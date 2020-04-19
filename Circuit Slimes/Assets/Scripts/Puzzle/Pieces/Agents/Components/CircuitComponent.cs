@@ -140,6 +140,9 @@ namespace Puzzle.Pieces.Components
                 charge.Reactivate(coords);
             }
 
+            var outDir = LevelBoard.GetDirection(this.Coords, coords);
+            charge.Orientation = outDir;
+
             return charge;
         }
         #endregion

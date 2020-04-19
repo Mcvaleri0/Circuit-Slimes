@@ -50,8 +50,6 @@ namespace Puzzle
 
         public void Destroy()
         {
-            GameObject.Destroy(this.PuzzleObj);
-
             foreach (var piece in this.Pieces)
             {
                 GameObject.Destroy(piece.gameObject);
@@ -65,6 +63,7 @@ namespace Puzzle
         }
 
         #endregion
+
 
         #region === Piece Methods ===
 
@@ -94,6 +93,7 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Tile Methods ===
 
         public void AddTile(Tile tile)
@@ -117,6 +117,7 @@ namespace Puzzle
         }
 
         #endregion
+
 
         #region === Utility ===
 

@@ -8,9 +8,7 @@ namespace Puzzle.Pieces.Slimes
     public class WaterSlime : Slime
     {
 
-        //
-        // - Unity Events
-        //
+        #region === Unity Events ===
 
         // Start is called before the first frame update
         override protected void Start()
@@ -19,16 +17,16 @@ namespace Puzzle.Pieces.Slimes
 
             this.KnownActions.Add(new Eat(new Candy(CandyTypes.Water)));
 
-            this.Stats = new Statistics(10, 10, 10);
+            this.Stats = new Statistics(10, 10, 5);
         }
+        #endregion
 
-        //
-        // - Slime Methods
-        //
+        #region === Agent Methods ===
 
         override public Action Think()
         {
             return base.Think();
         }
+        #endregion
     }
 }

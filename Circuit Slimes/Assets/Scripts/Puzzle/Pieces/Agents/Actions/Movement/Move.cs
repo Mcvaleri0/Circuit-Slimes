@@ -26,13 +26,7 @@ namespace Puzzle.Actions
         }
 
 
-        public override Action Available(Agent agent)
-        {
-            return null;
-        }
-
-
-        public override bool Execute(Agent agent)
+        override public bool Execute(Agent agent)
         {
             if(agent.Rotate(this.Direction))
             {
