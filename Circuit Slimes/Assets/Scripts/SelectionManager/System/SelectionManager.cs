@@ -42,7 +42,7 @@ public class SelectionManager : MonoBehaviour
             }
         }
 
-        Debug.Log(CurrentSelection);
+        //Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
     }
 
