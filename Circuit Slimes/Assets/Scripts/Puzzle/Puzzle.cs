@@ -112,7 +112,7 @@ namespace Puzzle
 
         public Vector3 AtBoardSurface(Vector3 coords)
         {
-            return LevelBoard.WorldCoords(LevelBoard.Discretize(coords));
+            return this.Board.AtBoardSurface(coords);
         }
 
         #endregion
