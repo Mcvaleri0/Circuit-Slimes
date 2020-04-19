@@ -117,21 +117,11 @@ namespace Puzzle.Pieces
                     break;
 
                 case States.Think:
-                    // If there is a log of the current turn
-                    if (this.StateLogExists(this.Turn))
-                    {
-                        this.ChosenAction = this.StateLog[this.Turn].ChosenAction;
-                    }
+                    // Decide on an Action
+                    this.ChosenAction = Think();
 
-                    // If there is none
-                    else
-                    {
-                        // Decide on an Action
-                        this.ChosenAction = Think();
-
-                        // Save a log of this State
-                        this.SaveState();
-                    }
+                    // Save a log of this State
+                    this.SaveState();
 
                     if (this.ChosenAction == null)
                     {
@@ -190,34 +180,98 @@ namespace Puzzle.Pieces
         {
             foreach (var action in this.KnownActions)
             {
-                return action.Available(this);
+                Action result = action.Available(this);
+
+                if (result != null) return result;
             }
 
             return null;
         }
 
-        // Deactivates the agent
+        // Deactivates the Agent
         public void Deactivate()
         {
             this.Active = false;
 
             var coors = this.Coords;
 
-            this.Board.RemovePiece(this.Coords);
+            this.Board.RemovePiece(this);
 
             this.Coords = coors;
 
-            this.transform.position = new Vector3(this.transform.position.x, -2, this.transform.position.y);
+            this.transform.position = new Vector3(this.transform.position.x, -2, this.transform.position.z);
         }
 
-        // Reactivates the agent
+        // Reactivates the Agent
         public void Reactivate(Vector2Int coords)
         {
+            this.SaveState();
+
             this.Active = true;
 
             this.Board.PlacePiece(coords, this);
 
             this.transform.position = LevelBoard.WorldCoords(coords);
+
+            this.Turn++;
+        }
+        #endregion
+
+
+        #region === Actuator Methods ===
+        public bool Rotate(LevelBoard.Directions targetDir)
+        {
+            float currentAngle = this.transform.eulerAngles.y;
+            float targetAngle  = 360 - ((float) targetDir) * 45f;
+            if (targetAngle == 360) targetAngle = 0;
+
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, 0.33f);
+
+            if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
+
+            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, currentAngle, this.transform.eulerAngles.z);
+
+            if (currentAngle == targetAngle || currentAngle - targetAngle == 360)
+            {
+                // Update their Orientation
+                this.Orientation = targetDir;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool Move(Vector2Int targetCoords)
+        {
+            var targetPosition = LevelBoard.WorldCoords(targetCoords);
+
+            var maxVelocity = this.Stats.Speed / 100f;
+
+            var currentPosition = this.transform.position;
+
+            // If the distance to the Target Position exceeds what can be traveled in one Step
+            if (Vector3.Distance(currentPosition, targetPosition) > maxVelocity)
+            {
+                var dX = targetPosition.x - currentPosition.x; // Distance to travel (North - South)
+                var dZ = targetPosition.z - currentPosition.z; // Distance to travel (West  - East)
+
+                var norm = (new Vector3(dX, 0, dZ)).normalized; // Normalize the distance vector;
+
+                this.transform.position += norm * maxVelocity; // Apply movement
+
+                return false;
+            }
+
+            // If the Agent is within a one Step distance of the Target Position
+            else
+            {
+                this.transform.position = targetPosition; // Set their position to the Target Position
+
+                this.Board.MovePiece(targetCoords, this);
+
+                return true;
+            }
         }
         #endregion
 

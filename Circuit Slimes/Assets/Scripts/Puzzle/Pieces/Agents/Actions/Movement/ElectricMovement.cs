@@ -10,8 +10,8 @@ namespace Puzzle.Actions
     {
         public ElectricMovement() : base() { }
 
-        public ElectricMovement(LevelBoard.Directions dir, Vector2Int coords, Vector3 position) :
-            base(dir, coords, position) { }
+        public ElectricMovement(LevelBoard.Directions dir, Vector2Int coords) :
+            base(dir, coords) { }
 
 
         #region Action Methods
@@ -32,10 +32,8 @@ namespace Puzzle.Actions
                     var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, dir);
 
                     if (tcoords.sqrMagnitude > 1000f) continue;
-                        
-                    var tpos = LevelBoard.WorldCoords(tcoords);
 
-                    return new ElectricMovement(dir, tcoords, tpos);
+                    return new ElectricMovement(dir, tcoords);
                 }
             }
 

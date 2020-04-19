@@ -49,7 +49,7 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
-        public void PlacePiece(Vector2Int coords, Piece piece)
+        public bool PlacePiece(Vector2Int coords, Piece piece)
         {
             if (OutOfBounds(coords))
             {
@@ -67,8 +67,13 @@ namespace Puzzle.Board
                 this.Rows[coords.y] = row;
             }
 
-            row.PlacePiece(coords.x, piece);
-            piece.Coords = coords;
+            if(row.PlacePiece(coords.x, piece))
+            {
+                piece.Coords = coords;
+                return true;
+            }
+
+            return false;
         }
 
         public Piece RemovePiece(Vector2Int coords)
@@ -86,6 +91,26 @@ namespace Puzzle.Board
 
             return null;
         }
+
+        public Piece RemovePiece(Piece piece)
+        {
+            if(this.GetPiece(piece.Coords) == piece)
+            {
+                var row = this.Rows[piece.Coords.y];
+
+                if (row != null)
+                {
+                    piece = row.RemovePiece(piece.Coords.x);
+
+                    piece.Coords = new Vector2Int(-1, -1);
+
+                    return piece;
+                }
+            }
+
+            return null;
+        }
+
 
         public Piece GetPiece(Vector2Int coords)
         {

@@ -19,20 +19,28 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
-        public void PlacePiece(int x, Piece piece)
+        public bool PlacePiece(int x, Piece piece)
         {
             Space space;
             try
             {
                 space = this.Spaces[x];
+
+                if(space.Piece == null)
+                {
+                    space.Piece = piece;
+                    return true;
+                }
             }
             catch (KeyNotFoundException)
             {
                 space = new Space(new Vector2(x, this.Id));
                 this.Spaces[x] = space;
+                space.Piece = piece;
+                return true;
             }
 
-            space.Piece = piece;
+            return false;
         }
 
         public Piece RemovePiece(int x)

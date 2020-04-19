@@ -98,3 +98,5 @@ MonoBehaviour:
   CandyType: 0
   Turn: 0
   State: 0
+  MaxCharges: 0
+  StartingCharges: 2

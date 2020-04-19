@@ -179,19 +179,21 @@ namespace Puzzle
 
         #region === Create Piece ===
 
-        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
+        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName,
+            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
             Categories     cat       = GetCategory(prefabName);
             SlimeTypes     slimeType = GetSlimeType(prefabName);
             ComponentTypes compType  = GetComponentType(prefabName);
             CandyTypes     candyType = GetCandyType(prefabName);
 
-            return CreatePiece(parent, puzzle, coords, cat, slimeType, compType, candyType);
+            return CreatePiece(parent, puzzle, coords, cat, slimeType, compType, candyType, ori, turn);
         }
 
         public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, 
                                         Categories category, SlimeTypes slimeType, 
-                                        ComponentTypes compType, CandyTypes candyType)
+                                        ComponentTypes compType, CandyTypes candyType,
+                                        LevelBoard.Directions ori, int turn)
         {
             GameObject obj;
 
@@ -208,7 +210,7 @@ namespace Puzzle
 
                     if (slime != null)
                     {
-                        slime.Initialize(puzzle, coords, slimeType);
+                        slime.Initialize(puzzle, coords, slimeType, ori, turn);
                     }
 
                     return slime;
@@ -220,7 +222,7 @@ namespace Puzzle
 
                     if (component != null)
                     {
-                        component.Initialize(puzzle, coords, compType);
+                        component.Initialize(puzzle, coords, compType, ori, turn);
                     }
 
                     return component;

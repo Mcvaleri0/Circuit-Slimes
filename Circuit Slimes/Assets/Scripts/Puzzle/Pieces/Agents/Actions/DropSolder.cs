@@ -6,7 +6,7 @@ using Puzzle.Pieces;
 
 namespace Puzzle.Actions
 {
-    public class Eat : SeekTarget
+    public class DropSolder : SeekTarget
     {
         new public Candy Target { get; private set; }
 
@@ -14,12 +14,12 @@ namespace Puzzle.Actions
 
         private bool Removed = false;
 
-        public Eat(Candy target) : base(target) 
+        public DropSolder(Candy target) : base(target) 
         {
             this.Target = target;
         }
 
-        public Eat(Candy target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
+        public DropSolder(Candy target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
         {
             this.Target = target;
 
