@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1250665017}
-  m_IndirectSpecularColor: {r: 0.4971369, g: 0.5239358, b: 0.58292925, a: 1}
+  m_IndirectSpecularColor: {r: 0.49722332, g: 0.5240148, b: 0.58299625, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -776,7 +776,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tag: Selectable
-  MaxDistance: 5
 --- !u!114 &852672482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1194,7 +1193,7 @@ Canvas:
   m_GameObject: {fileID: 1488193897}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 10
   m_PixelPerfect: 0
@@ -1235,6 +1234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a729ff9bd23554690faf79c3cb0d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentLevel: 1
   nLevels: 3
 --- !u!4 &1843570012
 Transform:
