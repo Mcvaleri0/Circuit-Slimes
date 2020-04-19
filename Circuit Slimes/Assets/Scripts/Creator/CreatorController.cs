@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Puzzle;
+using Puzzle.Board;
 
 
 
@@ -149,7 +150,7 @@ namespace Creator
             Debug.Log("Instantiating " + name);
 
             // TODO: make the player choose where he wants the item
-            Vector2Int coords = new Vector2Int(1, 0);
+            Vector2Int coords = new Vector2Int(0, 3);
 
             Transform parent;
             if (name.Contains("Tile"))
@@ -170,11 +171,10 @@ namespace Creator
         {
             if (this.SelectionManager.CurrentSelection != null)
             {
-                // delete gameobject
                 GameObject objToRemove = this.SelectionManager.CurrentSelection.gameObject;
+                Vector2Int coords = this.SelectionManager.BoardCoords;
 
                 // remove object representation from Puzzle
-                Vector2Int coords   = Vector2Int.zero;
                 Piece pieceToRemove = this.Puzzle.GetPiece(coords);
                 Tile  tileToRemove  = this.Puzzle.GetTile(coords);
 
