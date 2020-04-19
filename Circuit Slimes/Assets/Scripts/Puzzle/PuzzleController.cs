@@ -45,16 +45,19 @@ namespace Puzzle
 
             this.Turn = 0;
 
+            // TODO: change when creator can choose level
+            this.LoadPuzzle(this.CurrentLevel);
+
             GameObject create = GameObject.Find("CreatorController");
             if (create != null)
             {
                 CreatorController controller = create.GetComponent<CreatorController>();
                 controller.Initialize();
             }
-            else
-            {
-                this.LoadPuzzle(this.CurrentLevel);
-            }
+            //else
+            //{
+            //    this.LoadPuzzle(this.CurrentLevel);
+            //}
         }
 
         // Update is called once per frame
