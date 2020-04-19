@@ -52,7 +52,6 @@ namespace Puzzle
 
 
         #region === Create Tile ===
-
         public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, Types type)
         {
             GameObject obj;
@@ -120,11 +119,10 @@ namespace Puzzle
 
 
         #region === Tile Methods ===
-
         // Checks if space on board has tile of a certain type or not
         public bool HasTile(Vector2Int coords, Types type)
         {
-            if (this.Board.OutOfBounds(coords)) return false;
+            if (this.Board == null || this.Board.OutOfBounds(coords)) return false;
 
             var tile = this.Board.GetTile(coords);
 
@@ -147,7 +145,6 @@ namespace Puzzle
 
             return adjacents;
         }
-
         #endregion
 
 
@@ -177,7 +174,6 @@ namespace Puzzle
 
 
         #region === Unity Methods ===
-
         //Update this Tile and Tiles around if created/enable
         protected virtual void OnEnable()
         {
@@ -210,9 +206,8 @@ namespace Puzzle
         // Update is called once per frame
         protected virtual void Update()
         {
-            if (NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
+            if (this.NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
         }
-
         #endregion
 
     }

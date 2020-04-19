@@ -188,6 +188,11 @@ namespace Puzzle.Pieces
         // Returns the Chosen Action on a given Turn
         public virtual Action Think()
         {
+            foreach (var action in this.KnownActions)
+            {
+                return action.Available(this);
+            }
+
             return null;
         }
 

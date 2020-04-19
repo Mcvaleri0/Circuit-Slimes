@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
+using Puzzle.Pieces;
 using Puzzle.Pieces.Slimes;
-using CircuitComponent = Puzzle.Pieces.Components.CircuitComponent;
+using Puzzle.Pieces.Components;
 
 namespace Puzzle.Actions
 {
@@ -20,22 +21,25 @@ namespace Puzzle.Actions
 
         #region Action Methods
 
-        public Action Available(CircuitComponent agent)
+        override public Action Available(Agent agent)
         {
-            if(agent.Connections.Count > 0 && agent.Stats.Food > agent.Stats.MaxFood)
+            if (agent is CircuitComponent component)
             {
-                ElectricSlime charge = agent.Charges.Peek();
-
-                if(charge == null)
+                if (component.Connections.Count > 0 && component.Stats.Food > component.Stats.MaxFood)
                 {
-                    charge = (ElectricSlime) Piece.CreatePiece(agent.transform.parent, agent.Puzzle, agent.Coords + Vector2Int.down, "ElectricSlime");
+                    ElectricSlime charge = component.Charges.Peek();
 
-                    agent.Puzzle.AddPiece(charge);
+                    if (charge == null)
+                    {
+                        charge = (ElectricSlime)Piece.CreatePiece(component.transform.parent, component.Puzzle, component.Coords + Vector2Int.down, "ElectricSlime");
 
-                    agent.ReceiveCharge(charge);
+                        component.Puzzle.AddPiece(charge);
+
+                        component.ReceiveCharge(charge);
+                    }
+
+                    return new Discharge(charge);
                 }
-
-                return new Discharge(charge);
             }
 
             return null;
