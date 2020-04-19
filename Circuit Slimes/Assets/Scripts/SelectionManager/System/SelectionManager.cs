@@ -9,30 +9,37 @@ public class SelectionManager : MonoBehaviour
     private ISelector          Selector;
     private ISelectionResponse SelectionResponse;
 
-    public Transform CurrentSelection { get; private set; }
+    private Puzzle.PuzzleController PuzzleController;
+    private Transform PuzzleObj;
+    private Transform BoardTransform;
 
+    //Outward facing info, fed to the CreatorController
+    public Transform CurrentSelection { get; private set; }
     public Vector2Int BoardCoords { get; private set; }
 
 
+    #region Initialization
+
+    public void Initialize(Puzzle.PuzzleController puzzleController, Transform puzzleObject)
+    {
+        this.PuzzleController = puzzleController;
+        this.PuzzleObj = puzzleObject;
+
+        this.BoardTransform = this.GetPuzzleBoard();
+
+    }
+
+    #endregion
+
+
+    #region Unity Methods
+
     private void Start()
     {
-        this.RayProvider       = this.GetComponent<IRayProvider>();
-        this.Selector          = this.GetComponent<ISelector>();
+        this.RayProvider = this.GetComponent<IRayProvider>();
+        this.Selector = this.GetComponent<ISelector>();
         this.SelectionResponse = this.GetComponent<ISelectionResponse>();
     }
-
-    public void Initialize()
-    {
-        /*
-        Transform puzzleObj = transform.parent.Find("Puzzle").transform;
-        PuzzleController puzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
-
-        this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, puzzleController.Puzzle);
-
-        this.InitializeButtons(canvas, puzzleController);
-        */
-    }
-
 
     private void Update()
     {
@@ -60,8 +67,20 @@ public class SelectionManager : MonoBehaviour
         //Debug.Log(BoardCoords);
     }
 
+    #endregion
+
+
+    #region Accessors
+
     private Transform GetSelection()
     {
         return this.Selector.Check(this.RayProvider.CreateRay());
     }
+
+    private Transform GetPuzzleBoard()
+    {
+        return PuzzleObj.Find("Board").transform;
+    }
+
+    #endregion
 }
