@@ -13,12 +13,26 @@ public class SelectionManager : MonoBehaviour
 
     public Vector2Int BoardCoords { get; private set; }
 
+
     private void Start()
     {
         this.RayProvider       = this.GetComponent<IRayProvider>();
         this.Selector          = this.GetComponent<ISelector>();
         this.SelectionResponse = this.GetComponent<ISelectionResponse>();
     }
+
+    public void Initialize()
+    {
+        /*
+        Transform puzzleObj = transform.parent.Find("Puzzle").transform;
+        PuzzleController puzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
+
+        this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, puzzleController.Puzzle);
+
+        this.InitializeButtons(canvas, puzzleController);
+        */
+    }
+
 
     private void Update()
     {
