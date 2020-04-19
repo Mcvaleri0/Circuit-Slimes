@@ -35,6 +35,10 @@ namespace Creator
 
         private SelectionManager SelectionManager { get; set; }
 
+        private bool mouseHolded;
+        private GameObject selected;
+        public Vector3 posInScreenSpace;
+        public Vector3 offset;
         #endregion
 
 
@@ -45,6 +49,36 @@ namespace Creator
             if (this.DoubleClick())
             {
                 this.RemoveBoardItem();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                this.selected = this.SelectionManager.CurrentSelection.gameObject;
+                
+                if (this.selected != null)
+                {
+                    this.mouseHolded = true;
+                    this.posInScreenSpace = Camera.main.WorldToScreenPoint(this.selected.transform.position);
+
+                    Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, posInScreenSpace.z);
+                    this.offset = this.selected.transform.position - Camera.main.ScreenToWorldPoint(newPosition);
+                }
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                mouseHolded = false;
+            }
+
+            if (mouseHolded)
+            {
+                //keep track of the mouse position
+                var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, posInScreenSpace.z);
+
+                //convert the screen mouse position to world point and adjust with offset
+                var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + offset;
+
+                //update the position of the object in the world
+                this.selected.transform.position = curPosition;
             }
         }
 
@@ -119,20 +153,20 @@ namespace Creator
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (!SingleClick)
+                if (!this.SingleClick)
                 {
-                    TimeFirstClick = Time.time;
-                    SingleClick = true;
+                    this.TimeFirstClick = Time.time;
+                    this.SingleClick    = true;
                 }
                 else
                 {
-                    if ((Time.time - TimeFirstClick) > DOUBLE_CLICK_WINDOW)
+                    if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
                     {
-                        TimeFirstClick = Time.time;
+                        this.TimeFirstClick = Time.time;
                     }
                     else
                     {
-                        SingleClick = false;
+                        this.SingleClick = false;
                         return true;
                     }
                 }
