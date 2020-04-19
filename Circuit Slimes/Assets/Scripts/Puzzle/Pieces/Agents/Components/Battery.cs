@@ -5,35 +5,30 @@ using Puzzle.Actions;
 
 namespace Puzzle.Pieces.Components
 {
-    public class Battery : Component
+    public class Battery : CircuitComponent
     {
-
-        //private int ChargeCount = 5;
-
-        //
-        // - Unity Events
-        //
+        #region Unity Events
 
         // Start is called before the first frame update
         override protected void Start()
         {
             base.Start();
 
-            this.KnownActions.Add(new SpawnSlime());
-        }
+            this.KnownActions.Add(new Discharge());
 
-        //
-        // - Component Methods
-        //
+            this.Stats = new Statistics(10, 0, 0)
+            {
+                Food = this.StartingCharges
+            };
+        }
+        #endregion
+
+        #region Component Methods
 
         override public Action Think()
         {
-            foreach(var action in this.KnownActions)
-            {
-                return action.Available(this);
-            }
-
-            return null;
+            return base.Think();
         }
+        #endregion
     }
 }

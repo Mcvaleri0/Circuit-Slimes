@@ -37,9 +37,9 @@ namespace Puzzle.Data
         }
 
 
-        public Piece CreatePiece(Transform parent, LevelBoard board)
+        public Piece CreatePiece(Transform parent, Puzzle puzzle)
         {
-            return Piece.CreatePiece(parent, board, this.Coords, this.Category, this.SlimeType, this.ComponentType, this.CandyType);
+            return Piece.CreatePiece(parent, puzzle, this.Coords, this.Category, this.SlimeType, this.ComponentType, this.CandyType);
         }
 
     }

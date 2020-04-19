@@ -49,9 +49,21 @@ namespace Puzzle
             this.Board.PlacePiece(piece.Coords, piece);
         }
 
+        public void RemovePiece(Piece piece)
+        {
+            this.Pieces.Remove(piece);
+            if (piece is Agent agent) this.Agents.Remove(agent);
+            this.Board.RemovePiece(piece.Coords);
+        }
+
         public void AddTile(Tile tile)
         {
-            this.Board.PlaceTile((int)tile.Coords.x, (int)tile.Coords.y, tile);
+            this.Board.PlaceTile(tile.Coords, tile);
+        }
+
+        public void RemoveTile(Tile tile)
+        {
+            this.Board.RemoveTile(tile.Coords);
         }
 
         public void Destroy()

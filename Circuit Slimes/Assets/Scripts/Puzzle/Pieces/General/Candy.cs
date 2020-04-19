@@ -16,22 +16,22 @@ namespace Puzzle.Pieces
 
 
         // Init Method
-        public void Initialize(LevelBoard board, Vector2Int coords, CandyTypes type)
+        public void Initialize(Puzzle puzzle, Vector2Int coords, CandyTypes type)
         {
-            base.Initialize(board, coords, Categories.Candy);
+            base.Initialize(puzzle, coords, Categories.Candy);
 
             this.CandyType = type;
         }
 
 
         // Start is called before the first frame update
-        void Start()
+        new void Start()
         {
             this.Category = Categories.Candy;
         }
 
         // Update is called once per frame
-        void Update()
+        new void Update()
         {
 
         }

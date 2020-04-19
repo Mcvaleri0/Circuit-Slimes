@@ -7,7 +7,9 @@ namespace Puzzle
 {
     public class Tile : MonoBehaviour
     {
-        public LevelBoard Board { get; private set; } 
+        public Puzzle Puzzle { get; private set; }
+
+        public LevelBoard Board { get; private set; }
 
         public Vector2Int Coords { get; set; }
 
@@ -48,9 +50,9 @@ namespace Puzzle
 
         #endregion
 
-        #region === Create Tile ===
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, Types type)
+        #region === Create Tile ===
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, Types type)
         {
             GameObject obj;
 
@@ -65,19 +67,20 @@ namespace Puzzle
 
                     var tile = obj.GetComponent<Tile>();
 
-                    tile.Initialize(board, coords, type);
+                    tile.Initialize(puzzle, coords, type);
 
                     return tile;
             }
         }
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
         {
             Types type = GetType(prefabName);
 
-            return CreateTile(parent, board, coords, type);
+            return CreateTile(parent, puzzle, coords, type);
         }
         #endregion
+
 
         #region === Enum Methods ===
 
@@ -95,11 +98,14 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Init ===
 
-        public void Initialize(LevelBoard board, Vector2Int coords, Types type)
+        public void Initialize(Puzzle puzzle, Vector2Int coords, Types type)
         {
-            this.Board = board;
+            this.Puzzle = puzzle;
+
+            this.Board = puzzle.Board;
 
             this.Type = type;
 
@@ -111,12 +117,12 @@ namespace Puzzle
 
         #endregion
 
-        #region === Tile Methods ===
 
+        #region === Tile Methods ===
         // Checks if space on board has tile of a certain type or not
         public bool HasTile(Vector2Int coords, Types type)
         {
-            if (this.Board.OutOfBounds(coords)) return false;
+            if (this.Board == null || this.Board.OutOfBounds(coords)) return false;
 
             var tile = this.Board.GetTile(coords);
 
@@ -139,7 +145,6 @@ namespace Puzzle
 
             return adjacents;
         }
-
         #endregion
 
 
@@ -169,7 +174,6 @@ namespace Puzzle
 
 
         #region === Unity Methods ===
-
         //Update this Tile and Tiles around if created/enable
         protected virtual void OnEnable()
         {
@@ -202,9 +206,8 @@ namespace Puzzle
         // Update is called once per frame
         protected virtual void Update()
         {
-            if (NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
+            if (this.NeedsUpdate) { this.UpdateTile(); NeedsUpdate = false; }
         }
-
         #endregion
 
     }

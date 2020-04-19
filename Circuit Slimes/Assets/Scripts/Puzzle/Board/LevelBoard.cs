@@ -159,11 +159,6 @@ namespace Puzzle.Board
             tile.Coords = coords;
         }
 
-        public void PlaceTile(int x, int y, Tile tile)
-        {
-            PlaceTile(new Vector2Int(x, y), tile);
-        }
-
         public Tile RemoveTile(Vector2Int coords)
         {
             var row = this.Rows[coords.y];
@@ -180,11 +175,6 @@ namespace Puzzle.Board
             return null;
         }
 
-        public Tile RemoveTile(int x, int y)
-        {
-            return RemoveTile(new Vector2Int(x, y));
-        }
-
         public Tile GetTile(Vector2Int coords)
         {
             this.Rows.TryGetValue(coords.y, out Row row);
@@ -195,11 +185,6 @@ namespace Puzzle.Board
             }
 
             return null;
-        }
-
-        public Tile GetTile(int x, int y)
-        {
-            return GetTile(new Vector2Int(x, y));
         }
 
         public List<Tile> GetAllTiles()
