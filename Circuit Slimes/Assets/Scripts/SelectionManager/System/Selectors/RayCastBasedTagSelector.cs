@@ -4,9 +4,6 @@ public class RayCastBasedTagSelector : MonoBehaviour, ISelector
 {
     public string Tag = "Selectable";
 
-    [Range(1f, 10f)]
-    public float MaxDistance = float.PositiveInfinity;
-
     private GameObject Player;
 
     public void Start()
