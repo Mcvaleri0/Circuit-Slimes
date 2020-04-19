@@ -7,7 +7,9 @@ namespace Puzzle
 {
     public class Tile : MonoBehaviour
     {
-        public LevelBoard Board { get; private set; } 
+        public Puzzle Puzzle { get; private set; }
+
+        public LevelBoard Board { get; private set; }
 
         public Vector2Int Coords { get; set; }
 
@@ -48,9 +50,10 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Create Tile ===
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, Types type)
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, Types type)
         {
             GameObject obj;
 
@@ -65,19 +68,20 @@ namespace Puzzle
 
                     var tile = obj.GetComponent<Tile>();
 
-                    tile.Initialize(board, coords, type);
+                    tile.Initialize(puzzle, coords, type);
 
                     return tile;
             }
         }
 
-        public static Tile CreateTile(Transform parent, LevelBoard board, Vector2Int coords, string prefabName)
+        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
         {
             Types type = GetType(prefabName);
 
-            return CreateTile(parent, board, coords, type);
+            return CreateTile(parent, puzzle, coords, type);
         }
         #endregion
+
 
         #region === Enum Methods ===
 
@@ -95,11 +99,14 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Init ===
 
-        public void Initialize(LevelBoard board, Vector2Int coords, Types type)
+        public void Initialize(Puzzle puzzle, Vector2Int coords, Types type)
         {
-            this.Board = board;
+            this.Puzzle = puzzle;
+
+            this.Board = puzzle.Board;
 
             this.Type = type;
 
@@ -110,6 +117,7 @@ namespace Puzzle
         }
 
         #endregion
+
 
         #region === Tile Methods ===
 

@@ -25,9 +25,9 @@ namespace Puzzle.Data
         }
 
 
-        public Tile CreateTile(Transform parent, LevelBoard board)
+        public Tile CreateTile(Transform parent, Puzzle puzzle)
         {
-            return Tile.CreateTile(parent, board, this.Coords, this.Type);
+            return Tile.CreateTile(parent, puzzle, this.Coords, this.Type);
         }
 
     }

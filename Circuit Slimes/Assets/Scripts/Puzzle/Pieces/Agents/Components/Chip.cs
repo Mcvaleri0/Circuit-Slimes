@@ -5,7 +5,7 @@ using Puzzle.Actions;
 
 namespace Puzzle.Pieces.Components
 {
-    public class Chip : Component
+    public class Chip : CircuitComponent
     {
 
         //private int ChargeCount = 5;
@@ -19,7 +19,7 @@ namespace Puzzle.Pieces.Components
         {
             base.Start();
 
-            this.KnownActions.Add(new SpawnSlime());
+            this.KnownActions.Add(new Discharge());
         }
 
         //

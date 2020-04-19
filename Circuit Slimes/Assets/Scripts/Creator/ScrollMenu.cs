@@ -99,13 +99,13 @@ namespace Creator
             if (name.Contains("Tile"))
             {
                 parent = this.PuzzleObj.Find("Tiles");
-                Tile newTile = Tile.CreateTile(parent, this.Puzzle.Board, coords, name);
+                Tile newTile = Tile.CreateTile(parent, this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
             }
             else
             {
                 parent = this.PuzzleObj.Find("Pieces");
-                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle.Board, coords, name);
+                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
             }
 
