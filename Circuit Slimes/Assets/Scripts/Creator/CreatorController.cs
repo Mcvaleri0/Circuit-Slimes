@@ -34,11 +34,11 @@ namespace Creator
         private float TimeFirstClick { get; set; }
 
         private SelectionManager SelectionManager { get; set; }
+        private Transform Selected { get; set; }
+        private bool MouseHolded { get; set; }
+        private Vector3 PosInScreenSpace { get; set; }
+        private Vector3 Offset { get; set; }
 
-        private bool mouseHolded;
-        private GameObject selected;
-        public Vector3 posInScreenSpace;
-        public Vector3 offset;
         #endregion
 
 
@@ -46,39 +46,25 @@ namespace Creator
 
         void Update()
         {
-            if (this.DoubleClick())
-            {
-                this.RemoveBoardItem();
-            }
-
             if (Input.GetMouseButtonDown(0))
             {
-                this.selected = this.SelectionManager.CurrentSelection.gameObject;
-                
-                if (this.selected != null)
-                {
-                    this.mouseHolded = true;
-                    this.posInScreenSpace = Camera.main.WorldToScreenPoint(this.selected.transform.position);
 
-                    Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, posInScreenSpace.z);
-                    this.offset = this.selected.transform.position - Camera.main.ScreenToWorldPoint(newPosition);
+                if (this.DoubleClick())
+                {
+                    this.RemoveBoardItem();
                 }
+
+                this.PrepareDrag();
             }
+
             if (Input.GetMouseButtonUp(0))
             {
-                mouseHolded = false;
+                this.EndDrag();
             }
 
-            if (mouseHolded)
+            if (MouseHolded)
             {
-                //keep track of the mouse position
-                var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, posInScreenSpace.z);
-
-                //convert the screen mouse position to world point and adjust with offset
-                var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + offset;
-
-                //update the position of the object in the world
-                this.selected.transform.position = curPosition;
+                this.MoveBoardItem();
             }
         }
 
@@ -151,28 +137,44 @@ namespace Creator
 
         private bool DoubleClick()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!this.SingleClick)
             {
-                if (!this.SingleClick)
+                this.TimeFirstClick = Time.time;
+                this.SingleClick    = true;
+            }
+            else
+            {
+                if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
                 {
                     this.TimeFirstClick = Time.time;
-                    this.SingleClick    = true;
                 }
                 else
                 {
-                    if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
-                    {
-                        this.TimeFirstClick = Time.time;
-                    }
-                    else
-                    {
-                        this.SingleClick = false;
-                        return true;
-                    }
+                    this.SingleClick = false;
+                    return true;
                 }
             }
 
             return false;
+        }
+
+        private void PrepareDrag()
+        {
+            this.Selected = this.SelectionManager.CurrentSelection;
+
+            if (this.Selected != null)
+            {
+                this.MouseHolded = true;
+                this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
+
+                Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+                this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+            }
+        }
+
+        private void EndDrag()
+        {
+            MouseHolded = false;
         }
 
         #endregion
@@ -223,6 +225,20 @@ namespace Creator
                     GameObject.Destroy(objToRemove);
                 }
             }
+        }
+
+        private void MoveBoardItem()
+        {
+            //keep track of the mouse position
+            var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+
+            //convert the screen mouse position to world point and adjust with offset
+            var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
+
+            //update the position of the object in the world
+            this.Selected.position = curPosition;
+
+            // TODO: position must be at the board's surface 
         }
 
         #endregion
