@@ -14,11 +14,12 @@ public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
 
             outln.OutlineMode  = Outline.Mode.OutlineAll;
             outln.OutlineColor = Color.white;
-            outln.OutlineWidth = 10;
+            
+            outln.OutlineWidth = 20;
         }
         else
         {
-            outline.OutlineWidth = 10;
+            outline.OutlineWidth = 20;
         }
     }
 

@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!65 &2183978352439302518
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653804092765903771}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6679984, y: 1.4313513, z: 1.6679986}
+  m_Center: {x: 0, y: 0.6928924, z: -0.000000059604645}
 --- !u!95 &1737651741
 Animator:
   serializedVersion: 3
@@ -34,6 +47,7 @@ MonoBehaviour:
   Category: 1
   SlimeType: 3
   ComponentType: 0
+  CandyType: 0
   Turn: 0
   State: 0
 --- !u!1001 &8805428210130829970
@@ -46,7 +60,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09
+      value: -2.35
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d76710852ee10a9478013cff09efa8e7,
         type: 3}
@@ -132,6 +146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SolderSlime
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d76710852ee10a9478013cff09efa8e7,
+        type: 3}
+      propertyPath: m_TagString
+      value: Selectable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76710852ee10a9478013cff09efa8e7, type: 3}

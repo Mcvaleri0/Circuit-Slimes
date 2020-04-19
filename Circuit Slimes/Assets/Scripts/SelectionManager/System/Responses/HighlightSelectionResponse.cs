@@ -2,8 +2,8 @@
 
 internal class HighlightSelectionResponse: MonoBehaviour, ISelectionResponse
 {
-    public Material HighlightMaterial;
-    public Material DefaultMaterial;
+    public Material HighlightMaterial = null;
+    public Material DefaultMaterial  = null;
 
     public void OnSelect(Transform selection)
     {
