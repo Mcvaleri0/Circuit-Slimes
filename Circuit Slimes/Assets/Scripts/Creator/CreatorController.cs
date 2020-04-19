@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Puzzle;
-using Puzzle.Board;
 
 
 
@@ -34,6 +33,14 @@ namespace Creator
         private float TimeFirstClick { get; set; }
 
         private SelectionManager SelectionManager { get; set; }
+        private Transform Selected { get; set; }
+
+        private Piece PieceSelected { get; set; }
+        private Tile TileSelected { get; set; }
+
+        private bool MouseHolded { get; set; }
+        private Vector3 PosInScreenSpace { get; set; }
+        private Vector3 Offset { get; set; }
 
         #endregion
 
@@ -42,9 +49,25 @@ namespace Creator
 
         void Update()
         {
-            if (this.DoubleClick())
+            if (Input.GetMouseButtonDown(0))
             {
-                this.RemoveBoardItem();
+
+                if (this.DoubleClick())
+                {
+                    this.RemoveBoardItem();
+                }
+
+                this.PrepareDrag();
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                this.EndDrag();
+            }
+
+            if (MouseHolded)
+            {
+                this.MoveBoardItem();
             }
         }
 
@@ -119,28 +142,62 @@ namespace Creator
 
         private bool DoubleClick()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!this.SingleClick)
             {
-                if (!SingleClick)
+                this.TimeFirstClick = Time.time;
+                this.SingleClick    = true;
+            }
+            else
+            {
+                if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
                 {
-                    TimeFirstClick = Time.time;
-                    SingleClick = true;
+                    this.TimeFirstClick = Time.time;
                 }
                 else
                 {
-                    if ((Time.time - TimeFirstClick) > DOUBLE_CLICK_WINDOW)
-                    {
-                        TimeFirstClick = Time.time;
-                    }
-                    else
-                    {
-                        SingleClick = false;
-                        return true;
-                    }
+                    this.SingleClick = false;
+                    return true;
                 }
             }
 
             return false;
+        }
+
+        private void PrepareDrag()
+        {
+            this.Selected = this.SelectionManager.CurrentSelection;
+
+            if (this.Selected != null)
+            {
+                this.MouseHolded = true;
+                this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
+
+                Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+                this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+
+                // one of them is always null
+                this.PieceSelected = this.Selected.GetComponent<Piece>();
+                this.TileSelected  = this.Selected.GetComponent<Tile>();
+            }
+        }
+
+        private void EndDrag()
+        {
+            this.MouseHolded = false;
+
+            if (this.Selected != null)
+            {
+                Vector2Int newPos = this.Puzzle.Discretize(this.Selected.position);
+
+                if (this.PieceSelected != null)
+                {
+                    this.Puzzle.MovePiece(newPos, this.PieceSelected);
+                }
+                else
+                {
+                    this.Puzzle.MoveTile(newPos, this.TileSelected);
+                }
+            }
         }
 
         #endregion
@@ -191,6 +248,21 @@ namespace Creator
                     GameObject.Destroy(objToRemove);
                 }
             }
+        }
+
+        private void MoveBoardItem()
+        {
+            // keep track of the mouse position
+            Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+
+            // convert the screen mouse position to world point and adjust with offset
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
+
+            // the new position must be at the board surface
+            curPosition = this.Puzzle.AtBoardSurface(curPosition);
+
+            // update the position of the object in the world
+            this.Selected.position = curPosition;
         }
 
         #endregion
