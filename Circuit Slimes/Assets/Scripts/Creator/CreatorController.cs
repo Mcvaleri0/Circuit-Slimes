@@ -34,6 +34,16 @@ namespace Creator
             if (this.DoubleClick())
             {
                 Debug.Log("Double Click");
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Debug.DrawLine(ray.origin, hit.point);
+
+                    Debug.Log("Hit -> " + hit.transform.name);
+                }
             }
         }
 
