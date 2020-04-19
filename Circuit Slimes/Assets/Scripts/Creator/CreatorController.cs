@@ -252,11 +252,19 @@ namespace Creator
 
         private void MoveBoardItem()
         {
+            //get board coords
+            Vector2Int coords = this.SelectionManager.BoardCoords;
+
+            //convert grid coords in world coords
+            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + Offset;
+
+            /*
             // keep track of the mouse position
             Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
 
             // convert the screen mouse position to world point and adjust with offset
             Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
+            */
 
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
