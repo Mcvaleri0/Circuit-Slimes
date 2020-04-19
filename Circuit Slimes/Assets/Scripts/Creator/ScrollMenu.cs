@@ -24,24 +24,19 @@ namespace Creator
 
         #endregion
 
-        #region /* Puzzle Attibutes */
+        #region /* Creator Attributes */
 
-        private Dictionary<string, Object> BoardItens { get; set; }
-        private Puzzle.Puzzle Puzzle { get; set; }
-        private Transform PuzzleObj { get; set; }
+        private CreatorController Crontroller { get; set; }
 
-        #endregion
+        #endregion 
 
 
-        public ScrollMenu(Transform menu, Transform content, Transform puzzleObj, Puzzle.Puzzle puzzle)
+        public ScrollMenu(CreatorController controller, Transform menu, Transform content)
         {
+            this.Crontroller = controller;
+
             this.Menu = menu;
             this.MenuContent = content;
-
-            this.Puzzle    = puzzle;
-            this.PuzzleObj = puzzleObj;
-
-            this.BoardItens  = new Dictionary<string, Object>();
 
             this.Initialize();
         }
@@ -70,8 +65,6 @@ namespace Creator
             foreach (Object icon in icons)
             {
                 this.InstantiateOption(icon.name, button);
-
-                this.BoardItens.Add(icon.name, icon);
             }
 
         }
@@ -85,30 +78,7 @@ namespace Creator
             GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.InstantiateBoardItem(text); });
-        }
-
-        private void InstantiateBoardItem(string name)
-        {
-            Debug.Log("Instantiating " + name);
-
-            // TODO: make the player choose where he wants the item
-            Vector2Int coords = new Vector2Int(1, 0);
-
-            Transform parent;
-            if (name.Contains("Tile"))
-            {
-                parent = this.PuzzleObj.Find("Tiles");
-                Tile newTile = Tile.CreateTile(parent, this.Puzzle, coords, name);
-                this.Puzzle.AddTile(newTile);
-            }
-            else
-            {
-                parent = this.PuzzleObj.Find("Pieces");
-                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle, coords, name);
-                this.Puzzle.AddPiece(newPiece);
-            }
-
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
         }
 
         #endregion

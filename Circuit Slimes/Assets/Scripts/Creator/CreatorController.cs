@@ -21,6 +21,7 @@ namespace Creator
 
         private PuzzleController PuzzleController { get; set; }
         private Puzzle.Puzzle Puzzle { get; set; }
+        private Transform PuzzleObj { get; set; }
 
         #endregion
 
@@ -42,8 +43,7 @@ namespace Creator
         {
             if (this.DoubleClick())
             {
-                Debug.Log("Double Click");
-                Debug.Log("Board Coords: " + this.SelectionManager.BoardCoords);
+                this.RemoveBoardItem();
             }
         }
 
@@ -53,25 +53,44 @@ namespace Creator
 
         public void Initialize()
         {
-            Transform canvas = this.transform.Find("Canvas");
+            this.InitializePuzzle();
+
+            this.InitializeCanvas();
+
+            this.InitializeSelectionSystem();
+        }
+
+        private void InitializePuzzle()
+        {
             this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
+            this.PuzzleObj = GameObject.Find("Puzzle").transform;
+
             this.Puzzle = this.PuzzleController.Puzzle;
+        }
+
+        private void InitializeCanvas()
+        {
+            Transform canvas = this.transform.Find("Canvas");
 
             this.InitializeScrollMenu(canvas);
 
             this.InitializeButtons(canvas);
-
-            this.InitializeSelectionSystem();
         }
+
+        private void InitializeSelectionSystem()
+        {
+            this.SingleClick = false;
+            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
+        }
+
+        #region = Initialization Aux Methods =
 
         private void InitializeScrollMenu(Transform canvas)
         {
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
-            Transform puzzleObj = GameObject.Find("Puzzle").transform;
-
-            this.ScrollMenu = new ScrollMenu(menu, content, puzzleObj, this.Puzzle);
+            this.ScrollMenu = new ScrollMenu(this, menu, content);
         }
 
         private void InitializeButtons(Transform canvas)
@@ -89,11 +108,7 @@ namespace Creator
             save.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
         }
 
-        private void InitializeSelectionSystem()
-        {
-            this.SingleClick = false;
-            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
-        }
+        #endregion
 
         #endregion
 
@@ -123,6 +138,57 @@ namespace Creator
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region === Puzzle Manipulation Methods ===
+
+        public void AddBoardItem(string name)
+        {
+            Debug.Log("Instantiating " + name);
+
+            // TODO: make the player choose where he wants the item
+            Vector2Int coords = new Vector2Int(1, 0);
+
+            Transform parent;
+            if (name.Contains("Tile"))
+            {
+                parent = this.PuzzleObj.Find("Tiles");
+                Tile newTile = Tile.CreateTile(parent, this.Puzzle, coords, name);
+                this.Puzzle.AddTile(newTile);
+            }
+            else
+            {
+                parent = this.PuzzleObj.Find("Pieces");
+                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle, coords, name);
+                this.Puzzle.AddPiece(newPiece);
+            }
+        }
+
+        private void RemoveBoardItem()
+        {
+            if (this.SelectionManager.CurrentSelection != null)
+            {
+                // delete gameobject
+                GameObject objToRemove = this.SelectionManager.CurrentSelection.gameObject;
+
+                // remove object representation from Puzzle
+                Vector2Int coords   = Vector2Int.zero;
+                Piece pieceToRemove = this.Puzzle.GetPiece(coords);
+                Tile  tileToRemove  = this.Puzzle.GetTile(coords);
+
+                if (pieceToRemove != null)
+                {
+                    this.Puzzle.RemovePiece(pieceToRemove);
+                    GameObject.Destroy(objToRemove);
+                }
+                else if (tileToRemove != null)
+                {
+                    this.Puzzle.RemoveTile(tileToRemove);
+                    GameObject.Destroy(objToRemove);
+                }
+            }
         }
 
         #endregion

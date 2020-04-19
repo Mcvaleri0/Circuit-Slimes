@@ -39,15 +39,15 @@ namespace Puzzle
         // Start is called before the first frame update
         void Start()
         {
-            this.CurrentLevel = 2;
 
             this.State = RunState.Idle;
 
             this.Turn = 0;
 
-            this.LoadPuzzle(this.CurrentLevel);
-
             // TODO: remove this when creator mode is able to choose level
+
+            this.LoadPuzzle(2);
+
             GameObject create = GameObject.Find("CreatorController");
             if (create != null)
             {
@@ -267,6 +267,8 @@ namespace Puzzle
             {
                 this.Puzzle.Destroy();
             }
+
+            this.CurrentLevel = level;
 
             this.Puzzle = PuzzleData.Load(LEVELS_PATH, "Level" + level);
 
