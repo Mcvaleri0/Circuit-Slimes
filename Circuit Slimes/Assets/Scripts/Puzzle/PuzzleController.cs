@@ -16,7 +16,8 @@ namespace Puzzle
 
         public Puzzle Puzzle { get; private set; }
 
-        public int CurrentLevel { get; private set; }
+        // set on editor
+        public int CurrentLevel;
         public int nLevels;
 
 
@@ -44,15 +45,15 @@ namespace Puzzle
 
             this.Turn = 0;
 
-            // TODO: remove this when creator mode is able to choose level
-
-            this.LoadPuzzle(2);
-
             GameObject create = GameObject.Find("CreatorController");
             if (create != null)
             {
                 CreatorController controller = create.GetComponent<CreatorController>();
                 controller.Initialize();
+            }
+            else
+            {
+                this.LoadPuzzle(this.CurrentLevel);
             }
         }
 
