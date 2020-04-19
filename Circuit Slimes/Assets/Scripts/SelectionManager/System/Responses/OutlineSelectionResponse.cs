@@ -12,13 +12,14 @@ public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
         {
             var outln = selection.gameObject.AddComponent<Outline>();
 
-            outln.OutlineMode  = Outline.Mode.OutlineAll;
+            outln.OutlineMode  = Outline.Mode.SilhouetteOnly;
             outln.OutlineColor = Color.white;
-            outln.OutlineWidth = 10;
+            
+            outln.OutlineWidth = 20;
         }
         else
         {
-            outline.OutlineWidth = 10;
+            outline.OutlineWidth = 20;
         }
     }
 

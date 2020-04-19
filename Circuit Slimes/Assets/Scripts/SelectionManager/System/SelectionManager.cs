@@ -11,7 +11,7 @@ public class SelectionManager : MonoBehaviour
 
     public Transform CurrentSelection { get; private set; }
 
-    public Vector2 BoardCoords { get; private set; }
+    public Vector2Int BoardCoords { get; private set; }
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class SelectionManager : MonoBehaviour
             }
         }
 
-        //Debug.Log(CurrentSelection);
+        Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
     }
 

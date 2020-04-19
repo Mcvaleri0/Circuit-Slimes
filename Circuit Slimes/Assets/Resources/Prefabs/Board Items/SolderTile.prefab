@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7405940571216014810}
   - component: {fileID: 4818743176741776496}
+  - component: {fileID: 8355645968204031255}
   m_Layer: 0
   m_Name: SolderTile
   m_TagString: Untagged
@@ -124,6 +125,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 997b017b7447128419b83581403aad60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &8355645968204031255
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125648127969735902}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7467535, y: 0.28693628, z: 1.7400376}
+  m_Center: {x: -0.009757638, y: 0.0806438, z: -0.006758034}
 --- !u!1001 &7369163715705945236
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -168,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3110070657818310805}
   - component: {fileID: -3055569365901843206}
+  - component: {fileID: 619052207}
   m_Layer: 0
   m_Name: DoubleChip
   m_TagString: Untagged
@@ -182,7 +183,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6783835722891978034}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.99, y: -0.17846, z: 6.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -208,6 +209,21 @@ MonoBehaviour:
   CandyType: 0
   Turn: 0
   State: 0
+  MaxCharges: 0
+  StartingCharges: 1
+--- !u!65 &619052207
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6783835722891978034}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.0549812, y: 0.5512996, z: 1.2204452}
+  m_Center: {x: 0.015358448, y: 0.3686998, z: -0.03839612}
 --- !u!1 &8244722075665266635
 GameObject:
   m_ObjectHideFlags: 0
