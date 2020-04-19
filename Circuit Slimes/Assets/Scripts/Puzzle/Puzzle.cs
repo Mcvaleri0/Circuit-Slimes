@@ -56,6 +56,11 @@ namespace Puzzle
             this.Board.RemovePiece(piece.Coords);
         }
 
+        public Piece GetPiece(Vector2Int coords)
+        {
+            return this.Board.GetPiece(coords);
+        }
+
         public void AddTile(Tile tile)
         {
             this.Board.PlaceTile(tile.Coords, tile);
@@ -64,6 +69,11 @@ namespace Puzzle
         public void RemoveTile(Tile tile)
         {
             this.Board.RemoveTile(tile.Coords);
+        }
+
+        public Tile GetTile(Vector2Int coords)
+        {
+            return this.Board.GetTile(coords);
         }
 
         public void Destroy()

@@ -110,7 +110,7 @@ Material:
     m_Colors:
     - _ASEOutlineColor: {r: 0, g: 0.33962262, b: 0.20649056, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 0.122241, g: 0.3867925, b: 0.2455354, a: 0}
+    - _Color0: {r: 0.04705883, g: 0.4156863, b: 0.28627452, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightColor: {r: 0, g: 0.97912836, b: 1, a: 0}
     - _Tint: {r: 0.07778571, g: 0.7169812, b: 0.56662905, a: 0}

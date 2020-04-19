@@ -74,7 +74,7 @@ Material:
     - _Specularity: 15.87
     - __dirty: 0
     m_Colors:
-    - _ASEOutlineColor: {r: 0.3584906, g: 0.3053451, b: 0.26548594, a: 1}
+    - _ASEOutlineColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
     - _Color0: {r: 1, g: 0, b: 0.9104991, a: 0}
     - _EmissionColor: {r: 1, g: 0.9397107, b: 0, a: 1}
     - _RimLightColor: {r: 0.5471698, g: 0.45989412, b: 0.33294767, a: 0}
