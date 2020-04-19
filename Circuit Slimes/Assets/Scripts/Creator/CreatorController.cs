@@ -176,7 +176,7 @@ namespace Creator
 
         private void EndDrag()
         {
-            MouseHolded = false;
+            this.MouseHolded = false;
         }
 
         #endregion
@@ -231,16 +231,17 @@ namespace Creator
 
         private void MoveBoardItem()
         {
-            //keep track of the mouse position
-            var curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+            // keep track of the mouse position
+            Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
 
-            //convert the screen mouse position to world point and adjust with offset
-            var curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
+            // convert the screen mouse position to world point and adjust with offset
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
 
-            //update the position of the object in the world
+            // the new position must be at the board surface
+            curPosition = this.Puzzle.AtBoardSurface(curPosition);
+
+            // update the position of the object in the world
             this.Selected.position = curPosition;
-
-            // TODO: position must be at the board's surface 
         }
 
         #endregion

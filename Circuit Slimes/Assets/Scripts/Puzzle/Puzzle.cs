@@ -8,6 +8,8 @@ namespace Puzzle
 {
     public class Puzzle : MonoBehaviour
     {
+        #region /* Attributes */
+
         public List<Piece> Pieces { get; private set; }
 
         public List<Agent> Agents { get; private set; }
@@ -16,6 +18,10 @@ namespace Puzzle
 
         public GameObject PuzzleObj { get; private set; }
 
+        #endregion
+
+
+        #region === Initialization Methods ===
 
         public void Initialize(LevelBoard board)
         {
@@ -42,6 +48,26 @@ namespace Puzzle
             }
         }
 
+        public void Destroy()
+        {
+            GameObject.Destroy(this.PuzzleObj);
+
+            foreach (var piece in this.Pieces)
+            {
+                GameObject.Destroy(piece.gameObject);
+            }
+
+            this.Pieces.Clear();
+
+            GameObject.Destroy(this.Board.gameObject);
+
+            GameObject.Destroy(this.gameObject);
+        }
+
+        #endregion
+
+        #region === Piece Methods ===
+
         public void AddPiece(Piece piece)
         {
             this.Pieces.Add(piece);
@@ -61,6 +87,10 @@ namespace Puzzle
             return this.Board.GetPiece(coords);
         }
 
+        #endregion
+
+        #region === Tile Methods ===
+
         public void AddTile(Tile tile)
         {
             this.Board.PlaceTile(tile.Coords, tile);
@@ -76,20 +106,15 @@ namespace Puzzle
             return this.Board.GetTile(coords);
         }
 
-        public void Destroy()
+        #endregion
+
+        #region === Utility ===
+
+        public Vector3 AtBoardSurface(Vector3 coords)
         {
-            GameObject.Destroy(this.PuzzleObj);
-
-            foreach(var piece in this.Pieces)
-            {
-                GameObject.Destroy(piece.gameObject);
-            }
-
-            this.Pieces.Clear();
-
-            GameObject.Destroy(this.Board.gameObject);
-
-            GameObject.Destroy(this.gameObject);
+            return LevelBoard.WorldCoords(LevelBoard.Discretize(coords));
         }
+
+        #endregion
     }
 }
