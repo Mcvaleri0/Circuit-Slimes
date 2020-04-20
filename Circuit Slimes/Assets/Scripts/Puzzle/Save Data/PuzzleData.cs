@@ -3,6 +3,8 @@ using Puzzle.Board;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -47,16 +49,51 @@ namespace Puzzle.Data
 
         public void Save(string path, string name)
         {
-            string data = JsonUtility.ToJson(this);
-            System.IO.File.WriteAllText(path + "/" + name + ".json", data);
+            string filePath = Path.Combine(Application.persistentDataPath, name);
+            //filePath = Path.Combine("./Assets/Resources/Levels", name + ".json");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            string dataAsJson = JsonUtility.ToJson(this, true);
+            byte[] jsonBytes = Encoding.ASCII.GetBytes(dataAsJson);
+                       
+
+            File.WriteAllBytes(filePath, jsonBytes);
         }
 
+        public static void Save()
+        {
+            string filePath = Path.Combine(Application.persistentDataPath, "Level0");
+
+            var loaded = Resources.Load(Path.Combine("Levels", "Level0")) as TextAsset;
+
+            byte[] jsonBytes = Encoding.ASCII.GetBytes(loaded.text);
+
+            File.WriteAllBytes(filePath, jsonBytes);
+        }
 
         public static Puzzle Load(string path, string name)
         {
-            StreamReader reader = new StreamReader(path + "/" + name + ".json");
-            string jsonData = reader.ReadToEnd();
-            reader.Close();
+            string filePath = Path.Combine(Application.persistentDataPath, name);
+
+            //TextAsset loaded = Resources.Load(Path.Combine("Levels", "Level0")) as TextAsset;
+            string jsonData = null;
+
+            
+            if(File.Exists(filePath))
+            {
+                byte[] jsonBytes = File.ReadAllBytes(filePath);
+                jsonData = Encoding.ASCII.GetString(jsonBytes);
+            }
+            else
+            {
+                Debug.Log("Puzzle.Load - No such file - " + name);
+                return null;
+            }
+            
 
             // Load Data
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonData);

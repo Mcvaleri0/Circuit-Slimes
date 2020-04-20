@@ -14,7 +14,7 @@ namespace Puzzle
     {
         #region /* Level Attributes */
 
-        public const string LEVELS_PATH = "./Assets/Resources/Levels";
+        public const string LEVELS_PATH = "Levels";
 
         public Puzzle Puzzle { get; private set; }
 
@@ -187,6 +187,8 @@ namespace Puzzle
 
         public void StepForward()
         {
+            if (this.StoppedAgents >= this.Puzzle.Agents.Count) return;
+
             this.GoalTurn = this.Turn + 1;
             this.GoalTurn = Mathf.Min(this.GoalTurn, this.MaxTurn);
         }

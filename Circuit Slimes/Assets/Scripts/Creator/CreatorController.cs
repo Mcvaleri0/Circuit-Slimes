@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Puzzle;
+using Puzzle.Data;
 
 
 
@@ -10,6 +11,8 @@ namespace Creator
 {
     public class CreatorController : MonoBehaviour
     {
+        private bool Once = false;
+
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
@@ -94,6 +97,11 @@ namespace Creator
 
         public void Initialize()
         {
+            if(!File.Exists(Path.Combine(Application.persistentDataPath, "Level0")))
+            {
+                PuzzleData.Save();
+            }
+
             this.InitializePuzzle();
 
             this.InitializeSelectionSystem();
