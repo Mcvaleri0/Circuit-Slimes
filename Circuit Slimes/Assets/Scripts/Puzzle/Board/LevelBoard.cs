@@ -53,7 +53,8 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to place a Piece Out of Bounds");
+                Debug.Log("PlacePiece - OutOfBoundsException - " + coords);
+                return false;
             }
 
             Row row;
@@ -76,11 +77,12 @@ namespace Puzzle.Board
             return false;
         }
 
-        public Piece RemovePiece(Vector2Int coords)
+        public Piece RemovePieceAt(Vector2Int coords)
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to remove a Piece Out of Bounds - " + coords);
+                Debug.Log("RemoveTile - OutOfBoundsException - " + coords);
+                return null;
             }
 
             Row row;
@@ -106,7 +108,7 @@ namespace Puzzle.Board
         {
             if(this.GetPiece(piece.Coords) == piece)
             {
-                return this.RemovePiece(piece.Coords);
+                return this.RemovePieceAt(piece.Coords);
             }
 
             return null;
@@ -116,7 +118,8 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to get a Piece Out of Bounds");
+                Debug.Log("GetPiece - OutOfBoundsException - " + coords);
+                return null;
             }
 
             this.Rows.TryGetValue(coords.y, out Row row);
@@ -131,15 +134,21 @@ namespace Puzzle.Board
 
         public bool MovePiece(Vector2Int coords, Piece piece)
         {
+            if (OutOfBounds(coords))
+            {
+                Debug.Log("MovePiece - OutOfBoundsException - " + coords);
+                return false;
+            }
+
             // If destination Space is free
-            if(this.GetPiece(coords) == null)
+            if (this.GetPiece(coords) == null)
             {
                 var foundPiece = this.GetPiece(piece.Coords);
 
                 // If the Piece was where it should be
                 if(foundPiece == piece)
                 {
-                    this.RemovePiece(foundPiece.Coords);
+                    this.RemovePieceAt(foundPiece.Coords);
 
                     this.PlacePiece(coords, foundPiece);
 
@@ -158,20 +167,16 @@ namespace Puzzle.Board
 
             return false;
         }
-
-        public bool MovePiece(int x, int y, Piece piece)
-        {
-            return MovePiece(new Vector2Int(x, y), piece);
-        }
         #endregion
 
 
         #region === Tile Methods ===
-        public void PlaceTile(Vector2Int coords, Tile tile)
+        public bool PlaceTile(Vector2Int coords, Tile tile)
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to place a Tile Out of Bounds");
+                Debug.Log("PlaceTile - OutOfBoundsException - " + coords);
+                return false;
             }
 
             Row row;
@@ -191,13 +196,16 @@ namespace Puzzle.Board
             //visual update
             tile.UpdateTile();
             tile.UpdateCrossTiles();
+
+            return true;
         }
 
-        public Tile RemoveTile(Vector2Int coords)
+        public Tile RemoveTileAt(Vector2Int coords)
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to remove a Tile Out of Bounds");
+                Debug.Log("RemoveTile - OutOfBoundsException - " + coords);
+                return null;
             }
 
             Row row;
@@ -224,10 +232,16 @@ namespace Puzzle.Board
 
         public bool MoveTile(Vector2Int coords, Tile tile)
         {
+            if (OutOfBounds(coords))
+            {
+                Debug.Log("MoveTile - OutOfBoundsException - " + coords);
+                return false;
+            }
+
             // If destination Space is free
             if (this.GetTile(coords) == null)
             {
-                this.RemoveTile(tile.Coords);
+                this.RemoveTileAt(tile.Coords);
 
                 this.PlaceTile(coords, tile);
 
@@ -241,7 +255,8 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                throw new System.Exception("Tried to get a Tile Out of Bounds");
+                Debug.Log("GetTile - OutOfBoundsException - " + coords);
+                return null;
             }
 
             this.Rows.TryGetValue(coords.y, out Row row);

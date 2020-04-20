@@ -76,7 +76,7 @@ namespace Puzzle
         {
             this.Pieces.Remove(piece);
             if (piece is Agent agent) this.Agents.Remove(agent);
-            this.Board.RemovePiece(piece.Coords);
+            this.Board.RemovePieceAt(piece.Coords);
         }
 
         public bool MovePiece(Vector2Int coords, Piece piece)
@@ -104,7 +104,7 @@ namespace Puzzle
 
         public void RemoveTile(Tile tile)
         {
-            this.Board.RemoveTile(tile.Coords);
+            this.Board.RemoveTileAt(tile.Coords);
         }
 
         public bool MoveTile(Vector2Int coords, Tile tile)
