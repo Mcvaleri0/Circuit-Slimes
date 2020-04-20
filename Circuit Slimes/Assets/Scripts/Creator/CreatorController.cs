@@ -56,7 +56,7 @@ namespace Creator
 
         public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
 
-        private List<string> PrefabsAllowed { get; set; }
+        private List<string> MenuOptions { get; set; }
 
         #endregion  
 
@@ -141,13 +141,13 @@ namespace Creator
         {
             if (this.Creator)
             {
-                this.InitializePreffabsListCreator();
+                this.InitializeMenuCreator();
 
                 this.InitializeWhiteListCreator();
             }
             else
             {
-                this.PrefabsAllowed = this.Puzzle.Permissions;
+                this.MenuOptions = this.Puzzle.Permissions;
                 
                 this.SelectionManager.WhiteList = new List<Transform>();
             }
@@ -162,7 +162,7 @@ namespace Creator
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
-            this.ScrollMenu = new ScrollMenu(this, menu, content, this.PrefabsAllowed);
+            this.ScrollMenu = new ScrollMenu(this, menu, content, this.MenuOptions, this.Puzzle.Permissions);
         }
 
         private void InitializeButtons(Transform canvas)
@@ -188,14 +188,14 @@ namespace Creator
             }
         }
 
-        private void InitializePreffabsListCreator()
+        private void InitializeMenuCreator()
         {
             Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
-            this.PrefabsAllowed = new List<string>();
+            this.MenuOptions = new List<string>();
 
             foreach (Object prefab in prefabs)
             {
-                this.PrefabsAllowed.Add(prefab.name);
+                this.MenuOptions.Add(prefab.name);
             }
         }
 
@@ -361,6 +361,16 @@ namespace Creator
             {
                 this.Selected.position = curPosition;
             }
+        }
+
+        public void AddPermission(string prefab)
+        {
+            this.Puzzle.Permissions.Add(prefab);
+        }
+
+        public void RemovePermission(string prefab)
+        {
+            this.Puzzle.Permissions.Remove(prefab);
         }
 
         #endregion
