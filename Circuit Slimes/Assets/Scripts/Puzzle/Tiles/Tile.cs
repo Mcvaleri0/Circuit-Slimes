@@ -155,6 +155,9 @@ namespace Puzzle
         //update a tile's mesh
         public virtual void UpdateTile() {}
 
+        //FIXME: we should extract tile behaviour from solder slime and abstract it to "TilesetTile" class
+        public virtual void UpdateTile(int tilesetNum) { } 
+
 
         //Mark the tiles arround this one, in 4 directions, has needing an update
         public virtual void UpdateCrossTiles()
@@ -196,6 +199,7 @@ namespace Puzzle
 
         //Update Tiles arround this tile if destroyed/disabled
         protected virtual void OnDisable() {
+            this.UpdateTile(0);
             this.UpdateCrossTiles();
         }
 

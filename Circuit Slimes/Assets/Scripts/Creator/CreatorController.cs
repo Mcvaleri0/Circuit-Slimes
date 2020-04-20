@@ -178,6 +178,14 @@ namespace Creator
                 // one of them is always null
                 this.PieceSelected = this.Selected.GetComponent<Piece>();
                 this.TileSelected  = this.Selected.GetComponent<Tile>();
+
+                //reset and disable tile temporarily (visual) 
+                if (this.TileSelected != null)
+                {
+                    //this.TileSelected.UpdateTile(0); 
+                    this.TileSelected.enabled = false;
+                }
+                
             }
         }
 
@@ -196,6 +204,9 @@ namespace Creator
                 else
                 {
                     this.Puzzle.MoveTile(newPos, this.TileSelected);
+
+                    //re-enable tile  (visual)
+                    this.TileSelected.enabled = true;
                 }
             }
         }
@@ -268,6 +279,7 @@ namespace Creator
 
             // update the position of the object in the world
             this.Selected.position = curPosition;
+
         }
 
         #endregion

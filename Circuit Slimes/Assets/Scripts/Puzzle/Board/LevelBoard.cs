@@ -187,6 +187,10 @@ namespace Puzzle.Board
 
             row.PlaceTile(coords.x, tile);
             tile.Coords = coords;
+
+            //visual update
+            tile.UpdateTile();
+            tile.UpdateCrossTiles();
         }
 
         public Tile RemoveTile(Vector2Int coords)
@@ -204,6 +208,9 @@ namespace Puzzle.Board
                 if (row != null)
                 {
                     var tile = row.RemoveTile(coords.x);
+
+                    //visual update
+                    tile.UpdateCrossTiles();
 
                     tile.Coords = new Vector2Int(-1, -1);
 
@@ -260,6 +267,17 @@ namespace Puzzle.Board
 
             return tiles;
         }
+
+        public void UpdateAllTiles()
+        {
+            var tiles = this.GetAllTiles();
+
+            foreach (var tile in tiles)
+            {
+                tile.UpdateTile();
+            }
+        }
+
         #endregion
 
 

@@ -65,8 +65,8 @@ Material:
     - _NormalScale: 1
     - _RimOffset: 0.64
     - _RimPower: 0
-    - _ShadowOffset: 0.21
-    - _ShadowScale: 0.4
+    - _ShadowOffset: 0.33
+    - _ShadowScale: 0.35
     - _SpecMax: 3.06
     - _SpecMin: 1
     - _SpecularGloss: 0.69

@@ -19,6 +19,8 @@ public class SelectionManager : MonoBehaviour
     public Vector2Int BoardCoords { get; private set; }
     public bool BoardHover { get; private set; }
 
+    public List<Transform> WhiteList = null;
+
     #region Initialization
 
     public void Initialize(Puzzle.PuzzleController puzzleController, Transform puzzleObject)
@@ -73,7 +75,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardHover = this.GetBoardHover();
 
         //Debug.Log(CurrentSelection);
-        Debug.Log(BoardCoords);
+        //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
     }
 
