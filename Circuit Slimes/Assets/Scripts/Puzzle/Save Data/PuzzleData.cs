@@ -69,31 +69,25 @@ namespace Puzzle.Data
             puzzle.Initialize(board);
 
             #region Create Pieces
-            GameObject piecesObj = new GameObject("Pieces");
-            piecesObj.transform.parent = puzzleObj.transform;
-
             var pieceList = new List<Piece>();
 
             if(puzzleData.Pieces != null)
             {
                 foreach (PieceData pieceData in puzzleData.Pieces)
                 {
-                    pieceList.Add(pieceData.CreatePiece(piecesObj.transform, puzzle));
+                    pieceList.Add(pieceData.CreatePiece(puzzle));
                 }
             }
             #endregion
 
             #region Create Tiles
-            GameObject tilesObj = new GameObject("Tiles");
-            tilesObj.transform.parent = puzzleObj.transform;
-
             var tileList = new List<Tile>();
 
             if(puzzleData.Tiles != null)
             {
                 foreach (TileData tileData in puzzleData.Tiles)
                 {
-                    tileList.Add(tileData.CreateTile(tilesObj.transform, puzzle));
+                    tileList.Add(tileData.CreateTile(puzzle));
                 }
             }
             #endregion

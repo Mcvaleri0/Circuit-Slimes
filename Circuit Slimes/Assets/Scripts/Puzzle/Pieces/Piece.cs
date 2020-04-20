@@ -64,7 +64,7 @@ namespace Puzzle
 
         #region === Instantiate ===
 
-        public static GameObject Instantiate(Transform parent, SlimeTypes type, Vector2 coords)
+        private static GameObject Instantiate(Transform parent, SlimeTypes type, Vector2 coords)
         {
             var prefabName = "";
 
@@ -94,7 +94,7 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
-        public static GameObject Instantiate(Transform parent, ComponentTypes type, Vector2 coords)
+        private static GameObject Instantiate(Transform parent, ComponentTypes type, Vector2 coords)
         {
             var prefabName = "";
 
@@ -148,7 +148,7 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
-        public static GameObject Instantiate(Transform parent, CandyTypes type, Vector2 coords)
+        private static GameObject Instantiate(Transform parent, CandyTypes type, Vector2 coords)
         {
             var prefabName = "";
 
@@ -179,7 +179,7 @@ namespace Puzzle
 
         #region === Create Piece ===
 
-        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName,
+        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, string prefabName,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
             Categories     cat       = GetCategory(prefabName);
@@ -187,14 +187,16 @@ namespace Puzzle
             ComponentTypes compType  = GetComponentType(prefabName);
             CandyTypes     candyType = GetCandyType(prefabName);
 
-            return CreatePiece(parent, puzzle, coords, cat, slimeType, compType, candyType, ori, turn);
+            return CreatePiece(puzzle, coords, cat, slimeType, compType, candyType, ori, turn);
         }
 
-        public static Piece CreatePiece(Transform parent, Puzzle puzzle, Vector2Int coords, 
+        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, 
                                         Categories category, SlimeTypes slimeType, 
                                         ComponentTypes compType, CandyTypes candyType,
                                         LevelBoard.Directions ori, int turn)
         {
+            Transform parent = puzzle.PiecesObj.transform;
+
             GameObject obj;
 
             switch (category)

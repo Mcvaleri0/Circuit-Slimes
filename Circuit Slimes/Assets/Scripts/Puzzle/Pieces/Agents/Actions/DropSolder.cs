@@ -41,7 +41,7 @@ namespace Puzzle.Actions
             {
                 if (agent.Stats.Food >= agent.Stats.MaxFood)
                 {
-                    var tile = Tile.CreateTile(null, agent.Puzzle, agent.Coords, Tile.Types.Solder);
+                    var tile = Tile.CreateTile(agent.Puzzle, agent.Coords, Tile.Types.Solder);
 
                     agent.Puzzle.AddTile(tile);
 

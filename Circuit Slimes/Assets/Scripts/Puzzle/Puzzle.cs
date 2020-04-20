@@ -16,8 +16,9 @@ namespace Puzzle
 
         public LevelBoard Board { get; private set; }
 
-        public GameObject PuzzleObj { get; private set; }
+        public GameObject PiecesObj { get; private set; }
 
+        public GameObject TilesObj { get; private set; }
         #endregion
 
 
@@ -46,19 +47,13 @@ namespace Puzzle
             {
                 this.Board.PlaceTile(tile.Coords, tile);
             }
+
+            this.PiecesObj = this.transform.GetChild(0).gameObject;
+            this.TilesObj  = this.transform.GetChild(1).gameObject;
         }
 
         public void Destroy()
         {
-            foreach (var piece in this.Pieces)
-            {
-                GameObject.Destroy(piece.gameObject);
-            }
-
-            this.Pieces.Clear();
-
-            GameObject.Destroy(this.Board.gameObject);
-
             GameObject.Destroy(this.gameObject);
         }
 
@@ -72,6 +67,9 @@ namespace Puzzle
             this.Pieces.Add(piece);
             if (piece is Agent agent) this.Agents.Add(agent);
             this.Board.PlacePiece(piece.Coords, piece);
+
+            if (piece.transform.parent == null)
+                piece.transform.parent = this.PiecesObj.transform;
         }
 
         public void RemovePiece(Piece piece)
@@ -99,6 +97,9 @@ namespace Puzzle
         public void AddTile(Tile tile)
         {
             this.Board.PlaceTile(tile.Coords, tile);
+
+            if (tile.transform.parent == null)
+                tile.transform.parent = this.TilesObj.transform;
         }
 
         public void RemoveTile(Tile tile)

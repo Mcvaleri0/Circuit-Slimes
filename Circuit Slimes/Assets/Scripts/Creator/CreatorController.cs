@@ -211,17 +211,14 @@ namespace Creator
             // TODO: make the player choose where he wants the item
             Vector2Int coords = new Vector2Int(0, 3);
 
-            Transform parent;
             if (name.Contains("Tile"))
             {
-                parent = this.PuzzleObj.Find("Tiles");
-                Tile newTile = Tile.CreateTile(parent, this.Puzzle, coords, name);
+                Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
             }
             else
             {
-                parent = this.PuzzleObj.Find("Pieces");
-                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle, coords, name);
+                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
             }
         }

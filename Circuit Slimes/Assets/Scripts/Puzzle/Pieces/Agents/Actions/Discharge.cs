@@ -75,8 +75,7 @@ namespace Puzzle.Actions
                     LevelBoard.Directions ori = LevelBoard.GetDirection(component.Coords, this.TargetCoords);
 
                     this.Charge = (ElectricSlime) Piece.
-                        CreatePiece(component.transform.parent, component.Puzzle,
-                        this.TargetCoords, "ElectricSlime", ori, component.Turn + 1);
+                        CreatePiece(component.Puzzle, this.TargetCoords, "ElectricSlime", ori, component.Turn + 1);
 
                     component.Puzzle.AddPiece(this.Charge);
                 }
