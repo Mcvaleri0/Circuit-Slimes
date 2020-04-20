@@ -23,11 +23,10 @@ namespace Puzzle
         public int nLevels;
 
         private CreatorController CreatorController { get; set; }
-
         #endregion
 
-        #region /* Simulation Attributes */
 
+        #region /* Simulation Attributes */
         private enum RunState
         {
             Idle,
@@ -44,11 +43,9 @@ namespace Puzzle
 
         private int CurrentAgent  = 0;
         private int StoppedAgents = 0;
-
         #endregion
 
-
-
+        
         #region === Unity Events ===
 
         // Start is called before the first frame update
@@ -123,11 +120,11 @@ namespace Puzzle
 
                 if(!agent.Active)
                 {
-                    agent.SaveState();
-
                     agent.Turn++;
 
                     this.CurrentAgent++;
+
+                    this.StoppedAgents++;
 
                     return false;
                 }
@@ -203,18 +200,7 @@ namespace Puzzle
         public void Restart()
         {
             this.State = RunState.Idle;
-            this.Turn = 0;
             this.GoalTurn = 0;
-            this.CurrentAgent = 0;
-            this.StoppedAgents = 0;
-
-            foreach(var piece in this.Puzzle.Pieces)
-            {
-                if(piece is Agent agent)
-                {
-                    agent.State = Agent.States.Restart;
-                }
-            }
         }
         #endregion
 

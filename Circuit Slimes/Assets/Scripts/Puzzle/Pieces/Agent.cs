@@ -50,33 +50,7 @@ namespace Puzzle.Pieces
 
         public LevelBoard.Directions Orientation { get; set; }
 
-        protected struct AgentState
-        {
-            public bool Active { get; private set; }
-
-            public Vector2Int Coords { get; private set; }
-
-            public Statistics Stats { get; private set; }
-
-            public LevelBoard.Directions Orientation { get; private set; }
-
-            public Action ChosenAction { get; private set; }
-
-            public AgentState(bool active, Vector2Int coords, Statistics stats, LevelBoard.Directions ori, Action chosen)
-            {
-                this.Active = active;
-
-                this.Coords = coords;
-
-                this.Stats = stats;
-
-                this.Orientation = ori;
-
-                this.ChosenAction = chosen;
-            }
-        }
-
-        protected List<AgentState> StateLog;
+        public Dictionary<int, Action> ActionLog;
 
         public bool Active { get; protected set; }
 
@@ -90,7 +64,7 @@ namespace Puzzle.Pieces
 
             this.KnownActions = new List<Action>();
 
-            this.StateLog = new List<AgentState>();
+            this.ActionLog = new Dictionary<int, Action>();
 
             this.Orientation = ori;
 
@@ -124,9 +98,6 @@ namespace Puzzle.Pieces
                     // Decide on an Action
                     this.ChosenAction = Think();
 
-                    // Save a log of this State
-                    this.SaveState();
-
                     if (this.ChosenAction == null)
                     {
                         this.State = States.Waiting;
@@ -137,6 +108,8 @@ namespace Puzzle.Pieces
                     }
                     else
                     {
+                        this.ActionLog.Add(this.Turn, this.ChosenAction);
+
                         // Go to Act
                         this.State = States.Act;
                     }
@@ -158,10 +131,18 @@ namespace Puzzle.Pieces
                 case States.Rewind:
                     this.Turn--;
 
-                    this.LoadState();
+                    if(this.ActionLog.TryGetValue(this.Turn, out Action prevAction))
+                    {
+                        this.ChosenAction = prevAction;
 
-                    if(this.StateLog.Count > this.Turn + 1)
-                        this.StateLog.RemoveAt(this.Turn + 1);
+                        this.ActionLog.Remove(this.Turn);
+
+                        this.ChosenAction.Undo(this);
+                    }
+                    else
+                    {
+                        this.ChosenAction = null;
+                    }
 
                     this.State = States.Waiting;
                     break;
@@ -169,9 +150,7 @@ namespace Puzzle.Pieces
                 case States.Restart:
                     this.Turn = this.StartTurn;
 
-                    this.LoadState();
-
-                    this.StateLog.Clear();
+                    this.ActionLog.Clear();
 
                     this.State = States.Idle;
                     break;
@@ -211,8 +190,6 @@ namespace Puzzle.Pieces
         // Reactivates the Agent
         public void Reactivate(Vector2Int coords)
         {
-            this.SaveState();
-
             this.Active = true;
 
             this.Board.PlacePiece(coords, this);
@@ -225,13 +202,13 @@ namespace Puzzle.Pieces
 
 
         #region === Actuator Methods ===
-        public bool Rotate(LevelBoard.Directions targetDir)
+        public bool Rotate(LevelBoard.Directions targetDir, float percentage = 0.33f)
         {
             float currentAngle = this.transform.eulerAngles.y;
             float targetAngle  = 360 - ((float) targetDir) * 45f;
             if (targetAngle == 360) targetAngle = 0;
 
-            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, 0.33f);
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, percentage);
 
             if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
 
@@ -412,67 +389,6 @@ namespace Puzzle.Pieces
             }
 
             return pieces;
-        }
-        #endregion
-
-
-        #region === State Methods ===
-        public void SaveState()
-        {
-            var state = new AgentState(this.Active, this.Coords, this.Stats, this.Orientation, this.ChosenAction);
-
-            // If the a log of this turn already exists
-            if (this.StateLogExists(this.Turn))
-            {
-                // Replace it
-                this.StateLog[this.Turn] = state;
-            }
-
-            // If there is none
-            else
-            {
-                this.StateLog.Add(state);
-            }
-        }
-
-        protected bool StateLogExists(int turn)
-        {
-            var index = turn - this.StartTurn;
-
-            if (this.StateLog.Count > index)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        protected void LoadState()
-        {
-            var state = this.StateLog[this.Turn];
-
-            if(state.Active && !this.Active)
-            {
-                this.Reactivate(state.Coords);
-            }
-            else if(!state.Active && this.Active)
-            {
-                this.Deactivate();
-            }
-            else if(state.Coords != this.Coords)
-            {
-                this.Board.MovePiece(state.Coords, this);
-
-                this.transform.position = LevelBoard.WorldCoords(this.Coords);
-            }
-
-            this.Stats = state.Stats;
-
-            this.Orientation = state.Orientation;
-
-            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, 360 - ((int) this.Orientation) * 45, this.transform.eulerAngles.z);
-
-            this.ChosenAction = state.ChosenAction;
         }
         #endregion
     }

@@ -72,6 +72,39 @@ namespace Puzzle.Actions
 
             return false;
         }
+
+
+        public override bool Undo(Agent agent)
+        {
+            agent.Reactivate(agent.Coords);
+
+            if (this.TargetDeactivated)
+            {
+                this.Target.Reactivate(this.Target.Coords);
+
+                this.TargetDeactivated = false;
+            }
+
+            var tile = agent.Board.GetTile(this.TargetCoords);
+
+            if (tile == null)
+            {
+                tile = this.RecreateSolderTile(agent.Puzzle);
+
+                agent.Puzzle.AddTile(tile);
+            }
+
+            return base.Undo(agent);
+        }
+        #endregion
+
+        #region === Aux Methods ===
+        protected Tile RecreateSolderTile(Puzzle puzzle)
+        {
+            var target = Tile.CreateTile(puzzle, this.TargetCoords, Tile.Types.Solder);
+
+            return target;
+        }
         #endregion
     }
 }

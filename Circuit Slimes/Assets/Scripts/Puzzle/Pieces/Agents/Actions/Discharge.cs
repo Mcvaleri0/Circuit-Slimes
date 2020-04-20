@@ -41,7 +41,7 @@ namespace Puzzle.Actions
                     // If there are Slimes stored
                     if (component.Charges.Count > 0)
                     {
-                        charge = component.Charges.Peek(); // Get the next Slime to be discharged
+                        charge = component.Charges[0]; // Get the next Slime to be discharged
 
                         // Find the approapriate connection to discharge it to
                         var inDir  = LevelBoard.GetDirection(charge.Coords, component.Coords);
@@ -85,6 +85,18 @@ namespace Puzzle.Actions
                 }
                 
                 component.Stats.Food--;
+            }
+
+            return true;
+        }
+
+        override public bool Undo(Agent agent)
+        {
+            if (agent is CircuitComponent component)
+            {
+                component.ReceiveCharge(this.Charge);
+
+                component.Stats.Food++;
             }
 
             return true;

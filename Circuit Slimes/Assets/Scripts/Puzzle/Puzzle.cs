@@ -26,7 +26,6 @@ namespace Puzzle
 
 
         #region === Initialization Methods ===
-
         public void Initialize(LevelBoard board)
         {
             Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>());
@@ -92,7 +91,6 @@ namespace Puzzle
         {
             return this.Board.GetPiece(coords);
         }
-
         #endregion
 
 
