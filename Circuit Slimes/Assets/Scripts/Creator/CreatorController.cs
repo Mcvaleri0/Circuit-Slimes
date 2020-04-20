@@ -14,6 +14,7 @@ namespace Creator
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
+        private Transform  SaveButton { get; set; }
 
         #endregion
 
@@ -50,6 +51,8 @@ namespace Creator
         #region /* Player/Creator Mode Atributes */
 
         public bool Creator;
+
+        private const string PLAYER_PERMISSION_PATH = "Resources/PlayersPermission";
 
         #endregion  
 
@@ -93,6 +96,8 @@ namespace Creator
             this.InitializeCanvas();
 
             this.InitializeSelectionSystem();
+
+            this.InitializePlayerCreatorMode();
         }
 
         private void InitializePuzzle()
@@ -129,6 +134,14 @@ namespace Creator
             this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
         }
 
+        private void InitializePlayerCreatorMode()
+        {
+            if (!this.Creator)
+            {
+                this.SaveButton.gameObject.SetActive(false);
+            }
+        }
+
         #region = Initialization Aux Methods =
 
         private void InitializeScrollMenu(Transform canvas)
@@ -142,16 +155,17 @@ namespace Creator
         private void InitializeButtons(Transform canvas)
         {
             // Change SaveButton Location
-            Transform save = canvas.Find("Save Button");
-            RectTransform saveRect = save.GetComponent<RectTransform>();
+            this.SaveButton = canvas.Find("Save Button");
 
-            float x = (Screen.width  / 2) - (saveRect.sizeDelta.x / 2) - 5;
+            RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
+
+            float x = (Screen.width / 2) - (saveRect.sizeDelta.x / 2) - 5;
             float y = (Screen.height / 2) - (saveRect.sizeDelta.y / 2) - 5;
             saveRect.anchoredPosition = new Vector2(x, y);
 
             // add click listener
             int level = this.PuzzleController.CurrentLevel;
-            save.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+            this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
         }
 
         #endregion
