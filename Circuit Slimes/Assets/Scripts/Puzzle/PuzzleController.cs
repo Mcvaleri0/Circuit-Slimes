@@ -12,6 +12,8 @@ namespace Puzzle
 {
     public class PuzzleController : MonoBehaviour
     {
+        #region /* Level Attributes */
+
         public const string LEVELS_PATH = "./Assets/Resources/Levels";
 
         public Puzzle Puzzle { get; private set; }
@@ -20,6 +22,9 @@ namespace Puzzle
         public int CurrentLevel;
         public int nLevels;
 
+        #endregion
+
+        #region /* Simulation Attributes */
 
         private enum RunState
         {
@@ -38,10 +43,15 @@ namespace Puzzle
         private int CurrentAgent  = 0;
         private int StoppedAgents = 0;
 
+        #endregion
+
+
+
+        #region === Unity Events ===
+
         // Start is called before the first frame update
         void Start()
         {
-
             this.State = RunState.Idle;
 
             this.Turn = 0;
@@ -100,6 +110,8 @@ namespace Puzzle
                     break;
             }
         }
+
+        #endregion
 
 
         #region === Simulation Aux Methods ===

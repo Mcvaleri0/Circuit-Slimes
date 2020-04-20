@@ -17,6 +17,7 @@ namespace Creator
 
         #endregion
 
+
         #region /* Puzzle Atributes */
 
         private PuzzleController PuzzleController { get; set; }
@@ -24,6 +25,7 @@ namespace Creator
         private Transform PuzzleObj { get; set; }
 
         #endregion
+
 
         #region /* Selection Atributes */
 
@@ -43,6 +45,14 @@ namespace Creator
         private Vector3 Offset { get; set; }
 
         #endregion
+
+
+        #region /* Player/Creator Mode Atributes */
+
+        public bool Creator;
+
+        #endregion  
+
 
 
         #region === Unity Events ===
@@ -72,6 +82,7 @@ namespace Creator
         }
 
         #endregion
+
 
         #region === Initialization Methods ===
 
@@ -137,6 +148,7 @@ namespace Creator
         #endregion
 
         #endregion
+
 
         #region === Selection Methods ===
 
@@ -213,6 +225,7 @@ namespace Creator
 
         #endregion
 
+
         #region === Puzzle Manipulation Methods ===
 
         public void AddBoardItem(string name)
@@ -272,12 +285,11 @@ namespace Creator
             Tile tileNewPos   = this.Puzzle.GetTile(coords);
 
             // update the position of the object in the world
-            if ((this.PieceSelected != null && pieceNewPos == null) ||
+            if ((this.PieceSelected != null && (this.Creator || pieceNewPos == null)) ||
                 (this.TileSelected  != null && tileNewPos  == null))
             {
                 this.Selected.position = curPosition;
             }
-
         }
 
         #endregion
