@@ -207,7 +207,7 @@ namespace Creator
             {
                 this.SelectionManager.WhiteList.Add(childPiece);
             }
-            
+
             foreach (Transform childTile in this.Puzzle.TilesObj.transform)
             {
                 this.SelectionManager.WhiteList.Add(childTile);
@@ -308,12 +308,14 @@ namespace Creator
             {
                 Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
+                this.SelectionManager.WhiteList.Add(newTile.transform);
             }
             else
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
                 this.PiecesAdded.Add(newPiece);
+                this.SelectionManager.WhiteList.Add(newPiece.transform);
             }
         }
 
