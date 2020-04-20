@@ -174,10 +174,17 @@ namespace Creator
             this.SaveButton = canvas.Find("Save Button");
 
             RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
+        
+            saveRect.pivot = new Vector2(1, 1);
+            float x = -30; //x margin
+            float y = -30; //y margin
 
+            /*
             float x = (Screen.width / 2) - (saveRect.sizeDelta.x / 2) - 5;
             float y = (Screen.height / 2) - (saveRect.sizeDelta.y / 2) - 5;
-            saveRect.anchoredPosition = new Vector2(x, y);
+            */
+            saveRect.anchoredPosition = new Vector2(x,y);
+            
 
             // add click listener
             int level = this.PuzzleController.CurrentLevel;
