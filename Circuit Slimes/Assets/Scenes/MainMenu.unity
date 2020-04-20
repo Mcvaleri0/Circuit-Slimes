@@ -1357,4 +1357,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 1202103828}
   endOfPathInstruction: 1
-  speed: 10
+  speed: 3
