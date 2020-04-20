@@ -75,7 +75,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardHover = this.GetBoardHover();
 
         //Debug.Log(CurrentSelection);
-        Debug.Log(BoardCoords);
+        //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
     }
 

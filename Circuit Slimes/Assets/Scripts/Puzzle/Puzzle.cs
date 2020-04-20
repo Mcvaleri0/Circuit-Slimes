@@ -116,6 +116,11 @@ namespace Puzzle
             return this.Board.GetTile(coords);
         }
 
+        public void UpdateAllTiles()
+        {
+            this.Board.UpdateAllTiles();
+        }
+
         #endregion
 
 

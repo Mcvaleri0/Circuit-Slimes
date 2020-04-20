@@ -67,7 +67,7 @@ namespace Puzzle.Tiles
 
 
         //update mesh
-        private void UpdateMesh()
+        private void UpdateMesh(int tilesetnum = -1)
         {
 
             //update adjacent info
@@ -75,6 +75,8 @@ namespace Puzzle.Tiles
 
             AdjacentInfo = new BitArray( adjacent_tiles);
             var adjacent = getIntFromBitArray(AdjacentInfo);
+
+            if (tilesetnum != -1) adjacent = tilesetnum;
 
             #region set Mesh Rotation
 
@@ -189,9 +191,14 @@ namespace Puzzle.Tiles
             this.UpdateMesh();
         }
 
+        public override void UpdateTile(int tilesetnum)
+        {
+            this.UpdateMesh(tilesetnum);
+        }
+
 
         #region === Unity Methods ===
-       
+
         //Load Meshes
         private void Awake()
         {
