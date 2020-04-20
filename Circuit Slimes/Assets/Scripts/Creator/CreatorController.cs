@@ -358,7 +358,7 @@ namespace Creator
 
             // update the position of the object in the world
             if ((this.PieceSelected != null && (this.Creator || pieceNewPos == null)) ||
-                (this.TileSelected  != null && tileNewPos  == null))
+                (this.TileSelected  != null && (tileNewPos == null || tileNewPos == this.TileSelected)))
             {
                 this.Selected.position = curPosition;
             }
