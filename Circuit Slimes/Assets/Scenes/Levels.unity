@@ -980,6 +980,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4599292162391549816, guid: fb6f4036eeae96d45a2f79eb193b6543,
+        type: 3}
+      propertyPath: BoardSpaceSelection
+      value: 
+      objectReference: {fileID: 7912284932334567909, guid: 058245e4ac849f441a3a272070bcc200,
+        type: 3}
     - target: {fileID: 4599292162426540688, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.x

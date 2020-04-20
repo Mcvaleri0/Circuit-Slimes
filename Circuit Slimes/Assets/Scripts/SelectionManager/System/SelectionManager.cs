@@ -21,6 +21,13 @@ public class SelectionManager : MonoBehaviour
 
     public List<Transform> WhiteList = null;
 
+    //FIXME: In the future we should separate BoardSpaceSelection into its own script
+
+    //visual selection of the board space
+    public GameObject BoardSpaceSelection;
+    private Transform BoardSpaceSelectionTransform;
+    private MeshRenderer BoardSpaceSelectionRenderer;
+
     #region Initialization
 
     public void Initialize(Puzzle.PuzzleController puzzleController, Transform puzzleObject)
@@ -37,6 +44,13 @@ public class SelectionManager : MonoBehaviour
         this.Selector          = this.GetComponent<ISelector>();
         this.SelectionResponse = this.GetComponent<ISelectionResponse>();
         this.BoardCoordGetter  = this.GetComponent<BoardCoordGetter>();
+
+        //Board Space Selection
+        this.BoardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleObj);
+        this.BoardSpaceSelectionTransform = BoardSpaceSelection.transform;
+        this.BoardSpaceSelectionRenderer = BoardSpaceSelection.GetComponent<MeshRenderer>();
+
+        this.BoardSpaceSelectionRenderer.enabled = false;
     }
 
     #endregion
@@ -77,6 +91,12 @@ public class SelectionManager : MonoBehaviour
         //Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
+
+        //BoardSpaceSelection
+        this.BoardSpaceSelectionRenderer.enabled = BoardHover;
+        var spacepos = Puzzle.Board.LevelBoard.WorldCoords(this.BoardCoords);
+        spacepos.y += 0.1f;
+        this.BoardSpaceSelectionTransform.position = spacepos;
     }
 
     #endregion
