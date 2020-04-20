@@ -10,14 +10,23 @@ namespace Puzzle.Actions
     {
         public Piece Target { get; protected set; }
 
+        protected Piece.Caracteristics TargetCaracteristics;
+
         public SeekTarget(Piece target) : base()
         {
-            this.Target = target;
+            this.TargetCaracteristics = new Piece.Caracteristics(target);
+        }
+
+        protected SeekTarget(Piece.Caracteristics caracteristics) : base()
+        {
+            this.TargetCaracteristics = caracteristics;
         }
 
         public SeekTarget(Piece target, Vector2Int targetCoords, LevelBoard.Directions direction)
         {
             this.Target = target;
+
+            this.TargetCaracteristics = new Piece.Caracteristics(target);
 
             this.TargetCoords = targetCoords;
 
@@ -33,7 +42,7 @@ namespace Puzzle.Actions
             if(foundPieces.Count > 0)
             {
                 foreach (Piece piece in foundPieces) {
-                    if (this.Target.TypeMatches(piece))
+                    if (this.TargetCaracteristics.Equals(piece))
                     {
                         Vector2Int moveCoords = piece.Coords - agent.Coords;
                         moveCoords.x = (int) Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);

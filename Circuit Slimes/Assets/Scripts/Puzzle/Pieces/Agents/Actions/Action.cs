@@ -18,9 +18,9 @@ namespace Puzzle.Actions
             return true;
         }
 
-        public virtual void Undo(Agent agent)
+        public virtual bool Undo(Agent agent)
         {
-            return;
+            return true;
         }
 
 

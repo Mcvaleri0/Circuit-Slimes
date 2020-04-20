@@ -45,8 +45,7 @@ namespace Puzzle
 
         #endregion
 
-
-
+        
         #region === Unity Events ===
 
         // Start is called before the first frame update
@@ -132,8 +131,6 @@ namespace Puzzle
 
                 if(!agent.Active)
                 {
-                    agent.SaveState();
-
                     agent.Turn++;
 
                     this.CurrentAgent++;

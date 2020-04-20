@@ -15,7 +15,7 @@ namespace Puzzle.Pieces.Components
 
         protected bool On = false;
 
-        public Queue<ElectricSlime> Charges { get; protected set; }
+        public List<ElectricSlime> Charges { get; protected set; }
 
         public Dictionary<LevelBoard.Directions, Vector2Int> Connections { get; protected set; }
 
@@ -27,7 +27,7 @@ namespace Puzzle.Pieces.Components
 
             this.ComponentType = type;
 
-            this.Charges = new Queue<ElectricSlime>();
+            this.Charges = new List<ElectricSlime>();
 
             this.Connections = new Dictionary<LevelBoard.Directions, Vector2Int>();
         }
@@ -128,22 +128,31 @@ namespace Puzzle.Pieces.Components
                 charge.Deactivate();
             }
 
-            this.Charges.Enqueue(charge);
+            this.Charges.Add(charge);
+        }
+
+        public ElectricSlime ReleaseCharge(ElectricSlime charge, Vector2Int coords)
+        {
+            if (charge != null && this.Charges.Contains(charge))
+            {
+                this.Charges.Remove(charge);
+
+                charge.Reactivate(coords);
+
+                var outDir = LevelBoard.GetDirection(this.Coords, coords);
+                charge.Orientation = outDir;
+
+                return charge;
+            }
+
+            return null;
         }
 
         public ElectricSlime ReleaseCharge(Vector2Int coords)
         {
-            ElectricSlime charge = this.Charges.Dequeue();
+            ElectricSlime charge = this.Charges[0];
 
-            if (charge != null)
-            {
-                charge.Reactivate(coords);
-            }
-
-            var outDir = LevelBoard.GetDirection(this.Coords, coords);
-            charge.Orientation = outDir;
-
-            return charge;
+            return ReleaseCharge(charge, coords);
         }
         #endregion
     }

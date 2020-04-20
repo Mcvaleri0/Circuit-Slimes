@@ -35,5 +35,18 @@ namespace Puzzle.Actions
             
             return false;
         }
+
+        public override bool Undo(Agent agent)
+        {
+            agent.Rotate(this.Direction, 1f);
+
+            var oppositeDir = (LevelBoard.Directions) (((int) this.Direction + 4) % 8);
+            var origCoords = agent.Board.GetAdjacentCoords(this.TargetCoords, oppositeDir);
+            
+            agent.transform.position = LevelBoard.WorldCoords(origCoords);
+            agent.Board.MovePiece(origCoords, agent);
+
+            return base.Undo(agent);
+        }
     }
 }

@@ -67,6 +67,22 @@ namespace Puzzle.Actions
 
             return true;
         }
+
+        override public bool Undo(Agent agent)
+        {
+            if (agent is ElectricSlime slime)
+            {
+                this.Component.ReleaseCharge(slime, slime.Coords);
+
+                slime.Orientation = (LevelBoard.Directions) (((int) slime.Orientation + 4) % 8);
+
+                this.Component.Stats.Food--;
+
+                return true;
+            }
+
+            return false;
+        }
         #endregion
     }
 }

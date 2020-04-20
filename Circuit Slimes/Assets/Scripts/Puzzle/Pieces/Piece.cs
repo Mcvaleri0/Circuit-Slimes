@@ -61,6 +61,344 @@ namespace Puzzle
         public ComponentTypes ComponentType;
         public CandyTypes CandyType;
 
+        public struct Caracteristics
+        {
+            public Piece.Categories Category { get; private set; }
+
+            public Piece.SlimeTypes SlimeType { get; private set; }
+
+            public Piece.ComponentTypes ComponentType { get; private set; }
+
+            public Piece.CandyTypes CandyType { get; private set; }
+
+            public Caracteristics(Piece.Categories category, Piece.SlimeTypes sType)
+            {
+                this.Category = category;
+
+                this.SlimeType = sType;
+
+                this.ComponentType = Piece.ComponentTypes.None;
+
+                this.CandyType = Piece.CandyTypes.None;
+            }
+
+            public Caracteristics(Piece.Categories category, Piece.ComponentTypes cType)
+            {
+                this.Category = category;
+
+                this.SlimeType = Piece.SlimeTypes.None;
+
+                this.ComponentType = cType;
+
+                this.CandyType = Piece.CandyTypes.None;
+            }
+
+            public Caracteristics(Piece.Categories category, Piece.CandyTypes cdType)
+            {
+                this.Category = category;
+
+                this.SlimeType = Piece.SlimeTypes.None;
+
+                this.ComponentType = Piece.ComponentTypes.None;
+
+                this.CandyType = cdType;
+            }
+
+            public Caracteristics(Piece piece)
+            {
+                this.Category = piece.Category;
+
+                this.SlimeType = piece.SlimeType;
+
+                this.ComponentType = piece.ComponentType;
+
+                this.CandyType = piece.CandyType;
+            }
+
+            public Caracteristics(string name)
+            {
+                this.Category = ParseCategory(name);
+
+                switch(this.Category)
+                {
+                    default:
+                        this.SlimeType = SlimeTypes.None;
+                        this.ComponentType = ComponentTypes.None;
+                        this.CandyType = CandyTypes.None;
+                        break;
+
+                    case Categories.Slime:
+                        this.SlimeType = ParseSlimeType(name);
+                        this.ComponentType = ComponentTypes.None;
+                        this.CandyType = CandyTypes.None;
+                        break;
+
+                    case Categories.Component:
+                        this.SlimeType = SlimeTypes.None;
+                        this.ComponentType = ParseComponentType(name);
+                        this.CandyType = CandyTypes.None;
+                        break;
+
+                    case Categories.Candy:
+                        this.SlimeType = SlimeTypes.None;
+                        this.ComponentType = ComponentTypes.None;
+                        this.CandyType = ParseCandyType(name);
+                        break;
+                }
+            }
+
+            #region Parse Caracteristics
+            public static Piece.Categories ParseCategory(string name)
+            {
+                if (name.Contains("Slime"))
+                {
+                    return Categories.Slime;
+                }
+                else if (name.Contains("Candy"))
+                {
+                    return Categories.Candy;
+                }
+                else if (name.Contains("Component"))
+                {
+                    return Categories.Component;
+                }
+                else
+                {
+                    return Categories.None;
+                }
+            }
+
+            public static Piece.SlimeTypes ParseSlimeType(string name)
+            {
+                switch (name)
+                {
+                    case "ElectricSlime":
+                        return SlimeTypes.Electric;
+
+                    case "WaterSlime":
+                        return SlimeTypes.Water;
+
+                    case "SolderSlime":
+                        return SlimeTypes.Solder;
+
+                    default:
+                        return SlimeTypes.None;
+                }
+            }
+
+            public static Piece.ComponentTypes ParseComponentType(string name)
+            {
+                switch (name)
+                {
+                    case "GreenLED":
+                        return ComponentTypes.GreenLED;
+
+                    case "RedLED":
+                        return ComponentTypes.RedLED;
+
+                    case "CellBattery":
+                        return ComponentTypes.CellBattery;
+
+                    case "AABattery":
+                        return ComponentTypes.AABattery;
+
+                    case "9VBattery":
+                        return ComponentTypes.V9Battery;
+
+                    case "SingleChip":
+                        return ComponentTypes.SingleChip;
+
+                    case "DoubleChip":
+                        return ComponentTypes.DoubleChip;
+
+                    case "SquareChip":
+                        return ComponentTypes.SquareChip;
+
+                    case "SolderTile":
+                        return ComponentTypes.SolderTile;
+
+                    default:
+                        return ComponentTypes.None;
+                }
+            }
+
+            public static Piece.CandyTypes ParseCandyType(string name)
+            {
+                switch (name)
+                {
+                    case "WaterCandy":
+                        return CandyTypes.Water;
+
+                    case "SolderCandy":
+                        return CandyTypes.Solder;
+
+                    default:
+                        return CandyTypes.None;
+                }
+            }
+            #endregion
+
+            #region ToString
+            override public string ToString()
+            {
+                var name = CategoryToString();
+
+                switch(this.Category)
+                {
+                    default:
+                        break;
+
+                    case Categories.Slime:
+                        name += SlimeTypeToString();
+                        break;
+
+                    case Categories.Component:
+                        name = ComponentTypeToString();
+                        break;
+
+                    case Categories.Candy:
+                        name = CandyTypeToString() + name;
+                        break;
+                }
+
+                return name;
+            }
+
+            private string CategoryToString()
+            {
+                switch(this.Category)
+                {
+                    default:
+                    case Categories.Component:
+                        return "";
+
+                    case Categories.Slime:
+                        return "Slime";
+
+                    case Categories.Candy:
+                        return "Candy";
+                }
+            }
+
+            private string SlimeTypeToString()
+            {
+                switch(this.SlimeType)
+                {
+                    default:
+                        return "";
+
+                    case SlimeTypes.Electric:
+                        return "Electric";
+
+                    case SlimeTypes.Solder:
+                        return "Solder";
+
+                    case SlimeTypes.Water:
+                        return "Water";
+                }
+            }
+
+            private string ComponentTypeToString()
+            {
+                switch (this.ComponentType)
+                {
+                    case ComponentTypes.GreenLED:
+                        return "GreenLED";
+
+                    case ComponentTypes.RedLED:
+                        return "RedLED";
+
+                    case ComponentTypes.CellBattery:
+                        return "CellBattery";
+
+                    case ComponentTypes.AABattery:
+                        return "AABattery";
+
+                    case ComponentTypes.V9Battery:
+                        return "9VBattery";
+
+                    case ComponentTypes.SingleChip:
+                        return "SingleChip";
+
+                    case ComponentTypes.DoubleChip:
+                        return "DoubleChip";
+
+                    case ComponentTypes.SquareChip:
+                        return "SquareChip";
+
+                    case ComponentTypes.SolderTile:
+                        return "SolderTile";
+
+                    default:
+                        return "";
+                }
+            }
+
+            private string CandyTypeToString()
+            {
+                switch(this.CandyType)
+                {
+                    default:
+                        return "";
+
+                    case CandyTypes.Solder:
+                        return "Solder";
+
+                    case CandyTypes.Water:
+                        return "Water";
+                }
+            }
+            #endregion
+
+            #region Equals
+            public bool Equals(Caracteristics caracteristics)
+            {
+                if (this.Category == caracteristics.Category)
+                {
+                    switch (this.Category)
+                    {
+                        default:
+                            break;
+
+                        case Piece.Categories.Slime:
+                            return this.SlimeType == caracteristics.SlimeType;
+
+                        case Piece.Categories.Component:
+                            return this.ComponentType == caracteristics.ComponentType;
+
+                        case Piece.Categories.Candy:
+                            return this.CandyType == caracteristics.CandyType;
+                    }
+                }
+
+                return false;
+            }
+
+            public bool Equals(Piece piece)
+            {
+                if (this.Category == piece.Category)
+                {
+                    switch (this.Category)
+                    {
+                        default:
+                            break;
+
+                        case Piece.Categories.Slime:
+                            return this.SlimeType == piece.SlimeType;
+
+                        case Piece.Categories.Component:
+                            return this.ComponentType == piece.ComponentType;
+
+                        case Piece.Categories.Candy:
+                            return this.CandyType == piece.CandyType;
+                    }
+                }
+
+                return false;
+            }
+            #endregion
+        }
+        
 
         #region === Instantiate ===
 
