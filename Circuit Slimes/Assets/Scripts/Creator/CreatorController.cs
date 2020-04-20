@@ -14,6 +14,7 @@ namespace Creator
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
+        private Transform  SaveButton { get; set; }
 
         #endregion
 
@@ -23,6 +24,7 @@ namespace Creator
         private PuzzleController PuzzleController { get; set; }
         private Puzzle.Puzzle Puzzle { get; set; }
         private Transform PuzzleObj { get; set; }
+
 
         #endregion
 
@@ -49,7 +51,11 @@ namespace Creator
 
         #region /* Player/Creator Mode Atributes */
 
+        private const string PLAYER_PERMISSION_PATH = "Resources/PlayersPermission";
+
         public bool Creator;
+
+        public List<Piece> PiecesAdded { get; private set; }
 
         #endregion  
 
@@ -93,14 +99,25 @@ namespace Creator
             this.InitializeCanvas();
 
             this.InitializeSelectionSystem();
+
+            this.InitializePlayerCreatorMode();
         }
 
         private void InitializePuzzle()
         {
             this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
-            this.PuzzleObj = GameObject.Find("Puzzle").transform;
 
-            this.Puzzle = this.PuzzleController.Puzzle;
+            if (this.Creator)
+            {
+                // TODO: Choose Level
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+            else
+            {
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+
+            this.PuzzleObj = GameObject.Find("Puzzle").transform;
         }
 
         private void InitializeCanvas()
@@ -120,6 +137,16 @@ namespace Creator
             this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
         }
 
+        private void InitializePlayerCreatorMode()
+        {
+            if (!this.Creator)
+            {
+                this.SaveButton.gameObject.SetActive(false);
+            }
+
+            this.PiecesAdded = new List<Piece>();
+        }
+
         #region = Initialization Aux Methods =
 
         private void InitializeScrollMenu(Transform canvas)
@@ -133,16 +160,17 @@ namespace Creator
         private void InitializeButtons(Transform canvas)
         {
             // Change SaveButton Location
-            Transform save = canvas.Find("Save Button");
-            RectTransform saveRect = save.GetComponent<RectTransform>();
+            this.SaveButton = canvas.Find("Save Button");
 
-            float x = (Screen.width  / 2) - (saveRect.sizeDelta.x / 2) - 5;
+            RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
+
+            float x = (Screen.width / 2) - (saveRect.sizeDelta.x / 2) - 5;
             float y = (Screen.height / 2) - (saveRect.sizeDelta.y / 2) - 5;
             saveRect.anchoredPosition = new Vector2(x, y);
 
             // add click listener
             int level = this.PuzzleController.CurrentLevel;
-            save.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+            this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
         }
 
         #endregion
@@ -244,6 +272,12 @@ namespace Creator
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
+                this.PiecesAdded.Add(newPiece);
+
+                foreach (Piece p in this.PiecesAdded)
+                {
+                    Debug.Log(p);
+                }
             }
         }
 

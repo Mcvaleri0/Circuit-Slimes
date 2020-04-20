@@ -22,6 +22,8 @@ namespace Puzzle
         public int CurrentLevel;
         public int nLevels;
 
+        private CreatorController CreatorController { get; set; }
+
         #endregion
 
         #region /* Simulation Attributes */
@@ -56,19 +58,8 @@ namespace Puzzle
 
             this.Turn = 0;
 
-            // TODO: change when creator can choose level
-            this.LoadPuzzle(this.CurrentLevel);
-
-            GameObject create = GameObject.Find("CreatorController");
-            if (create != null)
-            {
-                CreatorController controller = create.GetComponent<CreatorController>();
-                controller.Initialize();
-            }
-            //else
-            //{
-            //    this.LoadPuzzle(this.CurrentLevel);
-            //}
+            this.CreatorController = GameObject.Find("CreatorController").GetComponent<CreatorController>();
+            this.CreatorController.Initialize();
         }
 
         // Update is called once per frame
@@ -242,7 +233,7 @@ namespace Puzzle
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
 
-        public void LoadPuzzle(int level)
+        public Puzzle LoadPuzzle(int level)
         {
             // this needs to be like this because UnityEngine overrides != == operators
             // because of that null and "null" exist. when using the operators, 
@@ -257,6 +248,8 @@ namespace Puzzle
             this.Puzzle = PuzzleData.Load(LEVELS_PATH, "Level" + level);
 
             Debug.Log("Puzzle Loaded");
+
+            return this.Puzzle;
         }
 
         public void ClearPuzzle()
