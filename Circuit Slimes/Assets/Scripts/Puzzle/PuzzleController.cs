@@ -124,6 +124,8 @@ namespace Puzzle
 
                     this.CurrentAgent++;
 
+                    this.StoppedAgents++;
+
                     return false;
                 }
 

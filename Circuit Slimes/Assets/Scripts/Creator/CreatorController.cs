@@ -314,7 +314,6 @@ namespace Creator
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
-                this.PiecesAdded.Add(coords, new Piece.Caracteristics(name));
                 this.SelectionManager.WhiteList.Add(newPiece.transform);
             }
         }
@@ -333,7 +332,6 @@ namespace Creator
                 if (pieceToRemove != null)
                 {
                     this.Puzzle.RemovePiece(pieceToRemove);
-                    this.PiecesAdded.Remove(coords);
                     GameObject.Destroy(objToRemove);
                 }
                 else if (tileToRemove != null)
