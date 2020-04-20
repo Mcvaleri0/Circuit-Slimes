@@ -15,7 +15,10 @@ namespace Puzzle.Pieces.Slimes
         {
             base.Start();
 
+            this.SlimeType = SlimeTypes.Water;
+
             this.KnownActions.Add(new Eat(new Candy(CandyTypes.Water)));
+            this.KnownActions.Add(new Kamikaze());
 
             this.Stats = new Statistics(10, 10, 5);
         }
