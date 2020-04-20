@@ -227,6 +227,10 @@ namespace Puzzle
             // FIXME: not sure if this works on a phone
             // the exemple used Application.persistentDataPath
             // yeah... this doesn't work on a phone. we need to use the persistentdatapath
+            this.Puzzle.Permissions.Add("SolderCandy");
+            this.Puzzle.Permissions.Add("SolderSlime");
+            this.Puzzle.Permissions.Add("WaterCandy");
+            this.Puzzle.Permissions.Add("WaterSlime");
             PuzzleData puzzleData = new PuzzleData(this.Puzzle);
             puzzleData.Save(LEVELS_PATH, "Level" + level);
 

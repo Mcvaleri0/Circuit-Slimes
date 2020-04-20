@@ -18,6 +18,7 @@ namespace Puzzle.Data
         public BoardData   Board;
         public PieceData[] Pieces;
         public TileData[]  Tiles;
+        public string[]    Permissions;
 
 
         public PuzzleData(Puzzle puzzle)
@@ -39,6 +40,8 @@ namespace Puzzle.Data
             {
                 this.Tiles[i] = new TileData(tiles[i]);
             }
+
+            this.Permissions = puzzle.Permissions.ToArray();
         }
 
 
@@ -92,8 +95,20 @@ namespace Puzzle.Data
             }
             #endregion
 
+            #region Create Permissions
+            List<string> permList = new List<string>();
+
+            if (puzzleData.Permissions != null)
+            {
+                foreach (string perm in puzzleData.Permissions)
+                {
+                    permList.Add(perm);
+                }
+            }
+            #endregion
+
             // Initialiaze Puzzle
-            puzzle.Initialize(board, pieceList, tileList);
+            puzzle.Initialize(board, pieceList, tileList, permList);
 
             return puzzle;
         }
