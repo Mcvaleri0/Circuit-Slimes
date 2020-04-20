@@ -11,8 +11,6 @@ public class BackToMenu : MonoBehaviour
     private Text BackButtonText;
     private Rect BackButtonRect;
 
-    private bool Hover = false;
-
     private enum State
     {
         Normal,
