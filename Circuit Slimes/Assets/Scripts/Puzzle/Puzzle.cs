@@ -14,9 +14,6 @@ namespace Puzzle
 
         public List<Agent> Agents { get; private set; }
 
-        private Dictionary<int, Dictionary<Piece, Vector2Int>> RemovedPieces;
-        private Dictionary<int, Dictionary<Tile, Vector2Int>> RemovedTiles;
-
         public LevelBoard Board { get; private set; }
 
         public GameObject PiecesObj { get; private set; }
@@ -29,7 +26,6 @@ namespace Puzzle
 
 
         #region === Initialization Methods ===
-
         public void Initialize(LevelBoard board)
         {
             Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>());

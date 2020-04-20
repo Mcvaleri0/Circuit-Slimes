@@ -21,9 +21,10 @@ namespace Creator
         #region /* Puzzle Atributes */
 
         private PuzzleController PuzzleController { get; set; }
-        private Puzzle.Puzzle Puzzle { get; set; }
-        private Transform PuzzleObj { get; set; }
 
+        private Puzzle.Puzzle Puzzle { get; set; }
+
+        private Transform PuzzleObj { get; set; }
         #endregion
 
 
@@ -53,12 +54,11 @@ namespace Creator
 
         public bool Creator;
 
-        public List<Piece> PiecesAdded { get; private set; }
+        public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
 
         private List<string> PrefabsAllowed { get; set; }
 
         #endregion  
-
 
 
         #region === Unity Events ===
@@ -152,7 +152,7 @@ namespace Creator
                 this.SelectionManager.WhiteList = new List<Transform>();
             }
 
-            this.PiecesAdded = new List<Piece>();
+            this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
         }
 
         #region = Initialization Aux Methods =
@@ -314,7 +314,7 @@ namespace Creator
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
-                this.PiecesAdded.Add(newPiece);
+                this.PiecesAdded.Add(coords, new Piece.Caracteristics(name));
                 this.SelectionManager.WhiteList.Add(newPiece.transform);
             }
         }
@@ -333,6 +333,7 @@ namespace Creator
                 if (pieceToRemove != null)
                 {
                     this.Puzzle.RemovePiece(pieceToRemove);
+                    this.PiecesAdded.Remove(coords);
                     GameObject.Destroy(objToRemove);
                 }
                 else if (tileToRemove != null)
