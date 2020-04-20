@@ -12,7 +12,6 @@ namespace Creator
     {
         #region /* Constants */
 
-        private const string ITEMS_PATH  = "Prefabs/Board Items";
         private const string BUTTON_PATH = "Prefabs/Creator/Button";
 
         #endregion
@@ -31,23 +30,23 @@ namespace Creator
         #endregion 
 
 
-        public ScrollMenu(CreatorController controller, Transform menu, Transform content)
+        public ScrollMenu(CreatorController controller, Transform menu, Transform content, List<string> options)
         {
             this.Crontroller = controller;
 
             this.Menu = menu;
             this.MenuContent = content;
 
-            this.Initialize();
+            this.Initialize(options);
         }
 
 
         #region === Initialization Methods === 
 
-        private void Initialize()
+        private void Initialize(List<string> options)
         {
             this.ResizeMenu();
-            this.PopulateContent();
+            this.PopulateContent(options);
         }
 
         private void ResizeMenu()
@@ -57,14 +56,13 @@ namespace Creator
             rect.anchoredPosition = new Vector2(0, -3 * Screen.height / 8);
         }
 
-        private void PopulateContent()
+        private void PopulateContent(List<string> options)
         {
-            Object[] icons = Resources.LoadAll(ITEMS_PATH);
             Object button  = Resources.Load(BUTTON_PATH);
 
-            foreach (Object icon in icons)
+            foreach (string opt in options)
             {
-                this.InstantiateOption(icon.name, button);
+                this.InstantiateOption(opt, button);
             }
 
         }

@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using Puzzle;
 
 
@@ -24,7 +23,6 @@ namespace Creator
         private PuzzleController PuzzleController { get; set; }
         private Puzzle.Puzzle Puzzle { get; set; }
         private Transform PuzzleObj { get; set; }
-
 
         #endregion
 
@@ -51,11 +49,13 @@ namespace Creator
 
         #region /* Player/Creator Mode Atributes */
 
-        private const string PLAYER_PERMISSION_PATH = "Resources/PlayersPermission";
+        private const string ITEMS_PATH = "Prefabs/Board Items";
 
         public bool Creator;
 
         public List<Piece> PiecesAdded { get; private set; }
+
+        private List<string> PrefabsAllowed { get; set; }
 
         #endregion  
 
@@ -96,11 +96,11 @@ namespace Creator
         {
             this.InitializePuzzle();
 
+            this.InitializePlayerCreatorMode();
+
             this.InitializeCanvas();
 
             this.InitializeSelectionSystem();
-
-            this.InitializePlayerCreatorMode();
         }
 
         private void InitializePuzzle()
@@ -141,8 +141,19 @@ namespace Creator
         {
             if (!this.Creator)
             {
-                this.SaveButton.gameObject.SetActive(false);
+                this.PrefabsAllowed = this.Puzzle.Permissions;
             }
+            else
+            {
+                Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
+                this.PrefabsAllowed = new List<string>();
+
+                foreach (Object prefab in prefabs)
+                {
+                    this.PrefabsAllowed.Add(prefab.name);
+                }
+            }
+
 
             this.PiecesAdded = new List<Piece>();
         }
@@ -154,7 +165,7 @@ namespace Creator
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
-            this.ScrollMenu = new ScrollMenu(this, menu, content);
+            this.ScrollMenu = new ScrollMenu(this, menu, content, this.PrefabsAllowed);
         }
 
         private void InitializeButtons(Transform canvas)
@@ -171,6 +182,11 @@ namespace Creator
             // add click listener
             int level = this.PuzzleController.CurrentLevel;
             this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+
+            if (!this.Creator)
+            {
+                this.SaveButton.gameObject.SetActive(false);
+            }
         }
 
         #endregion
@@ -273,11 +289,6 @@ namespace Creator
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
                 this.PiecesAdded.Add(newPiece);
-
-                foreach (Piece p in this.PiecesAdded)
-                {
-                    Debug.Log(p);
-                }
             }
         }
 
