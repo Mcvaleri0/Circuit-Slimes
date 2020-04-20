@@ -98,9 +98,18 @@ namespace Creator
         private void InitializePuzzle()
         {
             this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
-            this.PuzzleObj = GameObject.Find("Puzzle").transform;
 
-            this.Puzzle = this.PuzzleController.Puzzle;
+            if (this.Creator)
+            {
+                // TODO: Choose Level
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+            else
+            {
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+
+            this.PuzzleObj = GameObject.Find("Puzzle").transform;
         }
 
         private void InitializeCanvas()
