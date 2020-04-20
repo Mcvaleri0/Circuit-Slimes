@@ -37,7 +37,7 @@ public class SelectionManager : MonoBehaviour
         this.PuzzleObj = puzzleObject;
 
         //board
-        this.BoardTransform = this.GetPuzzleBoard();
+        this.BoardTransform = this.PuzzleObj.Find("Board").transform;
 
         //ray provider, selector, coordgetter and response
         this.RayProvider       = this.GetComponent<IRayProvider>();
@@ -46,9 +46,20 @@ public class SelectionManager : MonoBehaviour
         this.BoardCoordGetter  = this.GetComponent<BoardCoordGetter>();
 
         //Board Space Selection
-        this.BoardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleObj);
-        this.BoardSpaceSelectionTransform = BoardSpaceSelection.transform;
-        this.BoardSpaceSelectionRenderer = BoardSpaceSelection.GetComponent<MeshRenderer>();
+        this.InitializeBoardSpaceSelection();
+    }
+
+    private void ReInitialise()
+    {
+        this.PuzzleObj = GameObject.Find("Puzzle").transform;
+        this.BoardTransform = this.PuzzleObj.Find("Board").transform;
+    }
+
+    public void InitializeBoardSpaceSelection() {
+
+        var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleObj);
+        this.BoardSpaceSelectionTransform = boardSpaceSelection.transform;
+        this.BoardSpaceSelectionRenderer = boardSpaceSelection.GetComponent<MeshRenderer>();
 
         this.BoardSpaceSelectionRenderer.enabled = false;
     }
@@ -61,6 +72,8 @@ public class SelectionManager : MonoBehaviour
 
     private void Update()
     {
+        if (BoardTransform == null) ReInitialise(); //FIXME this was a quick hack just so it works
+
         var ray = this.RayProvider.CreateRay();
 
 
@@ -93,10 +106,17 @@ public class SelectionManager : MonoBehaviour
         //Debug.Log(BoardHover);
 
         //BoardSpaceSelection
+        if(this.BoardSpaceSelectionTransform == null)
+        {
+            this.InitializeBoardSpaceSelection();
+        }
+
+        
         this.BoardSpaceSelectionRenderer.enabled = BoardHover;
         var spacepos = Puzzle.Board.LevelBoard.WorldCoords(this.BoardCoords);
         spacepos.y += 0.1f;
         this.BoardSpaceSelectionTransform.position = spacepos;
+        
     }
 
     #endregion
@@ -117,11 +137,6 @@ public class SelectionManager : MonoBehaviour
     private bool GetBoardHover()
     {
         return this.BoardCoordGetter.GetHover();
-    }
-
-    private Transform GetPuzzleBoard()
-    {
-        return PuzzleObj.Find("Board").transform;
     }
 
     #endregion
