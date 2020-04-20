@@ -22,6 +22,9 @@ namespace Puzzle
         public GameObject PiecesObj { get; private set; }
 
         public GameObject TilesObj { get; private set; }
+
+        public List<string> Permissions { get; private set; }
+
         #endregion
 
 
@@ -29,13 +32,14 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>());
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>());
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions)
         {
             this.Board  = board;
             this.Pieces = pieces;
+            this.Permissions = permissions;
 
             this.Agents = new List<Agent>();
 

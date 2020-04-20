@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using Puzzle;
 
 
@@ -14,6 +13,7 @@ namespace Creator
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
+        private Transform  SaveButton { get; set; }
 
         #endregion
 
@@ -49,7 +49,13 @@ namespace Creator
 
         #region /* Player/Creator Mode Atributes */
 
+        private const string ITEMS_PATH = "Prefabs/Board Items";
+
         public bool Creator;
+
+        public List<Piece> PiecesAdded { get; private set; }
+
+        private List<string> PrefabsAllowed { get; set; }
 
         #endregion  
 
@@ -90,17 +96,28 @@ namespace Creator
         {
             this.InitializePuzzle();
 
-            this.InitializeCanvas();
-
             this.InitializeSelectionSystem();
+
+            this.InitializePlayerCreatorMode();
+
+            this.InitializeCanvas();
         }
 
         private void InitializePuzzle()
         {
             this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
-            this.PuzzleObj = GameObject.Find("Puzzle").transform;
 
-            this.Puzzle = this.PuzzleController.Puzzle;
+            if (this.Creator)
+            {
+                // TODO: Choose Level
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+            else
+            {
+                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+            }
+
+            this.PuzzleObj = GameObject.Find("Puzzle").transform;
         }
 
         private void InitializeCanvas()
@@ -120,6 +137,24 @@ namespace Creator
             this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
         }
 
+        private void InitializePlayerCreatorMode()
+        {
+            if (this.Creator)
+            {
+                this.InitializePreffabsListCreator();
+
+                this.InitializeWhiteListCreator();
+            }
+            else
+            {
+                this.PrefabsAllowed = this.Puzzle.Permissions;
+                
+                this.SelectionManager.WhiteList = new List<Transform>();
+            }
+
+            this.PiecesAdded = new List<Piece>();
+        }
+
         #region = Initialization Aux Methods =
 
         private void InitializeScrollMenu(Transform canvas)
@@ -127,22 +162,56 @@ namespace Creator
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
-            this.ScrollMenu = new ScrollMenu(this, menu, content);
+            this.ScrollMenu = new ScrollMenu(this, menu, content, this.PrefabsAllowed);
         }
 
         private void InitializeButtons(Transform canvas)
         {
             // Change SaveButton Location
-            Transform save = canvas.Find("Save Button");
-            RectTransform saveRect = save.GetComponent<RectTransform>();
+            this.SaveButton = canvas.Find("Save Button");
 
-            float x = (Screen.width  / 2) - (saveRect.sizeDelta.x / 2) - 5;
-            float y = (Screen.height / 2) - (saveRect.sizeDelta.y / 2) - 5;
-            saveRect.anchoredPosition = new Vector2(x, y);
+            RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
+        
+            saveRect.pivot = new Vector2(1, 1);
+            float x = -30; //x margin
+            float y = -30; //y margin
 
+            saveRect.anchoredPosition = new Vector2(x,y);
+            
             // add click listener
             int level = this.PuzzleController.CurrentLevel;
-            save.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+            this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+
+            if (!this.Creator)
+            {
+                this.SaveButton.gameObject.SetActive(false);
+            }
+        }
+
+        private void InitializePreffabsListCreator()
+        {
+            Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
+            this.PrefabsAllowed = new List<string>();
+
+            foreach (Object prefab in prefabs)
+            {
+                this.PrefabsAllowed.Add(prefab.name);
+            }
+        }
+
+        private void InitializeWhiteListCreator()
+        {
+            this.SelectionManager.WhiteList = new List<Transform>();
+
+            foreach (Transform childPiece in this.Puzzle.PiecesObj.transform)
+            {
+                this.SelectionManager.WhiteList.Add(childPiece);
+            }
+
+            foreach (Transform childTile in this.Puzzle.TilesObj.transform)
+            {
+                this.SelectionManager.WhiteList.Add(childTile);
+            }
         }
 
         #endregion
@@ -239,11 +308,14 @@ namespace Creator
             {
                 Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
+                this.SelectionManager.WhiteList.Add(newTile.transform);
             }
             else
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
+                this.PiecesAdded.Add(newPiece);
+                this.SelectionManager.WhiteList.Add(newPiece.transform);
             }
         }
 
@@ -286,7 +358,7 @@ namespace Creator
 
             // update the position of the object in the world
             if ((this.PieceSelected != null && (this.Creator || pieceNewPos == null)) ||
-                (this.TileSelected  != null && tileNewPos  == null))
+                (this.TileSelected  != null && (tileNewPos == null || tileNewPos == this.TileSelected)))
             {
                 this.Selected.position = curPosition;
             }
