@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 4801613831097513330}
   - component: {fileID: 2818532368574910595}
   - component: {fileID: 6646683838770167212}
+  - component: {fileID: -5569338728021568923}
   m_Layer: 5
-  m_Name: Button 1
+  m_Name: AvailableButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +118,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2818532368574910595}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -5569338728021568923}
+        m_MethodName: ToogleAvailability
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-5569338728021568923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039773094329873371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6989d7278bf678d4bb0fcbc924875020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1471077919361537684
 GameObject:
   m_ObjectHideFlags: 0

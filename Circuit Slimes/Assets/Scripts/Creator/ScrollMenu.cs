@@ -30,23 +30,23 @@ namespace Creator
         #endregion 
 
 
-        public ScrollMenu(CreatorController controller, Transform menu, Transform content, List<string> options)
+        public ScrollMenu(CreatorController controller, Transform menu, Transform content, List<string> options, List<string> available)
         {
             this.Crontroller = controller;
 
             this.Menu = menu;
             this.MenuContent = content;
 
-            this.Initialize(options);
+            this.Initialize(options, available);
         }
 
 
         #region === Initialization Methods === 
 
-        private void Initialize(List<string> options)
+        private void Initialize(List<string> options, List<string> available)
         {
             this.ResizeMenu();
-            this.PopulateContent(options);
+            this.PopulateContent(options, available);
         }
 
         private void ResizeMenu()
@@ -56,13 +56,13 @@ namespace Creator
             rect.anchoredPosition = new Vector2(0, -3 * Screen.height / 8);
         }
 
-        private void PopulateContent(List<string> options)
+        private void PopulateContent(List<string> options, List<string> available)
         {
             Object optionButton  = Resources.Load(BUTTONS_PATH + "OptionButton");
 
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, optionButton);
+                this.InstantiateOption(opt, optionButton, available);
             }
 
         }
@@ -71,7 +71,7 @@ namespace Creator
 
         #region === Instantiate Methods ===
 
-        private void InstantiateOption(string text, Object button)
+        private void InstantiateOption(string text, Object button, List<string> available)
         {
             GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
@@ -81,7 +81,10 @@ namespace Creator
             if (this.Crontroller.Creator)
             {
                 Object availableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
-                GameObject.Instantiate(availableButton, newObj.transform);
+                GameObject avlBtnObj   = (GameObject) GameObject.Instantiate(availableButton, newObj.transform);
+                AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
+
+                avlBtnScrp.Initialize(this.Crontroller, text, available.Contains(text));
             }
         }
 
