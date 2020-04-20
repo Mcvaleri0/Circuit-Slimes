@@ -21,8 +21,6 @@ namespace Puzzle.Actions
 
             this.TargetCoords = targetCoords;
 
-            this.TargetPosition = LevelBoard.WorldCoords(targetCoords);
-
             this.Direction = direction;
         }
 

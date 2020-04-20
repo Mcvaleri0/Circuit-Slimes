@@ -178,6 +178,14 @@ namespace Creator
                 // one of them is always null
                 this.PieceSelected = this.Selected.GetComponent<Piece>();
                 this.TileSelected  = this.Selected.GetComponent<Tile>();
+
+                //reset and disable tile temporarily (visual) 
+                if (this.TileSelected != null)
+                {
+                    //this.TileSelected.UpdateTile(0); 
+                    this.TileSelected.enabled = false;
+                }
+                
             }
         }
 
@@ -196,6 +204,9 @@ namespace Creator
                 else
                 {
                     this.Puzzle.MoveTile(newPos, this.TileSelected);
+
+                    //re-enable tile  (visual)
+                    this.TileSelected.enabled = true;
                 }
             }
         }
@@ -211,17 +222,14 @@ namespace Creator
             // TODO: make the player choose where he wants the item
             Vector2Int coords = new Vector2Int(0, 3);
 
-            Transform parent;
             if (name.Contains("Tile"))
             {
-                parent = this.PuzzleObj.Find("Tiles");
-                Tile newTile = Tile.CreateTile(parent, this.Puzzle, coords, name);
+                Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
             }
             else
             {
-                parent = this.PuzzleObj.Find("Pieces");
-                Piece newPiece = Piece.CreatePiece(parent, this.Puzzle, coords, name);
+                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
             }
         }
@@ -252,17 +260,26 @@ namespace Creator
 
         private void MoveBoardItem()
         {
+            //get board coords
+            Vector2Int coords = this.SelectionManager.BoardCoords;
+
+            //convert grid coords in world coords
+            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + Offset;
+
+            /*
             // keep track of the mouse position
             Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
 
             // convert the screen mouse position to world point and adjust with offset
             Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
+            */
 
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
 
             // update the position of the object in the world
             this.Selected.position = curPosition;
+
         }
 
         #endregion

@@ -19,33 +19,46 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
-        public void PlacePiece(int x, Piece piece)
+        public bool PlacePiece(int x, Piece piece)
         {
             Space space;
             try
             {
                 space = this.Spaces[x];
+
+                if(space.Piece == null)
+                {
+                    space.Piece = piece;
+                    return true;
+                }
             }
             catch (KeyNotFoundException)
             {
                 space = new Space(new Vector2(x, this.Id));
                 this.Spaces[x] = space;
+                space.Piece = piece;
+                return true;
             }
 
-            space.Piece = piece;
+            return false;
         }
 
         public Piece RemovePiece(int x)
         {
-            var space = this.Spaces[x];
-
-            if (space != null)
+            Space space;
+            try
             {
-                var piece = this.Spaces[x].Piece;
-                this.Spaces[x].Piece = null;
+                space = this.Spaces[x];
 
-                return piece;
+                if (space != null)
+                {
+                    var piece = this.Spaces[x].Piece;
+                    this.Spaces[x].Piece = null;
+
+                    return piece;
+                }
             }
+            catch (KeyNotFoundException) { }
 
             return null;
         }
@@ -83,15 +96,20 @@ namespace Puzzle.Board
 
         public Tile RemoveTile(int x)
         {
-            var space = this.Spaces[x];
-
-            if (space != null)
+            Space space;
+            try
             {
-                var tile = this.Spaces[x].Tile;
-                this.Spaces[x].Tile = null;
+                space = this.Spaces[x];
 
-                return tile;
+                if (space != null)
+                {
+                    var tile = this.Spaces[x].Tile;
+                    this.Spaces[x].Tile = null;
+
+                    return tile;
+                }
             }
+            catch (KeyNotFoundException) { }
 
             return null;
         }

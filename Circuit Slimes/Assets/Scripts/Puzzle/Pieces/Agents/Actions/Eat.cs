@@ -8,11 +8,11 @@ namespace Puzzle.Actions
 {
     public class Eat : SeekTarget
     {
-        new public Candy Target { get; private set; }
+        new public Candy Target { get; protected set; }
 
-        private bool GonnaEat = false;
+        protected bool GonnaEat = false;
 
-        private bool Removed = false;
+        protected bool Removed = false;
 
         public Eat(Candy target) : base(target) 
         {
@@ -26,10 +26,8 @@ namespace Puzzle.Actions
             this.GonnaEat = target.Coords == tcoords;
         }
 
-        //
-        // - Action Methods
-        //
 
+        #region === Action Methods ===
         override public Action Available(Agent agent)
         {
             SeekTarget baseAction = (SeekTarget) base.Available(agent);
@@ -46,16 +44,19 @@ namespace Puzzle.Actions
         {
             if(this.GonnaEat)
             {
-                if(!this.Removed)
+                if (!this.Removed)
                 {
-                    this.Removed = agent.Board.RemovePiece(this.Target.Coords);
+                    agent.Puzzle.RemovePiece(this.Target);
+                    this.Removed = true;
                 }
 
-                if(this.RotateAgent(agent))
+                if (agent.Rotate(this.Direction))
                 {
-                    if(this.MoveAgent(agent))
+                    if(agent.Move(this.TargetCoords))
                     {
                         GameObject.Destroy(this.Target.gameObject);
+
+                        agent.Stats.Food++;
 
                         return true;
                     }
@@ -68,5 +69,6 @@ namespace Puzzle.Actions
 
             return false;
         }
+        #endregion
     }
 }

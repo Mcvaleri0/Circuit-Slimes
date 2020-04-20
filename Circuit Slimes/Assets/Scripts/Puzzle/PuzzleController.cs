@@ -35,7 +35,8 @@ namespace Puzzle
         private int MaxTurn  = 250;
         private int GoalTurn =   0;
 
-        private int CurrentAgent;
+        private int CurrentAgent  = 0;
+        private int StoppedAgents = 0;
 
         // Start is called before the first frame update
         void Start()
@@ -71,8 +72,10 @@ namespace Puzzle
                     break;
 
                 case RunState.Idle:
-                    if (this.GoalTurn > this.Turn)
+                    if (this.GoalTurn > this.Turn &&
+                        this.StoppedAgents < this.Puzzle.Agents.Count)
                     {
+                        this.StoppedAgents = 0;
                         this.State = RunState.StepForward;
                     }
                     else if (this.GoalTurn < this.Turn)
@@ -111,6 +114,8 @@ namespace Puzzle
                 if (agent.Turn > this.Turn)
                 {
                     this.CurrentAgent++;
+
+                    if (agent.NoAction) this.StoppedAgents++;
 
                     return false;
                 }
@@ -158,7 +163,8 @@ namespace Puzzle
             }
             else
             {
-                this.CurrentAgent = 0;
+                this.CurrentAgent  = 0;
+                this.StoppedAgents = 0;
                 return true;
             }
 
@@ -199,6 +205,7 @@ namespace Puzzle
             this.Turn = 0;
             this.GoalTurn = 0;
             this.CurrentAgent = 0;
+            this.StoppedAgents = 0;
 
             foreach(var piece in this.Puzzle.Pieces)
             {

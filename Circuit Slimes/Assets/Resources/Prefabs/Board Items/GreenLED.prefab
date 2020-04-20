@@ -114,8 +114,8 @@ MonoBehaviour:
   CandyType: 0
   Turn: 0
   State: 0
-  MaxCharges: 0
-  StartingCharges: 1
+  MaxCharges: 1
+  StartingCharges: 0
 --- !u!65 &4442565602083630700
 BoxCollider:
   m_ObjectHideFlags: 0

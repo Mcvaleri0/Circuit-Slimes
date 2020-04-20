@@ -52,8 +52,10 @@ namespace Puzzle
 
 
         #region === Create Tile ===
-        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, Types type)
+        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, Types type)
         {
+            Transform parent = puzzle.TilesObj.transform;
+
             GameObject obj;
 
             switch (type)
@@ -73,11 +75,11 @@ namespace Puzzle
             }
         }
 
-        public static Tile CreateTile(Transform parent, Puzzle puzzle, Vector2Int coords, string prefabName)
+        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, string prefabName)
         {
             Types type = GetType(prefabName);
 
-            return CreateTile(parent, puzzle, coords, type);
+            return CreateTile(puzzle, coords, type);
         }
         #endregion
 
@@ -153,6 +155,9 @@ namespace Puzzle
         //update a tile's mesh
         public virtual void UpdateTile() {}
 
+        //FIXME: we should extract tile behaviour from solder slime and abstract it to "TilesetTile" class
+        public virtual void UpdateTile(int tilesetNum) { } 
+
 
         //Mark the tiles arround this one, in 4 directions, has needing an update
         public virtual void UpdateCrossTiles()
@@ -194,6 +199,7 @@ namespace Puzzle
 
         //Update Tiles arround this tile if destroyed/disabled
         protected virtual void OnDisable() {
+            this.UpdateTile(0);
             this.UpdateCrossTiles();
         }
 

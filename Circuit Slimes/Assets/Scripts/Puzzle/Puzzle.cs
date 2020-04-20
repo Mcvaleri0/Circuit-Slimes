@@ -16,8 +16,9 @@ namespace Puzzle
 
         public LevelBoard Board { get; private set; }
 
-        public GameObject PuzzleObj { get; private set; }
+        public GameObject PiecesObj { get; private set; }
 
+        public GameObject TilesObj { get; private set; }
         #endregion
 
 
@@ -46,25 +47,18 @@ namespace Puzzle
             {
                 this.Board.PlaceTile(tile.Coords, tile);
             }
+
+            this.PiecesObj = this.transform.GetChild(0).gameObject;
+            this.TilesObj  = this.transform.GetChild(1).gameObject;
         }
 
         public void Destroy()
         {
-            GameObject.Destroy(this.PuzzleObj);
-
-            foreach (var piece in this.Pieces)
-            {
-                GameObject.Destroy(piece.gameObject);
-            }
-
-            this.Pieces.Clear();
-
-            GameObject.Destroy(this.Board.gameObject);
-
             GameObject.Destroy(this.gameObject);
         }
 
         #endregion
+
 
         #region === Piece Methods ===
 
@@ -73,6 +67,9 @@ namespace Puzzle
             this.Pieces.Add(piece);
             if (piece is Agent agent) this.Agents.Add(agent);
             this.Board.PlacePiece(piece.Coords, piece);
+
+            if (piece.transform.parent == null)
+                piece.transform.parent = this.PiecesObj.transform;
         }
 
         public void RemovePiece(Piece piece)
@@ -94,11 +91,15 @@ namespace Puzzle
 
         #endregion
 
+
         #region === Tile Methods ===
 
         public void AddTile(Tile tile)
         {
             this.Board.PlaceTile(tile.Coords, tile);
+
+            if (tile.transform.parent == null)
+                tile.transform.parent = this.TilesObj.transform;
         }
 
         public void RemoveTile(Tile tile)
@@ -116,7 +117,13 @@ namespace Puzzle
             return this.Board.GetTile(coords);
         }
 
+        public void UpdateAllTiles()
+        {
+            this.Board.UpdateAllTiles();
+        }
+
         #endregion
+
 
         #region === Utility ===
 
@@ -128,6 +135,11 @@ namespace Puzzle
         public Vector2Int Discretize(Vector3 position)
         {
             return LevelBoard.Discretize(position);
+        }
+
+        public Vector3 WorldCoords(Vector2Int position)
+        {
+            return LevelBoard.WorldCoords(position);
         }
 
         #endregion

@@ -8,15 +8,14 @@ namespace Puzzle.Pieces.Slimes
     public class ElectricSlime : Slime
     {
 
-        //
-        // - Unity Events
-        //
+        #region === Unity Events ===
 
         // Start is called before the first frame update
         override protected void Start()
         {
             base.Start();
 
+            this.KnownActions.Add(new Charge());
             this.KnownActions.Add(new ElectricMovement());
 
             this.Stats = new Statistics(10, 10, 10);
@@ -38,14 +37,14 @@ namespace Puzzle.Pieces.Slimes
                 }
             }
         }
+        #endregion
 
-        //
-        // - Slime Methods
-        //
 
+        #region === Agent Methods ===
         override public Action Think()
         {
             return base.Think();
         }
+        #endregion
     }
 }

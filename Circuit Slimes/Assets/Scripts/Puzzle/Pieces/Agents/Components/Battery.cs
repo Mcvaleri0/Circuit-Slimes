@@ -16,7 +16,7 @@ namespace Puzzle.Pieces.Components
 
             this.KnownActions.Add(new Discharge());
 
-            this.Stats = new Statistics(10, 0, 0)
+            this.Stats = new Statistics(10, 0, -1)
             {
                 Food = this.StartingCharges
             };

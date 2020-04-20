@@ -7,28 +7,43 @@ namespace Puzzle.Pieces.Components
 {
     public class LED : CircuitComponent
     {
+        private LedLight Light;
 
-        //private int ChargeCount = 5;
 
-        //
-        // - Unity Events
-        //
-
+        #region  === Unity Events ===
         // Start is called before the first frame update
         override protected void Start()
         {
             base.Start();
 
             this.KnownActions.Add(new Discharge());
+
+            this.Light = this.GetComponent<LedLight>();
+        }
+        #endregion
+
+
+        #region === Component Methods ===
+        override protected void TurnOn()
+        {
+            base.TurnOn();
+            this.Light.TurnOn();
         }
 
-        //
-        // - Component Methods
-        //
+        override protected void TurnOff()
+        {
+            base.TurnOff();
+            this.Light.TurnOff();
+        }
+        #endregion
+
+
+        #region === Agent Methods ===
 
         override public Action Think()
         {
             return base.Think();
         }
+        #endregion
     }
 }

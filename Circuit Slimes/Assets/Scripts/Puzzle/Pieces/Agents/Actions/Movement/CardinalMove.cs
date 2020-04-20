@@ -8,11 +8,7 @@ namespace Puzzle.Actions
 {
     public class CardinalMove : Move
     {
-        public CardinalMove(LevelBoard.Directions dir, Vector2Int coords, Vector3 position) :
-            base(dir, coords, position)
-        {
-            
-        }
+        public CardinalMove(LevelBoard.Directions dir, Vector2Int coords) : base(dir, coords) { }
 
 
         #region Action Methods
@@ -35,12 +31,8 @@ namespace Puzzle.Actions
                         var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, dir);
 
                         if (tcoords.sqrMagnitude > 1000f) continue;
-                        
-                        var tpos = LevelBoard.WorldCoords(tcoords);
 
-                        Debug.Log(Random.value + " - Chosen Direction: " + dir + " | Target Coords: " + tcoords + " | Target Position: " + tpos);
-
-                        return new CardinalMove(dir, tcoords, tpos);
+                        return new CardinalMove(dir, tcoords);
                     }
                 }
             }

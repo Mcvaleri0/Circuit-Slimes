@@ -13,10 +13,11 @@ namespace Puzzle.Pieces.Components
 
         public int StartingCharges = 1;
 
+        protected bool On = false;
+
         public Queue<ElectricSlime> Charges { get; protected set; }
 
         public Dictionary<LevelBoard.Directions, Vector2Int> Connections { get; protected set; }
-
 
         // Init Method
         public void Initialize(Puzzle puzzle, Vector2Int coords, ComponentTypes type,
@@ -37,12 +38,25 @@ namespace Puzzle.Pieces.Components
         new protected virtual void Start()
         {
             base.Start();
+
+            this.Stats = new Statistics(10, 0, this.MaxCharges)
+            {
+                Food = this.StartingCharges
+            };
+        }
+
+        new protected virtual void Update()
+        {
+            base.Update();
+
+            if (!this.On && this.Stats.Food >= this.Stats.MaxFood) TurnOn();
+            if (this.On  && this.Stats.Food <  this.Stats.MaxFood) TurnOff();
         }
         #endregion
 
 
         #region === Agent Methods ===
-        public override Action Think()
+        override public Action Think()
         {
             this.UpdateConnections();
 
@@ -50,16 +64,31 @@ namespace Puzzle.Pieces.Components
         }
         #endregion
 
+
         #region === Component Methods ===
+        protected virtual void TurnOn()
+        {
+            this.On = true;
+        }
+
+        protected virtual void TurnOff()
+        {
+            this.On = false;
+        }
+
         protected void UpdateConnections()
         {
+            var tile = this.Board.GetTile(this.Coords);
+
+            if (tile == null || tile.Type != Tile.Types.Solder) return;
+
             this.Connections.Clear();
 
             for(var i = 0; i < 4; i++)
             {
                 int dirId = i * 2;
 
-                Tile tile = this.Board.GetTile(this.Coords + LevelBoard.DirectionalVectors[dirId]);
+                tile = this.Board.GetTile(this.Coords + LevelBoard.DirectionalVectors[dirId]);
 
                 if(tile != null && tile.Type == Tile.Types.Solder)
                 {
@@ -76,7 +105,7 @@ namespace Puzzle.Pieces.Components
             {
                 LevelBoard.Directions checkDir = (LevelBoard.Directions) ((dirId + (i + 1) * 2) % 8);
 
-                if(this.Connections.ContainsKey(checkDir))
+                if(this.Connections.ContainsKey(checkDir) && this.IsFree(this.Connections[checkDir]))
                 {
                     return this.Connections[checkDir];
                 }
@@ -110,6 +139,9 @@ namespace Puzzle.Pieces.Components
             {
                 charge.Reactivate(coords);
             }
+
+            var outDir = LevelBoard.GetDirection(this.Coords, coords);
+            charge.Orientation = outDir;
 
             return charge;
         }
