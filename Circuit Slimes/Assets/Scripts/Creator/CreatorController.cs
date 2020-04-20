@@ -17,6 +17,7 @@ namespace Creator
 
         #endregion
 
+
         #region /* Puzzle Atributes */
 
         private PuzzleController PuzzleController { get; set; }
@@ -24,6 +25,7 @@ namespace Creator
         private Transform PuzzleObj { get; set; }
 
         #endregion
+
 
         #region /* Selection Atributes */
 
@@ -43,6 +45,14 @@ namespace Creator
         private Vector3 Offset { get; set; }
 
         #endregion
+
+
+        #region /* Player/Creator Mode Atributes */
+
+        public bool Creator;
+
+        #endregion  
+
 
 
         #region === Unity Events ===
@@ -72,6 +82,7 @@ namespace Creator
         }
 
         #endregion
+
 
         #region === Initialization Methods ===
 
@@ -137,6 +148,7 @@ namespace Creator
         #endregion
 
         #endregion
+
 
         #region === Selection Methods ===
 
@@ -213,6 +225,7 @@ namespace Creator
 
         #endregion
 
+
         #region === Puzzle Manipulation Methods ===
 
         public void AddBoardItem(string name)
@@ -266,20 +279,17 @@ namespace Creator
             //convert grid coords in world coords
             Vector3 curPosition = this.Puzzle.WorldCoords(coords) + Offset;
 
-            /*
-            // keep track of the mouse position
-            Vector3 curScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
-
-            // convert the screen mouse position to world point and adjust with offset
-            Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenSpace) + Offset;
-            */
-
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
+            Piece pieceNewPos = this.Puzzle.GetPiece(coords);
+            Tile tileNewPos   = this.Puzzle.GetTile(coords);
 
             // update the position of the object in the world
-            this.Selected.position = curPosition;
-
+            if ((this.PieceSelected != null && (this.Creator || pieceNewPos == null)) ||
+                (this.TileSelected  != null && tileNewPos  == null))
+            {
+                this.Selected.position = curPosition;
+            }
         }
 
         #endregion
