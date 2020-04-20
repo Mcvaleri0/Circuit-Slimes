@@ -8,7 +8,7 @@ namespace Puzzle.Actions
 {
     public class SeekTarget : Move
     {
-        public Piece Target { get; private set; }
+        public Piece Target { get; protected set; }
 
         public SeekTarget(Piece target) : base()
         {
