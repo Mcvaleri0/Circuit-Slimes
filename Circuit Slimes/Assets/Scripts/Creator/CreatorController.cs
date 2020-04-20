@@ -25,6 +25,7 @@ namespace Creator
         private Puzzle.Puzzle Puzzle { get; set; }
         private Transform PuzzleObj { get; set; }
 
+
         #endregion
 
 
@@ -50,9 +51,11 @@ namespace Creator
 
         #region /* Player/Creator Mode Atributes */
 
+        private const string PLAYER_PERMISSION_PATH = "Resources/PlayersPermission";
+
         public bool Creator;
 
-        private const string PLAYER_PERMISSION_PATH = "Resources/PlayersPermission";
+        public List<Piece> PiecesAdded { get; private set; }
 
         #endregion  
 
@@ -140,6 +143,8 @@ namespace Creator
             {
                 this.SaveButton.gameObject.SetActive(false);
             }
+
+            this.PiecesAdded = new List<Piece>();
         }
 
         #region = Initialization Aux Methods =
@@ -267,6 +272,12 @@ namespace Creator
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
+                this.PiecesAdded.Add(newPiece);
+
+                foreach (Piece p in this.PiecesAdded)
+                {
+                    Debug.Log(p);
+                }
             }
         }
 

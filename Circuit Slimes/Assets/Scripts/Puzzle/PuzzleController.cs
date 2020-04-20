@@ -22,6 +22,8 @@ namespace Puzzle
         public int CurrentLevel;
         public int nLevels;
 
+        private CreatorController CreatorController { get; set; }
+
         #endregion
 
         #region /* Simulation Attributes */
@@ -56,16 +58,8 @@ namespace Puzzle
 
             this.Turn = 0;
 
-            GameObject create = GameObject.Find("CreatorController");
-            if (create != null)
-            {
-                CreatorController controller = create.GetComponent<CreatorController>();
-                controller.Initialize();
-            }
-            else
-            {
-                this.LoadPuzzle(this.CurrentLevel);
-            }
+            this.CreatorController = GameObject.Find("CreatorController").GetComponent<CreatorController>();
+            this.CreatorController.Initialize();
         }
 
         // Update is called once per frame
