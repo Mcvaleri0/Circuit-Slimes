@@ -20,7 +20,7 @@ namespace Puzzle
 
         public GameObject TilesObj { get; private set; }
 
-        public List<string> Permissions { get; /*private*/ set; }
+        public List<string> Permissions { get; private set; }
 
         #endregion
 
