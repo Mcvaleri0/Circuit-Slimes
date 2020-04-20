@@ -12,7 +12,7 @@ namespace Creator
     {
         #region /* Constants */
 
-        private const string BUTTON_PATH = "Prefabs/Creator/Button";
+        private const string BUTTONS_PATH = "Prefabs/Creator/";
 
         #endregion
 
@@ -58,11 +58,11 @@ namespace Creator
 
         private void PopulateContent(List<string> options)
         {
-            Object button  = Resources.Load(BUTTON_PATH);
+            Object optionButton  = Resources.Load(BUTTONS_PATH + "OptionButton");
 
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, button);
+                this.InstantiateOption(opt, optionButton);
             }
 
         }
@@ -77,6 +77,12 @@ namespace Creator
             newObj.GetComponentInChildren<Text>().text = text;
 
             newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
+
+            if (this.Crontroller.Creator)
+            {
+                Object availableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
+                GameObject.Instantiate(availableButton, newObj.transform);
+            }
         }
 
         #endregion
