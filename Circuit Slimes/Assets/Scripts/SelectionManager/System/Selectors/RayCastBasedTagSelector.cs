@@ -9,7 +9,7 @@ public class RayCastBasedTagSelector : MonoBehaviour, ISelector
 
     private SelectionManager Manager;
 
-    private List<Transform> WhiteList = new List<Transform>();
+    private List<Transform> WhiteList;
 
     public void Start()
     {
@@ -28,7 +28,7 @@ public class RayCastBasedTagSelector : MonoBehaviour, ISelector
             if (tr == null) return null;
 
             //check if filter allows it
-            if (WhiteList.Count == 0 || !WhiteList.Contains(tr)) return null;
+            if (WhiteList != null && (WhiteList.Count == 0 || !WhiteList.Contains(tr))) return null;
 
             //check if tag is correct
             if (tr.CompareTag(this.Tag) ) return tr;
