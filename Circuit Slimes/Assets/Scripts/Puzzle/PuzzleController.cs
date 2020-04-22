@@ -221,8 +221,10 @@ namespace Puzzle
             // FIXME: not sure if this works on a phone
             // the exemple used Application.persistentDataPath
             // yeah... this doesn't work on a phone. we need to use the persistentdatapath
+            string path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+
             PuzzleData puzzleData = new PuzzleData(this.Puzzle);
-            puzzleData.Save(LEVELS_PATH, "Level" + level);
+            puzzleData.Save(path, "Level" + level);
 
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
@@ -239,7 +241,8 @@ namespace Puzzle
 
             this.CurrentLevel = level;
 
-            this.Puzzle = PuzzleData.Load(LEVELS_PATH, "Level" + level);
+            string path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+            this.Puzzle = PuzzleData.Load(path, "Level" + level);
 
             Debug.Log("Puzzle Loaded");
 

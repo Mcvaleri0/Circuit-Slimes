@@ -47,7 +47,7 @@
         {
             "Coords": {
                 "x": 0,
-                "y": 6
+                "y": 7
             },
             "Category": 2,
             "SlimeType": 0,
@@ -57,7 +57,7 @@
         {
             "Coords": {
                 "x": 0,
-                "y": 7
+                "y": 6
             },
             "Category": 2,
             "SlimeType": 0,
@@ -89,14 +89,14 @@
         },
         {
             "Coords": {
-                "x": 0,
+                "x": 3,
                 "y": 7
             },
             "Type": 1
         },
         {
             "Coords": {
-                "x": 3,
+                "x": 0,
                 "y": 7
             },
             "Type": 1
