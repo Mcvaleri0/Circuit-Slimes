@@ -15,7 +15,8 @@ namespace Puzzle
         #region /* Level Attributes */
 
         public const string LEVELS_PATH = "Levels";
-        public const int PLAYERS_LEVEL  = -1;
+        public const int EMPTY_LEVEL    = -1;
+        public const int PLAYERS_LEVEL  = -2;
 
         public Puzzle Puzzle { get; private set; }
 
@@ -214,6 +215,7 @@ namespace Puzzle
 
 
         #region === Save and Load Functions ===
+
         public void SavePuzzle(int level)
         {
             Debug.Log("Saving level " + level + ".");
@@ -241,7 +243,20 @@ namespace Puzzle
 
             this.CurrentLevel = level;
 
-            string path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+            string path = null; 
+                
+            if (level == PLAYERS_LEVEL)
+            {
+                path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
+
+                this.CreatePlayersLevel(path);
+            }
+            else
+            {
+                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+            }
+            
+            
             this.Puzzle = PuzzleData.Load(path, "Level" + level);
 
             Debug.Log("Puzzle Loaded");
@@ -255,6 +270,16 @@ namespace Puzzle
 
             this.Puzzle = null;
         }
+
+        private void CreatePlayersLevel(string path)
+        {
+            string completePath = Path.Combine(path, "LevelPlayer.json");
+
+            if (!File.Exists(completePath))
+            {
+            }
+        }
+
         #endregion
 
 

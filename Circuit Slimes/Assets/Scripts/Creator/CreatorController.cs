@@ -112,7 +112,7 @@ namespace Creator
 
             if (this.Creator)
             {
-                #if UNITY_EDITOR
+                #if !UNITY_EDITOR
                     this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += this.PuzzleController.CurrentLevel;
 
                     // TODO: Choose Level
@@ -122,9 +122,7 @@ namespace Creator
                     // Load Players personnal Level
                     this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += "Player";
 
-                    
-                    // TODO: verify if level exists or a new level needs to be created
-                    //this.Puzzle = this.PuzzleController.LoadPuzzle(PuzzleController.PLAYERS_LEVEL);
+                    this.Puzzle = this.PuzzleController.LoadPuzzle(PuzzleController.PLAYERS_LEVEL);
 
                 #endif
 
