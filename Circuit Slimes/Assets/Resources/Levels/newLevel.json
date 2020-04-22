@@ -5,10 +5,5 @@
     },
     "Pieces": [],
     "Tiles": [],
-    "Permissions": [
-        "SolderCandy",
-        "SolderSlime",
-        "WaterCandy",
-        "WaterSlime"
-    ]
+    "Permissions": []
 }
