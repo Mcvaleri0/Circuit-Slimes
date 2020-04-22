@@ -112,16 +112,12 @@ namespace Creator
 
             if (this.Creator)
             {
-                #if !UNITY_EDITOR
-                    this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += this.PuzzleController.CurrentLevel;
-
+                #if UNITY_EDITOR
                     // TODO: Choose Level
                     this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
 
                  #else
                     // Load Players personnal Level
-                    this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += "Player";
-
                     this.Puzzle = this.PuzzleController.LoadPuzzle(PuzzleController.PLAYERS_LEVEL);
 
                 #endif

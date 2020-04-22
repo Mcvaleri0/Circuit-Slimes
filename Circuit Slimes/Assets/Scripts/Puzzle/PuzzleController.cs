@@ -14,7 +14,10 @@ namespace Puzzle
     {
         #region /* Level Attributes */
 
-        public const string LEVELS_PATH = "Levels";
+        private const string LEVELS_PATH = "Levels";
+        private const string PLAYERS_LEVEL_NAME = "LevelPlayer";
+        private const string EMPTY_LEVEL_NAME = "newLevel";
+
         public const int EMPTY_LEVEL    = -1;
         public const int PLAYERS_LEVEL  = -2;
 
@@ -223,10 +226,24 @@ namespace Puzzle
             // FIXME: not sure if this works on a phone
             // the exemple used Application.persistentDataPath
             // yeah... this doesn't work on a phone. we need to use the persistentdatapath
-            string path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+            string path;
+            string name;
+
+            if (level == PLAYERS_LEVEL)
+            {
+
+                path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
+                name = PLAYERS_LEVEL_NAME;
+            }
+            else
+            {
+                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+                name = "Level" + level;
+            }
+
 
             PuzzleData puzzleData = new PuzzleData(this.Puzzle);
-            puzzleData.Save(path, "Level" + level);
+            puzzleData.Save(path, name);
 
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
@@ -243,21 +260,30 @@ namespace Puzzle
 
             this.CurrentLevel = level;
 
-            string path = null; 
+            string path;
+            string name;
                 
             if (level == PLAYERS_LEVEL)
             {
-                path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
 
-                this.CreatePlayersLevel(path);
+                if (this.CreatePlayersLevel())
+                {
+                    path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+                    name = EMPTY_LEVEL_NAME;
+                }
+                else
+                {
+                    path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
+                    name = PLAYERS_LEVEL_NAME;
+                }
             }
             else
             {
                 path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+                name = "Level" + level;
             }
             
-            
-            this.Puzzle = PuzzleData.Load(path, "Level" + level);
+            this.Puzzle = PuzzleData.Load(path, name);
 
             Debug.Log("Puzzle Loaded");
 
@@ -271,13 +297,24 @@ namespace Puzzle
             this.Puzzle = null;
         }
 
-        private void CreatePlayersLevel(string path)
+        private bool CreatePlayersLevel()
         {
-            string completePath = Path.Combine(path, "LevelPlayer.json");
+            string path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
+            string completePath = Path.Combine(path, PLAYERS_LEVEL_NAME +  ".json");
 
-            if (!File.Exists(completePath))
+            if (!Directory.Exists(path))
             {
+                Directory.CreateDirectory(path);
+                File.Create(completePath);
+                return true;
             }
+            else if (!File.Exists(completePath))
+            {
+                File.Create(completePath);
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
