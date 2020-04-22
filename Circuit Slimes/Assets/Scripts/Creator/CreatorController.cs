@@ -97,11 +97,6 @@ namespace Creator
 
         public void Initialize()
         {
-            if(!File.Exists(Path.Combine(Application.persistentDataPath, "Level0")))
-            {
-                PuzzleData.Save();
-            }
-
             this.InitializePuzzle();
 
             this.InitializeSelectionSystem();
@@ -117,8 +112,22 @@ namespace Creator
 
             if (this.Creator)
             {
-                // TODO: Choose Level
-                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+                #if UNITY_EDITOR
+                    this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += this.PuzzleController.CurrentLevel;
+
+                    // TODO: Choose Level
+                    this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+
+                 #else
+                    // Load Players personnal Level
+                    this.transform.Find("Canvas").Find("Text").GetComponent<Text>().text += "Player";
+
+                    
+                    // TODO: verify if level exists or a new level needs to be created
+                    //this.Puzzle = this.PuzzleController.LoadPuzzle(PuzzleController.PLAYERS_LEVEL);
+
+                #endif
+
             }
             else
             {
@@ -220,6 +229,14 @@ namespace Creator
             {
                 this.SelectionManager.WhiteList.Add(childTile);
             }
+        }
+
+        private void InitializePlayersLevel()
+        {
+            //if (!File.Exists(Path.Combine(Application.persistentDataPath, "Level0")))
+            //{
+            //    PuzzleData.Save();
+            //}
         }
 
         #endregion

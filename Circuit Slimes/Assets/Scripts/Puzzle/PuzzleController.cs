@@ -15,6 +15,7 @@ namespace Puzzle
         #region /* Level Attributes */
 
         public const string LEVELS_PATH = "Levels";
+        public const int PLAYERS_LEVEL  = -1;
 
         public Puzzle Puzzle { get; private set; }
 
@@ -23,6 +24,7 @@ namespace Puzzle
         public int nLevels;
 
         private CreatorController CreatorController { get; set; }
+
         #endregion
 
 
@@ -103,6 +105,7 @@ namespace Puzzle
 
 
         #region === Simulation Aux Methods ===
+        
         public bool RunAgents()
         {
             if(this.CurrentAgent < this.Puzzle.Agents.Count)
@@ -168,10 +171,12 @@ namespace Puzzle
 
             return false;
         }
+        
         #endregion
 
 
         #region === Simulation Control Functions ===
+        
         public void Play()
         {
             this.GoalTurn = this.MaxTurn;
@@ -204,6 +209,7 @@ namespace Puzzle
             this.State = RunState.Idle;
             this.GoalTurn = 0;
         }
+        
         #endregion
 
 
