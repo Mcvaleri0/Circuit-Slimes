@@ -49,13 +49,7 @@ namespace Puzzle.Data
 
         public void Save(string path, string name)
         {
-            //string filePath = Path.Combine(Application.persistentDataPath, name);
             string filePath = Path.Combine(path, name + ".json");
-
-            //if (File.Exists(filePath))
-            //{
-            //    File.Delete(filePath);
-            //}
 
             string dataAsJson = JsonUtility.ToJson(this, true);
             byte[] jsonBytes  = Encoding.ASCII.GetBytes(dataAsJson);
@@ -63,45 +57,12 @@ namespace Puzzle.Data
             File.WriteAllBytes(filePath, jsonBytes);
         }
 
-        //public static void Save()
-        //{
-        //    string filePath = Path.Combine(Application.persistentDataPath, "Level0");
-
-        //    var loaded = Resources.Load(Path.Combine("Levels", "Level0")) as TextAsset;
-
-        //    byte[] jsonBytes = Encoding.ASCII.GetBytes(loaded.text);
-
-        //    File.WriteAllBytes(filePath, jsonBytes);
-        //}
-
         public static Puzzle Load(string path, string name)
         {
-            //string filePath = Path.Combine(Application.persistentDataPath, name);
-
             string filePath   = Path.Combine(path, name + ".json");
             byte[] jsonBytes  = File.ReadAllBytes(filePath);
             string jsonString = Encoding.ASCII.GetString(jsonBytes);
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonString);
-
-            //TextAsset loaded = Resources.Load(filePath) as TextAsset;
-            //string jsonData = null;
-
-            
-            //if(File.Exists(filePath))
-            //{
-            //    byte[] jsonBytes = File.ReadAllBytes(filePath);
-            //    jsonData = Encoding.ASCII.GetString(jsonBytes);
-            //}
-            //else
-            //{
-            //    Debug.Log("Puzzle.Load - No such file - " + name);
-            //    return null;
-            //}
-            
-
-            // Load Data
-            //PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(loaded.text);
-            //PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonData);
 
             // Instantiate Puzzle
             GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));

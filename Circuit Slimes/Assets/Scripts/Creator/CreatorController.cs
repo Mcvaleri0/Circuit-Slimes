@@ -225,14 +225,6 @@ namespace Creator
             }
         }
 
-        private void InitializePlayersLevel()
-        {
-            //if (!File.Exists(Path.Combine(Application.persistentDataPath, "Level0")))
-            //{
-            //    PuzzleData.Save();
-            //}
-        }
-
         #endregion
 
         #endregion
