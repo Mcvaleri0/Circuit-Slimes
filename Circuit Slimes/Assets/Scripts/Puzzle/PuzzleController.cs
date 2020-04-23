@@ -62,7 +62,7 @@ namespace Puzzle
             this.Turn = 0;
 
             this.CreatorController = GameObject.Find("CreatorController").GetComponent<CreatorController>();
-            this.CreatorController.Initialize();
+            this.CreatorController.InitializeLevel();
         }
 
         // Update is called once per frame
