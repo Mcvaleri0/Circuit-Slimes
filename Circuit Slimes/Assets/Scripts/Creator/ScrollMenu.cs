@@ -10,13 +10,9 @@ namespace Creator
 {
     public class ScrollMenu
     {
-        #region /* Constants */
+        #region /* UI Elements */
 
         private const string BUTTONS_PATH = "Prefabs/Creator/";
-
-        #endregion
-
-        #region /* UI Elements */
 
         private Transform Menu { get; set; }
         private Transform MenuContent { get; set; }
@@ -31,6 +27,7 @@ namespace Creator
         private CreatorController Crontroller { get; set; }
 
         #endregion 
+
 
 
         public ScrollMenu(CreatorController controller, Transform menu, Transform content, List<string> options, List<string> available)
@@ -57,7 +54,8 @@ namespace Creator
 
         #endregion
 
-        #region === Menu Manipulation Methods ===
+
+        #region === Menu Methods ===
 
         private void ResizeMenu()
         {
@@ -72,14 +70,21 @@ namespace Creator
             {
                 this.InstantiateOption(opt, available);
             }
-
         }
 
-        private void ClearMenu()
+        private void InstantiateOption(string text, List<string> available)
         {
-            foreach(Transform child in this.MenuContent)
+            GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
+            newObj.GetComponentInChildren<Text>().text = text;
+
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
+
+            if (this.Crontroller.Creator)
             {
-                GameObject.Destroy(child.gameObject);
+                GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);
+                AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
+
+                avlBtnScrp.Initialize(this.Crontroller, text, available.Contains(text));
             }
         }
 
@@ -90,23 +95,11 @@ namespace Creator
             this.PopulateContent(newOptions, available);
         }
 
-        #endregion
-
-        #region === Instantiate Methods ===
-
-        private void InstantiateOption(string text, List<string> available)
+        private void ClearMenu()
         {
-            GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.MenuContent);
-            newObj.GetComponentInChildren<Text>().text = text;
-
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
-
-            if (this.Crontroller.Creator)
+            foreach (Transform child in this.MenuContent)
             {
-                GameObject avlBtnObj   = (GameObject) GameObject.Instantiate(this.AvailableButton, newObj.transform);
-                AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
-
-                avlBtnScrp.Initialize(this.Crontroller, text, available.Contains(text));
+                GameObject.Destroy(child.gameObject);
             }
         }
 
