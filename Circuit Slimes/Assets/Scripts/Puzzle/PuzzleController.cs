@@ -51,6 +51,7 @@ namespace Puzzle
         private int StoppedAgents = 0;
         #endregion
 
+
         
         #region === Unity Events ===
 
@@ -213,11 +214,52 @@ namespace Puzzle
             this.State = RunState.Idle;
             this.GoalTurn = 0;
         }
-        
+
         #endregion
 
 
-        #region === Save and Load Functions ===
+        #region === Level Functions ===
+
+        public Puzzle LoadPuzzle(int level)
+        {
+            // this needs to be like this because UnityEngine overrides != == operators
+            // because of that null and "null" exist. when using the operators, 
+            // although "null" is not really null it behaves as such
+            if (!object.Equals(this.Puzzle, null))
+            {
+                this.Puzzle.Destroy();
+            }
+
+            this.CurrentLevel = level;
+
+            string path;
+            string name;
+
+            if (level == PLAYERS_LEVEL)
+            {
+                if (this.CreatePlayersLevel())
+                {
+                    path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+                    name = EMPTY_LEVEL_NAME;
+                }
+                else
+                {
+                    path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
+                    name = PLAYERS_LEVEL_NAME;
+                }
+            }
+            else
+            {
+                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
+                name = "Level" + level;
+            }
+
+            this.Puzzle = PuzzleData.Load(path, name);
+
+            Debug.Log("Puzzle Loaded");
+
+            return this.Puzzle;
+        }
 
         public void SavePuzzle(int level)
         {
@@ -247,58 +289,10 @@ namespace Puzzle
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
 
-        public Puzzle LoadPuzzle(int level)
-        {
-            // this needs to be like this because UnityEngine overrides != == operators
-            // because of that null and "null" exist. when using the operators, 
-            // although "null" is not really null it behaves as such
-            if (!object.Equals(this.Puzzle, null))
-            {
-                this.Puzzle.Destroy();
-            }
-
-            this.CurrentLevel = level;
-
-            string path;
-            string name;
-                
-            if (level == PLAYERS_LEVEL)
-            {
-                if (this.CreatePlayersLevel())
-                {
-                    path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                    name = EMPTY_LEVEL_NAME;
-                }
-                else
-                {
-                    path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-                    name = PLAYERS_LEVEL_NAME;
-                }
-            }
-            else
-            {
-                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                name = "Level" + level;
-            }
-            
-            this.Puzzle = PuzzleData.Load(path, name);
-
-            Debug.Log("Puzzle Loaded");
-
-            return this.Puzzle;
-        }
-
-        public void ClearPuzzle()
-        {
-            this.Puzzle.Destroy();
-
-            this.Puzzle = null;
-        }
-
         private bool CreatePlayersLevel()
         {
             string path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-            string completePath = Path.Combine(path, PLAYERS_LEVEL_NAME +  ".json");
+            string completePath = Path.Combine(path, PLAYERS_LEVEL_NAME + ".json");
 
             if (!Directory.Exists(path))
             {
@@ -315,11 +309,6 @@ namespace Puzzle
             return false;
         }
 
-        #endregion
-
-
-        #region === Level Control Functions ===
-
         public void NextLevel()
         {
             this.State = RunState.Idle;
@@ -329,7 +318,7 @@ namespace Puzzle
             this.CreatorController.UpdateLevel();
             this.Restart();
         }
-        
+
         public void PreviousLevel()
         {
             this.State = RunState.Idle;
@@ -345,6 +334,14 @@ namespace Puzzle
             this.Restart();
         }
 
+        public void ClearPuzzle()
+        {
+            this.Puzzle.Destroy();
+
+            this.Puzzle = null;
+        }
+
         #endregion
+
     }
 }
