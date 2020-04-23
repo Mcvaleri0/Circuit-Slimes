@@ -21,6 +21,9 @@ namespace Creator
         private Transform Menu { get; set; }
         private Transform MenuContent { get; set; }
 
+        private Object OptionButton { get; set; }
+        private Object AvailableButton { get; set; }
+
         #endregion
 
         #region /* Creator Attributes */
@@ -37,6 +40,9 @@ namespace Creator
             this.Menu = menu;
             this.MenuContent = content;
 
+            this.OptionButton    = Resources.Load(BUTTONS_PATH + "OptionButton");
+            this.AvailableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
+
             this.Initialize(options, available);
         }
 
@@ -49,6 +55,10 @@ namespace Creator
             this.PopulateContent(options, available);
         }
 
+        #endregion
+
+        #region === Menu Manipulation Methods ===
+
         private void ResizeMenu()
         {
             RectTransform rect = this.Menu.GetComponent<RectTransform>();
@@ -58,30 +68,42 @@ namespace Creator
 
         private void PopulateContent(List<string> options, List<string> available)
         {
-            Object optionButton  = Resources.Load(BUTTONS_PATH + "OptionButton");
-
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, optionButton, available);
+                this.InstantiateOption(opt, available);
             }
 
+        }
+
+        private void ClearMenu()
+        {
+            foreach(Transform child in this.MenuContent)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
+        public void UpdateContent(List<string> newOptions, List<string> available)
+        {
+            this.ClearMenu();
+
+            this.PopulateContent(newOptions, available);
         }
 
         #endregion
 
         #region === Instantiate Methods ===
 
-        private void InstantiateOption(string text, Object button, List<string> available)
+        private void InstantiateOption(string text, List<string> available)
         {
-            GameObject newObj = (GameObject) GameObject.Instantiate(button, this.MenuContent);
+            GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
             newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
 
             if (this.Crontroller.Creator)
             {
-                Object availableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
-                GameObject avlBtnObj   = (GameObject) GameObject.Instantiate(availableButton, newObj.transform);
+                GameObject avlBtnObj   = (GameObject) GameObject.Instantiate(this.AvailableButton, newObj.transform);
                 AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
 
                 avlBtnScrp.Initialize(this.Crontroller, text, available.Contains(text));

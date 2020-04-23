@@ -11,8 +11,6 @@ namespace Creator
 {
     public class CreatorController : MonoBehaviour
     {
-        private bool Once = false;
-
         #region /* UI Atributes */
 
         private ScrollMenu ScrollMenu { get; set; }
@@ -64,6 +62,7 @@ namespace Creator
         #endregion  
 
 
+
         #region === Unity Events ===
 
         void Update()
@@ -110,34 +109,25 @@ namespace Creator
         {
             this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
 
+            int level;
             if (this.Creator)
             {
                 #if UNITY_EDITOR
                     // TODO: Choose Level
-                    this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+                    level = this.PuzzleController.CurrentLevel;
 
                  #else
                     // Load Players personnal Level
-                    this.Puzzle = this.PuzzleController.LoadPuzzle(PuzzleController.PLAYERS_LEVEL);
+                    level = PuzzleController.PLAYERS_LEVEL;
 
                 #endif
-
             }
             else
             {
-                this.Puzzle = this.PuzzleController.LoadPuzzle(this.PuzzleController.CurrentLevel);
+                level = this.PuzzleController.CurrentLevel;
             }
 
-            this.PuzzleObj = GameObject.Find("Puzzle").transform;
-        }
-
-        private void InitializeCanvas()
-        {
-            Transform canvas = this.transform.Find("Canvas");
-
-            this.InitializeScrollMenu(canvas);
-
-            this.InitializeButtons(canvas);
+            this.UpdatePuzzle(level);
         }
 
         private void InitializeSelectionSystem()
@@ -159,11 +149,20 @@ namespace Creator
             else
             {
                 this.MenuOptions = this.Puzzle.Permissions;
-                
+
                 this.SelectionManager.WhiteList = new List<Transform>();
             }
 
             this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
+        }
+
+        private void InitializeCanvas()
+        {
+            Transform canvas = this.transform.Find("Canvas");
+
+            this.InitializeScrollMenu(canvas);
+
+            this.InitializeButtons(canvas);
         }
 
         #region = Initialization Aux Methods =
@@ -181,19 +180,21 @@ namespace Creator
             // Change SaveButton Location
             this.SaveButton = canvas.Find("Save Button");
 
-            RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
-        
-            saveRect.pivot = new Vector2(1, 1);
-            float x = -30; //x margin
-            float y = -30; //y margin
+            if (this.Creator)
+            {
+                RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
 
-            saveRect.anchoredPosition = new Vector2(x,y);
-            
-            // add click listener
-            int level = this.PuzzleController.CurrentLevel;
-            this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+                saveRect.pivot = new Vector2(1, 1);
+                float x = -30; //x margin
+                float y = -30; //y margin
 
-            if (!this.Creator)
+                saveRect.anchoredPosition = new Vector2(x, y);
+
+                // add click listener
+                int level = this.PuzzleController.CurrentLevel;
+                this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+            }
+            else
             {
                 this.SaveButton.gameObject.SetActive(false);
             }
@@ -201,12 +202,15 @@ namespace Creator
 
         private void InitializeMenuCreator()
         {
-            Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
-            this.MenuOptions = new List<string>();
-
-            foreach (Object prefab in prefabs)
+            if (this.MenuOptions == null)
             {
-                this.MenuOptions.Add(prefab.name);
+                Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
+                this.MenuOptions = new List<string>();
+
+                foreach (Object prefab in prefabs)
+                {
+                    this.MenuOptions.Add(prefab.name);
+                }
             }
         }
 
@@ -223,6 +227,40 @@ namespace Creator
             {
                 this.SelectionManager.WhiteList.Add(childTile);
             }
+        }
+
+        #endregion
+
+        #endregion
+
+
+        #region === Update Methods ===
+
+        public void UpdateLevel()
+        {
+            this.UpdatePuzzle(this.PuzzleController.CurrentLevel);
+            this.UpdateSelectionSystem();
+            this.InitializePlayerCreatorMode();
+            this.UpdateCanvas();
+        }
+
+        #region = Update Aux Methods =
+
+        private void UpdatePuzzle(int level)
+        {
+            this.Puzzle = this.PuzzleController.LoadPuzzle(level);
+            this.PuzzleObj = GameObject.Find("Puzzle").transform;
+        }
+
+        private void UpdateSelectionSystem()
+        {
+            this.SingleClick = false;
+            this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
+        }
+
+        private void UpdateCanvas()
+        {
+            this.ScrollMenu.UpdateContent(this.MenuOptions, this.Puzzle.Permissions);
         }
 
         #endregion

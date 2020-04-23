@@ -18,8 +18,8 @@ namespace Puzzle
         private const string PLAYERS_LEVEL_NAME = "LevelPlayer";
         private const string EMPTY_LEVEL_NAME = "newLevel";
 
-        public const int EMPTY_LEVEL    = -1;
-        public const int PLAYERS_LEVEL  = -2;
+        public const int PLAYERS_LEVEL = -1;
+        public const int EMPTY_LEVEL   = -2;
 
         public Puzzle Puzzle { get; private set; }
 
@@ -231,7 +231,6 @@ namespace Puzzle
 
             if (level == PLAYERS_LEVEL)
             {
-
                 path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
                 name = PLAYERS_LEVEL_NAME;
             }
@@ -265,7 +264,6 @@ namespace Puzzle
                 
             if (level == PLAYERS_LEVEL)
             {
-
                 if (this.CreatePlayersLevel())
                 {
                     path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
@@ -328,7 +326,7 @@ namespace Puzzle
 
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
-            this.LoadPuzzle(this.CurrentLevel);
+            this.CreatorController.UpdateLevel();
             this.Restart();
         }
         
@@ -343,7 +341,7 @@ namespace Puzzle
                 this.CurrentLevel += this.nLevels;
             }
 
-            this.LoadPuzzle(this.CurrentLevel);
+            this.CreatorController.UpdateLevel();
             this.Restart();
         }
 
