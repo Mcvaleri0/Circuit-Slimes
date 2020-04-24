@@ -12,10 +12,6 @@ namespace Puzzle.Actions
 
         protected Piece.Caracteristics TargetCaracteristics;
 
-        public SeekTarget(Piece target) : base()
-        {
-            this.TargetCaracteristics = new Piece.Caracteristics(target);
-        }
 
         protected SeekTarget(Piece.Caracteristics caracteristics) : base()
         {
@@ -26,7 +22,7 @@ namespace Puzzle.Actions
         {
             this.Target = target;
 
-            this.TargetCaracteristics = new Piece.Caracteristics(target);
+            this.TargetCaracteristics = new Piece.Caracteristics(target.Caracterization.ToString());
 
             this.TargetCoords = targetCoords;
 
@@ -42,7 +38,7 @@ namespace Puzzle.Actions
             if(foundPieces.Count > 0)
             {
                 foreach (Piece piece in foundPieces) {
-                    if (this.TargetCaracteristics.Equals(piece))
+                    if (this.TargetCaracteristics.Matches(piece.Caracterization))
                     {
                         Vector2Int moveCoords = piece.Coords - agent.Coords;
                         moveCoords.x = (int) Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);

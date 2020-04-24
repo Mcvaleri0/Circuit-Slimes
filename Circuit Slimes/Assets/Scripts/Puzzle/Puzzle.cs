@@ -43,9 +43,9 @@ namespace Puzzle
             foreach(var piece in pieces)
             {
                 this.Board.PlacePiece(piece.Coords, piece);
-
-                if (piece is Agent agent) this.Agents.Add(agent);
             }
+
+            this.Agents = this.Board.GetAllAgents();
 
             foreach (var tile in tiles)
             {

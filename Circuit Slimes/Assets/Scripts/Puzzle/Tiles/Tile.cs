@@ -24,23 +24,28 @@ namespace Puzzle
         private bool NeedsUpdate = false;
 
 
-        #region === Instantiate ===
-
-        public static GameObject Instantiate(Transform parent, Types type, Vector2Int coords)
+        #region === Create Tile ===
+        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, Types type)
         {
-            var prefabName = "";
+            return CreateTile(puzzle, coords, Tile.GetName(type));
+        }
 
-            switch (type)
-            {
-                default:
-                case Types.None:
-                    break;
+        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, string prefabName)
+        {
+            Transform parent = puzzle.TilesObj.transform;
 
-                case Types.Solder:
-                    prefabName = "SolderTile";
-                    break;
-            }
+            GameObject obj = Tile.Instantiate(parent, prefabName, coords);
 
+            Tile tile = obj.GetComponent<Tile>();
+
+            tile.Initialize(puzzle, coords, Tile.GetType(prefabName));
+
+            return tile;
+        }
+
+
+        public static GameObject Instantiate(Transform parent, string prefabName, Vector2Int coords)
+        {
             var position = LevelBoard.WorldCoords(coords);
 
             var rotation = Quaternion.identity;
@@ -48,60 +53,6 @@ namespace Puzzle
             return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
-        #endregion
-
-
-        #region === Create Tile ===
-        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, Types type)
-        {
-            Transform parent = puzzle.TilesObj.transform;
-
-            GameObject obj;
-
-            switch (type)
-            {
-                default:
-                case Types.None:
-                    return null;
-
-                case Types.Solder:
-                    obj = Tile.Instantiate(parent, type, coords);
-
-                    var tile = obj.GetComponent<Tile>();
-
-                    tile.Initialize(puzzle, coords, type);
-
-                    return tile;
-            }
-        }
-
-        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, string prefabName)
-        {
-            Types type = GetType(prefabName);
-
-            return CreateTile(puzzle, coords, type);
-        }
-        #endregion
-
-
-        #region === Enum Methods ===
-
-        public static Types GetType(string prefabName)
-        {
-            if (prefabName.Contains("Solder"))
-            {
-                return Types.Solder;
-            }
-            else
-            {
-                return Types.None;
-            }
-        }
-
-        #endregion
-
-
-        #region === Init ===
 
         public void Initialize(Puzzle puzzle, Vector2Int coords, Types type)
         {
@@ -115,6 +66,36 @@ namespace Puzzle
 
             this.UpdateTile();
             this.UpdateCrossTiles();
+        }
+        #endregion
+
+
+        #region === Type and Name conversion ===
+
+        public static string GetName(Types type)
+        {
+            switch(type)
+            {
+                default:
+                    return "";
+
+                case Types.Solder:
+                    return "SolderTile";
+            }
+        }
+
+        public static Types GetType(string prefabName)
+        {
+            string typeName = prefabName.Substring(0, prefabName.Length - 4);
+
+            switch(typeName)
+            {
+                default:
+                    return Types.None;
+
+                case "Solder":
+                    return Types.Solder;
+            }
         }
 
         #endregion

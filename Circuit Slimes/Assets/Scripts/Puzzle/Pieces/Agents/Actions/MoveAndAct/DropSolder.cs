@@ -24,7 +24,14 @@ namespace Puzzle.Actions
 
             if (consume != null)
             {
-                return new DropSolder((Candy) consume.Target, consume.TargetCoords, consume.Direction);
+                if (agent.Board.GetTile(consume.TargetCoords) == null)
+                {
+                    return new DropSolder((Candy)consume.Target, consume.TargetCoords, consume.Direction);
+                }
+                else
+                {
+                    return consume;
+                }
             }
             else
             {

@@ -13,33 +13,45 @@ namespace Puzzle.Data
     [System.Serializable]
     public class PieceData
     {
-        public Vector2Int Coords;
+        public string PrefabName;
 
-        public Piece.Categories Category;
+        public Vector2Int[] Coords;
 
-        public Piece.SlimeTypes SlimeType;
-
-        public Piece.ComponentTypes ComponentType;
-
-        public Piece.CandyTypes CandyType;
 
         public PieceData(Piece piece)
         {
-            this.Coords = piece.Coords;
+            this.Coords = new Vector2Int[1];
+            this.Coords[0] = piece.Coords;
 
-            this.Category = piece.Category;
+            this.PrefabName = piece.Caracterization.ToString();
+        }
 
-            this.SlimeType = piece.SlimeType;
+        public PieceData(Piece[] pieces)
+        {
+            this.Coords = new Vector2Int[pieces.Length];
 
-            this.ComponentType = piece.ComponentType;
+            var i = 0;
+            foreach(var piece in pieces)
+            {
+                this.Coords[i++] = piece.Coords;
+            }
 
-            this.CandyType = piece.CandyType;
+            this.PrefabName = pieces[0].Caracterization.ToString();
         }
 
 
-        public Piece CreatePiece(Puzzle puzzle)
+        public Piece[] CreatePieces(Puzzle puzzle)
         {
-            return Piece.CreatePiece(puzzle, this.Coords, this.Category, this.SlimeType, this.ComponentType, this.CandyType, default, default);
+            var pieces = new Piece[this.Coords.Length];
+
+            var i = 0;
+            foreach(var coords in this.Coords)
+            {
+                pieces[i] = Piece.CreatePiece(puzzle, this.Coords[i], this.PrefabName, default, default);
+                i++;
+            }
+
+            return pieces;
         }
 
     }

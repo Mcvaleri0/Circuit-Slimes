@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Puzzle.Pieces;
 
 namespace Puzzle.Board
 {
@@ -73,6 +74,23 @@ namespace Puzzle.Board
             }
 
             return null;
+        }
+
+        public List<Agent> GetAllAgents()
+        {
+            var agents = new List<Agent>();
+
+            foreach(var entry in this.Spaces)
+            {
+                var piece = entry.Value.Piece;
+
+                if(piece != null && piece is Agent agent)
+                {
+                    agents.Add(agent);
+                }
+            }
+
+            return agents;
         }
         #endregion
 

@@ -15,8 +15,6 @@ namespace Puzzle.Pieces.Slimes
         {
             base.Start();
 
-            this.SlimeType = SlimeTypes.Solder;
-
             this.KnownActions.Add(new DropSolder());
 
             this.Stats = new Statistics(10, 10, 1);

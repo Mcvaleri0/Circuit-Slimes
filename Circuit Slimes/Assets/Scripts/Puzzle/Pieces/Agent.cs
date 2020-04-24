@@ -55,10 +55,10 @@ namespace Puzzle.Pieces
         public bool Active { get; protected set; }
 
         // Init Method
-        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, Categories category,
+        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, category);
+            base.Initialize(puzzle, coords, caracterization);
 
             this.State = States.Idle;
 

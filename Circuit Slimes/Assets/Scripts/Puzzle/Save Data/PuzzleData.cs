@@ -27,21 +27,77 @@ namespace Puzzle.Data
         {
             this.Board = new BoardData(puzzle.Board);
 
+            #region Pieces
+            List<string> pieceTypesFound = new List<string>();
+
             int nPieces = puzzle.Pieces.Count;
-            this.Pieces = new PieceData[nPieces];
+            var piecesData = new List<PieceData>();
+
             for (int i = 0; i < nPieces; i++)
             {
-                this.Pieces[i] = new PieceData(puzzle.Pieces[i]);
+                var piece = puzzle.Pieces[i];
+
+                var name = piece.Caracterization.ToString();
+
+                if (!pieceTypesFound.Contains(name))
+                {
+                    var piecesOfType = new List<Piece>()
+                    {
+                        piece
+                    };
+
+                    for(int j = i + 1; j < nPieces; j++)
+                    {
+                        var otherPiece = puzzle.Pieces[j];
+
+                        if (otherPiece.TypeMatches(piece))
+                            piecesOfType.Add(otherPiece);
+                    }
+
+                    piecesData.Add(new PieceData(piecesOfType.ToArray()));
+                    pieceTypesFound.Add(name);
+                }
             }
 
+            this.Pieces = piecesData.ToArray();
+            #endregion
+
+            #region Tiles
             var tiles = puzzle.Board.GetAllTiles();
 
+            var tileTypesFound = new List<string>(); 
+
             int nTiles = tiles.Count;
-            this.Tiles = new TileData[nTiles];
+            var tilesData = new List<TileData>();
+
             for (int i = 0; i < nTiles; i++)
             {
-                this.Tiles[i] = new TileData(tiles[i]);
+                var tile = tiles[i];
+
+                var name = Tile.GetName(tile.Type);
+
+                if(!tileTypesFound.Contains(name))
+                {
+                    var tilesOfTypeFound = new List<Tile>()
+                    {
+                        tile
+                    };
+
+                    for(var j = i + 1; j < nTiles; j++)
+                    {
+                        var otherTile = tiles[j];
+
+                        if (otherTile.Type == tile.Type)
+                            tilesOfTypeFound.Add(otherTile);
+                    }
+
+                    tilesData.Add(new TileData(tilesOfTypeFound.ToArray()));
+                    tileTypesFound.Add(name);
+                }
             }
+
+            this.Tiles = tilesData.ToArray();
+            #endregion
 
             this.Permissions = puzzle.Permissions.ToArray();
         }
@@ -57,9 +113,14 @@ namespace Puzzle.Data
             File.WriteAllBytes(filePath, jsonBytes);
         }
 
+
         public static Puzzle Load(string path, string name)
         {
-            string filePath   = Path.Combine(path, name + ".json");
+            string filePath = Path.Combine(path, name + ".json");
+
+            if (!File.Exists(filePath))
+                filePath = Path.Combine(path, "newLevel.json");
+
             byte[] jsonBytes  = File.ReadAllBytes(filePath);
             string jsonString = Encoding.ASCII.GetString(jsonBytes);
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonString);
@@ -81,7 +142,7 @@ namespace Puzzle.Data
             {
                 foreach (PieceData pieceData in puzzleData.Pieces)
                 {
-                    pieceList.Add(pieceData.CreatePiece(puzzle));
+                    pieceList.AddRange(pieceData.CreatePieces(puzzle));
                 }
             }
             #endregion
@@ -93,7 +154,7 @@ namespace Puzzle.Data
             {
                 foreach (TileData tileData in puzzleData.Tiles)
                 {
-                    tileList.Add(tileData.CreateTile(puzzle));
+                    tileList.AddRange(tileData.CreateTiles(puzzle));
                 }
             }
             #endregion

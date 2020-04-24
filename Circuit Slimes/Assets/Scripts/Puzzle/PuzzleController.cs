@@ -265,9 +265,6 @@ namespace Puzzle
         {
             Debug.Log("Saving level " + level + ".");
 
-            // FIXME: not sure if this works on a phone
-            // the exemple used Application.persistentDataPath
-            // yeah... this doesn't work on a phone. we need to use the persistentdatapath
             string path;
             string name;
 

@@ -13,10 +13,7 @@ namespace Puzzle.Actions
 
         private bool TargetDeactivated = false;
 
-        public Kamikaze() : base(new ElectricSlime()) 
-        {
-            this.Target = new ElectricSlime();
-        }
+        public Kamikaze() : base(new Piece.Caracteristics("ElectricSlime")) { }
 
         public Kamikaze(ElectricSlime target, Vector2Int targetCoords, LevelBoard.Directions direction)
             : base(target, targetCoords, direction) 

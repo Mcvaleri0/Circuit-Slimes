@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Puzzle.Pieces;
 
 
 namespace Puzzle.Board
@@ -167,6 +168,18 @@ namespace Puzzle.Board
             }
 
             return false;
+        }
+
+        public List<Agent> GetAllAgents()
+        {
+            var agents = new List<Agent>();
+
+            foreach(var entry in this.Rows)
+            {
+                agents.AddRange(entry.Value.GetAllAgents());
+            }
+
+            return agents;
         }
         #endregion
 

@@ -7,10 +7,7 @@ namespace Puzzle.Pieces.Slimes
 {
     public class ElectricSlime : Slime
     {
-        public ElectricSlime() : base()
-        {
-            this.SlimeType = SlimeTypes.Electric;
-        }
+        public ElectricSlime() : base() { }
 
         #region === Unity Events ===
 
@@ -18,8 +15,6 @@ namespace Puzzle.Pieces.Slimes
         override protected void Start()
         {
             base.Start();
-
-            this.SlimeType = SlimeTypes.Electric;
 
             this.KnownActions.Add(new Charge());
             this.KnownActions.Add(new ElectricMovement());

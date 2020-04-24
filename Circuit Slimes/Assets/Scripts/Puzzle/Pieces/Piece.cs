@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
-
+using Puzzle.Pieces;
 
 
 namespace Puzzle
@@ -56,11 +56,6 @@ namespace Puzzle
 
         #endregion
 
-        public Categories Category;
-        public SlimeTypes SlimeType;
-        public ComponentTypes ComponentType;
-        public CandyTypes CandyType;
-
         public struct Caracteristics
         {
             public Piece.Categories Category { get; private set; }
@@ -104,22 +99,11 @@ namespace Puzzle
                 this.CandyType = cdType;
             }
 
-            public Caracteristics(Piece piece)
-            {
-                this.Category = piece.Category;
-
-                this.SlimeType = piece.SlimeType;
-
-                this.ComponentType = piece.ComponentType;
-
-                this.CandyType = piece.CandyType;
-            }
-
             public Caracteristics(string name)
             {
                 this.Category = ParseCategory(name);
 
-                switch(this.Category)
+                switch (this.Category)
                 {
                     default:
                         this.SlimeType = SlimeTypes.None;
@@ -158,12 +142,12 @@ namespace Puzzle
                 {
                     return Categories.Candy;
                 }
-                else if (name.Contains("Component"))
-                {
-                    return Categories.Component;
-                }
                 else
                 {
+                    var componentType = ParseComponentType(name);
+
+                    if (componentType != ComponentTypes.None) return Categories.Component;
+
                     return Categories.None;
                 }
             }
@@ -243,13 +227,13 @@ namespace Puzzle
             {
                 var name = CategoryToString();
 
-                switch(this.Category)
+                switch (this.Category)
                 {
                     default:
                         break;
 
                     case Categories.Slime:
-                        name += SlimeTypeToString();
+                        name = SlimeTypeToString() + name;
                         break;
 
                     case Categories.Component:
@@ -266,7 +250,7 @@ namespace Puzzle
 
             private string CategoryToString()
             {
-                switch(this.Category)
+                switch (this.Category)
                 {
                     default:
                     case Categories.Component:
@@ -282,7 +266,7 @@ namespace Puzzle
 
             private string SlimeTypeToString()
             {
-                switch(this.SlimeType)
+                switch (this.SlimeType)
                 {
                     default:
                         return "";
@@ -336,7 +320,7 @@ namespace Puzzle
 
             private string CandyTypeToString()
             {
-                switch(this.CandyType)
+                switch (this.CandyType)
                 {
                     default:
                         return "";
@@ -351,7 +335,7 @@ namespace Puzzle
             #endregion
 
             #region Equals
-            public bool Equals(Caracteristics caracteristics)
+            public bool Matches(Caracteristics caracteristics)
             {
                 if (this.Category == caracteristics.Category)
                 {
@@ -373,311 +357,64 @@ namespace Puzzle
 
                 return false;
             }
-
-            public bool Equals(Piece piece)
-            {
-                if (this.Category == piece.Category)
-                {
-                    switch (this.Category)
-                    {
-                        default:
-                            break;
-
-                        case Piece.Categories.Slime:
-                            return this.SlimeType == piece.SlimeType;
-
-                        case Piece.Categories.Component:
-                            return this.ComponentType == piece.ComponentType;
-
-                        case Piece.Categories.Candy:
-                            return this.CandyType == piece.CandyType;
-                    }
-                }
-
-                return false;
-            }
             #endregion
         }
-        
 
-        #region === Instantiate ===
-
-        private static GameObject Instantiate(Transform parent, SlimeTypes type, Vector2 coords)
-        {
-            var prefabName = "";
-
-            switch (type)
-            {
-                default:
-                case SlimeTypes.None:
-                    break;
-
-                case SlimeTypes.Electric:
-                    prefabName = "ElectricSlime";
-                    break;
-
-                case SlimeTypes.Water:
-                    prefabName = "WaterSlime";
-                    break;
-
-                case SlimeTypes.Solder:
-                    prefabName = "SolderSlime";
-                    break;
-            }
-
-            var position = LevelBoard.WorldCoords(coords);
-
-            var rotation = Quaternion.identity;
-
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
-        }
-
-        private static GameObject Instantiate(Transform parent, ComponentTypes type, Vector2 coords)
-        {
-            var prefabName = "";
-
-            switch (type)
-            {
-                default:
-                case ComponentTypes.None:
-                    break;
-
-                case ComponentTypes.GreenLED:
-                    prefabName = "GreenLED";
-                    break;
-
-                case ComponentTypes.RedLED:
-                    prefabName = "RedLED";
-                    break;
-
-                case ComponentTypes.CellBattery:
-                    prefabName = "CellBattery";
-                    break;
-
-                case ComponentTypes.AABattery:
-                    prefabName = "AABattery";
-                    break;
-
-                case ComponentTypes.V9Battery:
-                    prefabName = "9VBattery";
-                    break;
-                
-                case ComponentTypes.SingleChip:
-                    prefabName = "SingleChip";
-                    break;
-
-                case ComponentTypes.DoubleChip:
-                    prefabName = "DoubleChip";
-                    break;
-
-                case ComponentTypes.SquareChip:
-                    prefabName = "SquareChip";
-                    break;
-
-                case ComponentTypes.SolderTile:
-                    prefabName = "SolderTile";
-                    break;
-            }
-
-            var position = LevelBoard.WorldCoords(coords);
-
-            var rotation = Quaternion.identity;
-
-            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
-        }
-
-        private static GameObject Instantiate(Transform parent, CandyTypes type, Vector2 coords)
-        {
-            var prefabName = "";
-
-            switch (type)
-            {
-                default:
-                case CandyTypes.None:
-                    break;
-
-                case CandyTypes.Water:
-                    prefabName = "WaterCandy";
-                    break;
-
-                case CandyTypes.Solder:
-                    prefabName = "SolderCandy";
-                    break;
-            }
-
-            var position = LevelBoard.WorldCoords(coords);
-
-            var rotation = Quaternion.identity;
-
-            return GameObject.Instantiate((GameObject) Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
-        }
-
-        #endregion
+        public Caracteristics Caracterization;
 
 
         #region === Create Piece ===
-
-        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, string prefabName,
+        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            Categories     cat       = GetCategory(prefabName);
-            SlimeTypes     slimeType = GetSlimeType(prefabName);
-            ComponentTypes compType  = GetComponentType(prefabName);
-            CandyTypes     candyType = GetCandyType(prefabName);
-
-            return CreatePiece(puzzle, coords, cat, slimeType, compType, candyType, ori, turn);
+            return CreatePiece(puzzle, coords, caracterization.ToString(), ori, turn);
         }
 
-        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, 
-                                        Categories category, SlimeTypes slimeType, 
-                                        ComponentTypes compType, CandyTypes candyType,
-                                        LevelBoard.Directions ori, int turn)
+        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, string prefabName,
+                                        LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            Transform parent = puzzle.PiecesObj.transform;
+            GameObject obj = Instantiate(puzzle, prefabName, coords);
 
-            GameObject obj;
+            var piece = obj.GetComponent<Piece>();
 
-            switch (category)
+            // Agent Init
+            if(piece is Agent agent)
             {
-                default:
-                case Categories.None:
-                    return null;
-
-                case Categories.Slime:
-                    obj = Instantiate(parent, slimeType, coords);
-
-                    var slime = obj.GetComponent<Pieces.Slimes.Slime>();
-
-                    if (slime != null)
-                    {
-                        slime.Initialize(puzzle, coords, slimeType, ori, turn);
-                    }
-
-                    return slime;
-
-                case Categories.Component:
-                    obj = Instantiate(parent, compType, coords);
-
-                    var component = obj.GetComponent<Pieces.Components.CircuitComponent>();
-
-                    if (component != null)
-                    {
-                        component.Initialize(puzzle, coords, compType, ori, turn);
-                    }
-
-                    return component;
-
-                case Categories.Candy:
-                    obj = Instantiate(parent, candyType, coords);
-
-                    var candy = obj.GetComponent<Pieces.Candy>();
-
-                    if (candy != null)
-                    {
-                        candy.Initialize(puzzle, coords, candyType);
-                    }
-
-                    return candy;
+                // Slime Init
+                if (agent is Pieces.Slimes.Slime slime)
+                {
+                    slime.Initialize(puzzle, coords, new Caracteristics(prefabName), ori, turn);
+                }
+                // Component Init
+                else  if(agent is Pieces.Components.CircuitComponent component)
+                {
+                    component.Initialize(puzzle, coords, new Caracteristics(prefabName), ori, turn);
+                }
             }
 
+            // Piece Init
+            else
+            {
+                piece.Initialize(puzzle, coords, new Caracteristics(prefabName));
+            }
+
+            return piece;
         }
 
         
-        #endregion
-
-
-        #region === Enums Methods ===
-
-        public static Categories GetCategory(string prefabName)
+        private static GameObject Instantiate(Puzzle puzzle, string prefabName, Vector2Int coords)
         {
-            if (prefabName.Contains("Slime"))
-            {
-                return Categories.Slime;
-            }
-            else if (prefabName.Contains("Candy"))
-            {
-                return Categories.Candy;
-            }
-            else
-            {
-                return Categories.Component;
-            }
+            var position = LevelBoard.WorldCoords(coords);
+
+            var rotation = Quaternion.identity;
+
+            var parent = puzzle.transform.GetChild(0);
+
+            return GameObject.Instantiate((GameObject)Resources.Load("Prefabs/Board Items/" + prefabName), position, rotation, parent);
         }
 
-        public static SlimeTypes GetSlimeType(string prefabName)
-        {
-            switch(prefabName)
-            {
-                case "ElectricSlime":
-                    return SlimeTypes.Electric;
 
-                case "WaterSlime":
-                    return SlimeTypes.Water;
-
-                case "SolderSlime":
-                    return SlimeTypes.Solder;
-
-                default:
-                    return SlimeTypes.None;
-            }
-        }
-
-        public static ComponentTypes GetComponentType(string prefabName)
-        {
-            switch(prefabName)
-            {
-                case "GreenLED":
-                    return ComponentTypes.GreenLED;
-
-                case "RedLED":
-                    return ComponentTypes.RedLED;
-
-                case "CellBattery":
-                    return ComponentTypes.CellBattery;
-
-                case "AABattery":
-                    return ComponentTypes.AABattery;
-
-                case "9VBattery":
-                    return ComponentTypes.V9Battery;
-
-                case "SingleChip":
-                    return ComponentTypes.SingleChip;
-
-                case "DoubleChip":
-                    return ComponentTypes.DoubleChip;
-
-                case "SquareChip":
-                    return ComponentTypes.SquareChip;
-
-                case "SolderTile":
-                    return ComponentTypes.SolderTile;
-
-                default:
-                    return ComponentTypes.None;
-            }
-        }
-
-        public static CandyTypes GetCandyType(string prefabName)
-        {
-            switch(prefabName)
-            {
-                case "WaterCandy":
-                    return CandyTypes.Water;
-
-                case "SolderCandy":
-                    return CandyTypes.Solder;
-
-                default:
-                    return CandyTypes.None;
-            }
-        }
-
-        #endregion
-
-
-        #region === Init ===
-        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Categories category)
+        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization)
         {
             this.Puzzle = puzzle;
 
@@ -685,25 +422,7 @@ namespace Puzzle
 
             this.Coords = coords;
 
-            this.Category = category;
-        }
-
-        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, SlimeTypes type = SlimeTypes.None)
-        {
-            this.Initialize(puzzle, coords, Categories.Slime);
-
-            this.SlimeType = type;
-
-            this.ComponentType = ComponentTypes.None;
-        }
-
-        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, ComponentTypes type = ComponentTypes.None)
-        {
-            this.Initialize(puzzle, coords, Categories.Component);
-
-            this.ComponentType = type;
-
-            this.SlimeType = SlimeTypes.None;
+            this.Caracterization = caracterization;
         }
         #endregion
         
@@ -726,23 +445,7 @@ namespace Puzzle
         #region === Piece Methods ===
         public bool TypeMatches(Piece other)
         {
-            if(other.Category == this.Category)
-            {
-                switch(this.Category)
-                {
-                    default:
-                        return true;
-
-                    case Categories.Slime:
-                    case Categories.Candy:
-                        return other.SlimeType == this.SlimeType;
-
-                    case Categories.Component:
-                        return other.ComponentType == this.ComponentType;
-                }
-            }
-
-            return false;
+            return this.Caracterization.Equals(other.Caracterization);
         }
         #endregion
     }

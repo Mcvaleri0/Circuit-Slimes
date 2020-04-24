@@ -12,22 +12,46 @@ namespace Puzzle.Data
     [System.Serializable]
     public class TileData
     {
-        public Vector2Int Coords;
+        public string PrefabName;
 
-        public Tile.Types Type;
+        public Vector2Int[] Coords;
 
 
         public TileData(Tile tile)
         {
-            this.Coords = tile.Coords;
+            this.Coords = new Vector2Int[1];
+            this.Coords[0] = tile.Coords;
 
-            this.Type = tile.Type;
+            this.PrefabName = Tile.GetName(tile.Type);
         }
 
 
-        public Tile CreateTile(Puzzle puzzle)
+        public TileData(Tile[] tiles)
         {
-            return Tile.CreateTile(puzzle, this.Coords, this.Type);
+            this.Coords = new Vector2Int[tiles.Length];
+
+            var i = 0;
+            foreach(var tile in tiles)
+            {
+                this.Coords[i++] = tile.Coords;
+            }
+
+            this.PrefabName = Tile.GetName(tiles[0].Type);
+        }
+
+
+        public Tile[] CreateTiles(Puzzle puzzle)
+        {
+            var tiles = new Tile[this.Coords.Length];
+
+            var i = 0;
+            foreach(var coords in this.Coords)
+            {
+                tiles[i] = Tile.CreateTile(puzzle, this.Coords[i], this.PrefabName);
+                i++;
+            }
+
+            return tiles;
         }
 
     }
