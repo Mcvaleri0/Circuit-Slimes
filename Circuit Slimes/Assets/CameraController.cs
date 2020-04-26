@@ -96,8 +96,6 @@ public class CameraController : MonoBehaviour
             screenPoint = InputController.MousePosition;
         }
 
-        Debug.Log(lastScreenPoint.ToString() + " - " + screenPoint.ToString());
-
         // Get the world delta of them after conversion
         var worldDelta = ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
 
