@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 using Puzzle;
-using Puzzle.Data;
 using Creator.Mode;
+using Creator.Editor;
+using Creator.Selection;
 
 
 
@@ -23,32 +25,18 @@ namespace Creator
         #region /* Puzzle Atributes */
 
         private PuzzleController PuzzleController { get; set; }
-
         private Puzzle.Puzzle Puzzle { get; set; }
+        private Transform PuzzleObj { get; set; }
 
         private PuzzleEditor PuzzleEditor { get; set; }
-
-        private Transform PuzzleObj { get; set; }
 
         #endregion
 
 
         #region /* Selection Atributes */
 
-        private const float DOUBLE_CLICK_WINDOW = 0.5f;
-
-        private bool SingleClick { get; set; }
-        private float TimeFirstClick { get; set; }
-
         private SelectionManager SelectionManager { get; set; }
-        private Transform Selected { get; set; }
-
-        private Piece PieceSelected { get; set; }
-        private Tile TileSelected { get; set; }
-
-        private bool MouseHolded { get; set; }
-        private Vector3 PosInScreenSpace { get; set; }
-        private Vector3 Offset { get; set; }
+        private SelectionSystem SelectionSystem { get; set; }
 
         #endregion
 
@@ -76,22 +64,22 @@ namespace Creator
             if (Input.GetMouseButtonDown(0))
             {
 
-                if (this.DoubleClick())
+                if (this.SelectionSystem.DoubleClick())
                 {
                     this.RemoveBoardItem();
                 }
 
-                this.PrepareDrag();
+                this.SelectionSystem.PrepareDrag();
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                this.EndDrag();
+                this.SelectionSystem.EndDrag();
             }
 
-            if (MouseHolded)
+            if (this.SelectionSystem.MouseHolded)
             {
-                this.MoveBoardItem();
+                this.PuzzleEditor.MoveItem();
             }
         }
 
@@ -115,7 +103,8 @@ namespace Creator
         {
             this.UpdatePuzzle(puzzle);
 
-            this.UpdateSelectionSystem();
+            //this.UpdateSelectionSystem();
+            this.SelectionSystem.UpdateInfo(this.PuzzleController);
 
             this.InitializePlayerCreatorMode(this.Creator);
 
@@ -131,7 +120,9 @@ namespace Creator
         {
             this.PuzzleController = controller;
             this.Puzzle = puzzle;
-            this.PuzzleObj = this.Puzzle.transform;
+            this.PuzzleObj = puzzle.transform;
+
+            this.PuzzleEditor = new PuzzleEditor(puzzle);
         }
 
         private void UpdatePuzzle(Puzzle.Puzzle puzzle)
@@ -185,26 +176,26 @@ namespace Creator
             }
         }
 
-        private void MoveBoardItem()
-        {
-            //get board coords
-            Vector2Int coords = this.SelectionManager.BoardCoords;
+        //private void MoveBoardItem()
+        //{
+        //    //get board coords
+        //    Vector2Int coords = this.SelectionManager.BoardCoords;
 
-            //convert grid coords in world coords
-            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + Offset;
+        //    //convert grid coords in world coords
+        //    Vector3 curPosition = this.Puzzle.WorldCoords(coords) + Offset;
 
-            // the new position must be at the board surface
-            curPosition = this.Puzzle.AtBoardSurface(curPosition);
-            Piece pieceNewPos = this.Puzzle.GetPiece(coords);
-            Tile  tileNewPos  = this.Puzzle.GetTile(coords);
+        //    // the new position must be at the board surface
+        //    curPosition = this.Puzzle.AtBoardSurface(curPosition);
+        //    Piece pieceNewPos = this.Puzzle.GetPiece(coords);
+        //    Tile  tileNewPos  = this.Puzzle.GetTile(coords);
 
-            // update the position of the object in the world
-            if ((this.PieceSelected != null && (pieceNewPos == null || pieceNewPos == this.PieceSelected)) ||
-                (this.TileSelected  != null && (tileNewPos  == null || tileNewPos  == this.TileSelected )))
-            {
-                this.Selected.position = curPosition;
-            }
-        }
+        //    // update the position of the object in the world
+        //    if ((this.PieceSelected != null && (pieceNewPos == null || pieceNewPos == this.PieceSelected)) ||
+        //        (this.TileSelected  != null && (tileNewPos  == null || tileNewPos  == this.TileSelected )))
+        //    {
+        //        this.Selected.position = curPosition;
+        //    }
+        //}
 
         public void AddPermission(string prefab)
         {
@@ -223,104 +214,108 @@ namespace Creator
 
         private void InitializeSelectionSystem()
         {
-            this.SingleClick = false;
+            //this.SingleClick = false;
 
-            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
-            this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
+            SelectionManager manager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
+            //this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
+
+            this.SelectionSystem = new SelectionSystem(manager, this.PuzzleController, this.PuzzleEditor);
+
+            this.PuzzleEditor.Selection = this.SelectionSystem;
         }
 
-        private void InitializeWhiteListCreator()
-        {
-            this.SelectionManager.WhiteList = new List<Transform>();
+        //private void InitializeWhiteListCreator()
+        //{
+        //    this.SelectionManager.WhiteList = new List<Transform>();
 
-            foreach (Transform childPiece in this.Puzzle.PiecesObj.transform)
-            {
-                this.SelectionManager.WhiteList.Add(childPiece);
-            }
+        //    foreach (Transform childPiece in this.Puzzle.PiecesObj.transform)
+        //    {
+        //        this.SelectionManager.WhiteList.Add(childPiece);
+        //    }
 
-            foreach (Transform childTile in this.Puzzle.TilesObj.transform)
-            {
-                this.SelectionManager.WhiteList.Add(childTile);
-            }
-        }
+        //    foreach (Transform childTile in this.Puzzle.TilesObj.transform)
+        //    {
+        //        this.SelectionManager.WhiteList.Add(childTile);
+        //    }
+        //}
 
-        private void UpdateSelectionSystem()
-        {
-            this.SingleClick = false;
+        //private void UpdateSelectionSystem()
+        //{
+        //    this.SingleClick = false;
 
-            this.SelectionManager.ReInitialise(this.PuzzleController);
-        }
+        //    this.SelectionManager.ReInitialise(this.PuzzleController);
+        //}
 
-        private bool DoubleClick()
-        {
-            if (!this.SingleClick)
-            {
-                this.TimeFirstClick = Time.time;
-                this.SingleClick = true;
-            }
-            else
-            {
-                if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
-                {
-                    this.TimeFirstClick = Time.time;
-                }
-                else
-                {
-                    this.SingleClick = false;
-                    return true;
-                }
-            }
+        //private bool DoubleClick()
+        //{
+        //    if (!this.SingleClick)
+        //    {
+        //        this.TimeFirstClick = Time.time;
+        //        this.SingleClick = true;
+        //    }
+        //    else
+        //    {
+        //        if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
+        //        {
+        //            this.TimeFirstClick = Time.time;
+        //        }
+        //        else
+        //        {
+        //            this.SingleClick = false;
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private void PrepareDrag()
-        {
-            this.Selected = this.SelectionManager.CurrentSelection;
+        //private void PrepareDrag()
+        //{
+        //    this.Selected = this.SelectionManager.CurrentSelection;
 
-            if (this.Selected != null)
-            {
-                this.MouseHolded = true;
-                this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
+        //    if (this.Selected != null)
+        //    {
+        //        this.MouseHolded = true;
+        //        this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
-                Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
-                this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+        //        Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+        //        this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
 
-                // one of them is always null
-                this.PieceSelected = this.Selected.GetComponent<Piece>();
-                this.TileSelected = this.Selected.GetComponent<Tile>();
+        //        // one of them is always null
+        //        this.PieceSelected = this.Selected.GetComponent<Piece>();
+        //        this.TileSelected = this.Selected.GetComponent<Tile>();
 
-                //reset and disable tile temporarily (visual) 
-                if (this.TileSelected != null)
-                {
-                    //this.TileSelected.UpdateTile(0); 
-                    this.TileSelected.enabled = false;
-                }
+        //        //reset and disable tile temporarily (visual) 
+        //        if (this.TileSelected != null)
+        //        {
+        //            //this.TileSelected.UpdateTile(0); 
+        //            this.TileSelected.enabled = false;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
-        private void EndDrag()
-        {
-            this.MouseHolded = false;
+        //private void EndDrag()
+        //{
+        //    this.MouseHolded = false;
 
-            if (this.Selected != null)
-            {
-                Vector2Int newPos = this.Puzzle.Discretize(this.Selected.position);
+        //    if (this.Selected != null)
+        //    {
+        //        Vector2Int newPos = this.Puzzle.Discretize(this.Selected.position);
 
-                if (this.PieceSelected != null)
-                {
-                    this.Puzzle.MovePiece(newPos, this.PieceSelected);
-                }
-                else
-                {
-                    this.Puzzle.MoveTile(newPos, this.TileSelected);
+        //        if (this.PieceSelected != null)
+        //        {
+        //            this.Puzzle.MovePiece(newPos, this.PieceSelected);
+        //        }
+        //        else
+        //        {
+        //            this.Puzzle.MoveTile(newPos, this.TileSelected);
 
-                    //re-enable tile  (visual)
-                    this.TileSelected.enabled = true;
-                }
-            }
-        }
+        //            //re-enable tile  (visual)
+        //            this.TileSelected.enabled = true;
+        //        }
+        //    }
+        //}
 
         #endregion
 
@@ -331,20 +326,12 @@ namespace Creator
         {
             this.Creator = creator;
 
-            if (creator)
-            {
-                this.Mode = new Editor();
-            }
-            else
-            {
-                this.Mode = new Player();
-            }
-
             if (this.Creator)
             {
                 this.InitializeMenuCreator();
 
-                this.InitializeWhiteListCreator();
+                this.SelectionSystem.WhiteListAllItens();
+                //this.InitializeWhiteListCreator();
             }
             else
             {
