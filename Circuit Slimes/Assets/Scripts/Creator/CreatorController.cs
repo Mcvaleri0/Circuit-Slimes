@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Puzzle;
 using Puzzle.Data;
+using Creator.Mode;
 
 
 
@@ -50,9 +51,11 @@ namespace Creator
         #endregion
 
 
-        #region /* Player/Creator Mode Atributes */
+        #region /* Mode Atributes */
 
         private const string ITEMS_PATH = "Prefabs/Board Items";
+
+        private Mode.Mode Mode { get; set; }
 
         public bool Creator { get; private set; }
 
@@ -191,11 +194,11 @@ namespace Creator
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
             Piece pieceNewPos = this.Puzzle.GetPiece(coords);
-            Tile tileNewPos = this.Puzzle.GetTile(coords);
+            Tile  tileNewPos  = this.Puzzle.GetTile(coords);
 
             // update the position of the object in the world
-            if ((this.PieceSelected != null && (this.Creator || pieceNewPos == null)) ||
-                (this.TileSelected != null && (tileNewPos == null || tileNewPos == this.TileSelected)))
+            if ((this.PieceSelected != null && (pieceNewPos == null || pieceNewPos == this.PieceSelected)) ||
+                (this.TileSelected  != null && (tileNewPos  == null || tileNewPos  == this.TileSelected )))
             {
                 this.Selected.position = curPosition;
             }
@@ -325,6 +328,15 @@ namespace Creator
         private void InitializePlayerCreatorMode(bool creator)
         {
             this.Creator = creator;
+
+            if (creator)
+            {
+                this.Mode = new Editor();
+            }
+            else
+            {
+                this.Mode = new Player();
+            }
 
             if (this.Creator)
             {
