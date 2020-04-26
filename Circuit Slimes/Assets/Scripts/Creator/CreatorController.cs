@@ -26,6 +26,8 @@ namespace Creator
 
         private Puzzle.Puzzle Puzzle { get; set; }
 
+        private PuzzleEditor PuzzleEditor { get; set; }
+
         private Transform PuzzleObj { get; set; }
 
         #endregion
