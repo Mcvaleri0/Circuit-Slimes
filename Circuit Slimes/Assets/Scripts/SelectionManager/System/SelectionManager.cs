@@ -22,8 +22,6 @@ public class SelectionManager : MonoBehaviour
 
     public List<Transform> WhiteList = null;
 
-    //FIXME: In the future we should separate BoardSpaceSelection into its own script
-
     //visual selection of the board space
     public GameObject BoardSpaceSelection;
     private Transform BoardSpaceSelectionTransform;
@@ -83,8 +81,8 @@ public class SelectionManager : MonoBehaviour
             ReInitialise(this.PuzzleController);
         }
 
+        //new ray
         var ray = this.RayProvider.CreateRay();
-
 
         //Selection Determination
         var selection = GetSelection(ray);
