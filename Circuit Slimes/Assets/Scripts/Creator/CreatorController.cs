@@ -54,7 +54,7 @@ namespace Creator
 
         private const string ITEMS_PATH = "Prefabs/Board Items";
 
-        public bool Creator;
+        public bool Creator { get; private set; }
 
         public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
 
@@ -95,13 +95,13 @@ namespace Creator
 
         #region === Init/Update Methods ===
 
-        public void Initialize(PuzzleController controller, Puzzle.Puzzle puzzle)
+        public void Initialize(PuzzleController controller, Puzzle.Puzzle puzzle, bool creator)
         {
             this.InitializePuzzleInfo(controller, puzzle);
 
             this.InitializeSelectionSystem();
 
-            this.InitializePlayerCreatorMode();
+            this.InitializePlayerCreatorMode(creator);
 
             this.InitializeCanvas();
         }
@@ -112,7 +112,7 @@ namespace Creator
 
             this.UpdateSelectionSystem();
 
-            this.InitializePlayerCreatorMode();
+            this.InitializePlayerCreatorMode(this.Creator);
 
             this.UpdateCanvas();
         }
@@ -322,8 +322,10 @@ namespace Creator
 
         #region === Player/Creator Methods ===
 
-        private void InitializePlayerCreatorMode()
+        private void InitializePlayerCreatorMode(bool creator)
         {
+            this.Creator = creator;
+
             if (this.Creator)
             {
                 this.InitializeMenuCreator();
