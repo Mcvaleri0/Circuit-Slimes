@@ -80,6 +80,7 @@ public class CameraController : MonoBehaviour
     InputController InputController;
 
 
+
     Vector3 GetInputTranslation()
     {
         // Get the fingers we want to use
@@ -115,6 +116,8 @@ public class CameraController : MonoBehaviour
 
         return (1 - Mathf.Clamp(pinchScale, 0, 2)) * ZoomSensitivity;
     }
+
+
 
     private void Start()
     {
