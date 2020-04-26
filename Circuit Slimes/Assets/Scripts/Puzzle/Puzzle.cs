@@ -92,6 +92,7 @@ namespace Puzzle
         {
             return this.Board.GetPiece(coords);
         }
+
         #endregion
 
 
