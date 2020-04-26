@@ -108,8 +108,11 @@ namespace Creator
         public void UpdateLevel()
         {
             this.UpdatePuzzle(this.PuzzleController.CurrentLevel);
+
             this.UpdateSelectionSystem();
+
             this.InitializePlayerCreatorMode();
+
             this.UpdateCanvas();
         }
 
@@ -256,7 +259,8 @@ namespace Creator
         private void UpdateSelectionSystem()
         {
             this.SingleClick = false;
-            this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
+
+            this.SelectionManager.ReInitialise(this.PuzzleController);
         }
 
         private bool DoubleClick()

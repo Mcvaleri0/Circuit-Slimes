@@ -145,6 +145,14 @@ namespace Puzzle
             return LevelBoard.WorldCoords(position);
         }
 
+        public Vector2Int Clamp(Vector2Int coords)
+        {
+            int x = Mathf.Clamp(coords.x, 0, Board.Width - 1);
+            int y = Mathf.Clamp(coords.y, 0, Board.Height - 1);
+
+            return new Vector2Int(x, y);
+        }
+
         #endregion
     }
 }

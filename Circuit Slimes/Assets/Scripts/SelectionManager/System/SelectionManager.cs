@@ -11,7 +11,8 @@ public class SelectionManager : MonoBehaviour
     private BoardCoordGetter   BoardCoordGetter;
 
     public Puzzle.PuzzleController PuzzleController { get; private set; }
-    public Transform PuzzleObj { get; private set; }
+    public Transform PuzzleTransform { get; private set; }
+
     public Transform BoardTransform { get; private set; }
 
     //Outward facing info, fed to the CreatorController
@@ -34,10 +35,10 @@ public class SelectionManager : MonoBehaviour
     {
         //puzzle
         this.PuzzleController = puzzleController;
-        this.PuzzleObj = puzzleObject;
+        this.PuzzleTransform = puzzleObject;
 
         //board
-        this.BoardTransform = this.PuzzleObj.Find("Board").transform;
+        this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
 
         //ray provider, selector, coordgetter and response
         this.RayProvider       = this.GetComponent<IRayProvider>();
@@ -49,15 +50,22 @@ public class SelectionManager : MonoBehaviour
         this.InitializeBoardSpaceSelection();
     }
 
-    private void ReInitialise()
+    public void ReInitialise(Puzzle.PuzzleController puzzleController)
     {
-        this.PuzzleObj = GameObject.Find("Puzzle").transform;
-        this.BoardTransform = this.PuzzleObj.Find("Board").transform;
+        //puzzle
+        this.PuzzleController = puzzleController;
+        this.PuzzleTransform = GameObject.Find("Puzzle").transform;
+
+        //board
+        this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
+
+        this.InitializeBoardSpaceSelection();
     }
 
     public void InitializeBoardSpaceSelection() {
 
-        var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleObj);
+        var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleTransform);
+         
         this.BoardSpaceSelectionTransform = boardSpaceSelection.transform;
         this.BoardSpaceSelectionRenderer = boardSpaceSelection.GetComponent<MeshRenderer>();
 
@@ -69,10 +77,11 @@ public class SelectionManager : MonoBehaviour
 
     #region Unity Methods
 
-
     private void Update()
     {
-        if (BoardTransform == null) ReInitialise(); //FIXME this was a quick hack just so it works
+        if (this.BoardTransform == null) {
+            ReInitialise(this.PuzzleController);
+        }
 
         var ray = this.RayProvider.CreateRay();
 
@@ -105,14 +114,8 @@ public class SelectionManager : MonoBehaviour
         //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
 
-        //BoardSpaceSelection
-        if(this.BoardSpaceSelectionTransform == null)
-        {
-            this.InitializeBoardSpaceSelection();
-        }
-
-        
-        this.BoardSpaceSelectionRenderer.enabled = BoardHover;
+        //Update BoardSelection Position
+        this.BoardSpaceSelectionRenderer.enabled = this.BoardHover;
         var spacepos = Puzzle.Board.LevelBoard.WorldCoords(this.BoardCoords);
         spacepos.y += 0.1f;
         this.BoardSpaceSelectionTransform.position = spacepos;

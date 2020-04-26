@@ -19,6 +19,7 @@ public class BoardCoordGetter : MonoBehaviour
     {
 
         var board = this.Manager.BoardTransform.GetComponent<BoxCollider>();
+        var puzzle = this.Manager.PuzzleController;
 
         this.BoardHover = false;
 
@@ -26,9 +27,9 @@ public class BoardCoordGetter : MonoBehaviour
 
             this.BoardHover = true;
             this.BoardCoords = Puzzle.Board.LevelBoard.Discretize(hit.point);
+            this.BoardCoords = puzzle.Puzzle.Clamp(this.BoardCoords);
         }
-        
-        return BoardCoords;
+        return this.BoardCoords;
     }
 
     public bool GetHover()
