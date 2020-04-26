@@ -26,6 +26,7 @@ namespace Creator
         private Puzzle.Puzzle Puzzle { get; set; }
 
         private Transform PuzzleObj { get; set; }
+
         #endregion
 
 
@@ -92,11 +93,11 @@ namespace Creator
         #endregion
 
 
-        #region === Level Methods ===
+        #region === Init/Update Methods ===
 
-        public void InitializeLevel()
+        public void Initialize(PuzzleController controller, Puzzle.Puzzle puzzle)
         {
-            this.InitializePuzzle();
+            this.InitializePuzzleInfo(controller, puzzle);
 
             this.InitializeSelectionSystem();
 
@@ -105,9 +106,9 @@ namespace Creator
             this.InitializeCanvas();
         }
 
-        public void UpdateLevel()
+        public void UpdateInfo(Puzzle.Puzzle puzzle)
         {
-            this.UpdatePuzzle(this.PuzzleController.CurrentLevel);
+            this.UpdatePuzzle(puzzle);
 
             this.UpdateSelectionSystem();
 
@@ -121,35 +122,17 @@ namespace Creator
 
         #region === Puzzle Methods ===
 
-        private void InitializePuzzle()
+        private void InitializePuzzleInfo(PuzzleController controller, Puzzle.Puzzle puzzle)
         {
-            this.PuzzleController = GameObject.Find("PuzzleController").GetComponent<PuzzleController>();
-
-            int level;
-            if (this.Creator)
-            {
-                #if UNITY_EDITOR
-                    // TODO: Choose Level
-                    level = this.PuzzleController.CurrentLevel;
-
-                #else
-                    // Load Players personnal Level
-                    level = PuzzleController.PLAYERS_LEVEL;
-
-                #endif
-            }
-            else
-            {
-                level = this.PuzzleController.CurrentLevel;
-            }
-
-            this.UpdatePuzzle(level);
+            this.PuzzleController = controller;
+            this.Puzzle = puzzle;
+            this.PuzzleObj = this.Puzzle.transform;
         }
 
-        private void UpdatePuzzle(int level)
+        private void UpdatePuzzle(Puzzle.Puzzle puzzle)
         {
-            this.Puzzle = this.PuzzleController.LoadPuzzle(level);
-            this.PuzzleObj = GameObject.Find("Puzzle").transform;
+            this.Puzzle = puzzle;
+            this.PuzzleObj = this.Puzzle.transform;
         }
 
         public void AddBoardItem(string name)
@@ -236,8 +219,8 @@ namespace Creator
         private void InitializeSelectionSystem()
         {
             this.SingleClick = false;
-            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
 
+            this.SelectionManager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
             this.SelectionManager.Initialize(this.PuzzleController, this.PuzzleObj);
         }
 
@@ -410,7 +393,7 @@ namespace Creator
 
                 // add click listener
                 int level = this.PuzzleController.CurrentLevel;
-                this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SavePuzzle(level); });
+                this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SaveLevel(level); });
             }
             else
             {

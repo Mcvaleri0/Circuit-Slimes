@@ -62,8 +62,10 @@ namespace Puzzle
 
             this.Turn = 0;
 
+            this.LoadLevel(this.CurrentLevel);
+
             this.CreatorController = GameObject.Find("CreatorController").GetComponent<CreatorController>();
-            this.CreatorController.InitializeLevel();
+            this.CreatorController.Initialize(this, this.Puzzle);
         }
 
         // Update is called once per frame
@@ -220,7 +222,7 @@ namespace Puzzle
 
         #region === Level Functions ===
 
-        public Puzzle LoadPuzzle(int level)
+        public void LoadLevel(int level)
         {
             // this needs to be like this because UnityEngine overrides != == operators
             // because of that null and "null" exist. when using the operators, 
@@ -257,11 +259,9 @@ namespace Puzzle
             this.Puzzle = PuzzleData.Load(path, name);
 
             Debug.Log("Puzzle Loaded");
-
-            return this.Puzzle;
         }
 
-        public void SavePuzzle(int level)
+        public void SaveLevel(int level)
         {
             Debug.Log("Saving level " + level + ".");
 
@@ -312,7 +312,9 @@ namespace Puzzle
 
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
-            this.CreatorController.UpdateLevel();
+            this.LoadLevel(this.CurrentLevel);
+
+            this.CreatorController.UpdateInfo(this.Puzzle);
             this.Restart();
         }
 
@@ -327,7 +329,9 @@ namespace Puzzle
                 this.CurrentLevel += this.nLevels;
             }
 
-            this.CreatorController.UpdateLevel();
+            this.LoadLevel(this.CurrentLevel);
+
+            this.CreatorController.UpdateInfo(this.Puzzle);
             this.Restart();
         }
 
