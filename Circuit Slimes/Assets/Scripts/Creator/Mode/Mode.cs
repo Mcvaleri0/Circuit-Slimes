@@ -8,10 +8,5 @@ namespace Creator.Mode
 {
     public abstract class Mode
     {
-        public void Initialize()
-        {
-
-        }
-
     }
 }

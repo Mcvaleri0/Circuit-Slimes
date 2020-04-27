@@ -140,6 +140,15 @@ namespace Creator
         {
             this.Creator = creator;
 
+            if (creator)
+            {
+                this.Mode = new Mode.Editor();
+            }
+            else
+            {
+                this.Mode = new Player();
+            }
+
             if (this.Creator)
             {
                 this.InitializeMenuCreator();
@@ -151,7 +160,6 @@ namespace Creator
                 this.MenuOptions = this.PuzzleEditor.Permissions();
 
                 this.SelectionSystem.EmptyWhiteList();
-                //this.SelectionManager.WhiteList = new List<Transform>();
             }
 
             this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();

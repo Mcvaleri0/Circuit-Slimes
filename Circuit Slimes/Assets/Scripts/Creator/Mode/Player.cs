@@ -9,5 +9,4 @@ namespace Creator.Mode
     public class Player : Mode
     {
     }
-
 }
