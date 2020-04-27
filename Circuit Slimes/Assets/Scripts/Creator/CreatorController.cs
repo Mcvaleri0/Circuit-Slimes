@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Puzzle;
+using Creator.UI;
 using Creator.Mode;
 using Creator.Editor;
 using Creator.Selection;
@@ -16,8 +17,7 @@ namespace Creator
     {
         #region /* UI Atributes */
 
-        private ScrollMenu ScrollMenu { get; set; }
-        private Transform  SaveButton { get; set; }
+        private UIController UIController { get; set; }
 
         #endregion
 
@@ -40,15 +40,11 @@ namespace Creator
 
         #region /* Mode Atributes */
 
-        private const string ITEMS_PATH = "Prefabs/Board Items";
-
         private Mode.Mode Mode { get; set; }
 
         public bool Creator { get; private set; }
 
         public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
-
-        private List<string> MenuOptions { get; set; }
 
         #endregion  
 
@@ -93,7 +89,7 @@ namespace Creator
 
             this.InitializePlayerCreatorMode(creator);
 
-            this.InitializeCanvas();
+            this.InitializeUI();
         }
 
         public void UpdateInfo(Puzzle.Puzzle puzzle)
@@ -104,7 +100,7 @@ namespace Creator
 
             this.InitializePlayerCreatorMode(this.Creator);
 
-            this.UpdateCanvas();
+            this.UIController.UpdateUI(this.PuzzleEditor, this.SelectionSystem);
         }
 
         #endregion
@@ -138,8 +134,6 @@ namespace Creator
 
         private void InitializePlayerCreatorMode(bool creator)
         {
-            this.Creator = creator;
-
             if (creator)
             {
                 this.Mode = new Mode.Editor();
@@ -149,18 +143,7 @@ namespace Creator
                 this.Mode = new Player();
             }
 
-            if (this.Creator)
-            {
-                this.InitializeMenuCreator();
-
-                this.SelectionSystem.WhiteListAllItens(this.PuzzleEditor.PiecesTransform(), this.PuzzleEditor.TilesTransform());
-            }
-            else
-            {
-                this.MenuOptions = this.PuzzleEditor.Permissions();
-
-                this.SelectionSystem.EmptyWhiteList();
-            }
+            this.Mode.DefineSelectableList(this.PuzzleEditor, this.SelectionSystem);
 
             this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
         }
@@ -170,66 +153,12 @@ namespace Creator
 
         #region === UI Methods ===
 
-        private void InitializeCanvas()
+        private void InitializeUI()
         {
             Transform canvas = this.transform.Find("Canvas");
 
-            this.InitializeScrollMenu(canvas);
-
-            this.InitializeButtons(canvas);
-        }
-
-        private void InitializeMenuCreator()
-        {
-            if (this.MenuOptions == null)
-            {
-                Object[] prefabs = Resources.LoadAll(ITEMS_PATH);
-                this.MenuOptions = new List<string>();
-
-                foreach (Object prefab in prefabs)
-                {
-                    this.MenuOptions.Add(prefab.name);
-                }
-            }
-        }
-
-        private void InitializeScrollMenu(Transform canvas)
-        {
-            Transform menu = canvas.Find("Scroll Menu");
-            Transform content = menu.Find("Viewport").Find("Content");
-
-            this.ScrollMenu = new ScrollMenu(this, menu, content, this.MenuOptions,
-                                  this.PuzzleEditor.Permissions(), this.PuzzleEditor, this.SelectionSystem);
-        }
-
-        private void InitializeButtons(Transform canvas)
-        {
-            // Change SaveButton Location
-            this.SaveButton = canvas.Find("Save Button");
-
-            if (this.Creator)
-            {
-                RectTransform saveRect = this.SaveButton.GetComponent<RectTransform>();
-
-                saveRect.pivot = new Vector2(1, 1);
-                float x = -30; //x margin
-                float y = -30; //y margin
-
-                saveRect.anchoredPosition = new Vector2(x, y);
-
-                // add click listener
-                int level = this.PuzzleController.CurrentLevel;
-                this.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.PuzzleController.SaveLevel(level); });
-            }
-            else
-            {
-                this.SaveButton.gameObject.SetActive(false);
-            }
-        }
-
-        private void UpdateCanvas()
-        {
-            this.ScrollMenu.UpdateContent(this.MenuOptions, this.PuzzleEditor.Permissions(), this.PuzzleEditor, this.SelectionSystem);
+            this.UIController = new UIController(canvas, this.Mode, this.PuzzleController, 
+                                      this.PuzzleEditor, this.SelectionSystem);
         }
 
         #endregion

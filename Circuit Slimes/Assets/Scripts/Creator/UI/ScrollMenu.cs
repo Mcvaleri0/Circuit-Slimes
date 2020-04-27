@@ -9,7 +9,7 @@ using Creator.Selection;
 
 
 
-namespace Creator
+namespace Creator.UI
 {
     public class ScrollMenu
     {
@@ -25,18 +25,12 @@ namespace Creator
 
         #endregion
 
-        #region /* Creator Attributes */
-
-        private CreatorController Crontroller { get; set; }
-
-        #endregion 
 
 
-
-        public ScrollMenu(CreatorController controller, Transform menu, Transform content,
-            List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
-        {
-            this.Crontroller = controller;
+        public ScrollMenu(Transform menu, List<string> options, List<string> available, 
+            PuzzleEditor editor, SelectionSystem selection, Mode.Mode mode)
+        {           
+            Transform content = menu.Find("Viewport").Find("Content");
 
             this.Menu = menu;
             this.MenuContent = content;
@@ -44,16 +38,17 @@ namespace Creator
             this.OptionButton    = Resources.Load(BUTTONS_PATH + "OptionButton");
             this.AvailableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
 
-            this.Initialize(options, available, editor, selection);
+            this.Initialize(options, available, editor, selection, mode);
         }
 
 
         #region === Initialization Methods === 
 
-        private void Initialize(List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
+        private void Initialize(List<string> options, List<string> available, PuzzleEditor editor,
+            SelectionSystem selection, Mode.Mode mode)
         {
             this.ResizeMenu();
-            this.PopulateContent(options, available, editor, selection);
+            this.PopulateContent(options, available, editor, selection, mode);
         }
 
         #endregion
@@ -68,22 +63,24 @@ namespace Creator
             rect.anchoredPosition = new Vector2(0, -3 * Screen.height / 8);
         }
 
-        private void PopulateContent(List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
+        private void PopulateContent(List<string> options, List<string> available, PuzzleEditor editor,
+            SelectionSystem selection, Mode.Mode mode)
         {
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, available, editor, selection);
+                this.InstantiateOption(opt, available, editor, selection, mode);
             }
         }
 
-        private void InstantiateOption(string text, List<string> available, PuzzleEditor editor, SelectionSystem selection)
+        private void InstantiateOption(string text, List<string> available, PuzzleEditor editor, 
+            SelectionSystem selection, Mode.Mode mode)
         {
             GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
             newObj.GetComponent<Button>().onClick.AddListener(delegate { editor.AddItem(text, selection); });
 
-            if (this.Crontroller.Creator)
+            if (mode is Mode.Editor)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);
                 AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
@@ -92,11 +89,12 @@ namespace Creator
             }
         }
 
-        public void UpdateContent(List<string> newOptions, List<string> available, PuzzleEditor editor, SelectionSystem selection)
+        public void UpdateContent(List<string> newOptions, List<string> available, 
+            PuzzleEditor editor, SelectionSystem selection, Mode.Mode mode)
         {
             this.ClearMenu();
 
-            this.PopulateContent(newOptions, available, editor, selection);
+            this.PopulateContent(newOptions, available, editor, selection, mode);
         }
 
         private void ClearMenu()
