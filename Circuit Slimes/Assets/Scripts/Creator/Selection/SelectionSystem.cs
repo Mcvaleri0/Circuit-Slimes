@@ -42,22 +42,14 @@ namespace Creator.Selection
         #endregion
 
 
-        #region /* Puzzle Attributes */
 
-        private PuzzleEditor Editor { get; set; }
-
-        #endregion
-
-
-
-        public SelectionSystem(SelectionManager manager, PuzzleController controller, PuzzleEditor editor)
+        public SelectionSystem(SelectionManager manager, PuzzleController controller, Transform puzzle)
         {
             this.Manager = manager;
-            this.Editor  = editor;
 
             this.SingleClick = false;
 
-            this.Manager.Initialize(controller, editor.PuzzleTransform());
+            this.Manager.Initialize(controller, puzzle);
         }
 
 
@@ -88,16 +80,16 @@ namespace Creator.Selection
 
         #region === Manager Methods ===
 
-        public void WhiteListAllItens()
+        public void WhiteListAllItens(Transform pieces, Transform tiles)
         {
             this.Manager.WhiteList = new List<Transform>();
 
-            foreach (Transform childPiece in this.Editor.PiecesTransform())
+            foreach (Transform childPiece in pieces)
             {
                 this.Manager.WhiteList.Add(childPiece);
             }
 
-            foreach (Transform childTile in this.Editor.TilesTransform())
+            foreach (Transform childTile in tiles)
             {
                 this.Manager.WhiteList.Add(childTile);
             }
@@ -169,21 +161,21 @@ namespace Creator.Selection
         }
 
 
-        public void EndDrag()
+        public void EndDrag(PuzzleEditor editor)
         {
             this.MouseHolded = false;
 
             if (this.Selected != null)
             {
-                Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
+                Vector2Int newPos = editor.Discretize(this.Selected.position);
 
                 if (this.Piece != null)
                 {
-                    this.Editor.MovePiece(newPos, this.Piece);
+                    editor.MovePiece(newPos, this.Piece);
                 }
                 else
                 {
-                    this.Editor.MoveTile(newPos, this.Tile);
+                    editor.MoveTile(newPos, this.Tile);
 
                     //re-enable tile  (visual)
                     this.Tile.enabled = true;

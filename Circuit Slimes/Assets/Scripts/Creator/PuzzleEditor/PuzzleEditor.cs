@@ -18,13 +18,6 @@ namespace Creator.Editor
         #endregion
 
 
-        #region /* Selection Attibutes */
-
-        public SelectionSystem Selection { get; set; }
-
-        #endregion
-
-
 
         #region === Init Methods ===
 
@@ -44,44 +37,43 @@ namespace Creator.Editor
         }
 
         
-        public void MoveItem()
+        public void MoveItem(SelectionSystem selection)
         {
             //get board coords
-            Vector2Int coords = this.Selection.BoardCoords();
+            Vector2Int coords = selection.BoardCoords();
 
             //convert grid coords in world coords
-            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + this.Selection.Offset;
+            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + selection.Offset;
 
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
 
             // update the position of the object in the world
-            if (this.Selection.PieceSelected())
+            if (selection.PieceSelected())
             {
                 Piece pieceNewPos = this.Puzzle.GetPiece(coords);
 
-                if (pieceNewPos == null || pieceNewPos == this.Selection.Piece)
+                if (pieceNewPos == null || pieceNewPos == selection.Piece)
                 {
-                    this.ChangeItemPosition(this.Selection.Selected, curPosition);
+                    this.ChangeItemPosition(selection.Selected, curPosition);
                 }
             }
             else
             {
                 Tile tileNewPos = this.Puzzle.GetTile(coords);
 
-                if (tileNewPos == null || tileNewPos == this.Selection.Tile)
+                if (tileNewPos == null || tileNewPos == selection.Tile)
                 {
-                    this.ChangeItemPosition(this.Selection.Selected, curPosition);
+                    this.ChangeItemPosition(selection.Selected, curPosition);
                 }
             }
         }
 
 
-        public void ChangeItemPosition(Transform item, Vector3 newPos)
+        private void ChangeItemPosition(Transform item, Vector3 newPos)
         {
             item.position = newPos;
         }
-
 
         #endregion
 
