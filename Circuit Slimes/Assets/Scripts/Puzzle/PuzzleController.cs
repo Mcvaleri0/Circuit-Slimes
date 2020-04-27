@@ -29,6 +29,7 @@ namespace Puzzle
 
         private CreatorController CreatorController { get; set; }
 
+        private WinCondition WinCondition { get; set; }
         #endregion
 
 
@@ -87,6 +88,20 @@ namespace Puzzle
                     {
                         this.CurrentAgent = this.Puzzle.Agents.Count - 1;
                         this.State = RunState.StepBack;
+                    }
+
+                    if(this.StoppedAgents >= this.Puzzle.Agents.Count)
+                    {
+                        if (this.WinCondition.Equals(null)) break;
+
+                        if(this.WinCondition.Verify(this.Puzzle))
+                        {
+                            Debug.Log("WIN");
+                        }
+                        else
+                        {
+                            Debug.Log("Fail");
+                        }
                     }
                     break;
 
@@ -257,6 +272,8 @@ namespace Puzzle
             }
 
             this.Puzzle = PuzzleData.Load(path, name);
+
+            this.WinCondition = this.Puzzle.WinCondition;
 
             Debug.Log("Puzzle Loaded");
         }
