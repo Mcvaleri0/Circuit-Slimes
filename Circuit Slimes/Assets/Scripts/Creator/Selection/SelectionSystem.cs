@@ -75,6 +75,12 @@ namespace Creator.Selection
             return this.Tile != null;
         }
 
+
+        public bool SomethingSelected()
+        {
+            return this.Manager.CurrentSelection != null;
+        }
+
         #endregion
 
 
@@ -94,6 +100,24 @@ namespace Creator.Selection
                 this.Manager.WhiteList.Add(childTile);
             }
 
+        }
+
+
+        public void AddItemToWhiteList(Transform newItem)
+        {
+            this.Manager.WhiteList.Add(newItem);
+        }
+
+
+        public void EmptyWhiteList()
+        {
+            this.Manager.WhiteList = new List<Transform>();
+        }
+
+
+        public GameObject GameObjectSelected() 
+        {
+            return this.Manager.CurrentSelection.gameObject;
         }
 
 

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 using Puzzle;
+using Creator.Editor;
+using Creator.Selection;
 
 
 
@@ -30,7 +33,8 @@ namespace Creator
 
 
 
-        public ScrollMenu(CreatorController controller, Transform menu, Transform content, List<string> options, List<string> available)
+        public ScrollMenu(CreatorController controller, Transform menu, Transform content,
+            List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
         {
             this.Crontroller = controller;
 
@@ -40,16 +44,16 @@ namespace Creator
             this.OptionButton    = Resources.Load(BUTTONS_PATH + "OptionButton");
             this.AvailableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
 
-            this.Initialize(options, available);
+            this.Initialize(options, available, editor, selection);
         }
 
 
         #region === Initialization Methods === 
 
-        private void Initialize(List<string> options, List<string> available)
+        private void Initialize(List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
         {
             this.ResizeMenu();
-            this.PopulateContent(options, available);
+            this.PopulateContent(options, available, editor, selection);
         }
 
         #endregion
@@ -64,35 +68,35 @@ namespace Creator
             rect.anchoredPosition = new Vector2(0, -3 * Screen.height / 8);
         }
 
-        private void PopulateContent(List<string> options, List<string> available)
+        private void PopulateContent(List<string> options, List<string> available, PuzzleEditor editor, SelectionSystem selection)
         {
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, available);
+                this.InstantiateOption(opt, available, editor, selection);
             }
         }
 
-        private void InstantiateOption(string text, List<string> available)
+        private void InstantiateOption(string text, List<string> available, PuzzleEditor editor, SelectionSystem selection)
         {
             GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Crontroller.AddBoardItem(text); });
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { editor.AddItem(text, selection); });
 
             if (this.Crontroller.Creator)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);
                 AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
 
-                avlBtnScrp.Initialize(this.Crontroller, text, available.Contains(text));
+                avlBtnScrp.Initialize(editor, text, available.Contains(text));
             }
         }
 
-        public void UpdateContent(List<string> newOptions, List<string> available)
+        public void UpdateContent(List<string> newOptions, List<string> available, PuzzleEditor editor, SelectionSystem selection)
         {
             this.ClearMenu();
 
-            this.PopulateContent(newOptions, available);
+            this.PopulateContent(newOptions, available, editor, selection);
         }
 
         private void ClearMenu()

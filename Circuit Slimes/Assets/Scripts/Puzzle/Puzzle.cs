@@ -25,6 +25,7 @@ namespace Puzzle
         #endregion
 
 
+
         #region === Initialization Methods ===
         
         public void Initialize(LevelBoard board)
@@ -128,6 +129,20 @@ namespace Puzzle
 
         #endregion
 
+
+        #region === Permission Methods ===
+
+        public void AddPermission(string prefab)
+        {
+            this.Permissions.Add(prefab);
+        }
+
+        public void RemovePermission(string prefab)
+        {
+            this.Permissions.Remove(prefab);
+        }
+
+        #endregion
 
         #region === Utility ===
 

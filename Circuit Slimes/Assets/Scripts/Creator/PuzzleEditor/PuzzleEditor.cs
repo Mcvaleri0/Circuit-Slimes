@@ -36,7 +36,64 @@ namespace Creator.Editor
             return this.Puzzle.transform;
         }
 
-        
+
+        public void UpdatePuzzle(Puzzle.Puzzle puzzle)
+        {
+            this.Puzzle = puzzle;
+        }
+
+        #endregion
+
+
+        #region === Items Methods ===
+
+        public void AddItem(string name, SelectionSystem selection)
+        {
+            Debug.Log("Instantiating " + name);
+
+            // TODO: make the player choose where he wants the item
+            Vector2Int coords = new Vector2Int(0, 3);
+
+            if (name.Contains("Tile"))
+            {
+                Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
+                this.Puzzle.AddTile(newTile);
+                selection.AddItemToWhiteList(newTile.transform);
+            }
+            else
+            {
+                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
+                this.Puzzle.AddPiece(newPiece);
+                selection.AddItemToWhiteList(newPiece.transform);
+            }
+        }
+
+
+        public void RemoveItem(SelectionSystem selection)
+        {
+            if (selection.SomethingSelected())
+            {
+                GameObject objToRemove = selection.GameObjectSelected();
+                Vector2Int coords = selection.BoardCoords();
+
+                // remove object representation from Puzzle
+                Piece pieceToRemove = this.Puzzle.GetPiece(coords);
+                Tile  tileToRemove  = this.Puzzle.GetTile(coords);
+
+                if (pieceToRemove != null)
+                {
+                    this.Puzzle.RemovePiece(pieceToRemove);
+                }
+                else if (tileToRemove != null)
+                {
+                    this.Puzzle.RemoveTile(tileToRemove);
+                }
+
+                GameObject.Destroy(objToRemove);
+            }
+        }
+
+
         public void MoveItem(SelectionSystem selection)
         {
             //get board coords
@@ -58,7 +115,7 @@ namespace Creator.Editor
                     this.ChangeItemPosition(selection.Selected, curPosition);
                 }
             }
-            else
+            else if (selection.TileSelected())
             {
                 Tile tileNewPos = this.Puzzle.GetTile(coords);
 
@@ -105,6 +162,27 @@ namespace Creator.Editor
         public void MoveTile(Vector2Int newPos, Tile tile)
         {
             this.Puzzle.MoveTile(newPos, tile);
+        }
+
+        #endregion
+
+
+        #region === Permissions Methods ===
+
+        public List<string> Permissions()
+        {
+            return this.Puzzle.Permissions;
+        }
+
+        public void AddPermission(string prefab)
+        {
+            this.Puzzle.AddPermission(prefab);
+        }
+
+
+        public void RemovePermission(string prefab)
+        {
+            this.Puzzle.RemovePermission(prefab);
         }
 
         #endregion

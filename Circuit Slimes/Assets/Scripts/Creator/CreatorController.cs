@@ -25,8 +25,6 @@ namespace Creator
         #region /* Puzzle Atributes */
 
         private PuzzleController PuzzleController { get; set; }
-        private Puzzle.Puzzle Puzzle { get; set; }
-        private Transform PuzzleObj { get; set; }
 
         private PuzzleEditor PuzzleEditor { get; set; }
 
@@ -35,7 +33,6 @@ namespace Creator
 
         #region /* Selection Atributes */
 
-        private SelectionManager SelectionManager { get; set; }
         private SelectionSystem SelectionSystem { get; set; }
 
         #endregion
@@ -66,7 +63,7 @@ namespace Creator
 
                 if (this.SelectionSystem.DoubleClick())
                 {
-                    this.RemoveBoardItem();
+                    this.PuzzleEditor.RemoveItem(this.SelectionSystem);
                 }
 
                 this.SelectionSystem.PrepareDrag();
@@ -101,7 +98,7 @@ namespace Creator
 
         public void UpdateInfo(Puzzle.Puzzle puzzle)
         {
-            this.UpdatePuzzle(puzzle);
+            this.PuzzleEditor.UpdatePuzzle(puzzle);
 
             this.SelectionSystem.UpdateInfo(this.PuzzleController);
 
@@ -118,71 +115,8 @@ namespace Creator
         private void InitializePuzzleInfo(PuzzleController controller, Puzzle.Puzzle puzzle)
         {
             this.PuzzleController = controller;
-            this.Puzzle = puzzle;
-            this.PuzzleObj = puzzle.transform;
 
             this.PuzzleEditor = new PuzzleEditor(puzzle);
-        }
-
-        private void UpdatePuzzle(Puzzle.Puzzle puzzle)
-        {
-            this.Puzzle = puzzle;
-            this.PuzzleObj = this.Puzzle.transform;
-        }
-
-        public void AddBoardItem(string name)
-        {
-            Debug.Log("Instantiating " + name);
-
-            // TODO: make the player choose where he wants the item
-            Vector2Int coords = new Vector2Int(0, 3);
-
-            if (name.Contains("Tile"))
-            {
-                Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
-                this.Puzzle.AddTile(newTile);
-                this.SelectionManager.WhiteList.Add(newTile.transform);
-            }
-            else
-            {
-                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
-                this.Puzzle.AddPiece(newPiece);
-                this.SelectionManager.WhiteList.Add(newPiece.transform);
-            }
-        }
-
-        private void RemoveBoardItem()
-        {
-            if (this.SelectionManager.CurrentSelection != null)
-            {
-                GameObject objToRemove = this.SelectionManager.CurrentSelection.gameObject;
-                Vector2Int coords = this.SelectionManager.BoardCoords;
-
-                // remove object representation from Puzzle
-                Piece pieceToRemove = this.Puzzle.GetPiece(coords);
-                Tile tileToRemove = this.Puzzle.GetTile(coords);
-
-                if (pieceToRemove != null)
-                {
-                    this.Puzzle.RemovePiece(pieceToRemove);
-                    GameObject.Destroy(objToRemove);
-                }
-                else if (tileToRemove != null)
-                {
-                    this.Puzzle.RemoveTile(tileToRemove);
-                    GameObject.Destroy(objToRemove);
-                }
-            }
-        }
-
-        public void AddPermission(string prefab)
-        {
-            this.Puzzle.Permissions.Add(prefab);
-        }
-
-        public void RemovePermission(string prefab)
-        {
-            this.Puzzle.Permissions.Remove(prefab);
         }
 
         #endregion
@@ -214,9 +148,10 @@ namespace Creator
             }
             else
             {
-                this.MenuOptions = this.Puzzle.Permissions;
+                this.MenuOptions = this.PuzzleEditor.Permissions();
 
-                this.SelectionManager.WhiteList = new List<Transform>();
+                this.SelectionSystem.EmptyWhiteList();
+                //this.SelectionManager.WhiteList = new List<Transform>();
             }
 
             this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
@@ -255,7 +190,8 @@ namespace Creator
             Transform menu = canvas.Find("Scroll Menu");
             Transform content = menu.Find("Viewport").Find("Content");
 
-            this.ScrollMenu = new ScrollMenu(this, menu, content, this.MenuOptions, this.Puzzle.Permissions);
+            this.ScrollMenu = new ScrollMenu(this, menu, content, this.MenuOptions,
+                                  this.PuzzleEditor.Permissions(), this.PuzzleEditor, this.SelectionSystem);
         }
 
         private void InitializeButtons(Transform canvas)
@@ -285,7 +221,7 @@ namespace Creator
 
         private void UpdateCanvas()
         {
-            this.ScrollMenu.UpdateContent(this.MenuOptions, this.Puzzle.Permissions);
+            this.ScrollMenu.UpdateContent(this.MenuOptions, this.PuzzleEditor.Permissions(), this.PuzzleEditor, this.SelectionSystem);
         }
 
         #endregion
