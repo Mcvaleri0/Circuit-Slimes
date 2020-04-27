@@ -6,8 +6,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-
-
+using UnityEngine.Networking;
 
 namespace Puzzle.Data
 {
@@ -118,11 +117,21 @@ namespace Puzzle.Data
         {
             string filePath = Path.Combine(path, name + ".json");
 
-            if (!File.Exists(filePath))
-                filePath = Path.Combine(path, "newLevel.json");
+            string jsonString;
+            
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                WWW www = new WWW(filePath);
+                while (!www.isDone) { }
 
-            byte[] jsonBytes  = File.ReadAllBytes(filePath);
-            string jsonString = Encoding.ASCII.GetString(jsonBytes);
+                jsonString = www.text;
+            }
+            else
+            {
+                byte[] jsonBytes = File.ReadAllBytes(filePath);
+                jsonString = Encoding.ASCII.GetString(jsonBytes);
+            }
+
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonString);
 
             // Instantiate Puzzle

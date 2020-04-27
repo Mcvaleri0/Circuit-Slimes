@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLevel: 0
-  nLevels: 2
+  nLevels: 1
   Creator: 0
 --- !u!4 &102120463
 Transform:

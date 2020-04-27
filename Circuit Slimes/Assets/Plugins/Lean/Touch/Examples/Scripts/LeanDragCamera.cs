@@ -103,8 +103,10 @@ namespace Lean.Touch
 			// Get the world delta of them after conversion
 			var worldDelta = ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
 
-			// Store the current position
-			var oldPosition = transform.localPosition;
+            Debug.Log(worldDelta);
+
+            // Store the current position
+            var oldPosition = transform.localPosition;
 
 			// Pan the camera based on the world delta
 			transform.position -= worldDelta * Sensitivity;
