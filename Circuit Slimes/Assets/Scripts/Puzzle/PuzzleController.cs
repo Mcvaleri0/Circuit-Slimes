@@ -21,17 +21,27 @@ namespace Puzzle
         public const int PLAYERS_LEVEL = -1;
         public const int EMPTY_LEVEL   = -2;
 
-        public Puzzle Puzzle { get; private set; }
-
         // set on editor
         public int CurrentLevel;
         public int nLevels;
 
-        private CreatorController CreatorController { get; set; }
+        #endregion
+
+        #region /* Puzzle Attibutes */
+
+        public Puzzle Puzzle { get; private set; }
 
         private WinCondition WinCondition { get; set; }
         #endregion
 
+        #region /* Creator Attributes */
+
+        private CreatorController CreatorController { get; set; }
+
+        // set on editor
+        public bool Creator;
+
+        #endregion
 
         #region /* Simulation Attributes */
         private enum RunState
@@ -66,7 +76,7 @@ namespace Puzzle
             this.LoadLevel(this.CurrentLevel);
 
             this.CreatorController = GameObject.Find("CreatorController").GetComponent<CreatorController>();
-            this.CreatorController.Initialize(this, this.Puzzle);
+            this.CreatorController.Initialize(this, this.Puzzle, this.Creator);
         }
 
         // Update is called once per frame

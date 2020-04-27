@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+using Creator.Editor;
+
 
 
 namespace Creator
@@ -11,13 +13,13 @@ namespace Creator
         private Color AvailableColor    { get; set; }
         private Color NotAvailableColor { get; set; }
 
-        private CreatorController Controller { get; set; }
+        private PuzzleEditor Editor { get; set; }
         private string Prefab { get; set; }
 
 
-        public void Initialize(CreatorController controller, string prefab, bool available = false)
+        public void Initialize(PuzzleEditor editor, string prefab, bool available = false)
         {
-            this.Controller = controller;
+            this.Editor     = editor;
             this.Prefab     = prefab;
             this.Available  = available;
 
@@ -51,12 +53,12 @@ namespace Creator
             if (available)
             {
                 this.Available = available;
-                this.Controller.AddPermission(this.Prefab);
+                this.Editor.AddPermission(this.Prefab);
             }
             else
             {
                 this.Available = available;
-                this.Controller.RemovePermission(this.Prefab);
+                this.Editor.RemovePermission(this.Prefab);
             }
 
             this.ChangeColor(available);
