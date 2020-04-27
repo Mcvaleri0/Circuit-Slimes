@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Puzzle;
-using Creator.Mode;
 using Creator.Editor;
 using Creator.Selection;
 using Creator.UI.ModeUI;
@@ -15,6 +14,22 @@ namespace Creator.UI
 {
     public class UIController
     {
+        #region /* Creator Sub-Components */
+
+        private SelectionSystem Selection { get; set; }
+        private Mode.Mode Mode { get; set; }
+
+        #endregion
+
+
+        #region /* Puzzle Attributes */
+
+        private PuzzleEditor Editor { get; set; }
+        private PuzzleController Controller { get; set; }
+
+        #endregion
+
+
         #region /* Attributes */
 
         private ModeUI.ModeUI UIMode { get; set; }
@@ -25,24 +40,28 @@ namespace Creator.UI
 
         #region === Init Methods ===
 
-        public UIController(Transform canvas, Mode.Mode mode, PuzzleController controller, 
-            PuzzleEditor editor, SelectionSystem selection)
+        public UIController(PuzzleEditor editor, SelectionSystem selection, Mode.Mode mode, 
+            PuzzleController controller, Transform canvas)
         {
-            mode.InitializeUI(this, canvas, controller, editor, selection);
+            this.Editor     = editor;
+            this.Selection  = selection;
+            this.Mode       = mode;
+            this.Controller = controller;
+
+            this.Initialize(canvas);
         }
 
 
-        public void Initialize(Mode.Editor mode, Transform canvas, PuzzleController controller, 
-            PuzzleEditor editor, SelectionSystem selection)
+        public void Initialize(Transform canvas)
         {
-            this.UIMode = new EditorUI(canvas, controller, editor, selection, mode);
-        }
-
-
-        public void Initialize(Player mode, Transform canvas, PuzzleController controller, 
-            PuzzleEditor editor, SelectionSystem selection)
-        {
-            this.UIMode = new PlayerUI(canvas, controller, editor, selection, mode);
+            if (this.Mode is Mode.Editor)
+            {
+                this.UIMode = new EditorUI(this.Controller, this.Editor, this.Selection, this.Mode, canvas);
+            }
+            else
+            {
+                this.UIMode = new PlayerUI(this.Controller, this.Editor, this.Selection, this.Mode, canvas);
+            }
         }
 
         #endregion
@@ -50,9 +69,9 @@ namespace Creator.UI
 
         #region === Update Info Methods ===
 
-        public void UpdateUI(PuzzleEditor editor, SelectionSystem selection)
+        public void UpdateUI()
         {
-            this.UIMode.UpdateInfo(editor, selection);
+            this.UIMode.UpdateInfo();
         }
 
         #endregion

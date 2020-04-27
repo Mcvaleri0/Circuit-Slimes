@@ -24,16 +24,16 @@ namespace Creator.UI.ModeUI
 
         #region === Init Methods ===
 
-        public EditorUI(Transform canvas, PuzzleController controller, PuzzleEditor editor,
-            SelectionSystem selection, Mode.Mode mode) : 
-                base(canvas, controller, editor, selection, mode) { }
+        public EditorUI(PuzzleController controller, PuzzleEditor editor, SelectionSystem selection, 
+            Mode.Mode mode, Transform canvas) : 
+                base(controller, editor, selection, mode, canvas) { }
 
         #endregion
 
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton(PuzzleController controller)
+        override public void InitializeSaveButton()
         {
             RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
@@ -44,8 +44,8 @@ namespace Creator.UI.ModeUI
             saveRect.anchoredPosition = new Vector2(x, y);
 
             // add click listener
-            int level = controller.CurrentLevel;
-            base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { controller.SaveLevel(level); });
+            int level = this.Controller.CurrentLevel;
+            base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace Creator.UI.ModeUI
 
         #region === Scroll Menu Methods ===
 
-        override public List<string> MenuOptions(PuzzleEditor editor)
+        override public List<string> MenuOptions()
         {
             if (this.AllItems == null)
             {

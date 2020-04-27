@@ -10,11 +10,26 @@ using Creator.Selection;
 
 namespace Creator.UI.ModeUI
 {
+
     public abstract class ModeUI
     {
-        #region /* Attributes */
+        #region /* Creator Sub-Components */
 
+        private SelectionSystem Selection { get; set; }
         private Mode.Mode Mode { get; set; }
+
+        #endregion
+
+
+        #region /* Puzzle Attributes */
+
+        protected PuzzleController Controller { get; private set; }
+        protected PuzzleEditor Editor { get; set; }
+
+        #endregion
+
+
+        #region /* UI Attributes */
 
         public Transform SaveButton { get; private set; }
 
@@ -26,20 +41,24 @@ namespace Creator.UI.ModeUI
 
         #region === Init Methods ===
 
-        public ModeUI(Transform canvas, PuzzleController controller, PuzzleEditor editor, 
-            SelectionSystem selection, Mode.Mode mode)
+        public ModeUI(PuzzleController controller, PuzzleEditor editor, SelectionSystem selection, 
+            Mode.Mode mode, Transform canvas)
         {
-            this.Mode = mode;
+            this.Controller = controller;
+            this.Editor     = editor;
+            this.Selection  = selection;
+            this.Mode       = mode;
+
             this.SaveButton = canvas.Find("Save Button");
 
-            this.Initialize(canvas, controller, editor, selection);
+            this.Initialize(canvas);
         }
 
 
-        private void Initialize(Transform canvas, PuzzleController controller, PuzzleEditor editor, SelectionSystem selection)
+        private void Initialize(Transform canvas)
         {
-            this.InitializeSaveButton(controller);
-            this.InitializeScrollMenu(canvas, editor, selection);
+            this.InitializeSaveButton();
+            this.InitializeScrollMenu(canvas);
         }
 
         #endregion
@@ -47,10 +66,9 @@ namespace Creator.UI.ModeUI
 
         #region === Update Info Methods ===
 
-        public void UpdateInfo(PuzzleEditor editor, SelectionSystem selection)
+        public void UpdateInfo()
         {
-            this.ScrollMenu.UpdateContent(this.MenuOptions(editor), editor.Permissions(), 
-                editor, selection, this.Mode);
+            this.ScrollMenu.UpdateContent(this.MenuOptions(), this.Editor.Permissions());
         }
 
         #endregion
@@ -58,22 +76,22 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        public abstract void InitializeSaveButton(PuzzleController controller);
+        public abstract void InitializeSaveButton();
 
         #endregion
 
 
         #region === Scroll Menu Methods ===
 
-        private void InitializeScrollMenu(Transform canvas, PuzzleEditor editor, SelectionSystem selection)
+        private void InitializeScrollMenu(Transform canvas)
         {
             Transform menu = canvas.Find("Scroll Menu");
 
-            this.ScrollMenu = new ScrollMenu(menu, this.MenuOptions(editor), editor.Permissions(), 
-                                    editor, selection, this.Mode);
+            this.ScrollMenu = new ScrollMenu(this.Editor, this.Selection, this.Mode,
+                                    menu, this.MenuOptions(), this.Editor.Permissions());
         }
 
-        public abstract List<string> MenuOptions(PuzzleEditor editor);
+        public abstract List<string> MenuOptions();
 
         #endregion
 

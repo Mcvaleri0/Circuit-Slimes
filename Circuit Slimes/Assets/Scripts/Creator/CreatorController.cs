@@ -59,7 +59,7 @@ namespace Creator
 
                 if (this.SelectionSystem.DoubleClick())
                 {
-                    this.PuzzleEditor.RemoveItem(this.SelectionSystem);
+                    this.PuzzleEditor.RemoveItem();
                 }
 
                 this.SelectionSystem.PrepareDrag();
@@ -67,12 +67,12 @@ namespace Creator
 
             if (Input.GetMouseButtonUp(0))
             {
-                this.SelectionSystem.EndDrag(this.PuzzleEditor);
+                this.SelectionSystem.EndDrag();
             }
 
             if (this.SelectionSystem.MouseHolded)
             {
-                this.PuzzleEditor.MoveItem(this.SelectionSystem);
+                this.PuzzleEditor.MoveItem();
             }
         }
 
@@ -96,11 +96,11 @@ namespace Creator
         {
             this.PuzzleEditor.UpdatePuzzle(puzzle);
 
-            this.SelectionSystem.UpdateInfo(this.PuzzleController);
+            this.SelectionSystem.UpdateInfo();
 
             this.InitializePlayerCreatorMode(this.Creator);
 
-            this.UIController.UpdateUI(this.PuzzleEditor, this.SelectionSystem);
+            this.UIController.UpdateUI();
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace Creator
         {
             SelectionManager manager = this.transform.Find("SelectionManager").GetComponent<SelectionManager>();
 
-            this.SelectionSystem = new SelectionSystem(manager, this.PuzzleController, this.PuzzleEditor.PuzzleTransform());
+            this.SelectionSystem = new SelectionSystem(this.PuzzleEditor, manager, this.PuzzleController);
         }
 
         #endregion
@@ -136,14 +136,14 @@ namespace Creator
         {
             if (creator)
             {
-                this.Mode = new Mode.Editor();
+                this.Mode = new Mode.Editor(this.SelectionSystem);
             }
             else
             {
-                this.Mode = new Player();
+                this.Mode = new Player(this.SelectionSystem);
             }
 
-            this.Mode.DefineSelectableList(this.PuzzleEditor, this.SelectionSystem);
+            this.Mode.DefineSelectableList();
 
             this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
         }
@@ -157,8 +157,8 @@ namespace Creator
         {
             Transform canvas = this.transform.Find("Canvas");
 
-            this.UIController = new UIController(canvas, this.Mode, this.PuzzleController, 
-                                      this.PuzzleEditor, this.SelectionSystem);
+            this.UIController = new UIController(this.PuzzleEditor, this.SelectionSystem,
+                                        this.Mode, this.PuzzleController, canvas);
         }
 
         #endregion

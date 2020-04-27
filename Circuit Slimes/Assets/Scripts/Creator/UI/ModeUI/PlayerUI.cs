@@ -14,16 +14,16 @@ namespace Creator.UI.ModeUI
     {
         #region === Init Methods ===
 
-        public PlayerUI(Transform canvas, PuzzleController controller, PuzzleEditor editor,
-            SelectionSystem selection, Mode.Mode mode) : 
-                base(canvas, controller, editor, selection, mode) { }
+        public PlayerUI(PuzzleController controller, PuzzleEditor editor, SelectionSystem selection,
+            Mode.Mode mode, Transform canvas) : 
+                base(controller, editor, selection, mode, canvas) { }
 
         #endregion
 
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton(PuzzleController controller)
+        override public void InitializeSaveButton()
         {
             base.SaveButton.gameObject.SetActive(false);
         }
@@ -33,9 +33,9 @@ namespace Creator.UI.ModeUI
 
         #region === Scroll Menu Methods ===
 
-        override public List<string> MenuOptions(PuzzleEditor editor)
+        override public List<string> MenuOptions()
         {
-            return editor.Permissions();
+            return this.Editor.Permissions();
         }
 
         #endregion

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle;
-using Creator.UI;
-using Creator.Editor;
 using Creator.Selection;
 
 
@@ -15,20 +12,17 @@ namespace Creator.Mode
     {
         #region === Init Methods ===
 
-        override public void InitializeUI(UIController UIController, Transform canvas,
-            PuzzleController puzzleController, PuzzleEditor editor, SelectionSystem selection)
-        {
-            UIController.Initialize(this, canvas, puzzleController, editor, selection);
-        }
+        public Editor(SelectionSystem selection) :
+            base(selection) { }
 
         #endregion
 
 
         #region === Select Methods ===
 
-        override public void DefineSelectableList(PuzzleEditor editor, SelectionSystem selection)
+        override public void DefineSelectableList()
         {
-            selection.WhiteListAllItens(editor.PiecesTransform(), editor.TilesTransform());
+            this.Selection.WhiteListAllItens();
         }
 
         #endregion

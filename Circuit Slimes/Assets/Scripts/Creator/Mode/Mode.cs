@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Puzzle;
-using Creator.UI;
-using Creator.Editor;
 using Creator.Selection;
 
 
@@ -13,17 +10,27 @@ namespace Creator.Mode
 {
     public abstract class Mode
     {
+        #region /* Creator Sub-Components */
+
+        protected SelectionSystem Selection { get; private set; }
+
+        #endregion
+
+
+
         #region === Init Methods ===
 
-        public abstract void InitializeUI(UIController UIController, Transform canvas,
-            PuzzleController puzzleController, PuzzleEditor editor, SelectionSystem selection);
+        public Mode(SelectionSystem selection)
+        {
+            this.Selection = selection;
+        }
 
         #endregion
 
 
         #region === Select Methods ===
 
-        public abstract void DefineSelectableList(PuzzleEditor editor, SelectionSystem selection);
+        public abstract void DefineSelectableList();
 
         #endregion
 

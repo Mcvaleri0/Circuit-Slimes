@@ -5,33 +5,49 @@ using Creator.Editor;
 
 
 
-namespace Creator
+namespace Creator.UI
 {
     public class AvailableButton : MonoBehaviour
     {
+        #region /* Availability Attibutes */
+
         private bool Available { get; set; }
         private Color AvailableColor    { get; set; }
         private Color NotAvailableColor { get; set; }
 
+        #endregion
+
+
+        #region /* Puzzle Attributes */
+
         private PuzzleEditor Editor { get; set; }
         private string Prefab { get; set; }
 
+        #endregion
+
+
+        #region === Init Methods ===
 
         public void Initialize(PuzzleEditor editor, string prefab, bool available = false)
         {
-            this.Editor     = editor;
-            this.Prefab     = prefab;
-            this.Available  = available;
+            this.Editor    = editor;
+            this.Prefab    = prefab;
+            this.Available = available;
 
             this.AvailableColor    = Color.green;
             this.NotAvailableColor = Color.white;
 
-            this.ChangeColor(available);
+            this.ChangeColor();
         }
 
-        private void ChangeColor(bool available)
+        #endregion
+
+
+        #region === Availability Methods ===
+
+        private void ChangeColor()
         {
-            if (available)
+            if (this.Available)
             {
                 this.GetComponent<Image>().color = this.AvailableColor;
             }
@@ -61,9 +77,10 @@ namespace Creator
                 this.Editor.RemovePermission(this.Prefab);
             }
 
-            this.ChangeColor(available);
+            this.ChangeColor();
         }
 
+        #endregion
     }
 
 }
