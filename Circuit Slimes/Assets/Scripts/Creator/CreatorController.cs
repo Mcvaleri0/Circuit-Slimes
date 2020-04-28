@@ -76,7 +76,7 @@ namespace Creator
                 this.SelectionSystem.EndDrag();
             }
 
-            if (this.SelectionSystem.MouseHolded)
+            if (this.SelectionSystem.Dragging)
             {
                 this.PuzzleEditor.MoveItem();
             }

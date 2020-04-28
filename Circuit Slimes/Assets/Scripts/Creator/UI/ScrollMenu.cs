@@ -90,8 +90,9 @@ namespace Creator.UI
             GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Editor.ItemToPlace = text; });
-
+            Button itemButton = newObj.GetComponent<Button>();
+            itemButton.onClick.AddListener(delegate { this.Editor.ItemToPlace(text, itemButton); });
+            
             if (this.Mode is Mode.Editor)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);

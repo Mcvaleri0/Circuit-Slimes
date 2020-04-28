@@ -26,7 +26,7 @@ namespace Creator.Selection
         private bool SingleClick { get; set; }
         private float TimeFirstClick { get; set; }
 
-        public bool MouseHolded { get; private set; }
+        public bool Dragging { get; private set; }
 
         #endregion
 
@@ -177,7 +177,7 @@ namespace Creator.Selection
 
             if (this.Selected != null)
             {
-                this.MouseHolded = true;
+                this.Dragging = true;
                 this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
                 Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
@@ -199,13 +199,14 @@ namespace Creator.Selection
 
         public void EndDrag()
         {
-            this.MouseHolded = false;
+            this.Dragging = false;
 
             if (this.Selected != null)
             {
                 Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
 
-                if (this.Piece != null)
+                // submits new item's position
+                if (this.PieceSelected())
                 {
                     this.Editor.MovePiece(newPos, this.Piece);
                 }

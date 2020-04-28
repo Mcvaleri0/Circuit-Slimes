@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using Puzzle;
 using Creator.Selection;
@@ -22,7 +23,8 @@ namespace Creator.Editor
 
         public Puzzle.Puzzle Puzzle { get; private set; }
 
-        public string ItemToPlace { get; set; }
+        private string Item { get; set; }
+        private Button ItemButton { get; set; }
 
         #endregion
 
@@ -58,29 +60,52 @@ namespace Creator.Editor
 
         public bool HasItemToPlace()
         {
-            return this.ItemToPlace != null;
+            return this.Item != null;
+        }
+
+
+        public void ItemToPlace(string itemName, Button itemButton)
+        {
+            this.Item = itemName;
+            this.ItemButton = itemButton;
+
+            this.ItemButton.Select();
         }
 
 
         public void PlaceItem()
         {
-            Debug.Log("Instantiating " + this.ItemToPlace);
+            Debug.Log("Instantiating " + this.Item);
 
             // TODO: make the player choose where he wants the item
             Vector2Int coords = this.Selection.BoardCoords();
             //Vector2Int coords = new Vector2Int(0, 3);
 
-            if (this.ItemToPlace.Contains("Tile"))
+            if (this.Item.Contains("Tile"))
             {
-                Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.ItemToPlace);
-                this.Puzzle.AddTile(newTile);
-                this.Selection.AddItemToWhiteList(newTile.transform);
+                Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.Item);
+                
+                if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
+                {
+                    this.Selection.AddItemToWhiteList(newTile.transform);
+                }
+                else
+                {
+                    GameObject.Destroy(newTile.gameObject);
+                }
             }
             else
             {
-                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.ItemToPlace);
-                this.Puzzle.AddPiece(newPiece);
-                this.Selection.AddItemToWhiteList(newPiece.transform);
+                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.Item);
+
+                if (this.Puzzle.IsFree(coords, newPiece) && this.Puzzle.AddPiece(newPiece))
+                {
+                    this.Selection.AddItemToWhiteList(newPiece.transform);
+                }
+                else
+                {
+                    GameObject.Destroy(newPiece.gameObject);
+                }
             }
         }
 
@@ -96,16 +121,20 @@ namespace Creator.Editor
                 Piece pieceToRemove = this.Puzzle.GetPiece(coords);
                 Tile tileToRemove = this.Puzzle.GetTile(coords);
 
+                bool removed = false;
                 if (pieceToRemove != null)
                 {
-                    this.Puzzle.RemovePiece(pieceToRemove);
+                    removed = this.Puzzle.RemovePiece(pieceToRemove);
                 }
                 else if (tileToRemove != null)
                 {
-                    this.Puzzle.RemoveTile(tileToRemove);
+                    removed = this.Puzzle.RemoveTile(tileToRemove);
                 }
 
-                GameObject.Destroy(objToRemove);
+                if (removed)
+                {
+                    GameObject.Destroy(objToRemove);
+                }
             }
         }
 
@@ -124,18 +153,14 @@ namespace Creator.Editor
             // update the position of the object in the world
             if (this.Selection.PieceSelected())
             {
-                Piece pieceNewPos = this.Puzzle.GetPiece(coords);
-
-                if (pieceNewPos == null || pieceNewPos == this.Selection.Piece)
+                if (this.Puzzle.IsFree(coords, this.Selection.Piece))
                 {
                     this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
             }
             else if (this.Selection.TileSelected())
             {
-                Tile tileNewPos = this.Puzzle.GetTile(coords);
-
-                if (tileNewPos == null || tileNewPos == this.Selection.Tile)
+                if (this.Puzzle.IsFree(coords, this.Selection.Tile))
                 {
                     this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
