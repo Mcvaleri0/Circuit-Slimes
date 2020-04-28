@@ -22,6 +22,8 @@ namespace Creator.Editor
 
         public Puzzle.Puzzle Puzzle { get; private set; }
 
+        public string ItemToPlace { get; set; }
+
         #endregion
 
 
@@ -54,22 +56,29 @@ namespace Creator.Editor
 
         #region === Items Methods ===
 
-        public void AddItem(string name)
+        public bool HasItemToPlace()
         {
-            Debug.Log("Instantiating " + name);
+            return this.ItemToPlace != null;
+        }
+
+
+        public void PlaceItem()
+        {
+            Debug.Log("Instantiating " + this.ItemToPlace);
 
             // TODO: make the player choose where he wants the item
-            Vector2Int coords = new Vector2Int(0, 3);
+            Vector2Int coords = this.Selection.BoardCoords();
+            //Vector2Int coords = new Vector2Int(0, 3);
 
-            if (name.Contains("Tile"))
+            if (this.ItemToPlace.Contains("Tile"))
             {
-                Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
+                Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.ItemToPlace);
                 this.Puzzle.AddTile(newTile);
                 this.Selection.AddItemToWhiteList(newTile.transform);
             }
             else
             {
-                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
+                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.ItemToPlace);
                 this.Puzzle.AddPiece(newPiece);
                 this.Selection.AddItemToWhiteList(newPiece.transform);
             }
@@ -85,7 +94,7 @@ namespace Creator.Editor
 
                 // remove object representation from Puzzle
                 Piece pieceToRemove = this.Puzzle.GetPiece(coords);
-                Tile  tileToRemove  = this.Puzzle.GetTile(coords);
+                Tile tileToRemove = this.Puzzle.GetTile(coords);
 
                 if (pieceToRemove != null)
                 {
