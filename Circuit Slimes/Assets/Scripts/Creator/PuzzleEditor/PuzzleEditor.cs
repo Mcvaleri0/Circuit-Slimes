@@ -67,6 +67,11 @@ namespace Creator.Editor
 
         public void ItemToPlace(string itemName, OptionButton itemButton)
         {
+            if (this.HasItemToPlace())
+            {
+                this.ItemButton.Deselect();
+            }
+
             this.Item = itemName;
             this.ItemButton = itemButton;
         }
