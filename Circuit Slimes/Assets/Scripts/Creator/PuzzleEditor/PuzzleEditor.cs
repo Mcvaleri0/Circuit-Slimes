@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 using Puzzle;
 using Creator.Selection;
+using Creator.UI.Buttons;
 
 
 
@@ -24,7 +25,7 @@ namespace Creator.Editor
         public Puzzle.Puzzle Puzzle { get; private set; }
 
         private string Item { get; set; }
-        private Button ItemButton { get; set; }
+        private OptionButton ItemButton { get; set; }
 
         #endregion
 
@@ -64,7 +65,7 @@ namespace Creator.Editor
         }
 
 
-        public void ItemToPlace(string itemName, Button itemButton)
+        public void ItemToPlace(string itemName, OptionButton itemButton)
         {
             this.Item = itemName;
             this.ItemButton = itemButton;
@@ -74,6 +75,8 @@ namespace Creator.Editor
         private void NoItemToPlace()
         {
             this.Item = null;
+
+            this.ItemButton.Deselect();
             this.ItemButton = null;
         }
 
