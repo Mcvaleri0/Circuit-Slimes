@@ -23,15 +23,6 @@
             ]
         },
         {
-            "PrefabName": "RedLED",
-            "Coords": [
-                {
-                    "x": 5,
-                    "y": 5
-                }
-            ]
-        },
-        {
             "PrefabName": "WaterCandy",
             "Coords": [
                 {
@@ -61,6 +52,19 @@
                     "y": 7
                 }
             ]
+        },
+        {
+            "PrefabName": "GreenLED",
+            "Coords": [
+                {
+                    "x": 7,
+                    "y": 4
+                },
+                {
+                    "x": 5,
+                    "y": 5
+                }
+            ]
         }
     ],
     "Tiles": [
@@ -84,8 +88,16 @@
                     "y": 3
                 },
                 {
+                    "x": 7,
+                    "y": 3
+                },
+                {
                     "x": 5,
                     "y": 5
+                },
+                {
+                    "x": 7,
+                    "y": 4
                 },
                 {
                     "x": 5,
@@ -99,5 +111,6 @@
         "SolderCandy",
         "WaterCandy",
         "WaterSlime"
-    ]
+    ],
+    "Condition": 1
 }

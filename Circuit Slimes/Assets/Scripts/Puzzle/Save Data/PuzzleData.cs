@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
+
 namespace Puzzle.Data
 {
     /// <summary>
@@ -16,11 +17,11 @@ namespace Puzzle.Data
     [System.Serializable]
     public class PuzzleData
     {
-        public BoardData   Board;
-        public PieceData[] Pieces;
-        public TileData[]  Tiles;
-        public string[]    Permissions;
-
+        public BoardData    Board;
+        public PieceData[]  Pieces;
+        public TileData[]   Tiles;
+        public string[]     Permissions;
+        public WinCondition.Conditions Condition;
 
         public PuzzleData(Puzzle puzzle)
         {
@@ -99,6 +100,8 @@ namespace Puzzle.Data
             #endregion
 
             this.Permissions = puzzle.Permissions.ToArray();
+
+            this.Condition = puzzle.WinCondition.Condition;
         }
 
 
@@ -181,7 +184,7 @@ namespace Puzzle.Data
             #endregion
 
             // Initialiaze Puzzle
-            puzzle.Initialize(board, pieceList, tileList, permList);
+            puzzle.Initialize(board, pieceList, tileList, permList, new WinCondition(puzzleData.Condition));
 
             return puzzle;
         }

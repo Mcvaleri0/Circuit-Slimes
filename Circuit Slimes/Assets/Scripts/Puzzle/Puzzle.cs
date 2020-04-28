@@ -22,22 +22,24 @@ namespace Puzzle
 
         public List<string> Permissions { get; private set; }
 
+        public WinCondition WinCondition { get; private set; }
         #endregion
 
 
 
         #region === Initialization Methods ===
-        
+
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>());
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null);
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions, WinCondition winCondition)
         {
             this.Board  = board;
             this.Pieces = pieces;
             this.Permissions = permissions;
+            this.WinCondition = winCondition;
 
             this.Agents = new List<Agent>();
 

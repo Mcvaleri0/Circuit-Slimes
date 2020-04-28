@@ -11,6 +11,14 @@ namespace Creator.Selection
 {
     public class SelectionSystem
     {
+        #region /* Puzzle Attributes */
+
+        private PuzzleEditor Editor { get; set; }
+        private PuzzleController Controller { get; set; }
+
+        #endregion
+
+
         #region /* Click Attributes */
 
         private const float DOUBLE_CLICK_WINDOW = 0.5f;
@@ -43,24 +51,28 @@ namespace Creator.Selection
 
 
 
-        public SelectionSystem(SelectionManager manager, PuzzleController controller, Transform puzzle)
+        public SelectionSystem(PuzzleEditor editor, SelectionManager manager, PuzzleController controller)
         {
-            this.Manager = manager;
+            this.Editor     = editor;
+            this.Manager    = manager;
+            this.Controller = controller;
 
             this.SingleClick = false;
 
-            this.Manager.Initialize(controller, puzzle);
+            this.Manager.Initialize(this.Controller, this.Editor.PuzzleTransform());
+
+            this.Editor.Selection = this;
         }
 
 
 
         #region === Info Methods ===
 
-        public void UpdateInfo(PuzzleController controller)
+        public void UpdateInfo()
         {
             this.SingleClick = false;
 
-            this.Manager.ReInitialise(controller);
+            this.Manager.ReInitialise(this.Controller);
         }
 
 
@@ -86,16 +98,16 @@ namespace Creator.Selection
 
         #region === Manager Methods ===
 
-        public void WhiteListAllItens(Transform pieces, Transform tiles)
+        public void WhiteListAllItens()
         {
             this.Manager.WhiteList = new List<Transform>();
 
-            foreach (Transform childPiece in pieces)
+            foreach (Transform childPiece in this.Editor.PiecesTransform())
             {
                 this.Manager.WhiteList.Add(childPiece);
             }
 
-            foreach (Transform childTile in tiles)
+            foreach (Transform childTile in this.Editor.TilesTransform())
             {
                 this.Manager.WhiteList.Add(childTile);
             }
@@ -185,21 +197,21 @@ namespace Creator.Selection
         }
 
 
-        public void EndDrag(PuzzleEditor editor)
+        public void EndDrag()
         {
             this.MouseHolded = false;
 
             if (this.Selected != null)
             {
-                Vector2Int newPos = editor.Discretize(this.Selected.position);
+                Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
 
                 if (this.Piece != null)
                 {
-                    editor.MovePiece(newPos, this.Piece);
+                    this.Editor.MovePiece(newPos, this.Piece);
                 }
                 else
                 {
-                    editor.MoveTile(newPos, this.Tile);
+                    this.Editor.MoveTile(newPos, this.Tile);
 
                     //re-enable tile  (visual)
                     this.Tile.enabled = true;

@@ -11,6 +11,13 @@ namespace Creator.Editor
 {
     public class PuzzleEditor
     {
+        #region /* Creator Sub-Components */
+
+        public SelectionSystem Selection { get; set; }
+
+        #endregion
+
+
         #region /* Puzzle Attributes */
 
         public Puzzle.Puzzle Puzzle { get; private set; }
@@ -47,7 +54,7 @@ namespace Creator.Editor
 
         #region === Items Methods ===
 
-        public void AddItem(string name, SelectionSystem selection)
+        public void AddItem(string name)
         {
             Debug.Log("Instantiating " + name);
 
@@ -58,23 +65,23 @@ namespace Creator.Editor
             {
                 Tile newTile = Tile.CreateTile(this.Puzzle, coords, name);
                 this.Puzzle.AddTile(newTile);
-                selection.AddItemToWhiteList(newTile.transform);
+                this.Selection.AddItemToWhiteList(newTile.transform);
             }
             else
             {
                 Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, name);
                 this.Puzzle.AddPiece(newPiece);
-                selection.AddItemToWhiteList(newPiece.transform);
+                this.Selection.AddItemToWhiteList(newPiece.transform);
             }
         }
 
 
-        public void RemoveItem(SelectionSystem selection)
+        public void RemoveItem()
         {
-            if (selection.SomethingSelected())
+            if (this.Selection.SomethingSelected())
             {
-                GameObject objToRemove = selection.GameObjectSelected();
-                Vector2Int coords = selection.BoardCoords();
+                GameObject objToRemove = this.Selection.GameObjectSelected();
+                Vector2Int coords = this.Selection.BoardCoords();
 
                 // remove object representation from Puzzle
                 Piece pieceToRemove = this.Puzzle.GetPiece(coords);
@@ -94,34 +101,34 @@ namespace Creator.Editor
         }
 
 
-        public void MoveItem(SelectionSystem selection)
+        public void MoveItem()
         {
             //get board coords
-            Vector2Int coords = selection.BoardCoords();
+            Vector2Int coords = this.Selection.BoardCoords();
 
             //convert grid coords in world coords
-            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + selection.Offset;
+            Vector3 curPosition = this.Puzzle.WorldCoords(coords) + this.Selection.Offset;
 
             // the new position must be at the board surface
             curPosition = this.Puzzle.AtBoardSurface(curPosition);
 
             // update the position of the object in the world
-            if (selection.PieceSelected())
+            if (this.Selection.PieceSelected())
             {
                 Piece pieceNewPos = this.Puzzle.GetPiece(coords);
 
-                if (pieceNewPos == null || pieceNewPos == selection.Piece)
+                if (pieceNewPos == null || pieceNewPos == this.Selection.Piece)
                 {
-                    this.ChangeItemPosition(selection.Selected, curPosition);
+                    this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
             }
-            else if (selection.TileSelected())
+            else if (this.Selection.TileSelected())
             {
                 Tile tileNewPos = this.Puzzle.GetTile(coords);
 
-                if (tileNewPos == null || tileNewPos == selection.Tile)
+                if (tileNewPos == null || tileNewPos == this.Selection.Tile)
                 {
-                    this.ChangeItemPosition(selection.Selected, curPosition);
+                    this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
             }
         }
