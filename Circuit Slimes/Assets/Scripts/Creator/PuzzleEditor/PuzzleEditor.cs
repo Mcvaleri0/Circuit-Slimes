@@ -68,8 +68,13 @@ namespace Creator.Editor
         {
             this.Item = itemName;
             this.ItemButton = itemButton;
+        }
 
-            this.ItemButton.Select();
+
+        private void NoItemToPlace()
+        {
+            this.Item = null;
+            this.ItemButton = null;
         }
 
 
@@ -78,34 +83,41 @@ namespace Creator.Editor
             Debug.Log("Instantiating " + this.Item);
 
             // TODO: make the player choose where he wants the item
-            Vector2Int coords = this.Selection.BoardCoords();
-            //Vector2Int coords = new Vector2Int(0, 3);
-
-            if (this.Item.Contains("Tile"))
+            if (this.Selection.BoardHover())
             {
-                Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.Item);
-                
-                if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
+                Vector2Int coords = this.Selection.BoardCoords();
+                //Vector2Int coords = new Vector2Int(0, 3);
+
+                if (this.Item.Contains("Tile"))
                 {
-                    this.Selection.AddItemToWhiteList(newTile.transform);
+                    Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.Item);
+
+                    if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
+                    {
+                        this.Selection.AddItemToWhiteList(newTile.transform);
+                    }
+                    else
+                    {
+                        GameObject.Destroy(newTile.gameObject);
+                    }
                 }
                 else
                 {
-                    GameObject.Destroy(newTile.gameObject);
+                    Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.Item);
+
+                    if (this.Puzzle.IsFree(coords, newPiece) && this.Puzzle.AddPiece(newPiece))
+                    {
+                        this.Selection.AddItemToWhiteList(newPiece.transform);
+                    }
+                    else
+                    {
+                        GameObject.Destroy(newPiece.gameObject);
+                    }
                 }
             }
             else
             {
-                Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.Item);
-
-                if (this.Puzzle.IsFree(coords, newPiece) && this.Puzzle.AddPiece(newPiece))
-                {
-                    this.Selection.AddItemToWhiteList(newPiece.transform);
-                }
-                else
-                {
-                    GameObject.Destroy(newPiece.gameObject);
-                }
+                this.NoItemToPlace();
             }
         }
 

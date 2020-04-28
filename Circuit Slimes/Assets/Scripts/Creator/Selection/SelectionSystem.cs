@@ -93,6 +93,12 @@ namespace Creator.Selection
             return this.Manager.CurrentSelection != null;
         }
 
+
+        public bool BoardHover()
+        {
+            return this.Manager.BoardHover;
+        }
+
         #endregion
 
 
