@@ -59,7 +59,9 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
     //initialize the selection spaces that will be used
     public void SelectionSpacesInit(int numSpaces)
     {
-        for(var i = 0; i < numSpaces; i++)
+        SelectionSpaces.Clear();
+
+        for (var i = 0; i < numSpaces; i++)
         {
             //create object
             var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.Manager.PuzzleTransform);
@@ -83,7 +85,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
     public void UpdateSelection(Vector2Int boardCoords, bool boardHover, Transform selection) {
 
         // if we loose reference, re-init
-        if(BoardSpaceSelectionRenderer == null || BoardSpaceSelectionTransform == null)
+        if(this.SelectionSpaces[0].Transform == null)
         {
             this.SelectionSpacesInit(this.NumSpaces);
         }
@@ -96,7 +98,8 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         //if we have something selected highight in the whole footprint, with colors
         else
         {
-            FootPrintHighlight(boardCoords, boardHover, selection);
+            //FootPrintHighlight(boardCoords, boardHover, selection);
+            SingleSpaceHighlight(boardCoords, boardHover);
         }
     }
 
@@ -117,5 +120,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
 
         //get number of spaces needed
         SelectionSpaces.ForEach(e => e.SetVisible(false));
+
+        //FIX ME: here we should check and highlight footprint
     }
 }
