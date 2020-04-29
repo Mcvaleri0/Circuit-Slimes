@@ -15,6 +15,8 @@ namespace Puzzle
 
         public Vector2Int Coords { get; set; }
 
+        public LevelBoard.Directions Orientation { get; set; }
+
         #region /* Enums */
 
         public enum Categories
@@ -377,6 +379,8 @@ namespace Puzzle
 
             var piece = obj.GetComponent<Piece>();
 
+            piece.Rotate(ori);
+
             // Agent Init
             if(piece is Agent agent)
             {
@@ -440,10 +444,61 @@ namespace Puzzle
             
         }
         #endregion
-        
+
 
         #region === Piece Methods ===
-        public bool TypeMatches(Piece other)
+        public virtual Vector2Int[] GetFootprint()
+        {
+            Vector2Int[] footprint = new Vector2Int[1]
+            {
+                this.Coords
+            };
+
+            return footprint;
+        }
+
+        public virtual Vector2Int[] GetFootprintAt(Vector2Int coords)
+        {
+            var footprint = this.GetFootprint();
+
+            var move = coords - footprint[0];
+
+            for(var i = 0; i < footprint.Length; i++)
+            {
+                footprint[i] += move;
+            }
+
+            return footprint;
+        }
+
+        public virtual Vector2Int[] GetFootprintAt(Vector2Int coords, LevelBoard.Directions orientation)
+        {
+            var footprint = this.GetFootprint();
+
+            var move = coords - footprint[0];
+
+            for (var i = 0; i < footprint.Length; i++)
+            {
+                footprint[i] += move;
+            }
+
+            return footprint;
+        }
+
+        public virtual bool Rotate(LevelBoard.Directions targetDir)
+        {
+            float targetAngle = 360 - ((float) targetDir) * 45f;
+            if (targetAngle == 360) targetAngle = 0;
+
+            this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, targetAngle, this.transform.eulerAngles.z);
+
+            this.Orientation = targetDir;
+
+            return true;
+        }
+
+
+        public virtual bool TypeMatches(Piece other)
         {
             return this.Caracterization.Equals(other.Caracterization);
         }
