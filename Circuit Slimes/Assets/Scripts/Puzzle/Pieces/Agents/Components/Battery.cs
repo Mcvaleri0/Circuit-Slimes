@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Actions;
+using Puzzle.Board;
 
 namespace Puzzle.Pieces.Components
 {
@@ -24,6 +25,31 @@ namespace Puzzle.Pieces.Components
         #endregion
 
         #region Component Methods
+        protected override void UpdateConnections()
+        {
+            var footprint = this.GetFootprint();
+
+            var origCoords = footprint[footprint.Length - 1];
+
+            var tile = this.Board.GetTile(origCoords);
+
+            if (tile == null || tile.Type != Tile.Types.Solder) return;
+
+            this.Connections.Clear();
+
+            for (var i = 0; i < 4; i++)
+            {
+                int dirId = i * 2;
+
+                tile = this.Board.GetTile(origCoords + LevelBoard.DirectionalVectors[dirId]);
+
+                if (tile != null && tile.Type == Tile.Types.Solder)
+                {
+                    this.Connections.Add((LevelBoard.Directions)dirId, tile.Coords);
+                }
+            }
+        }
+
 
         override public Action Think()
         {

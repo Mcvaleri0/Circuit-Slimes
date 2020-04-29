@@ -26,7 +26,6 @@ namespace Puzzle
         #endregion
 
 
-
         #region === Initialization Methods ===
 
         public void Initialize(LevelBoard board)
@@ -71,25 +70,31 @@ namespace Puzzle
 
         public bool AddPiece(Piece piece)
         {
+            if (!this.Board.PlacePiece(piece.Coords, piece)) return false;
+
             this.Pieces.Add(piece);
+
             if (piece is Agent agent) this.Agents.Add(agent);
-            bool success = this.Board.PlacePiece(piece.Coords, piece);
 
             if (piece.transform.parent == null)
                 piece.transform.parent = this.PiecesObj.transform;
 
-            return success;
+            return true;
         }
 
 
         public bool RemovePiece(Piece piece)
         {
-            bool success = this.Pieces.Remove(piece);
+            // Remove the Piece from the Puzzle's Piece List
+            if (!this.Pieces.Remove(piece)) return false;
             
+            // If it's an Agent, remove it from the Puzzle's Agent List
             if (piece is Agent agent) this.Agents.Remove(agent);
-            Piece pieceRemoved = this.Board.RemovePieceAt(piece.Coords);
 
-            return success && pieceRemoved != null;
+            // Remove the Piece from the Board
+            if (!this.Board.RemovePieceAt(piece.Coords)) return false;
+
+            return true;
         }
 
 

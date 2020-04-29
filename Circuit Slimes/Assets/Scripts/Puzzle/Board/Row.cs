@@ -20,7 +20,7 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
-        public bool PlacePiece(int x, Piece piece)
+        public bool SetPiece(int x, Piece piece)
         {
             Space space;
             try

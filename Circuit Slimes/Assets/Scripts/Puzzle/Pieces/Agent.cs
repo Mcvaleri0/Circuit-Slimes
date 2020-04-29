@@ -48,14 +48,12 @@ namespace Puzzle.Pieces
 
         public Statistics Stats;
 
-        public LevelBoard.Directions Orientation { get; set; }
-
         public Dictionary<int, Action> ActionLog;
 
         public bool Active { get; protected set; }
 
         // Init Method
-        public virtual void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
+        virtual public void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
             base.Initialize(puzzle, coords, caracterization);
@@ -202,7 +200,7 @@ namespace Puzzle.Pieces
 
 
         #region === Actuator Methods ===
-        public bool Rotate(LevelBoard.Directions targetDir, float percentage = 0.33f)
+        virtual public bool Rotate(LevelBoard.Directions targetDir, float percentage = 0.33f)
         {
             float currentAngle = this.transform.eulerAngles.y;
             float targetAngle  = 360 - ((float) targetDir) * 45f;
@@ -225,7 +223,7 @@ namespace Puzzle.Pieces
             return false;
         }
 
-        public bool Move(Vector2Int targetCoords)
+        virtual public bool Move(Vector2Int targetCoords)
         {
             var targetPosition = LevelBoard.WorldCoords(targetCoords);
 
