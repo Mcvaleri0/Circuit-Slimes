@@ -81,6 +81,10 @@ public class SelectionManager : MonoBehaviour
         //new ray
         var ray = this.RayProvider.CreateRay();
 
+        //Get Coords from board
+        this.BoardCoords = this.GetBoardCoords(ray);
+        this.BoardHover = this.GetBoardHover();
+
         //Get Selection
         var selection = GetSelection(ray);
 
@@ -102,12 +106,8 @@ public class SelectionManager : MonoBehaviour
             }
         }
 
-        //Get Coords from board
-        this.BoardCoords = this.GetBoardCoords(ray);    
-        this.BoardHover = this.GetBoardHover();
-
         //Board Selection Response
-        this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover);
+        this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection);
       
         //Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
@@ -135,4 +135,4 @@ public class SelectionManager : MonoBehaviour
     }
 
     #endregion
-}
+    }
