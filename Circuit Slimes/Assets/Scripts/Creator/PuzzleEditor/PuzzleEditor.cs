@@ -109,7 +109,7 @@ namespace Creator.Editor
                 {
                     Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.Item);
 
-                    if (this.Puzzle.IsFree(coords, newPiece) && this.Puzzle.AddPiece(newPiece))
+                    if (this.Puzzle.AddPiece(newPiece))
                     {
                         this.Selection.AddItemToWhiteList(newPiece.transform);
                     }
@@ -135,7 +135,7 @@ namespace Creator.Editor
 
                 // remove object representation from Puzzle
                 Piece pieceToRemove = this.Puzzle.GetPiece(coords);
-                Tile tileToRemove = this.Puzzle.GetTile(coords);
+                Tile  tileToRemove  = this.Puzzle.GetTile(coords);
 
                 bool removed = false;
                 if (pieceToRemove != null)

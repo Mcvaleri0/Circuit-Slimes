@@ -17,11 +17,16 @@ namespace Puzzle.Data
 
         public Vector2Int[] Coords;
 
+        public LevelBoard.Directions[] Orientations;
+
 
         public PieceData(Piece piece)
         {
             this.Coords = new Vector2Int[1];
             this.Coords[0] = piece.Coords;
+
+            this.Orientations = new LevelBoard.Directions[1];
+            this.Orientations[0] = piece.Orientation;
 
             this.PrefabName = piece.Caracterization.ToString();
         }
@@ -29,11 +34,13 @@ namespace Puzzle.Data
         public PieceData(Piece[] pieces)
         {
             this.Coords = new Vector2Int[pieces.Length];
+            this.Orientations = new LevelBoard.Directions[pieces.Length];
 
             var i = 0;
             foreach(var piece in pieces)
             {
-                this.Coords[i++] = piece.Coords;
+                this.Coords[i] = piece.Coords;
+                this.Orientations[i++] = piece.Orientation;
             }
 
             this.PrefabName = pieces[0].Caracterization.ToString();
@@ -47,7 +54,7 @@ namespace Puzzle.Data
             var i = 0;
             foreach(var coords in this.Coords)
             {
-                pieces[i] = Piece.CreatePiece(puzzle, this.Coords[i], this.PrefabName, default, default);
+                pieces[i] = Piece.CreatePiece(puzzle, this.Coords[i], this.PrefabName, this.Orientations[i], default);
                 i++;
             }
 

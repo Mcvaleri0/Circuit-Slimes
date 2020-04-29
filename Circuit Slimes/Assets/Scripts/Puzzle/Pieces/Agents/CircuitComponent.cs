@@ -74,7 +74,7 @@ namespace Puzzle.Pieces.Components
             this.On = false;
         }
 
-        protected void UpdateConnections()
+        virtual protected void UpdateConnections()
         {
             var tile = this.Board.GetTile(this.Coords);
 
@@ -103,7 +103,7 @@ namespace Puzzle.Pieces.Components
             {
                 LevelBoard.Directions checkDir = (LevelBoard.Directions) ((dirId + (i + 1) * 2) % 8);
 
-                if(this.Connections.ContainsKey(checkDir) && !this.Board.OutOfBounds(this.Connections[checkDir]) && this.IsFree(this.Connections[checkDir]))
+                if(this.Connections.ContainsKey(checkDir) && this.IsFree(this.Connections[checkDir]))
                 {
                     return this.Connections[checkDir];
                 }
