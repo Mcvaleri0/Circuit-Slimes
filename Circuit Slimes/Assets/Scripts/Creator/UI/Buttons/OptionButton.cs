@@ -65,10 +65,17 @@ namespace Creator.UI.Buttons
 
         public void Select()
         {
-            this.Selected = true;
-            this.ChangeColor();
+            if (this.Selected)
+            {
+                this.Deselect();
+            }
+            else
+            {
+                this.Selected = true;
+                this.ChangeColor();
 
-            this.Editor.ItemToPlace(this.Item, this);
+                this.Editor.ItemToPlace(this.Item, this);
+            }
         }
 
 

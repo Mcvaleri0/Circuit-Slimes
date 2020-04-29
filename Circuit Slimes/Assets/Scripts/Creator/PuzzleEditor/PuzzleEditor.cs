@@ -88,13 +88,9 @@ namespace Creator.Editor
 
         public void PlaceItem()
         {
-            Debug.Log("Instantiating " + this.Item);
-
-            // TODO: make the player choose where he wants the item
             if (this.Selection.BoardHover())
             {
                 Vector2Int coords = this.Selection.BoardCoords();
-                //Vector2Int coords = new Vector2Int(0, 3);
 
                 if (this.Item.Contains("Tile"))
                 {

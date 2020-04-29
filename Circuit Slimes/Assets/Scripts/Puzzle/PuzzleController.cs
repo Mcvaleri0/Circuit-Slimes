@@ -284,14 +284,10 @@ namespace Puzzle
             this.Puzzle = PuzzleData.Load(path, name);
 
             this.WinCondition = this.Puzzle.WinCondition;
-
-            Debug.Log("Puzzle Loaded");
         }
 
         public void SaveLevel(int level)
         {
-            Debug.Log("Saving level " + level + ".");
-
             string path;
             string name;
 

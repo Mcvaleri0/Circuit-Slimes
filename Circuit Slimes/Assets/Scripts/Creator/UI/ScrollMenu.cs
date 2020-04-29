@@ -94,7 +94,7 @@ namespace Creator.UI
             OptionButton optionButton = newObj.GetComponent<OptionButton>();
             optionButton.Initialize(this.Editor, text);
 
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { optionButton.Select(); });
+            //newObj.GetComponent<Button>().onClick.AddListener(delegate { optionButton.Select(); });
             
             if (this.Mode is Mode.Editor)
             {
