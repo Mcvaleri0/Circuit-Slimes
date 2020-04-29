@@ -61,13 +61,13 @@ namespace Creator
                 {
                     this.PuzzleEditor.RemoveItem();
                 }
-                else if (this.SelectionSystem.SomethingSelected())
-                {
-                    this.SelectionSystem.PrepareDrag();
-                }
                 else if (this.PuzzleEditor.HasItemToPlace())
                 {
                     this.PuzzleEditor.PlaceItem();
+                }
+                else if (this.SelectionSystem.SomethingSelected())
+                {
+                    this.SelectionSystem.PrepareDrag();
                 }
             }
 
