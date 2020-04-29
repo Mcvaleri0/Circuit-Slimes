@@ -15,6 +15,35 @@
             "Orientations": [
                 0
             ]
+        },
+        {
+            "PrefabName": "WaterCandy",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 4
+                },
+                {
+                    "x": 7,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                0,
+                0
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ],
+            "Orientations": [
+                0
+            ]
         }
     ],
     "Tiles": [

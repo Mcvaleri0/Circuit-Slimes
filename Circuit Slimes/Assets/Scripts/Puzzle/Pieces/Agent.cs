@@ -308,17 +308,20 @@ namespace Puzzle.Pieces
                                 // Out of Bounds
                                 if (adjCoords.x == -1) continue;
 
-                                if (i % 2 == 0 && toExplore - 1 >= 0f ||
-                                    i % 2 == 1 && toExplore - 1 >= 0.5f)
-                                {
-                                    nextQueue.Enqueue(adjCoords);          // Queue position to be checked
-                                    toExpandNext.Add(adjCoords, checkDir); // List direction it was reached from
-                                }
-
                                 found = this.Board.GetPiece(adjCoords);
 
                                 // No Piece in the space
-                                if (found == null) continue;
+                                if (found == null)
+                                {
+                                    if (i % 2 == 0 && toExplore - 1 >= 0f ||
+                                        i % 2 == 1 && toExplore - 1 >= 0.5f)
+                                    {
+                                        nextQueue.Enqueue(adjCoords);          // Queue position to be checked
+                                        toExpandNext.Add(adjCoords, checkDir); // List direction it was reached from
+                                    }
+
+                                    continue;
+                                }
 
                                 pieces.Add(found); // Add Piece to the list
                             }
