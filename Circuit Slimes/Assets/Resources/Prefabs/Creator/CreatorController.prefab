@@ -128,9 +128,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4599292162391549764}
   - component: {fileID: 4599292162391549765}
-  - component: {fileID: 4599292162391549767}
   - component: {fileID: 4599292162391549763}
   - component: {fileID: 4599292162391549766}
+  - component: {fileID: 6262842518685332794}
+  - component: {fileID: 4599292162391549767}
   - component: {fileID: 4599292162391549816}
   m_Layer: 0
   m_Name: SelectionManager
@@ -165,18 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68fa613226e54f549abd4764f1b6575e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4599292162391549767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4599292162391549817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9eeb4365de46b254a8ae8400067aa6ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4599292162391549763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +191,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tag: Selectable
+--- !u!114 &6262842518685332794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4599292162391549817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daacfb1f6b3fe2643bfd65c8b540649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoardSpaceSelection: {fileID: 7912284932334567909, guid: 058245e4ac849f441a3a272070bcc200,
+    type: 3}
+--- !u!114 &4599292162391549767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4599292162391549817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eeb4365de46b254a8ae8400067aa6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4599292162391549816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,7 +595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c0967cb01bce3849964d76da7335f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Creator: 0
 --- !u!1 &4599292162870813343
 GameObject:
   m_ObjectHideFlags: 0

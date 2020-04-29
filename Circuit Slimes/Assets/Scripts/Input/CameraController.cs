@@ -47,8 +47,6 @@ public class CameraController : MonoBehaviour
         public void Zoom(float zoomAmmount)
         {
             zoom += zoomAmmount;
-
-            Debug.Log(zoom);
         }
 
         public void LerpTowards(CameraState target, float positionLerpPct, float rotationLerpPct, float zoommingLerpPct)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-internal interface ISelectionResponse
+internal interface IPieceSelectionResponse
 {
     // What the selected object does when it isn't selected anymore
     void OnDeselect(Transform selection);
