@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardCoordGetter : MonoBehaviour
+public class BoardCoordSelector : MonoBehaviour, ICoordSelector
 {
     private SelectionManager Manager;
 

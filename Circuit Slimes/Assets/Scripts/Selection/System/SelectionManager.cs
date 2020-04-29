@@ -5,10 +5,11 @@ using UnityEngine;
 public class SelectionManager : MonoBehaviour
 {
 
-    private IRayProvider       RayProvider;
-    private ISelector          Selector;
-    private ISelectionResponse SelectionResponse;
-    private BoardCoordGetter   BoardCoordGetter;
+    private IRayProvider            RayProvider;
+    private ITransformSelector      TransformSelector;
+    private ICoordSelector          BoardCoordSelector;
+    private IPieceSelectionResponse PieceSelectionResponse;
+    private IBoardSelectionResponse BoardSelectionResponse;
 
     public Puzzle.PuzzleController PuzzleController { get; private set; }
     public Transform PuzzleTransform { get; private set; }
@@ -22,10 +23,7 @@ public class SelectionManager : MonoBehaviour
 
     public List<Transform> WhiteList = null;
 
-    //visual selection of the board space
-    public GameObject BoardSpaceSelection;
-    private Transform BoardSpaceSelectionTransform;
-    private MeshRenderer BoardSpaceSelectionRenderer;
+
 
     #region Initialization
 
@@ -38,14 +36,12 @@ public class SelectionManager : MonoBehaviour
         //board
         this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
 
-        //ray provider, selector, coordgetter and response
-        this.RayProvider       = this.GetComponent<IRayProvider>();
-        this.Selector          = this.GetComponent<ISelector>();
-        this.SelectionResponse = this.GetComponent<ISelectionResponse>();
-        this.BoardCoordGetter  = this.GetComponent<BoardCoordGetter>();
-
-        //Board Space Selection
-        this.InitializeBoardSpaceSelection();
+        //ray provider, selectors and responses
+        this.RayProvider            = this.GetComponent<IRayProvider>();
+        this.TransformSelector      = this.GetComponent<ITransformSelector>();
+        this.BoardCoordSelector     = this.GetComponent<ICoordSelector>();
+        this.PieceSelectionResponse = this.GetComponent<IPieceSelectionResponse>();
+        this.BoardSelectionResponse = this.GetComponent<IBoardSelectionResponse>();
     }
 
     public void ReInitialise(Puzzle.PuzzleController puzzleController)
@@ -57,17 +53,6 @@ public class SelectionManager : MonoBehaviour
         //board
         this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
 
-        this.InitializeBoardSpaceSelection();
-    }
-
-    public void InitializeBoardSpaceSelection() {
-
-        var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.PuzzleTransform);
-         
-        this.BoardSpaceSelectionTransform = boardSpaceSelection.transform;
-        this.BoardSpaceSelectionRenderer = boardSpaceSelection.GetComponent<MeshRenderer>();
-
-        this.BoardSpaceSelectionRenderer.enabled = false;
     }
 
     #endregion
@@ -76,7 +61,10 @@ public class SelectionManager : MonoBehaviour
     private bool SelectionLocked()
     {
         //if holding mouse1 button or holding touch, lock selection
-        if (Input.GetMouseButton(0) && Lean.Touch.LeanTouch.Fingers.Count > 0) {
+        if (Input.GetMouseButton(0) && 
+            Lean.Touch.LeanTouch.Fingers.Count > 0 && 
+            this.CurrentSelection != null)
+        {
             return true;
         }
         return false;
@@ -93,16 +81,16 @@ public class SelectionManager : MonoBehaviour
         //new ray
         var ray = this.RayProvider.CreateRay();
 
-        //Selection Determination
+        //Get Selection
         var selection = GetSelection(ray);
 
-        //Deselection Response
+        //Piece Selection Response
         if (selection != this.CurrentSelection && !this.SelectionLocked())
         {
-
-            if(this.CurrentSelection != null)
+            //Deselection Response
+            if (this.CurrentSelection != null)
             {
-                this.SelectionResponse.OnDeselect(this.CurrentSelection);
+                this.PieceSelectionResponse.OnDeselect(this.CurrentSelection);
             }
 
             this.CurrentSelection = selection;
@@ -110,7 +98,7 @@ public class SelectionManager : MonoBehaviour
             //Selection Response
             if (this.CurrentSelection != null)
             {
-                this.SelectionResponse.OnSelect(this.CurrentSelection);
+                this.PieceSelectionResponse.OnSelect(this.CurrentSelection);
             }
         }
 
@@ -118,36 +106,33 @@ public class SelectionManager : MonoBehaviour
         this.BoardCoords = this.GetBoardCoords(ray);    
         this.BoardHover = this.GetBoardHover();
 
+        //Board Selection Response
+        this.BoardSelectionResponse.Update(this.BoardCoords, this.BoardHover);
+      
         //Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
 
-        //Update BoardSelection Position
-        this.BoardSpaceSelectionRenderer.enabled = this.BoardHover;
-        var spacepos = Puzzle.Board.LevelBoard.WorldCoords(this.BoardCoords);
-        spacepos.y += 0.1f;
-        this.BoardSpaceSelectionTransform.position = spacepos;
-        
     }
 
     #endregion
 
 
-    #region Accessors
+    #region Private Component Accessors
 
     private Transform GetSelection(Ray ray)
     {
-        return this.Selector.Check(ray);
+        return this.TransformSelector.Check(ray);
     }
 
     private Vector2Int GetBoardCoords(Ray ray)
     {
-        return this.BoardCoordGetter.GetCoords(ray);
+        return this.BoardCoordSelector.GetCoords(ray);
     }
 
     private bool GetBoardHover()
     {
-        return this.BoardCoordGetter.GetHover();
+        return this.BoardCoordSelector.GetHover();
     }
 
     #endregion

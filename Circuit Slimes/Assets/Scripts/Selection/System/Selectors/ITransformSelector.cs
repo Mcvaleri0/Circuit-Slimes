@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public interface ISelector
+public interface ITransformSelector
 {
     Transform Check(Ray ray);
+
 }

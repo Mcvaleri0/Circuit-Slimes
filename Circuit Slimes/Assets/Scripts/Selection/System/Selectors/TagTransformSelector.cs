@@ -2,7 +2,7 @@
 using Puzzle;
 using System.Collections.Generic;
 
-public class RayCastBasedTagSelector : MonoBehaviour, ISelector
+public class TagTransformSelector : MonoBehaviour, ITransformSelector
 {
 
     public string Tag = "Selectable";

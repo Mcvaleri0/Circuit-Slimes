@@ -658,7 +658,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 436308382}
   m_LocalRotation: {x: 0.3535534, y: -0.61237246, z: 0.3535534, w: 0.61237246}
-  m_LocalPosition: {x: 8, y: 12, z: 8}
+  m_LocalPosition: {x: 11, y: 12, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1208,6 +1208,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6262842518685332794, guid: fb6f4036eeae96d45a2f79eb193b6543,
+        type: 3}
+      propertyPath: BoardSpaceSelection
+      value: 
+      objectReference: {fileID: 7912284932334567909, guid: 058245e4ac849f441a3a272070bcc200,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb6f4036eeae96d45a2f79eb193b6543, type: 3}
 --- !u!1 &921911846
@@ -1754,6 +1760,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa78e7c93c7a8ac4396a703f8b328963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Use:
+    Filter: 0
+    IgnoreStartedOverGui: 1
+    RequiredFingerCount: 2
+    RequiredMouseButtons: 0
+    RequiredSelectable: {fileID: 0}
 --- !u!114 &1575562803
 MonoBehaviour:
   m_ObjectHideFlags: 0

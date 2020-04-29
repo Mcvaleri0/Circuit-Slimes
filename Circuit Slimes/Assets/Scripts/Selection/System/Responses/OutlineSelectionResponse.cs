@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutlineSelectionResponse : MonoBehaviour, ISelectionResponse
+public class OutlineSelectionResponse : MonoBehaviour, IPieceSelectionResponse
 {
     public void OnSelect(Transform selection)
     {
