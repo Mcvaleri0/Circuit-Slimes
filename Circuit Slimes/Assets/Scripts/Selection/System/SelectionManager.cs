@@ -73,6 +73,15 @@ public class SelectionManager : MonoBehaviour
     #endregion
 
 
+    private bool SelectionLocked()
+    {
+        //if holding mouse1 button or holding touch, lock selection
+        if (Input.GetMouseButton(0) && Lean.Touch.LeanTouch.Fingers.Count > 0) {
+            return true;
+        }
+        return false;
+    }
+
     #region Unity Methods
 
     private void Update()
@@ -88,8 +97,9 @@ public class SelectionManager : MonoBehaviour
         var selection = GetSelection(ray);
 
         //Deselection Response
-        if (selection != this.CurrentSelection)
+        if (selection != this.CurrentSelection && !this.SelectionLocked())
         {
+
             if(this.CurrentSelection != null)
             {
                 this.SelectionResponse.OnDeselect(this.CurrentSelection);
