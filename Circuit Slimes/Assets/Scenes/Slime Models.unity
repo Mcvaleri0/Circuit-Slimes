@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.5943396, g: 0.5926277, b: 0.58592916, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1.15
+  m_AmbientIntensity: 1.29
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: fdcdaaa9bd0cb98499fdb61a40d19384, type: 2}
@@ -155,7 +155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WhiteList: []
-  BoardSpaceSelection: {fileID: 0}
 --- !u!114 &35836661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,11 +404,11 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.02
-    m_NormalBias: 0.1
+    m_Bias: 0
+    m_NormalBias: 0
     m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
@@ -1691,36 +1690,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 1.1603712
-      objectReference: {fileID: 0}
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 0.90294373
-      objectReference: {fileID: 0}
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Size.z
-      value: 1.2110627
-      objectReference: {fileID: 0}
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Center.x
-      value: -0.0012012124
-      objectReference: {fileID: 0}
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0.36372334
-      objectReference: {fileID: 0}
-    - target: {fileID: 1307490173129802834, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_Center.z
-      value: 0.0068057775
-      objectReference: {fileID: 0}
     - target: {fileID: 2390215399716047707, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1775,11 +1744,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3332675335675881562, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.311
       objectReference: {fileID: 0}
     - target: {fileID: 7718919679862064942, guid: 89f4024afe2e09a49b1d7b7a7e1c11e2,
         type: 3}
