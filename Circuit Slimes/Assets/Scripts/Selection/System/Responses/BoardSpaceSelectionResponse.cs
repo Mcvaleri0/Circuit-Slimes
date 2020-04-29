@@ -28,7 +28,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         this.SelectionInit();
     }
 
-    public void Update(Vector2Int BoardCoords, bool BoardHover) {
+    public void UpdateSelection(Vector2Int BoardCoords, bool BoardHover) {
 
         if(BoardSpaceSelectionRenderer == null || BoardSpaceSelectionTransform == null)
         {

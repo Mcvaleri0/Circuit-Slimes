@@ -107,12 +107,11 @@ public class SelectionManager : MonoBehaviour
         this.BoardHover = this.GetBoardHover();
 
         //Board Selection Response
-        this.BoardSelectionResponse.Update(this.BoardCoords, this.BoardHover);
+        this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover);
       
         //Debug.Log(CurrentSelection);
         //Debug.Log(BoardCoords);
         //Debug.Log(BoardHover);
-
     }
 
     #endregion
