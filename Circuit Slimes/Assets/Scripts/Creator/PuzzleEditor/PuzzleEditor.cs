@@ -206,7 +206,15 @@ namespace Creator.Editor
 
         public void MovePiece(Vector2Int newPos, Piece piece)
         {
-            this.Puzzle.MovePiece(newPos, piece);
+            bool success = this.Puzzle.MovePiece(newPos, piece);
+
+            if (!success)
+            {
+                Transform pieceTransform = piece.transform;
+                Vector3 oldPos = this.Puzzle.WorldCoords(piece.Coords);
+
+                this.ChangeItemPosition(pieceTransform, oldPos);
+            }
         }
 
         #endregion
@@ -222,7 +230,16 @@ namespace Creator.Editor
 
         public void MoveTile(Vector2Int newPos, Tile tile)
         {
-            this.Puzzle.MoveTile(newPos, tile);
+            bool success = this.Puzzle.MoveTile(newPos, tile);
+
+            if (!success)
+            {
+                Transform pieceTransform = tile.transform;
+                Vector3 oldPos = this.Puzzle.WorldCoords(tile.Coords);
+
+                this.ChangeItemPosition(pieceTransform, oldPos);
+            }
+
         }
 
         #endregion
