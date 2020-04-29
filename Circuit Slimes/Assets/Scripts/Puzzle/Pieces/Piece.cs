@@ -440,9 +440,19 @@ namespace Puzzle
             
         }
         #endregion
-        
+
 
         #region === Piece Methods ===
+        public virtual Vector2Int[] GetFootprint()
+        {
+            Vector2Int[] footprint = new Vector2Int[1]
+            {
+                this.Coords
+            };
+
+            return footprint;
+        }
+
         public bool TypeMatches(Piece other)
         {
             return this.Caracterization.Equals(other.Caracterization);
