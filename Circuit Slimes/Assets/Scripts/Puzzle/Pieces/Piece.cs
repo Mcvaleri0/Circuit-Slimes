@@ -453,7 +453,21 @@ namespace Puzzle
             return footprint;
         }
 
-        public bool TypeMatches(Piece other)
+        public virtual Vector2Int[] GetFootprintAt(Vector2Int coords)
+        {
+            var footprint = this.GetFootprint();
+
+            var move = coords - footprint[0];
+
+            for(var i = 0; i < footprint.Length; i++)
+            {
+                footprint[i] += move;
+            }
+
+            return footprint;
+        }
+
+        public virtual bool TypeMatches(Piece other)
         {
             return this.Caracterization.Equals(other.Caracterization);
         }

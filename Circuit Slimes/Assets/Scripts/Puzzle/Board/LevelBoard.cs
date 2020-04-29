@@ -51,13 +51,28 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
+        public bool CanPlacePiece(Vector2Int coords, Piece piece)
+        {
+            var footprint = piece.GetFootprintAt(coords);
+
+            foreach(var spot in footprint)
+            {
+                if (this.OutOfBounds(spot)) return false;
+
+                var pieceInSpot = this.GetPiece(spot);
+
+                if (pieceInSpot != null && pieceInSpot != piece)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool PlacePiece(Vector2Int coords, Piece piece)
         {
-            if (OutOfBounds(coords))
-            {
-                Debug.Log("PlacePiece - OutOfBoundsException - " + coords);
-                return false;
-            }
+            if (!this.CanPlacePiece(coords, piece)) return false;
 
             Row row;
             try
