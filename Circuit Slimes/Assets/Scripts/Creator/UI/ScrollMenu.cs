@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Puzzle;
 using Creator.Editor;
 using Creator.Selection;
+using Creator.UI.Buttons;
 
 
 
@@ -90,8 +91,11 @@ namespace Creator.UI
             GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
-            newObj.GetComponent<Button>().onClick.AddListener(delegate { this.Editor.AddItem(text); });
+            OptionButton optionButton = newObj.GetComponent<OptionButton>();
+            optionButton.Initialize(this.Editor, text);
 
+            newObj.GetComponent<Button>().onClick.AddListener(delegate { optionButton.Select(); });
+            
             if (this.Mode is Mode.Editor)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);

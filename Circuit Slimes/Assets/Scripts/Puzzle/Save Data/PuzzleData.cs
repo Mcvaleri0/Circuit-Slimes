@@ -124,10 +124,12 @@ namespace Puzzle.Data
             
             if (Application.platform == RuntimePlatform.Android)
             {
-                WWW www = new WWW(filePath);
+                UnityWebRequest www = UnityWebRequest.Get(filePath);
+                www.SendWebRequest();
+                
                 while (!www.isDone) { }
 
-                jsonString = www.text;
+                jsonString = www.downloadHandler.text;
             }
             else
             {

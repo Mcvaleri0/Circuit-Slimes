@@ -26,7 +26,6 @@ namespace Puzzle
         #endregion
 
 
-
         #region === Initialization Methods ===
 
         public void Initialize(LevelBoard board)
@@ -69,31 +68,60 @@ namespace Puzzle
 
         #region === Piece Methods ===
 
-        public void AddPiece(Piece piece)
+        public bool AddPiece(Piece piece)
         {
+            if (!this.Board.PlacePiece(piece.Coords, piece)) return false;
+
             this.Pieces.Add(piece);
+
             if (piece is Agent agent) this.Agents.Add(agent);
-            this.Board.PlacePiece(piece.Coords, piece);
 
             if (piece.transform.parent == null)
                 piece.transform.parent = this.PiecesObj.transform;
+
+            return true;
         }
 
-        public void RemovePiece(Piece piece)
+
+        public bool RemovePiece(Piece piece)
         {
-            this.Pieces.Remove(piece);
+            // Remove the Piece from the Puzzle's Piece List
+            if (!this.Pieces.Remove(piece)) return false;
+            
+            // If it's an Agent, remove it from the Puzzle's Agent List
             if (piece is Agent agent) this.Agents.Remove(agent);
-            this.Board.RemovePieceAt(piece.Coords);
+
+            // Remove the Piece from the Board
+            if (!this.Board.RemovePieceAt(piece.Coords)) return false;
+
+            return true;
         }
+
 
         public bool MovePiece(Vector2Int coords, Piece piece)
         {
             return this.Board.MovePiece(coords, piece);
         }
 
+
         public Piece GetPiece(Vector2Int coords)
         {
             return this.Board.GetPiece(coords);
+        }
+
+
+        public bool IsFree(Vector2Int coords, Piece piece) 
+        {
+            Piece pieceNewPos = this.GetPiece(coords);
+
+            if (pieceNewPos == null || pieceNewPos == piece)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -101,33 +129,55 @@ namespace Puzzle
 
         #region === Tile Methods ===
 
-        public void AddTile(Tile tile)
+        public bool AddTile(Tile tile)
         {
-            this.Board.PlaceTile(tile.Coords, tile);
+            bool success = this.Board.PlaceTile(tile.Coords, tile);
 
             if (tile.transform.parent == null)
                 tile.transform.parent = this.TilesObj.transform;
+
+            return success;
         }
 
-        public void RemoveTile(Tile tile)
+
+        public bool RemoveTile(Tile tile)
         {
-            this.Board.RemoveTileAt(tile.Coords);
+            return this.Board.RemoveTileAt(tile.Coords) != null;
         }
+
 
         public bool MoveTile(Vector2Int coords, Tile tile)
         {
             return this.Board.MoveTile(coords, tile);
         }
 
+
         public Tile GetTile(Vector2Int coords)
         {
             return this.Board.GetTile(coords);
         }
 
+
         public void UpdateAllTiles()
         {
             this.Board.UpdateAllTiles();
         }
+
+
+        public bool IsFree(Vector2Int coords, Tile tile)
+        {
+            Tile tileNewPos = this.GetTile(coords);
+
+            if (tileNewPos == null || tileNewPos == tile)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         #endregion
 
@@ -145,6 +195,7 @@ namespace Puzzle
         }
 
         #endregion
+
 
         #region === Utility ===
 

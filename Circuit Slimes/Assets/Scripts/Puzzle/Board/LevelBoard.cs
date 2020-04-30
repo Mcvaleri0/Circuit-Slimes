@@ -51,135 +51,262 @@ namespace Puzzle.Board
 
 
         #region === Piece Methods ===
-        public bool PlacePiece(Vector2Int coords, Piece piece)
+        #region Base Methods
+        // These methods do not have verifications, they are not meant to
+        // They are pure operations over the data structure
+        // Use with caution
+
+        private void BoardSetPiece(Vector2Int coords, Piece piece)
         {
-            if (OutOfBounds(coords))
+            // Get the Piece's footprint at the intended coords
+            var footprint = piece.GetFootprintAt(coords);
+
+            // Foreach spot it will occupy
+            foreach (var partCoords in footprint)
             {
-                Debug.Log("PlacePiece - OutOfBoundsException - " + coords);
-                return false;
+                Row row;
+                try
+                {
+                    row = this.Rows[partCoords.y];
+                }
+                catch (KeyNotFoundException)
+                {
+                    row = new Row(partCoords.y);
+                    this.Rows[partCoords.y] = row;
+                }
+
+                // Set the the Space in the Row as being occupied by the Piece
+                row.SetPiece(partCoords.x, piece);
             }
 
-            Row row;
-            try
-            {
-                row = this.Rows[coords.y];
-            }
-            catch (KeyNotFoundException)
-            {
-                row = new Row(coords.y);
-                this.Rows[coords.y] = row;
-            }
-
-            if(row.PlacePiece(coords.x, piece))
-            {
-                piece.Coords = coords;
-                return true;
-            }
-
-            return false;
+            // Chaneg the Pieces Coords to the new position
+            piece.Coords = footprint[0];
         }
 
-        public Piece RemovePieceAt(Vector2Int coords)
+        private void BoardRemovePiece(Piece piece)
         {
-            if (OutOfBounds(coords))
+            // Get the Piece's Footprint
+            var footprint = piece.GetFootprint();
+
+            // For each Space the Piece is occupying
+            foreach (var partCoords in footprint)
             {
-                Debug.Log("RemoveTile - OutOfBoundsException - " + coords);
-                return null;
+                Row row;
+                try
+                {
+                    row = this.Rows[partCoords.y];
+
+                    if (row != null)
+                    {
+                        // Remove the Piece from the Space it occupies in the Row
+                        row.RemovePiece(partCoords.x);
+                    }
+                }
+                catch (KeyNotFoundException) { }
             }
 
-            Row row;
-            try
+            // Update the Piece's Coords
+            piece.Coords = new Vector2Int(-1, -1);
+        }
+        #endregion
+
+        #region Verifications
+        // Returns true if the Piece can be placed centered at the given Coords
+        public bool CanPlacePiece(Vector2Int coords, Piece piece)
+        {
+            // Get Piece's Footprint
+            var footprint = piece.GetFootprintAt(coords);
+
+            // Foreach Space the Piece would occupy
+            foreach(var partCoords in footprint)
             {
-                row = this.Rows[coords.y];
+                // If the Space is Out Of Bounds return false
+                if (this.OutOfBounds(partCoords)) return false;
 
-                if (row != null)
+                // Get the Piece presently at that Space (if any)
+                var pieceInSpace = this.GetPiece(partCoords);
+
+                // If the Space is occupied and not by this Piece
+                if (pieceInSpace != null && pieceInSpace != piece)
                 {
-                    var piece = row.RemovePiece(coords.x);
-
-                    piece.Coords = new Vector2Int(-1, -1);
-
-                    return piece;
+                    return false;
                 }
             }
-            catch (KeyNotFoundException) { }
 
-            return null;
+            return true;
         }
 
-        public Piece RemovePiece(Piece piece)
+        public bool CanPlacePiece(Vector2Int coords, LevelBoard.Directions orientation, Piece piece)
         {
-            if(this.GetPiece(piece.Coords) == piece)
+            // Get Piece's Footprint
+            var footprint = piece.GetFootprintAt(coords, orientation);
+
+            // Foreach Space the Piece would occupy
+            foreach (var partCoords in footprint)
             {
-                return this.RemovePieceAt(piece.Coords);
+                // If the Space is Out Of Bounds return false
+                if (this.OutOfBounds(partCoords)) return false;
+
+                // Get the Piece presently at that Space (if any)
+                var pieceInSpace = this.GetPiece(partCoords);
+
+                // If the Space is occupied and not by this Piece
+                if (pieceInSpace != null && pieceInSpace != piece)
+                {
+                    return false;
+                }
             }
 
-            return null;
+            return true;
         }
+        #endregion
 
+        #region Getters
+        // Returns the Piece at the given Coords (null if there's none)
         public Piece GetPiece(Vector2Int coords)
         {
+            // If the Coords are Out Of Bounds
             if (OutOfBounds(coords))
             {
                 Debug.Log("GetPiece - OutOfBoundsException - " + coords);
                 return null;
             }
 
+            // Get the Y Row of the Board (if one exists)
             this.Rows.TryGetValue(coords.y, out Row row);
 
-            if(row != null)
+            // If the Row exists
+            if (row != null)
             {
+                // Get the Piece at the X column of the Row (if one exists)
                 return row.GetPiece(coords.x);
             }
 
             return null;
         }
 
-        public bool MovePiece(Vector2Int coords, Piece piece)
+        // Returns all the Agents on the Board
+        public List<Agent> GetAllAgents()
         {
-            if (OutOfBounds(coords))
+            var agents = new List<Agent>();
+
+            foreach (var entry in this.Rows)
             {
-                Debug.Log("MovePiece - OutOfBoundsException - " + coords);
-                return false;
+                agents.AddRange(entry.Value.GetAllAgents());
             }
 
-            // If destination Space is free
-            if (this.GetPiece(coords) == null)
+            return agents;
+        }
+        #endregion
+
+        // Returns true if it succeeds at placing the Piece at the given Coords
+        public bool PlacePiece(Vector2Int coords, Piece piece)
+        {
+            // If the Piece cannot be placed at the Coords return false
+            if (!this.CanPlacePiece(coords, piece)) return false;
+
+            // Set the necessary Board Spaces to hold the Piece
+            this.BoardSetPiece(coords, piece);
+
+            return true;
+        }
+
+        #region Remove
+        // Returns the Piece removed from the given Coords (null if there's none)
+        public Piece RemovePieceAt(Vector2Int coords)
+        {
+            // Get the Piece at the given Coords
+            var piece = this.GetPiece(coords);
+
+            // If there was a Piece there
+            if(piece != null)
             {
-                var foundPiece = this.GetPiece(piece.Coords);
+                // Remove the Piece from the necessary Board Spaces
+                this.BoardRemovePiece(piece);
+            }
 
-                // If the Piece was where it should be
-                if(foundPiece == piece)
+            return piece;
+        }
+
+        // Returns true if the Piece was successfully removed
+        public bool RemovePiece(Piece piece)
+        {
+            if(this.GetPiece(piece.Coords) == piece)
+            {
+                if(this.RemovePieceAt(piece.Coords) == piece)
+                    return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        // Returns true if the Piece is successfully moved to the given Coords
+        public bool MovePiece(Vector2Int coords, Piece piece)
+        {
+            // Get what Piece is at the given Coords
+            var foundPiece = this.GetPiece(piece.Coords);
+
+            // If the Piece was where it should be
+            if(foundPiece == piece)
+            {
+                // If the Piece cannot fit there return false
+                if (!this.CanPlacePiece(coords, piece)) return false;
+
+                // Remove the Piece from where it is on the Board
+                this.BoardRemovePiece(foundPiece);
+
+                // Place the Piece at the new Coords
+                this.BoardSetPiece(coords, foundPiece);
+
+                return true;
+            }
+
+            // If it is not and it is an Agent
+            else if(piece is Agent agent)
+            {
+                // If the Agent is inactive
+                if(!agent.Active)
                 {
-                    this.RemovePieceAt(foundPiece.Coords);
+                    // If the Piece cannot fit there return false
+                    if (!this.CanPlacePiece(coords, piece)) return false;
 
-                    this.PlacePiece(coords, foundPiece);
+                    // Place the Piece at the new Coords
+                    this.BoardSetPiece(coords, foundPiece);
 
                     return true;
-                }
-                else if(piece is Pieces.Agent agent)
-                {
-                    if(!agent.Active)
-                    {
-                        this.PlacePiece(coords, foundPiece);
-
-                        return true;
-                    }
                 }
             }
 
             return false;
         }
 
-        public List<Agent> GetAllAgents()
+        // Returns true if the Piece is successfully moved to the given Coords
+        public bool RotatePiece(Piece piece, Directions orientation)
         {
-            var agents = new List<Agent>();
+            // Get what Piece is at the given Coords
+            var foundPiece = this.GetPiece(piece.Coords);
 
-            foreach(var entry in this.Rows)
+            // If the Piece was where it should be
+            if (foundPiece == piece)
             {
-                agents.AddRange(entry.Value.GetAllAgents());
+                var coords = piece.Coords;
+
+                // If the Piece cannot fit there return false
+                if (!this.CanPlacePiece(coords, orientation, piece)) return false;
+
+                // Remove the Piece from where it is on the Board
+                this.BoardRemovePiece(foundPiece);
+
+                piece.Rotate(orientation);
+
+                // Place the Piece at the new Coords
+                this.BoardSetPiece(coords, foundPiece);
+
+                return true;
             }
 
-            return agents;
+            return false;
         }
         #endregion
 

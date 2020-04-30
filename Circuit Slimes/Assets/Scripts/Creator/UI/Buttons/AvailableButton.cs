@@ -5,7 +5,7 @@ using Creator.Editor;
 
 
 
-namespace Creator.UI
+namespace Creator.UI.Buttons
 {
     public class AvailableButton : MonoBehaviour
     {
@@ -24,6 +24,7 @@ namespace Creator.UI
         private string Prefab { get; set; }
 
         #endregion
+
 
 
         #region === Init Methods ===
