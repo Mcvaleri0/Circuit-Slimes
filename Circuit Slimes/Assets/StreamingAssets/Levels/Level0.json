@@ -5,12 +5,32 @@
     },
     "Pieces": [
         {
-            "PrefabName": "9VBattery",
+            "PrefabName": "AABattery",
             "Coords": [
                 {
-                    "x": 3,
-                    "y": 3
+                    "x": 4,
+                    "y": 4
                 }
+            ],
+            "Orientations": [
+                0
+            ]
+        },
+        {
+            "PrefabName": "WaterCandy",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 4
+                },
+                {
+                    "x": 7,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                0,
+                0
             ]
         },
         {
@@ -18,52 +38,11 @@
             "Coords": [
                 {
                     "x": 3,
-                    "y": 0
+                    "y": 3
                 }
-            ]
-        },
-        {
-            "PrefabName": "WaterCandy",
-            "Coords": [
-                {
-                    "x": 5,
-                    "y": 0
-                }
-            ]
-        },
-        {
-            "PrefabName": "SolderSlime",
-            "Coords": [
-                {
-                    "x": 0,
-                    "y": 7
-                },
-                {
-                    "x": 0,
-                    "y": 1
-                }
-            ]
-        },
-        {
-            "PrefabName": "SolderCandy",
-            "Coords": [
-                {
-                    "x": 3,
-                    "y": 7
-                }
-            ]
-        },
-        {
-            "PrefabName": "GreenLED",
-            "Coords": [
-                {
-                    "x": 7,
-                    "y": 4
-                },
-                {
-                    "x": 5,
-                    "y": 5
-                }
+            ],
+            "Orientations": [
+                0
             ]
         }
     ],
@@ -72,45 +51,32 @@
             "PrefabName": "SolderTile",
             "Coords": [
                 {
-                    "x": 3,
-                    "y": 3
+                    "x": 5,
+                    "y": 4
+                },
+                {
+                    "x": 6,
+                    "y": 4
+                },
+                {
+                    "x": 7,
+                    "y": 4
                 },
                 {
                     "x": 4,
                     "y": 3
                 },
                 {
-                    "x": 5,
-                    "y": 3
+                    "x": 4,
+                    "y": 1
                 },
                 {
-                    "x": 6,
-                    "y": 3
-                },
-                {
-                    "x": 7,
-                    "y": 3
-                },
-                {
-                    "x": 5,
-                    "y": 5
-                },
-                {
-                    "x": 7,
-                    "y": 4
-                },
-                {
-                    "x": 5,
-                    "y": 4
+                    "x": 4,
+                    "y": 2
                 }
             ]
         }
     ],
-    "Permissions": [
-        "SolderSlime",
-        "SolderCandy",
-        "WaterCandy",
-        "WaterSlime"
-    ],
-    "Condition": 1
+    "Permissions": [],
+    "Condition": 0
 }

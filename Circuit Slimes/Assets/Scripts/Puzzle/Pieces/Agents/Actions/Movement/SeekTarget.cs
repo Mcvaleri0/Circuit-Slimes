@@ -40,11 +40,26 @@ namespace Puzzle.Actions
                 foreach (Piece piece in foundPieces) {
                     if (this.TargetCaracteristics.Matches(piece.Caracterization))
                     {
+                        int dX = piece.Coords.x - agent.Coords.x;
+                        int dY = piece.Coords.y - agent.Coords.y;
+
                         Vector2Int moveCoords = piece.Coords - agent.Coords;
                         moveCoords.x = (int) Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);
                         moveCoords.y = (int) Mathf.Sign(moveCoords.y) * Mathf.Min(Mathf.Abs(moveCoords.y), 1);
 
                         Vector2Int targetCoords = agent.Coords + moveCoords;
+
+                        if (!agent.IsFree(targetCoords) && piece.Coords != targetCoords)
+                        {
+                            if (Mathf.Abs(dX) > Mathf.Abs(dY))
+                            {
+                                targetCoords.y = agent.Coords.y;
+                            }
+                            else
+                            {
+                                targetCoords.x = agent.Coords.x;
+                            }
+                        }
 
                         LevelBoard.Directions dir = LevelBoard.GetDirection(agent.Coords, targetCoords);
 

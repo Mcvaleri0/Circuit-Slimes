@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187843276240506079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.745, z: 0}
+  m_LocalPosition: {x: 0, y: 0.745, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7461548333587744289}
@@ -90,9 +90,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7461548333587744289}
-  - component: {fileID: 8125364339199370320}
   - component: {fileID: 9218673235499652633}
   - component: {fileID: 3007324521192364150}
+  - component: {fileID: -398980249044960276}
   m_Layer: 0
   m_Name: 9VBattery
   m_TagString: Selectable
@@ -109,32 +109,12 @@ Transform:
   m_GameObject: {fileID: 5897436730091451442}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7, y: 1, z: 1}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2749246303877742284}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8125364339199370320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5897436730091451442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ca1228ebac3c2458ddf0f74339f582, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Category: 2
-  SlimeType: 0
-  ComponentType: 5
-  CandyType: 0
-  Turn: 0
-  State: 0
-  MaxCharges: 0
-  StartingCharges: 8
 --- !u!65 &9218673235499652633
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -481,3 +461,19 @@ MonoBehaviour:
     - {x: 0.2660271, y: -0.19173796, z: 0.9447043}
     - {x: 0.21777542, y: 0.0015865689, z: 0.97599757}
     - {x: 0.34145874, y: -0.24658136, z: 0.906975}
+--- !u!114 &-398980249044960276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897436730091451442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 774cbc2500c01a846aab7d5b0aea5b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Turn: 0
+  State: 0
+  MaxCharges: 0
+  StartingCharges: 4

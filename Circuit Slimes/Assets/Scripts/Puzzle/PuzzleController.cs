@@ -108,10 +108,6 @@ namespace Puzzle
                         {
                             Debug.Log("WIN");
                         }
-                        else
-                        {
-                            Debug.Log("Fail");
-                        }
                     }
                     break;
 
