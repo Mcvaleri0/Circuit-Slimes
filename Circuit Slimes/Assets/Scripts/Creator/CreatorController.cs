@@ -86,8 +86,6 @@ namespace Creator
 
         private void OnInputUp(Lean.Touch.LeanFinger finger)
         {
-            if (this.IgnoreInput(finger)) return;
-
             this.SelectionSystem.EndDrag();
         }
 
