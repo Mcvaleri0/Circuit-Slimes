@@ -275,6 +275,14 @@ namespace Puzzle
             {
                 path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
                 name = "Level" + level;
+
+                /*
+                if (!System.IO.File.Exists(Path.Combine(path, name)))
+                {
+                    name = EMPTY_LEVEL_NAME;
+                    Debug.Log("File not found - Loading New Level");
+                }
+                */
             }
 
             this.Puzzle = PuzzleData.Load(path, name);
@@ -317,12 +325,14 @@ namespace Puzzle
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
-                File.Create(completePath);
+                var file = File.Create(completePath);
+                file.Dispose();
                 return true;
             }
             else if (!File.Exists(completePath))
             {
-                File.Create(completePath);
+                var file = File.Create(completePath);
+                file.Dispose();
                 return true;
             }
 
