@@ -51,8 +51,15 @@ namespace Creator
 
         #region === Input Events ===
 
+        private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
+
         private bool IgnoreInput(Lean.Touch.LeanFinger finger)
         {
+            //if input does not belong to filter
+            if (!this.InputFilter.GetFingers().Contains(finger))
+            {
+                return true;
+            }
             //if input is over gui or multiple fingers are used, ignore
             if (finger.StartedOverGui || Lean.Touch.LeanTouch.Fingers.Count > 1) {
                 return true;

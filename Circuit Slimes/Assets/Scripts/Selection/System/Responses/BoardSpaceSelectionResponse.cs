@@ -111,7 +111,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
 
         //set single space
         var space = SelectionSpaces[0];
-        space.SetVisible(true);
+        space.SetVisible(boardHover);
         space.SetCoords(boardCoords);
         //space.SetColor(SelectionSpace.Color.White);
     }
