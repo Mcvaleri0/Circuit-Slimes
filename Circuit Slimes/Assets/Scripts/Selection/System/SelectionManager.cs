@@ -61,8 +61,7 @@ public class SelectionManager : MonoBehaviour
     private bool SelectionLocked()
     {
         //if holding mouse1 button or holding touch, lock selection
-        if (Input.GetMouseButton(0) && 
-            Lean.Touch.LeanTouch.Fingers.Count > 0 && 
+        if (Lean.Touch.LeanTouch.Fingers.Count > 0 && 
             this.CurrentSelection != null)
         {
             return true;

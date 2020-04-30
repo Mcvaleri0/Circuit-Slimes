@@ -46,40 +46,89 @@ namespace Creator
 
         public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
 
-        #endregion  
+        #endregion
 
 
+        #region === Input Events ===
 
-        #region === Unity Events ===
-
-        void Update()
+        private bool IgnoreInput(Lean.Touch.LeanFinger finger)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-
-                if (this.SelectionSystem.DoubleClick())
-                {
-                    this.PuzzleEditor.RemoveItem();
-                }
-                else if (this.SelectionSystem.SomethingSelected())
-                {
-                    this.SelectionSystem.PrepareDrag();
-                }
-                else if (this.PuzzleEditor.HasItemToPlace())
-                {
-                    this.PuzzleEditor.PlaceItem();
-                }
+            //if input is over gui or multiple fingers are used, ignore
+            if (finger.StartedOverGui || Lean.Touch.LeanTouch.Fingers.Count > 1) {
+                return true;
             }
+            return false;
+        }
 
-            if (Input.GetMouseButtonUp(0))
+
+        private void OnInputDown(Lean.Touch.LeanFinger finger)
+        {
+            if (this.IgnoreInput(finger)) return;
+
+            //if double click delete
+            if (this.SelectionSystem.DoubleClick())
             {
-                this.SelectionSystem.EndDrag();
+                this.PuzzleEditor.RemoveItem();
             }
+            //if we have an item to place, place it
+            else if (this.PuzzleEditor.HasItemToPlace())
+            {
+                this.PuzzleEditor.PlaceItem();
+            }
+        }
 
+        private void OnInputUp(Lean.Touch.LeanFinger finger)
+        {
+            if (this.IgnoreInput(finger)) return;
+
+            this.SelectionSystem.EndDrag();
+        }
+
+        private void OnInputDrag(Lean.Touch.LeanFinger finger)
+        {
+            if (this.IgnoreInput(finger)) return;
+
+            //Drag Item
             if (this.SelectionSystem.Dragging)
             {
                 this.PuzzleEditor.MoveItem();
             }
+            //if something is selected prepare drag
+            else if (this.SelectionSystem.SomethingSelected())
+            {
+                this.SelectionSystem.PrepareDrag();
+            }
+        }
+
+        #endregion
+
+
+        #region === Unity Events ===
+
+        private void OnEnable()
+        {
+            //hook input down
+            Lean.Touch.LeanTouch.OnFingerDown += this.OnInputDown;
+
+            //hook input up
+            Lean.Touch.LeanTouch.OnFingerUp += this.OnInputUp;
+
+            //hook input drag
+            Lean.Touch.LeanTouch.OnFingerSet += this.OnInputDrag;
+
+        }
+
+        private void OnDisable()
+        {
+            //unhook input down
+            Lean.Touch.LeanTouch.OnFingerDown -= this.OnInputDown;
+
+            //unhook input up
+            Lean.Touch.LeanTouch.OnFingerUp -= this.OnInputUp;
+
+            //unhook input drag
+            Lean.Touch.LeanTouch.OnFingerSet -= this.OnInputDrag;
+
         }
 
         #endregion
