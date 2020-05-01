@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Lean.Touch;
+
 public class SelectionManager : MonoBehaviour
 {
 
@@ -21,11 +23,14 @@ public class SelectionManager : MonoBehaviour
     public Vector2Int BoardCoords { get; private set; }
     public bool BoardHover { get; private set; }
 
+    //white list of transforms that can be selected
     public List<Transform> WhiteList = null;
 
+    //this signalizes wether we can change the seection right now or not
+    public bool SelectionLocked = false;
 
 
-    #region Initialization
+    #region  === Initialization === 
 
     public void Initialize(Puzzle.PuzzleController puzzleController, Transform puzzleObject)
     {
@@ -57,19 +62,56 @@ public class SelectionManager : MonoBehaviour
 
     #endregion
 
+    #region === Selection Locking/Unlocking Methods === 
+    //input filter (one touch spot, simulated by mouse)
+    private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
 
-    private bool SelectionLocked()
+    private bool IgnoreInput(Lean.Touch.LeanFinger finger)
     {
-        //if holding mouse1 button or holding touch, lock selection
-        if (Lean.Touch.LeanTouch.Fingers.Count > 0 && 
-            this.CurrentSelection != null)
+        //if input does not belong to filter
+        if (!this.InputFilter.GetFingers().Contains(finger))
         {
             return true;
         }
         return false;
     }
 
-    #region Unity Methods
+    private void SelectionLock(Lean.Touch.LeanFinger finger)
+    {
+        if (this.IgnoreInput(finger)) return;
+
+        //force update before locking
+        this.Update();
+        this.SelectionLocked = true;
+    }
+
+    private void SelectionUnlock(Lean.Touch.LeanFinger finger)
+    {
+        this.SelectionLocked = false;
+    }
+
+    #endregion
+
+    #region === Unity Methods === 
+
+    private void OnEnable()
+    {
+        //hook input down
+        Lean.Touch.LeanTouch.OnFingerDown += this.SelectionLock;
+
+        //hook input up
+        Lean.Touch.LeanTouch.OnFingerUp += this.SelectionUnlock;
+
+    }
+
+    private void OnDisable()
+    {
+        //unhook input down
+        Lean.Touch.LeanTouch.OnFingerDown -= this.SelectionLock;
+
+        //unhook input up
+        Lean.Touch.LeanTouch.OnFingerUp -= this.SelectionUnlock;
+    }
 
     private void Update()
     {
@@ -88,7 +130,7 @@ public class SelectionManager : MonoBehaviour
         var selection = GetSelection(ray);
 
         //Piece Selection Response
-        if (selection != this.CurrentSelection && !this.SelectionLocked())
+        if (selection != this.CurrentSelection && !this.SelectionLocked)
         {
             //Deselection Response
             if (this.CurrentSelection != null)
@@ -115,8 +157,7 @@ public class SelectionManager : MonoBehaviour
 
     #endregion
 
-
-    #region Private Component Accessors
+    #region === Private Component Accessors === 
 
     private Transform GetSelection(Ray ray)
     {

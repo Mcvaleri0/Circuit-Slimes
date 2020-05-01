@@ -170,7 +170,7 @@ MonoBehaviour:
       m_Bits: 4294967291
     Distance: 10
   PanSensitivity: -1
-  ZoomSensitivity: 6
+  ZoomSensitivity: 8
   CamLimtits:
     MaxZoom: 18
     MinZoom: 4
