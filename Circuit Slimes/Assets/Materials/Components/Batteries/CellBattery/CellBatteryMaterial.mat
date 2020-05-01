@@ -69,8 +69,8 @@ Material:
     - _ShadowScale: 0.43
     - _SpecMax: 3.06
     - _SpecMin: 1
-    - _SpecularGloss: 0.52
-    - _SpecularIntensity: 0.31
+    - _SpecularGloss: 0.56
+    - _SpecularIntensity: 0.263
     - _Specularity: 15.87
     - __dirty: 0
     m_Colors:

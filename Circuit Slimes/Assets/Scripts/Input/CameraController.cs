@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Lean.Touch;
+
 public class CameraController : MonoBehaviour
 {
     class CameraState
