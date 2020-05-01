@@ -59,7 +59,7 @@ namespace Creator.Selection
 
             this.SingleClick = false;
 
-            this.Manager.Initialize(this.Controller, this.Editor.PuzzleTransform());
+            this.Manager.Initialize(this.Controller);
 
             this.Editor.Selection = this;
         }
@@ -90,13 +90,13 @@ namespace Creator.Selection
 
         public bool SomethingSelected()
         {
-            return this.Manager.CurrentSelection != null;
+            return this.Manager.GetCurrentSelection() != null;
         }
 
 
         public bool BoardHover()
         {
-            return this.Manager.BoardHover;
+            return this.Manager.GetBoardHover();
         }
 
         #endregion
@@ -135,13 +135,13 @@ namespace Creator.Selection
 
         public GameObject GameObjectSelected() 
         {
-            return this.Manager.CurrentSelection.gameObject;
+            return this.Manager.GetCurrentSelection().gameObject;
         }
 
 
         public Vector2Int BoardCoords()
         {
-            return this.Manager.BoardCoords;
+            return this.Manager.GetBoardCoords();
         }
 
         #endregion
@@ -179,7 +179,7 @@ namespace Creator.Selection
 
         public void PrepareDrag()
         {
-            this.Selected = this.Manager.CurrentSelection;
+            this.Selected = this.Manager.GetCurrentSelection();
 
             if (this.Selected != null)
             {
