@@ -19,9 +19,9 @@ public class SelectionManager : MonoBehaviour
     public Transform BoardTransform { get; private set; }
 
     //Outward facing info, fed to the CreatorController
-    public Transform CurrentSelection { get; private set; }
-    public Vector2Int BoardCoords { get; private set; }
-    public bool BoardHover { get; private set; }
+    private Transform CurrentSelection { get; set; }
+    private Vector2Int BoardCoords { get; set; }
+    private bool BoardHover { get; set; }
 
     //white list of transforms that can be selected
     public List<Transform> WhiteList = null;
@@ -32,11 +32,11 @@ public class SelectionManager : MonoBehaviour
 
     #region  === Initialization === 
 
-    public void Initialize(Puzzle.PuzzleController puzzleController, Transform puzzleObject)
+    public void Initialize(Puzzle.PuzzleController puzzleController)
     {
         //puzzle
         this.PuzzleController = puzzleController;
-        this.PuzzleTransform = puzzleObject;
+        this.PuzzleTransform = GameObject.Find("Puzzle").transform;
 
         //board
         this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
@@ -62,7 +62,29 @@ public class SelectionManager : MonoBehaviour
 
     #endregion
 
-    #region === Selection Locking/Unlocking Methods === 
+    #region === Public Accessor Methods ===
+
+    public Vector2Int GetBoardCoords()
+    {
+        this.Update();
+        return this.BoardCoords;
+    }
+
+    public bool GetBoardHover()
+    {
+        this.Update();
+        return this.BoardHover;
+    }
+
+    public Transform GetCurrentSelection()
+    {
+        this.Update();
+        return this.CurrentSelection;
+    }
+
+    #endregion
+
+    #region === Input Methods === 
     //input filter (one touch spot, simulated by mouse)
     private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
 
@@ -115,19 +137,22 @@ public class SelectionManager : MonoBehaviour
 
     private void Update()
     {
+        //re-init if reference is lost
         if (this.BoardTransform == null) {
-            ReInitialise(this.PuzzleController);
+            this.ReInitialise(this.PuzzleController);
         }
 
         //new ray
         var ray = this.RayProvider.CreateRay();
 
-        //Get Coords from board
-        this.BoardCoords = this.GetBoardCoords(ray);
-        this.BoardHover = this.GetBoardHover();
+        //Get Coords from CoordSelector
+        this.BoardCoords = this.BoardCoordSelector.GetCoords(ray);
 
-        //Get Selection
-        var selection = GetSelection(ray);
+        //Get Hover from CoordSelector
+        this.BoardHover = this.BoardCoordSelector.GetHover();
+
+        //Get Selection from TransformSelector
+        var selection = this.TransformSelector.Check(ray);
 
         //Piece Selection Response
         if (selection != this.CurrentSelection && !this.SelectionLocked)
@@ -149,30 +174,20 @@ public class SelectionManager : MonoBehaviour
 
         //Board Selection Response
         this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection);
-      
-        //Debug.Log(CurrentSelection);
-        //Debug.Log(BoardCoords);
-        //Debug.Log(BoardHover);
+
+        //Debug 
+        //this.PrintAttributes();
     }
 
     #endregion
 
-    #region === Private Component Accessors === 
+    #region === Debug Methods ===
 
-    private Transform GetSelection(Ray ray)
+    public void PrintAttributes()
     {
-        return this.TransformSelector.Check(ray);
-    }
-
-    private Vector2Int GetBoardCoords(Ray ray)
-    {
-        return this.BoardCoordSelector.GetCoords(ray);
-    }
-
-    private bool GetBoardHover()
-    {
-        return this.BoardCoordSelector.GetHover();
+        var selection = (CurrentSelection == null) ? "nothing" : CurrentSelection.name;
+        Debug.Log("Selection { Transform: " + selection + ", Coords: " + BoardCoords + ", Hover: " + BoardHover + "}");
     }
 
     #endregion
-    }
+}
