@@ -67,7 +67,7 @@ namespace Creator
             return false;
         }
 
-
+    
         private void OnInputDown(Lean.Touch.LeanFinger finger)
         {
             if (this.IgnoreInput(finger)) return;

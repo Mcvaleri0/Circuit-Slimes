@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.4971369, g: 0.5239358, b: 0.58292925, a: 1}
+  m_IndirectSpecularColor: {r: 0.4971375, g: 0.5239373, b: 0.5829294, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -593,7 +593,7 @@ MonoBehaviour:
       m_Bits: 4294967291
     Distance: 10
   PanSensitivity: -1
-  ZoomSensitivity: 6
+  ZoomSensitivity: 8
   CamLimtits:
     MaxZoom: 18
     MinZoom: 4
