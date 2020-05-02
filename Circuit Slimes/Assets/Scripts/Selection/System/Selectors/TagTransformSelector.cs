@@ -16,6 +16,27 @@ public class TagTransformSelector : MonoBehaviour, ITransformSelector
         this.Manager = this.GetComponent<SelectionManager>();
     }
 
+    private bool IgnoreSelection(Ray ray)
+    {
+        //ignore selecion when doing a gesture 
+        if (Lean.Touch.LeanTouch.Fingers.Count >= 2)
+        {
+            return true;
+        }
+        //or clicking on ui
+        if (Lean.Touch.LeanTouch.Fingers.Count == 1 && Lean.Touch.LeanTouch.Fingers[0].StartedOverGui)
+        {
+            return true;
+        }
+        //or just hovering ui
+        var screenpos = Camera.main.WorldToScreenPoint(ray.origin);
+        if (Lean.Touch.LeanTouch.PointOverGui(screenpos))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public Transform Check(Ray ray)
     {
         this.WhiteList = Manager.WhiteList;
@@ -30,8 +51,8 @@ public class TagTransformSelector : MonoBehaviour, ITransformSelector
             //check if filter allows it
             if (WhiteList != null && (WhiteList.Count == 0 || !WhiteList.Contains(tr))) return null;
 
-            //check if tag is correct
-            if (tr.CompareTag(this.Tag) ) return tr;
+            //check if tag is correct and if we should not ignore
+            if (tr.CompareTag(this.Tag) && !this.IgnoreSelection(ray)) return tr;
         }
 
         return null;

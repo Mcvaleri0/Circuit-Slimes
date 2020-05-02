@@ -170,7 +170,7 @@ MonoBehaviour:
       m_Bits: 4294967291
     Distance: 10
   PanSensitivity: -1
-  ZoomSensitivity: 6
+  ZoomSensitivity: 8
   CamLimtits:
     MaxZoom: 18
     MinZoom: 4
@@ -374,7 +374,7 @@ MonoBehaviour:
   RecordLimit: 10
   SimulateMultiFingers: 1
   PinchTwistKey: 306
-  MovePivotKey: 308
+  MovePivotKey: 304
   MultiDragKey: 308
   FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
 --- !u!4 &1280251974

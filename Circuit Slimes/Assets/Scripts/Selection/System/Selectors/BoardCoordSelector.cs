@@ -15,6 +15,27 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
         this.Manager = this.GetComponent<SelectionManager>();
     }
 
+    private bool IgnoreSelection(Ray ray)
+    {
+        //ignore selecion when doing a gesture 
+        if (Lean.Touch.LeanTouch.Fingers.Count >= 2)
+        {
+            return true;
+        }
+        //or clicking on ui
+        if (Lean.Touch.LeanTouch.Fingers.Count == 1 && Lean.Touch.LeanTouch.Fingers[0].StartedOverGui)
+        {
+            return true;
+        }
+        //or just hovering ui
+        var screenpos = Camera.main.WorldToScreenPoint(ray.origin);
+        if (Lean.Touch.LeanTouch.PointOverGui(screenpos))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public Vector2Int GetCoords(Ray ray)
     {
 
@@ -23,7 +44,7 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
 
         this.BoardHover = false;
 
-        if (board.Raycast(ray, out var hit, 1000)) {
+        if (board.Raycast(ray, out var hit, 1000) && !this.IgnoreSelection(ray)) {
 
             this.BoardHover = true;
             this.BoardCoords = Puzzle.Board.LevelBoard.Discretize(hit.point);
