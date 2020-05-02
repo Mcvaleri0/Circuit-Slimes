@@ -49,6 +49,7 @@ namespace Creator
         #endregion
 
 
+
         #region === Input Events ===
 
         private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
@@ -84,10 +85,12 @@ namespace Creator
             }
         }
 
+
         private void OnInputUp(Lean.Touch.LeanFinger finger)
         {
             this.SelectionSystem.EndDrag();
         }
+
 
         private void OnInputDrag(Lean.Touch.LeanFinger finger)
         {

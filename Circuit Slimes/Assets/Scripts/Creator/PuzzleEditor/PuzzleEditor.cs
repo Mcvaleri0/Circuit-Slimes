@@ -77,11 +77,11 @@ namespace Creator.Editor
         }
 
 
-        private void NoItemToPlace()
+        public void NoItemToPlace()
         {
             this.Item = null;
 
-            this.ItemButton.Deselect();
+            //this.ItemButton.Deselect();
             this.ItemButton = null;
         }
 
@@ -119,10 +119,10 @@ namespace Creator.Editor
                     }
                 }
             }
-            else
-            {
-                this.NoItemToPlace();
-            }
+            //else
+            //{
+            //    this.NoItemToPlace();
+            //}
         }
 
 
