@@ -5,11 +5,11 @@
     },
     "Pieces": [
         {
-            "PrefabName": "AABattery",
+            "PrefabName": "WaterSlime",
             "Coords": [
                 {
-                    "x": 4,
-                    "y": 4
+                    "x": 1,
+                    "y": 2
                 }
             ],
             "Orientations": [
@@ -20,25 +20,32 @@
             "PrefabName": "WaterCandy",
             "Coords": [
                 {
-                    "x": 6,
-                    "y": 4
-                },
-                {
-                    "x": 7,
-                    "y": 6
+                    "x": 1,
+                    "y": 5
                 }
             ],
             "Orientations": [
-                0,
                 0
             ]
         },
         {
-            "PrefabName": "WaterSlime",
+            "PrefabName": "SolderSlime",
             "Coords": [
                 {
-                    "x": 3,
-                    "y": 3
+                    "x": 4,
+                    "y": 2
+                }
+            ],
+            "Orientations": [
+                0
+            ]
+        },
+        {
+            "PrefabName": "SolderCandy",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 4
                 }
             ],
             "Orientations": [
@@ -51,28 +58,8 @@
             "PrefabName": "SolderTile",
             "Coords": [
                 {
-                    "x": 5,
-                    "y": 4
-                },
-                {
                     "x": 6,
                     "y": 4
-                },
-                {
-                    "x": 7,
-                    "y": 4
-                },
-                {
-                    "x": 4,
-                    "y": 3
-                },
-                {
-                    "x": 4,
-                    "y": 1
-                },
-                {
-                    "x": 4,
-                    "y": 2
                 }
             ]
         }

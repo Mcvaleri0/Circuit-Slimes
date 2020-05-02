@@ -10,6 +10,8 @@ namespace Puzzle.Actions
     {
         public Piece Target { get; protected set; }
 
+        public Vector2Int TargetCoords { get; protected set; }
+
         protected Piece.Caracteristics TargetCaracteristics;
 
 
@@ -18,20 +20,43 @@ namespace Puzzle.Actions
             this.TargetCaracteristics = caracteristics;
         }
 
-        public SeekTarget(Piece target, Vector2Int targetCoords, LevelBoard.Directions direction)
+        public SeekTarget(Agent agent, Piece target)
         {
             this.Target = target;
 
+            this.TargetCoords = target.Coords;
+
             this.TargetCaracteristics = new Piece.Caracteristics(target.Caracterization.ToString());
 
-            this.TargetCoords = targetCoords;
+            int dX = target.Coords.x - agent.Coords.x;
+            int dY = target.Coords.y - agent.Coords.y;
 
-            this.Direction = direction;
+            Vector2Int moveCoords = target.Coords - agent.Coords;
+            moveCoords.x = (int)Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);
+            moveCoords.y = (int)Mathf.Sign(moveCoords.y) * Mathf.Min(Mathf.Abs(moveCoords.y), 1);
+
+            Vector2Int targetCoords = agent.Coords + moveCoords;
+
+            if (!agent.IsFree(targetCoords) && target.Coords != targetCoords)
+            {
+                if (Mathf.Abs(dX) > Mathf.Abs(dY))
+                {
+                    targetCoords.y = agent.Coords.y;
+                }
+                else
+                {
+                    targetCoords.x = agent.Coords.x;
+                }
+            }
+
+            this.MoveCoords = targetCoords;
+
+            this.Direction = LevelBoard.GetDirection(agent.Coords, targetCoords);
         }
 
 
         #region Action Methods
-        public override Action Available(Agent agent)
+        override public Action Available(Agent agent)
         {
             List<Piece> foundPieces = agent.PiecesInSight(3);
 
@@ -40,35 +65,22 @@ namespace Puzzle.Actions
                 foreach (Piece piece in foundPieces) {
                     if (this.TargetCaracteristics.Matches(piece.Caracterization))
                     {
-                        int dX = piece.Coords.x - agent.Coords.x;
-                        int dY = piece.Coords.y - agent.Coords.y;
-
-                        Vector2Int moveCoords = piece.Coords - agent.Coords;
-                        moveCoords.x = (int) Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);
-                        moveCoords.y = (int) Mathf.Sign(moveCoords.y) * Mathf.Min(Mathf.Abs(moveCoords.y), 1);
-
-                        Vector2Int targetCoords = agent.Coords + moveCoords;
-
-                        if (!agent.IsFree(targetCoords) && piece.Coords != targetCoords)
-                        {
-                            if (Mathf.Abs(dX) > Mathf.Abs(dY))
-                            {
-                                targetCoords.y = agent.Coords.y;
-                            }
-                            else
-                            {
-                                targetCoords.x = agent.Coords.x;
-                            }
-                        }
-
-                        LevelBoard.Directions dir = LevelBoard.GetDirection(agent.Coords, targetCoords);
-
-                        return new SeekTarget(piece, targetCoords, dir);
+                        return new SeekTarget(agent, piece);
                     }
                 }
             }
 
             return null;
+        }
+
+        override public bool Confirm(Agent agent)
+        {
+            if(agent.Board.GetPiece(this.TargetCoords) == this.Target)
+            {
+                return base.Confirm(agent);
+            }
+
+            return false;
         }
         #endregion
     }

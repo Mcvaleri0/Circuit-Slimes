@@ -47,11 +47,14 @@ namespace Puzzle
         private enum RunState
         {
             Idle,
-            StepForward,
-            StepBack,
+            Deciding,
+            BeginActing,
+            AwaitConclusion,
+            Rewinding,
             Done
         }
 
+        [SerializeField]
         private RunState State;
 
         private int Turn     =   0;
@@ -60,6 +63,8 @@ namespace Puzzle
 
         private int CurrentAgent  = 0;
         private int StoppedAgents = 0;
+
+        private List<Agent> Agents;
         #endregion
 
 
@@ -88,19 +93,21 @@ namespace Puzzle
                     break;
 
                 case RunState.Idle:
+                    #region
                     if (this.GoalTurn > this.Turn &&
                         this.StoppedAgents < this.Puzzle.Agents.Count)
                     {
                         this.StoppedAgents = 0;
-                        this.State = RunState.StepForward;
+                        this.Agents = new List<Agent>(this.Puzzle.Agents);
+                        this.State = RunState.Deciding;
                     }
                     else if (this.GoalTurn < this.Turn)
                     {
                         this.CurrentAgent = this.Puzzle.Agents.Count - 1;
-                        this.State = RunState.StepBack;
+                        this.State = RunState.Rewinding;
                     }
 
-                    if(this.StoppedAgents >= this.Puzzle.Agents.Count)
+                    if(this.Agents != null && this.StoppedAgents >= this.Agents.Count)
                     {
                         if (this.WinCondition.Equals(null)) break;
 
@@ -109,17 +116,85 @@ namespace Puzzle
                             Debug.Log("WIN");
                         }
                     }
+                    #endregion
                     break;
 
-                case RunState.StepForward:
-                    if (this.RunAgents())
+                case RunState.Deciding:
+                    #region
+                    if(this.CurrentAgent < this.Agents.Count)
                     {
-                        this.State = RunState.Idle;
-                        this.Turn++;
-                    }   
+                        var agent = this.Agents[this.CurrentAgent];
+
+                        // If the Agent has been Deactivated
+                        if(!agent.Active)
+                        {
+                            agent.Turn++;
+
+                            this.CurrentAgent++;
+
+                            this.StoppedAgents++;
+                        }
+
+                        else
+                        {
+                            switch(agent.State)
+                            {
+                                default:
+                                    break;
+
+                                case Agent.States.Idle:
+                                case Agent.States.Waiting:
+                                    agent.State = Agent.States.Think;
+                                    break;
+
+                                case Agent.States.ReadyToAct:
+                                    this.CurrentAgent++;
+                                    break;
+
+                                case Agent.States.NoAction:
+                                    agent.Turn++;
+
+                                    agent.State = Agent.States.Waiting;
+
+                                    this.CurrentAgent++;
+
+                                    this.StoppedAgents++;
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this.CurrentAgent = 0;
+                        this.State = RunState.BeginActing;
+                    }
+                    #endregion
                     break;
 
-                case RunState.StepBack:
+                case RunState.BeginActing:
+                    foreach(var agent in this.Agents)
+                    {
+                        if(agent.State == Agent.States.ReadyToAct)
+                        {
+                            agent.State = Agent.States.ConfirmAction;
+                        }
+                    }
+
+                    this.State = RunState.AwaitConclusion;
+                    break;
+
+                case RunState.AwaitConclusion:
+                    foreach(var agent in this.Agents)
+                    {
+                        if (agent.State != Agent.States.Waiting) return;
+                    }
+
+                    this.Turn++;
+
+                    this.State = RunState.Idle;
+                    break;
+
+                case RunState.Rewinding:
                     if (this.RewindAgents())
                     {
                         this.State = RunState.Idle;
@@ -133,48 +208,6 @@ namespace Puzzle
 
 
         #region === Simulation Aux Methods ===
-        
-        public bool RunAgents()
-        {
-            if(this.CurrentAgent < this.Puzzle.Agents.Count)
-            {
-                Agent agent = this.Puzzle.Agents[this.CurrentAgent];
-
-                if (agent.Turn > this.Turn)
-                {
-                    this.CurrentAgent++;
-
-                    if (agent.NoAction) this.StoppedAgents++;
-
-                    return false;
-                }
-
-                if(!agent.Active)
-                {
-                    agent.Turn++;
-
-                    this.CurrentAgent++;
-
-                    this.StoppedAgents++;
-
-                    return false;
-                }
-
-                if (agent.State == Agent.States.Idle ||
-                    agent.State == Agent.States.Waiting)
-                {
-                    agent.State = Agent.States.Think;
-                }
-            }
-            else
-            {
-                this.CurrentAgent = 0;
-                return true;
-            }
-
-            return false;
-        }
-
         public bool RewindAgents()
         {
             if (this.CurrentAgent >= 0)

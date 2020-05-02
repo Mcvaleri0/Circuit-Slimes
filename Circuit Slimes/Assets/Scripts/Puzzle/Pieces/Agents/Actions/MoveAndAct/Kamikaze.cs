@@ -15,14 +15,14 @@ namespace Puzzle.Actions
 
         public Kamikaze() : base(new Piece.Caracteristics("ElectricSlime")) { }
 
-        public Kamikaze(ElectricSlime target, Vector2Int targetCoords, LevelBoard.Directions direction)
-            : base(target, targetCoords, direction) 
+        public Kamikaze(Agent agent, ElectricSlime target)
+            : base(agent, target) 
         {
             this.Target = target;
         }
 
 
-        #region Action Methods
+        #region === Action Methods ===
         public override Action Available(Agent agent)
         {
             var baseAction = (SeekTarget) base.Available(agent);
@@ -31,7 +31,7 @@ namespace Puzzle.Actions
             {
                 if((baseAction.Target.Coords - agent.Coords).magnitude < 2)
                 {
-                    return new Kamikaze((ElectricSlime) baseAction.Target, baseAction.TargetCoords, baseAction.Direction);
+                    return new Kamikaze(agent, (ElectricSlime) baseAction.Target);
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace Puzzle.Actions
         {
             if(base.Execute(agent))
             {
-                var tile = agent.Board.GetTile(this.TargetCoords);
+                var tile = agent.Board.GetTile(this.MoveCoords);
 
                 if(tile != null && tile.Type == Tile.Types.Solder)
                 {
@@ -70,7 +70,6 @@ namespace Puzzle.Actions
             return false;
         }
 
-
         public override bool Undo(Agent agent)
         {
             agent.Reactivate(agent.Coords);
@@ -82,7 +81,7 @@ namespace Puzzle.Actions
                 this.TargetDeactivated = false;
             }
 
-            var tile = agent.Board.GetTile(this.TargetCoords);
+            var tile = agent.Board.GetTile(this.MoveCoords);
 
             if (tile == null)
             {
@@ -95,10 +94,11 @@ namespace Puzzle.Actions
         }
         #endregion
 
+
         #region === Aux Methods ===
         protected Tile RecreateSolderTile(Puzzle puzzle)
         {
-            var target = Tile.CreateTile(puzzle, this.TargetCoords, Tile.Types.Solder);
+            var target = Tile.CreateTile(puzzle, this.MoveCoords, Tile.Types.Solder);
 
             return target;
         }

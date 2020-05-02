@@ -13,7 +13,22 @@ namespace Puzzle.Actions
             return null;
         }
 
+        public virtual void Begin(Agent agent)
+        {
+            return;
+        }
+
+        public virtual bool Confirm(Agent agent)
+        {
+            return true;
+        }
+
         public virtual bool Execute(Agent agent)
+        {
+            return true;
+        }
+
+        public virtual bool End(Agent agent)
         {
             return true;
         }

@@ -10,7 +10,7 @@ namespace Puzzle.Actions
     {
         public LevelBoard.Directions Direction { get; protected set; }
 
-        public Vector2Int TargetCoords { get; protected set; }
+        public Vector2Int MoveCoords { get; protected set; }
 
 
         public Move()
@@ -22,18 +22,21 @@ namespace Puzzle.Actions
         {
             this.Direction = dir;
 
-            this.TargetCoords = coords;
+            this.MoveCoords = coords;
         }
 
+        public override bool Confirm(Agent agent)
+        {
+            return agent.Board.CanPlacePiece(this.MoveCoords, this.Direction, agent);
+        }
 
         override public bool Execute(Agent agent)
         {
-            if(agent.Rotate(this.Direction))
-            {
-                return agent.Move(this.TargetCoords);
-            }
-            
-            return false;
+            var rotated = agent.Rotate(this.Direction);
+
+            var moved = agent.Move(this.MoveCoords);
+                        
+            return rotated && moved;
         }
 
         public override bool Undo(Agent agent)
@@ -41,7 +44,7 @@ namespace Puzzle.Actions
             agent.Rotate(this.Direction, 1f);
 
             var oppositeDir = (LevelBoard.Directions) (((int) this.Direction + 4) % 8);
-            var origCoords = agent.Board.GetAdjacentCoords(this.TargetCoords, oppositeDir);
+            var origCoords = agent.Board.GetAdjacentCoords(this.MoveCoords, oppositeDir);
             
             agent.transform.position = LevelBoard.WorldCoords(origCoords);
             agent.Board.MovePiece(origCoords, agent);
