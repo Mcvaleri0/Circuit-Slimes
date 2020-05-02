@@ -4,16 +4,39 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using Game;
+
+
+
 public class MainMenu : MonoBehaviour
 {
+    #region /* Buttons */
 
     private Button PlayButton;
     private Button LevelEditButton;
     private Button ReadMeButton;
 
+    #endregion
+
+
+    #region /* Read Me Info */
+
     private Text ReadMeButtonText;
 
     private Transform ReadMeInfo;
+
+    #endregion
+
+
+    #region /* GameController */
+
+    private GameController Controller { get; set; }
+
+    #endregion
+
+
+
+    #region === Unity Events ===
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +49,20 @@ public class MainMenu : MonoBehaviour
 
         ReadMeInfo = transform.Find("ReadMe Info");
 
-        PlayButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Levels"));
-        LevelEditButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Creator"));
+        this.Controller = GameObject.Find("GameController").GetComponent<GameController>();
+
+        PlayButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.LEVELS));
+        LevelEditButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.CREATOR));
+        //PlayButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Levels"));
+        //LevelEditButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Creator"));
+
         ReadMeButton.onClick.AddListener(() => ReadMeCallBack());
     }
+
+    #endregion
+
+
+    #region === CallBack Functions ===
 
     void ReadMeCallBack()
     {
@@ -67,5 +100,7 @@ public class MainMenu : MonoBehaviour
             Application.Quit();
         #endif
     }
+
+    #endregion
 
 }

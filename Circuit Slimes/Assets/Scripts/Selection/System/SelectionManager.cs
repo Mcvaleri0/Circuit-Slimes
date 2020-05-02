@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Lean.Touch;
 
-using Level;
+using Game;
 
 
 
@@ -17,7 +17,7 @@ public class SelectionManager : MonoBehaviour
     private IPieceSelectionResponse PieceSelectionResponse;
     private IBoardSelectionResponse BoardSelectionResponse;
 
-    public LevelController PuzzleController { get; private set; }
+    public GameController PuzzleController { get; private set; }
     public Transform PuzzleTransform { get; private set; }
 
     public Transform BoardTransform { get; private set; }
@@ -36,7 +36,7 @@ public class SelectionManager : MonoBehaviour
 
     #region  === Initialization === 
 
-    public void Initialize(LevelController puzzleController)
+    public void Initialize(GameController puzzleController)
     {
         //puzzle
         this.PuzzleController = puzzleController;
@@ -53,7 +53,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardSelectionResponse = this.GetComponent<IBoardSelectionResponse>();
     }
 
-    public void ReInitialise(LevelController puzzleController)
+    public void ReInitialise(GameController puzzleController)
     {
         //puzzle
         this.PuzzleController = puzzleController;

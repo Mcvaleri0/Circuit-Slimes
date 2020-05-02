@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Level;
+using Game;
 using Puzzle;
 using Creator.UI;
 using Creator.Mode;
@@ -25,7 +25,7 @@ namespace Creator
 
         #region /* Puzzle Atributes */
 
-        private LevelController PuzzleController { get; set; }
+        private GameController PuzzleController { get; set; }
 
         private PuzzleEditor PuzzleEditor { get; set; }
 
@@ -153,7 +153,7 @@ namespace Creator
 
         #region === Init/Update Methods ===
 
-        public void Initialize(LevelController controller, Puzzle.Puzzle puzzle, bool creator)
+        public void Initialize(GameController controller, Puzzle.Puzzle puzzle, bool creator)
         {
             this.InitializePuzzleInfo(controller, puzzle);
 
@@ -180,7 +180,7 @@ namespace Creator
 
         #region === Puzzle Methods ===
 
-        private void InitializePuzzleInfo(LevelController controller, Puzzle.Puzzle puzzle)
+        private void InitializePuzzleInfo(GameController controller, Puzzle.Puzzle puzzle)
         {
             this.PuzzleController = controller;
 

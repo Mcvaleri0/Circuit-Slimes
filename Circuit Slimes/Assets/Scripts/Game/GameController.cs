@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Puzzle;
 using Puzzle.Data;
@@ -9,9 +10,9 @@ using Creator;
 
 
 
-namespace Level
+namespace Game
 {
-    public class LevelController : MonoBehaviour
+    public class GameController : MonoBehaviour
     {
         #region /* Level Attributes */
 
@@ -22,8 +23,9 @@ namespace Level
         public const int PLAYERS_LEVEL = -1;
         public const int EMPTY_LEVEL = -2;
 
+        public int CurrentLevel { get; private set; }
+        
         // set on editor
-        public int CurrentLevel;
         public int nLevels;
 
         #endregion
@@ -43,26 +45,80 @@ namespace Level
         private CreatorController CreatorController { get; set; }
 
         // set on editor
-        public bool Creator;
+        private bool Creator { get; set; }
 
         #endregion
 
+
+        #region /* Scenes Attibutes */
+
+        public const string MAIN_MENU = "MainMenu";
+        public const string CREATOR   = "Creator";
+        public const string LEVELS    = "Levels";
+
+        #endregion
 
 
         #region === Unity Events ===
 
         private void Awake()
         {
-            GameObject.DontDestroyOnLoad(this);            
+            GameObject.DontDestroyOnLoad(this);
         }
 
 
-        // Start is called before the first frame update
-        void Start()
+        void OnEnable()
         {
-            this.LoadLevel(this.CurrentLevel);
+            SceneManager.sceneLoaded += this.OnSceneLoaded;
+        }
 
-            this.InitialiazeControllers();
+
+        void OnDisable()
+        {
+            SceneManager.sceneLoaded -= this.OnSceneLoaded;
+        }
+
+        #endregion
+
+
+        #region === Scenes' Methods ===
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            this.InitializeScene();
+        }
+
+
+        private void InitializeScene()
+        {
+            if (SceneManager.GetActiveScene().name != MAIN_MENU)
+            {
+                this.LoadLevel(this.CurrentLevel);
+
+                this.InitialiazeControllers();
+            }
+        }
+
+
+        public void LoadScene(string name)
+        {
+            this.CurrentLevel = 0;
+
+            switch (name)
+            {
+                case MAIN_MENU:
+                    break;
+
+                case CREATOR:
+                    this.Creator = true;
+                    break;
+
+                case LEVELS:
+                    this.Creator = false;
+                    break;
+            }
+
+            SceneManager.LoadSceneAsync(name);
         }
 
         #endregion
@@ -106,7 +162,7 @@ namespace Level
 
         #region === Level Functions ===
 
-        public void LoadLevel(int level)
+        private void LoadLevel(int level)
         {
             // this needs to be like this because UnityEngine overrides != == operators
             // because of that null and "null" exist. when using the operators, 

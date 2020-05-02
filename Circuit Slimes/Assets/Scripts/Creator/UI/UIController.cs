@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Level;
+using Game;
 using Puzzle;
 using Creator.Editor;
 using Creator.Selection;
@@ -26,7 +26,7 @@ namespace Creator.UI
         #region /* Puzzle Attributes */
 
         private PuzzleEditor Editor { get; set; }
-        private LevelController Controller { get; set; }
+        private GameController Controller { get; set; }
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace Creator.UI
         #region === Init Methods ===
 
         public UIController(PuzzleEditor editor, SelectionSystem selection, Mode.Mode mode,
-            LevelController controller, Transform canvas)
+            GameController controller, Transform canvas)
         {
             this.Editor     = editor;
             this.Selection  = selection;
