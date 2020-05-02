@@ -67,7 +67,7 @@ namespace Creator.UI.Buttons
         {
             if (this.Selected)
             {
-                this.Deselect();
+                this.Editor.RemoveItemToPlace();
             }
             else
             {

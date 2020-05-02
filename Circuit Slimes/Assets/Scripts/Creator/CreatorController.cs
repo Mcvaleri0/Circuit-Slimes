@@ -109,17 +109,6 @@ namespace Creator
             }
         }
 
-
-        private void OnInputTap(Lean.Touch.LeanFinger finger)
-        {
-            if (finger.StartedOverGui)
-            {
-                if (this.PuzzleEditor.HasItemToPlace())
-                {
-                }
-            }
-        }
-
         #endregion
 
 
@@ -135,9 +124,6 @@ namespace Creator
 
             //hook input drag
             Lean.Touch.LeanTouch.OnFingerSet += this.OnInputDrag;
-
-            //hook input tap
-            Lean.Touch.LeanTouch.OnFingerTap += this.OnInputTap;
         }
 
         private void OnDisable()
@@ -150,9 +136,6 @@ namespace Creator
 
             //unhook input drag
             Lean.Touch.LeanTouch.OnFingerSet -= this.OnInputDrag;
-
-            //hook input tap
-            Lean.Touch.LeanTouch.OnFingerTap -= this.OnInputTap;
         }
 
         #endregion
