@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Level;
 using Puzzle;
 using Creator.Editor;
 
@@ -14,7 +15,7 @@ namespace Creator.Selection
         #region /* Puzzle Attributes */
 
         private PuzzleEditor Editor { get; set; }
-        private PuzzleController Controller { get; set; }
+        private LevelController Controller { get; set; }
 
         #endregion
 
@@ -52,7 +53,7 @@ namespace Creator.Selection
 
 
 
-        public SelectionSystem(PuzzleEditor editor, SelectionManager manager, PuzzleController controller)
+        public SelectionSystem(PuzzleEditor editor, SelectionManager manager, LevelController controller)
         {
             this.Editor     = editor;
             this.Manager    = manager;

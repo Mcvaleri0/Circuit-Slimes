@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Level;
 using Puzzle;
 using Creator.Editor;
 using Creator.Selection;
@@ -24,7 +25,7 @@ namespace Creator.UI.ModeUI
 
         #region === Init Methods ===
 
-        public EditorUI(PuzzleController controller, PuzzleEditor editor, SelectionSystem selection, 
+        public EditorUI(LevelController controller, PuzzleEditor editor, SelectionSystem selection, 
             Mode.Mode mode, Transform canvas) : 
                 base(controller, editor, selection, mode, canvas) { }
 
