@@ -82,7 +82,6 @@ namespace Creator.UI.Buttons
         public void Deselect()
         {
             this.Selected = false;
-            this.Editor.NoItemToPlace();
             this.ChangeColor();
         }
 

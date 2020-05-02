@@ -77,12 +77,9 @@ namespace Creator.Editor
         }
 
 
-        public void NoItemToPlace(bool deselect = false)
+        public void RemoveItemToPlace()
         {
-            if (deselect)
-            {
-                this.ItemButton.Deselect();
-            }
+            this.ItemButton.Deselect();
 
             this.Item = null;
             this.ItemButton = null;
@@ -124,7 +121,7 @@ namespace Creator.Editor
             }
             else
             {
-                this.NoItemToPlace(true);
+                this.RemoveItemToPlace();
             }
         }
 

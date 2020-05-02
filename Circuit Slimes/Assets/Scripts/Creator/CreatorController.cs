@@ -54,6 +54,7 @@ namespace Creator
 
         private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
 
+
         private bool IgnoreInput(Lean.Touch.LeanFinger finger)
         {
             //if input does not belong to filter
@@ -108,6 +109,17 @@ namespace Creator
             }
         }
 
+
+        private void OnInputTap(Lean.Touch.LeanFinger finger)
+        {
+            if (finger.StartedOverGui)
+            {
+                if (this.PuzzleEditor.HasItemToPlace())
+                {
+                }
+            }
+        }
+
         #endregion
 
 
@@ -124,6 +136,8 @@ namespace Creator
             //hook input drag
             Lean.Touch.LeanTouch.OnFingerSet += this.OnInputDrag;
 
+            //hook input tap
+            Lean.Touch.LeanTouch.OnFingerTap += this.OnInputTap;
         }
 
         private void OnDisable()
@@ -137,6 +151,8 @@ namespace Creator
             //unhook input drag
             Lean.Touch.LeanTouch.OnFingerSet -= this.OnInputDrag;
 
+            //hook input tap
+            Lean.Touch.LeanTouch.OnFingerTap -= this.OnInputTap;
         }
 
         #endregion
