@@ -37,6 +37,12 @@ public class MainMenu : MonoBehaviour
 
 
     #region === Unity Events ===
+    private void Awake()
+    {
+        this.Controller = GameObject.Find("GameController").GetComponent<GameController>();
+
+        GameObject.DontDestroyOnLoad(this.Controller);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +55,8 @@ public class MainMenu : MonoBehaviour
 
         ReadMeInfo = transform.Find("ReadMe Info");
 
-        this.Controller = GameObject.Find("GameController").GetComponent<GameController>();
-
         PlayButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.LEVELS));
         LevelEditButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.CREATOR));
-        //PlayButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Levels"));
-        //LevelEditButton.onClick.AddListener(() => SceneManager.LoadSceneAsync("Creator"));
 
         ReadMeButton.onClick.AddListener(() => ReadMeCallBack());
     }

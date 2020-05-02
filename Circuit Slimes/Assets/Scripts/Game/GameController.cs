@@ -61,12 +61,6 @@ namespace Game
 
         #region === Unity Events ===
 
-        private void Awake()
-        {
-            GameObject.DontDestroyOnLoad(this);
-        }
-
-
         void OnEnable()
         {
             SceneManager.sceneLoaded += this.OnSceneLoaded;
@@ -103,6 +97,11 @@ namespace Game
         public void LoadScene(string name)
         {
             this.CurrentLevel = 0;
+
+            if (this.Puzzle != null)
+            {
+                this.Puzzle.Destroy();
+            }
 
             switch (name)
             {
@@ -164,16 +163,6 @@ namespace Game
 
         private void LoadLevel(int level)
         {
-            // this needs to be like this because UnityEngine overrides != == operators
-            // because of that null and "null" exist. when using the operators, 
-            // although "null" is not really null it behaves as such
-            if (!object.Equals(this.Puzzle, null))
-            {
-                this.Puzzle.Destroy();
-            }
-
-            this.CurrentLevel = level;
-
             string path;
             string name;
 
