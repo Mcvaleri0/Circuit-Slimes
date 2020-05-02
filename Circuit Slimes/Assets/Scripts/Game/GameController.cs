@@ -104,6 +104,11 @@ namespace Game
         {
             if (SceneManager.GetActiveScene().name != MAIN_MENU)
             {
+                if (this.Puzzle != null)
+                {
+                    this.Puzzle.Destroy();
+                }
+
                 this.LoadLevel(this.CurrentLevel);
 
                 this.InitialiazeControllers();
@@ -114,11 +119,6 @@ namespace Game
         public void LoadScene(string name)
         {
             this.CurrentLevel = 0;
-
-            if (this.Puzzle != null)
-            {
-                this.Puzzle.Destroy();
-            }
 
             switch (name)
             {
