@@ -112,16 +112,7 @@ namespace Puzzle
 
         public bool IsFree(Vector2Int coords, Piece piece) 
         {
-            Piece pieceNewPos = this.GetPiece(coords);
-
-            if (pieceNewPos == null || pieceNewPos == piece)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return this.Board.CanPlacePiece(coords, piece);
         }
 
         #endregion
