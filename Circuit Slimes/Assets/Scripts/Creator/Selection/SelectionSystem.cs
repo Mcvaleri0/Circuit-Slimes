@@ -21,7 +21,7 @@ namespace Creator.Selection
 
         #region /* Click Attributes */
 
-        private const float DOUBLE_CLICK_WINDOW = 0.5f;
+        private const float DOUBLE_CLICK_WINDOW = 0.25f;
 
         private bool SingleClick { get; set; }
         private float TimeFirstClick { get; set; }
@@ -35,6 +35,7 @@ namespace Creator.Selection
 
         private SelectionManager Manager { get; set; }
         public Transform Selected { get; private set; }
+        private Transform LastClicked { get; set; }
 
         public Piece Piece { get; private set; }
         public Tile Tile   { get; private set; }
@@ -155,16 +156,21 @@ namespace Creator.Selection
             {
                 this.TimeFirstClick = Time.time;
                 this.SingleClick = true;
+                this.LastClicked = this.Manager.GetCurrentSelection();
             }
             else
             {
-                if ((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW)
+                Transform clicked = this.Manager.GetCurrentSelection();
+                if (((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW) ||
+                    (this.LastClicked != clicked))
                 {
-                    this.TimeFirstClick = Time.time;
+                        this.TimeFirstClick = Time.time;
+                        this.LastClicked = clicked;
                 }
                 else
                 {
                     this.SingleClick = false;
+                    this.LastClicked = null;
                     return true;
                 }
             }
