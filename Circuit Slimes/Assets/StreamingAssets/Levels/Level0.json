@@ -78,7 +78,9 @@
         }
     ],
     "Permissions": [
-        "9VBattery"
+        "SolderCandy",
+        "SolderSlime",
+        "WaterCandy"
     ],
     "Condition": 0
 }
