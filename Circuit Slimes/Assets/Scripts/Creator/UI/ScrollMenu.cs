@@ -72,7 +72,7 @@ namespace Creator.UI
         private void ResizeMenu()
         {
             RectTransform rect = this.Menu.GetComponent<RectTransform>();
-            rect.sizeDelta = new Vector2(Screen.width, Screen.height / 4);
+            rect.sizeDelta = new Vector2(Screen.width / 2, Screen.height / 4);
             rect.anchoredPosition = new Vector2(0, -3 * Screen.height / 8);
         }
 

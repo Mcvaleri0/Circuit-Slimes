@@ -77,6 +77,8 @@
             ]
         }
     ],
-    "Permissions": [],
+    "Permissions": [
+        "9VBattery"
+    ],
     "Condition": 0
 }
