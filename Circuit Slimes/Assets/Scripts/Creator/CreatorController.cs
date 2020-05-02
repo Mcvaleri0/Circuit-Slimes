@@ -74,22 +74,27 @@ namespace Creator
         {
             if (this.IgnoreInput(finger)) return;
 
-            //if double click delete
-            if (this.SelectionSystem.DoubleClick())
-            {
-                this.PuzzleEditor.RemoveItem();
-            }
             //if we have an item to place, place it
-            else if (this.PuzzleEditor.HasItemToPlace())
+            if (this.PuzzleEditor.HasItemToPlace())
             {
                 this.PuzzleEditor.PlaceItem();
+            }
+
+            //if double click delete
+            else if (this.SelectionSystem.DoubleClick())
+            {
+                this.PuzzleEditor.RemoveItem();
             }
         }
 
 
         private void OnInputUp(Lean.Touch.LeanFinger finger)
         {
-            this.SelectionSystem.EndDrag();
+            // If we have an item to place then it must be placed
+            if (!this.PuzzleEditor.HasItemToPlace())
+            {
+                this.SelectionSystem.EndDrag();
+            }
         }
 
 
@@ -97,15 +102,19 @@ namespace Creator
         {
             if (this.IgnoreInput(finger)) return;
 
-            //Drag Item
-            if (this.SelectionSystem.Dragging)
+            // If we have an item to place then it must be placed
+            if (!this.PuzzleEditor.HasItemToPlace())
             {
-                this.PuzzleEditor.MoveItem();
-            }
-            //if something is selected prepare drag
-            else if (this.SelectionSystem.SomethingSelected())
-            {
-                this.SelectionSystem.PrepareDrag();
+                //Drag Item
+                if (this.SelectionSystem.Dragging)
+                {
+                    this.PuzzleEditor.MoveItem();
+                }
+                //if something is selected prepare drag
+                else if (this.SelectionSystem.SomethingSelected())
+                {
+                    this.SelectionSystem.PrepareDrag();
+                }
             }
         }
 
