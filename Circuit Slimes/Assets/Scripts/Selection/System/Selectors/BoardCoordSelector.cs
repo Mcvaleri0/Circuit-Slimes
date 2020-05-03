@@ -9,12 +9,18 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
     private Vector2Int BoardCoords; 
     private bool BoardHover = false;
 
-    // Start is called before the first frame update
+    private Transform Selection;
+
+    private Vector2Int BoardCoordsOffset;
+
+
+
     void Start()
     {
         this.Manager = this.GetComponent<SelectionManager>();
     }
 
+    //ignore selection thanks to ui or touch gesture
     private bool IgnoreSelection(Ray ray)
     {
         //ignore selecion when doing a gesture 
@@ -36,25 +42,61 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
         return false;
     }
 
-    public Vector2Int GetCoords(Ray ray)
+
+    public Transform Check(Ray ray)
     {
 
         var board = this.Manager.BoardTransform.GetComponent<BoxCollider>();
-        var puzzle = this.Manager.PuzzleController;
+        var puzzle = this.Manager.PuzzleController.Puzzle;
 
         this.BoardHover = false;
 
+        this.Selection = null;
+
+        this.BoardCoordsOffset = new Vector2Int(0, 0); 
+
         if (board.Raycast(ray, out var hit, 1000) && !this.IgnoreSelection(ray)) {
 
+            //hover
             this.BoardHover = true;
+
+            //coords
             this.BoardCoords = Puzzle.Board.LevelBoard.Discretize(hit.point);
-            this.BoardCoords = puzzle.Puzzle.Clamp(this.BoardCoords);
+            this.BoardCoords = puzzle.Clamp(this.BoardCoords);
+
+            //selection
+            var piece = puzzle.GetPiece(this.BoardCoords);
+            var tile = puzzle.GetTile(this.BoardCoords);
+
+            //get the right transform (piece >> tile)
+            if (piece != null)
+            {
+                this.Selection = piece.transform;
+                this.BoardCoordsOffset = piece.GetFootPrintOffset(this.BoardCoords);
+            }
+            else if (tile != null )
+            {
+                this.Selection = tile.transform;
+            }
+
         }
+
+        return this.Selection;
+    }
+
+
+    public Vector2Int GetCoords()
+    {
         return this.BoardCoords;
     }
 
     public bool GetHover()
     {
         return this.BoardHover;
+    }
+
+    public Vector2Int GetOffset()
+    {
+        return this.BoardCoordsOffset;
     }
 }

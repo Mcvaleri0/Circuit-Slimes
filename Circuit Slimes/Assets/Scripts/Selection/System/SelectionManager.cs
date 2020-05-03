@@ -21,6 +21,7 @@ public class SelectionManager : MonoBehaviour
     //Outward facing info, fed to the CreatorController
     private Transform CurrentSelection { get; set; }
     private Vector2Int BoardCoords { get; set; }
+    private Vector2Int BoardCoordsOffset { get; set; }
     private bool BoardHover { get; set; }
 
     //white list of transforms that can be selected
@@ -80,6 +81,12 @@ public class SelectionManager : MonoBehaviour
     {
         this.Update();
         return this.CurrentSelection;
+    }
+
+    public Vector2Int GetBoardCoordsOffset()
+    {
+        this.Update();
+        return this.BoardCoordsOffset;
     }
 
     #endregion
@@ -145,14 +152,24 @@ public class SelectionManager : MonoBehaviour
         //new ray
         var ray = this.RayProvider.CreateRay();
 
+        //get selection from board
+        var selection = this.BoardCoordSelector.Check(ray);
+
         //Get Coords from CoordSelector
-        this.BoardCoords = this.BoardCoordSelector.GetCoords(ray);
+        this.BoardCoords = this.BoardCoordSelector.GetCoords();
+
+        //get offset from coords to origin of selection
+        if (!this.SelectionLocked) {
+            this.BoardCoordsOffset = this.BoardCoordSelector.GetOffset();
+        }
 
         //Get Hover from CoordSelector
         this.BoardHover = this.BoardCoordSelector.GetHover();
 
-        //Get Selection from TransformSelector
-        var selection = this.TransformSelector.Check(ray);
+        //fallback to find selection
+        if (selection == null) {
+            selection = this.TransformSelector.Check(ray);
+        }
 
         //Piece Selection Response
         if (selection != this.CurrentSelection && !this.SelectionLocked)
@@ -176,7 +193,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection);
 
         //Debug 
-        //this.PrintAttributes();
+        this.PrintAttributes();
     }
 
     #endregion
@@ -186,7 +203,7 @@ public class SelectionManager : MonoBehaviour
     public void PrintAttributes()
     {
         var selection = (CurrentSelection == null) ? "nothing" : CurrentSelection.name;
-        Debug.Log("Selection { Transform: " + selection + ", Coords: " + BoardCoords + ", Hover: " + BoardHover + "}");
+        Debug.Log("Selection { Transform: " + selection + ", Coords: " + BoardCoords + ", off: " + BoardCoordsOffset + ", Hover: " + BoardHover + "}");
     }
 
     #endregion

@@ -523,6 +523,16 @@ namespace Puzzle
         }
 
 
+        //Gets the Offset between point coords and the footprint's origin
+        public Vector2Int GetFootPrintOffset(Vector2Int coords)
+        {
+            var footprint = this.GetFootprint();
+            var orig = footprint[0];
+
+            return coords - orig;
+        }
+
+
         //rotate piece
         public virtual bool Rotate(LevelBoard.Directions targetDir)
         {

@@ -145,6 +145,11 @@ namespace Creator.Selection
             return this.Manager.GetBoardCoords();
         }
 
+        public Vector2Int BoardCoordsOffset()
+        {
+            return this.Manager.GetBoardCoordsOffset();
+        }
+
         #endregion
 
 
