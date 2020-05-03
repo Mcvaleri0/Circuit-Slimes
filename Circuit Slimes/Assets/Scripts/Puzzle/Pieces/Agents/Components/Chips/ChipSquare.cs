@@ -9,19 +9,6 @@ namespace Puzzle.Pieces.Components
 {
     public class ChipSquare : Chip
     {
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (Input.GetKeyUp(KeyCode.O))
-            {
-                var newOri = (LevelBoard.Directions)(((int)this.Orientation + 2) % 8);
-
-                this.Rotate(newOri);
-            }
-        }
-
         //footprint
         public override Vector2Int[] Footprint { get; set; } = {
             new Vector2Int(0, 0),
@@ -33,7 +20,7 @@ namespace Puzzle.Pieces.Components
         //square chips don't really need to rotate
         new public bool Rotate(LevelBoard.Directions targetDir)
         {
-            return false;
+            return false;   
         }
     }
 }
