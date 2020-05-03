@@ -10,27 +10,10 @@ namespace Puzzle.Pieces.Components
     public class ChipDouble : Chip
     {
         //footprint
-        override public Vector2Int[] GetFootprint()
-        {
-            Vector2Int[] footprint = new Vector2Int[2]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) this.Orientation]
-            };
-
-            return footprint;
-        }
-
-        override public Vector2Int[] GetFootprintAt(Vector2Int coords, LevelBoard.Directions orientation)
-        {
-            Vector2Int[] footprint = new Vector2Int[2]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) orientation]
-            };
-
-            return footprint;
-        }
+        public override Vector2Int[] Footprint { get; set; } = {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0)
+        };
 
         new public bool Rotate(LevelBoard.Directions targetDir)
         {

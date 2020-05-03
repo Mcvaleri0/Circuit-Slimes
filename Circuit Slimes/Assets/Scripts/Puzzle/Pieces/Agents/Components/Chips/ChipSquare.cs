@@ -9,36 +9,31 @@ namespace Puzzle.Pieces.Components
 {
     public class ChipSquare : Chip
     {
+
+        protected override void Update()
+        {
+            base.Update();
+
+            if (Input.GetKeyUp(KeyCode.O))
+            {
+                var newOri = (LevelBoard.Directions)(((int)this.Orientation + 2) % 8);
+
+                this.Rotate(newOri);
+            }
+        }
+
         //footprint
-        override public Vector2Int[] GetFootprint()
-        {
-            Vector2Int[] footprint = new Vector2Int[4]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.East],
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.SouthEast],
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.South]
-            };
+        public override Vector2Int[] Footprint { get; set; } = {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1),
+            new Vector2Int(1, 1)
+        };
 
-            return footprint;
-        }
-
-        override public Vector2Int[] GetFootprintAt(Vector2Int coords, LevelBoard.Directions orientation)
-        {
-            Vector2Int[] footprint = new Vector2Int[4]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.East],
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.SouthEast],
-                this.Coords + LevelBoard.DirectionalVectors[(int) LevelBoard.Directions.South],
-            };
-
-            return footprint;
-        }
-
+        //square chips don't really need to rotate
         new public bool Rotate(LevelBoard.Directions targetDir)
         {
-            return this.Board.RotatePiece(this, targetDir);
+            return false;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Puzzle.Pieces.Components
         {
             var footprint = this.GetFootprint();
 
-            var origCoords = footprint[footprint.Length - 1];
+            var origCoords = footprint[0];
 
             var tile = this.Board.GetTile(origCoords);
 

@@ -7,6 +7,12 @@ namespace Puzzle.Pieces.Components
 {
     public class BatteryAA : Battery
     {
+        //footprint
+        public override Vector2Int[] Footprint { get; set; } = {
+            new Vector2Int(0, 0),
+            new Vector2Int(1, 0)
+        };
+
         protected override void Update()
         {
             base.Update();
@@ -21,27 +27,6 @@ namespace Puzzle.Pieces.Components
 
 
         #region === Piece Methods ===
-        override public Vector2Int[] GetFootprint()
-        {
-            Vector2Int[] footprint = new Vector2Int[2]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) this.Orientation]
-            };
-
-            return footprint;
-        }
-
-        override public Vector2Int[] GetFootprintAt(Vector2Int coords, LevelBoard.Directions orientation)
-        {
-            Vector2Int[] footprint = new Vector2Int[2]
-            {
-                this.Coords,
-                this.Coords + LevelBoard.DirectionalVectors[(int) orientation]
-            };
-
-            return footprint;
-        }
 
         new public bool Rotate(LevelBoard.Directions targetDir)
         {
