@@ -183,8 +183,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4654497599730829248}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: -0.08726001, z: 6.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 13, y: 1, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8889407496531471889}
@@ -203,10 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a8c54cd7e448d409f3e62d785c4feb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Category: 2
-  SlimeType: 0
-  ComponentType: 6
-  CandyType: 0
   Turn: 0
   State: 0
   MaxCharges: 0
@@ -249,7 +245,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5550366436584922114}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5255712, y: 0.5255712, z: 0.5255712}
   m_Children:
@@ -257,7 +253,7 @@ Transform:
   - {fileID: 2412715464145015521}
   m_Father: {fileID: 7299121749469369337}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!33 &434179249121580071
 MeshFilter:
   m_ObjectHideFlags: 0

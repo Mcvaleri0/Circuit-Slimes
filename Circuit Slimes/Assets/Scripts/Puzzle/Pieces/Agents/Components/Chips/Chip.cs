@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using Puzzle.Actions;
+using Puzzle.Board;
 
 namespace Puzzle.Pieces.Components
 {
