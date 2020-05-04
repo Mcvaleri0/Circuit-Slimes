@@ -193,7 +193,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection);
 
         //Debug 
-        this.PrintAttributes();
+        //this.PrintAttributes();
     }
 
     #endregion
