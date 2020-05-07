@@ -11,6 +11,7 @@ public class TagTransformSelector : MonoBehaviour, ITransformSelector
 
     private List<Transform> WhiteList;
 
+
     public void Start()
     {
         this.Manager = this.GetComponent<SelectionManager>();
