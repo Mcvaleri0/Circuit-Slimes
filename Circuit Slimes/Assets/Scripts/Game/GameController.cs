@@ -270,21 +270,16 @@ namespace Game
 
         public void NextLevel()
         {
-            //this.State = RunState.Idle;
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
             this.LoadLevel(this.CurrentLevel);
 
             this.UpdateControllers();
-
-            //this.Restart();
         }
 
 
         public void PreviousLevel()
         {
-            //this.State = RunState.Idle;
-
             this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
 
             if (this.CurrentLevel < 0)
@@ -295,8 +290,6 @@ namespace Game
             this.LoadLevel(this.CurrentLevel);
 
             this.UpdateControllers();
-
-            //this.Restart();
         }
 
         #endregion

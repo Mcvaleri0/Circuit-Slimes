@@ -278,35 +278,5 @@ namespace Puzzle
 
         #endregion
 
-
-        //public void NextLevel()
-        //{
-        //    this.State = RunState.Idle;
-
-        //    this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
-
-        //    this.LoadLevel(this.CurrentLevel);
-
-        //    this.CreatorController.UpdateInfo(this.Puzzle);
-        //    this.Restart();
-        //}
-
-        //public void PreviousLevel()
-        //{
-        //    this.State = RunState.Idle;
-
-        //    this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
-
-        //    if (this.CurrentLevel < 0)
-        //    {
-        //        this.CurrentLevel += this.nLevels;
-        //    }
-
-        //    this.LoadLevel(this.CurrentLevel);
-
-        //    this.CreatorController.UpdateInfo(this.Puzzle);
-        //    this.Restart();
-        //}
-
     }
 }

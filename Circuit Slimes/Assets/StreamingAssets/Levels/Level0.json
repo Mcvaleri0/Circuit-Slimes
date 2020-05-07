@@ -8,8 +8,8 @@
             "PrefabName": "WaterSlime",
             "Coords": [
                 {
-                    "x": 1,
-                    "y": 2
+                    "x": 2,
+                    "y": 3
                 }
             ],
             "Orientations": [
@@ -20,7 +20,7 @@
             "PrefabName": "WaterCandy",
             "Coords": [
                 {
-                    "x": 1,
+                    "x": 3,
                     "y": 5
                 }
             ],
@@ -32,7 +32,7 @@
             "PrefabName": "SolderSlime",
             "Coords": [
                 {
-                    "x": 1,
+                    "x": 3,
                     "y": 1
                 }
             ],
@@ -58,6 +58,14 @@
             "PrefabName": "SolderTile",
             "Coords": [
                 {
+                    "x": 4,
+                    "y": 2
+                },
+                {
+                    "x": 4,
+                    "y": 1
+                },
+                {
                     "x": 6,
                     "y": 4
                 },
@@ -67,15 +75,7 @@
                 },
                 {
                     "x": 4,
-                    "y": 1
-                },
-                {
-                    "x": 4,
                     "y": 3
-                },
-                {
-                    "x": 4,
-                    "y": 2
                 }
             ]
         }
