@@ -16,7 +16,10 @@ namespace Puzzle.Pieces
         {
             Idle,
             Think,
+            ReadyToAct,
+            ConfirmAction,
             Act,
+            NoAction,
             Rewind,
             Restart,
             Waiting
@@ -24,12 +27,15 @@ namespace Puzzle.Pieces
 
         public States State;
 
+        #region Actions
         protected List<Action> KnownActions;
 
         public Action ChosenAction { get; protected set; }
 
-        public bool NoAction { get; protected set; }
+        public Dictionary<int, Action> ActionLog;
+        #endregion
 
+        #region Stats
         public struct Statistics
         {
             public int MaxHP, HP, Speed, MaxFood, Food;
@@ -47,8 +53,8 @@ namespace Puzzle.Pieces
         }
 
         public Statistics Stats;
+        #endregion
 
-        public Dictionary<int, Action> ActionLog;
 
         public bool Active { get; protected set; }
 
@@ -88,28 +94,43 @@ namespace Puzzle.Pieces
                 default:
                 case States.Idle:
                 case States.Waiting:
+                case States.NoAction:
+                case States.ReadyToAct:
                     break;
 
                 case States.Think:
-                    this.NoAction = false;
-
                     // Decide on an Action
                     this.ChosenAction = Think();
 
                     if (this.ChosenAction == null)
                     {
-                        this.State = States.Waiting;
-
-                        this.NoAction = true;
-
-                        this.Turn++;
+                        this.State = States.NoAction;
                     }
                     else
                     {
                         this.ActionLog.Add(this.Turn, this.ChosenAction);
 
                         // Go to Act
+                        this.State = States.ReadyToAct;
+                    }
+                    break;
+
+                case States.ConfirmAction:
+                    if(this.ChosenAction.Confirm(this))
+                    {
+                        this.ChosenAction.Begin(this);
+
                         this.State = States.Act;
+                    }
+                    else
+                    {
+                        this.ActionLog.Remove(this.Turn);
+
+                        this.ChosenAction = null;
+
+                        this.Turn++;
+
+                        this.State = States.Waiting;
                     }
                     break;
 
@@ -117,12 +138,14 @@ namespace Puzzle.Pieces
                     // If the Action has been completed
                     if (this.ChosenAction.Execute(this))
                     {
-                        // Go to waiting
-                        this.State = States.Waiting;
+                        this.ChosenAction.End(this);
 
                         this.ChosenAction = null;
 
                         this.Turn++;
+
+                        // Go to waiting
+                        this.State = States.Waiting;
                     }
                     break;
 
@@ -143,14 +166,6 @@ namespace Puzzle.Pieces
                     }
 
                     this.State = States.Waiting;
-                    break;
-
-                case States.Restart:
-                    this.Turn = this.StartTurn;
-
-                    this.ActionLog.Clear();
-
-                    this.State = States.Idle;
                     break;
             }
         }
@@ -193,8 +208,6 @@ namespace Puzzle.Pieces
             this.Board.PlacePiece(coords, this);
 
             this.transform.position = LevelBoard.WorldCoords(coords);
-
-            this.Turn++;
         }
         #endregion
 

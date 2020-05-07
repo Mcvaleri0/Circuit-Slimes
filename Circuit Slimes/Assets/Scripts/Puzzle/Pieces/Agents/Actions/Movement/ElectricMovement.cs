@@ -15,7 +15,7 @@ namespace Puzzle.Actions
 
 
         #region Action Methods
-        public override Action Available(Agent agent)
+        override public Action Available(Agent agent)
         {
             ArrayList adjacents = CheckAdjacentSolderTiles(agent);
                        
@@ -38,6 +38,18 @@ namespace Puzzle.Actions
             }
 
             return null;
+        }
+
+        public override bool Confirm(Agent agent)
+        {
+            var tile = agent.Board.GetTile(this.MoveCoords);
+
+            if (tile != null && tile.Type == Tile.Types.Solder)
+            {
+                return base.Confirm(agent);
+            }
+
+            return false;
         }
         #endregion
 

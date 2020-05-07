@@ -12,21 +12,21 @@ namespace Puzzle.Actions
 
         public DropSolder() : base(Piece.CandyTypes.Solder) { }
 
-        public DropSolder(Candy target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
+        public DropSolder(Agent agent, Candy target) : base(agent, target) 
         { }
 
 
         #region === Action Methods
 
-        public override Action Available(Agent agent)
+        override public Action Available(Agent agent)
         {
             var consume = (Consume) base.Available(agent);
 
             if (consume != null)
             {
-                if (agent.Board.GetTile(consume.TargetCoords) == null)
+                if (agent.Board.GetTile(consume.MoveCoords) == null)
                 {
-                    return new DropSolder((Candy)consume.Target, consume.TargetCoords, consume.Direction);
+                    return new DropSolder(agent, (Candy)consume.Target);
                 }
                 else
                 {
@@ -38,8 +38,7 @@ namespace Puzzle.Actions
                 return null;
             }
         }
-
-
+        
         override public bool Execute(Agent agent)
         {
             if(base.Execute(agent))
@@ -60,7 +59,6 @@ namespace Puzzle.Actions
 
             return false;
         }
-
 
         override public bool Undo(Agent agent)
         {

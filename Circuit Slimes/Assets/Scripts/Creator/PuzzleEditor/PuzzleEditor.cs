@@ -160,6 +160,9 @@ namespace Creator.Editor
             //get board coords
             Vector2Int coords = this.Selection.BoardCoords();
 
+            //get origin offset
+            Vector2Int off = this.Selection.BoardCoordsOffset();
+
             //convert grid coords in world coords
             Vector3 curPosition = this.Puzzle.WorldCoords(coords) + this.Selection.Offset;
 
@@ -169,7 +172,7 @@ namespace Creator.Editor
             // update the position of the object in the world
             if (this.Selection.PieceSelected())
             {
-                if (this.Puzzle.IsFree(coords, this.Selection.Piece))
+                if (this.Puzzle.IsFree(coords - off, this.Selection.Piece))
                 {
                     this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }

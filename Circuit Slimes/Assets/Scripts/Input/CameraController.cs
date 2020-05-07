@@ -176,6 +176,12 @@ public class CameraController : MonoBehaviour
         // Get the fingers we want to use
         var fingers = Use.GetFingers();
 
+        //ignore panning with middlebutton if over ui
+        if (fingers.Count == 0 && LeanTouch.PointOverGui(Input.mousePosition))
+        {
+            return new Vector3();
+        }
+
         // Get current point and previous point 
         var lastScreenPoint = Lean.Touch.LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = Lean.Touch.LeanGesture.GetScreenCenter(fingers);
@@ -241,8 +247,15 @@ public class CameraController : MonoBehaviour
 
     protected float GetInputZoom()
     {
+
         // Get the fingers we want to use
         var fingers = Use.GetFingers();
+
+        //ignore zoom with scrollwheel if over ui
+        if (fingers.Count == 0 && LeanTouch.PointOverGui(Input.mousePosition))
+        {
+            return 0;
+        }
         
         // Get current point and previous point 
         var lastScreenPoint = Lean.Touch.LeanGesture.GetLastScreenCenter(fingers);

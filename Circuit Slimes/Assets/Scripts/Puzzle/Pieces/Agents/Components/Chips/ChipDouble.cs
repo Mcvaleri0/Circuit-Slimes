@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Puzzle.Actions;
 using Puzzle.Board;
 
 namespace Puzzle.Pieces.Components
 {
-    public class BatteryAA : Battery
+    public class ChipDouble : Chip
     {
         //footprint
         public override Vector2Int[] Footprint { get; set; } = {
@@ -13,25 +15,9 @@ namespace Puzzle.Pieces.Components
             new Vector2Int(1, 0)
         };
 
-        protected override void Update()
-        {
-            base.Update();
-
-            if(Input.GetKeyUp(KeyCode.O))
-            {
-                var newOri = (LevelBoard.Directions) (((int) this.Orientation + 2) % 8);
-
-                this.Rotate(newOri);
-            }
-        }
-
-
-        #region === Piece Methods ===
-
         new public bool Rotate(LevelBoard.Directions targetDir)
         {
             return this.Board.RotatePiece(this, targetDir);
         }
-        #endregion
     }
 }

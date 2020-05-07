@@ -27,11 +27,11 @@ namespace Puzzle.Actions
             base(new Piece.Caracteristics(Piece.Categories.Candy, candyType))
         { }
 
-        public Consume(Piece target, Vector2Int tcoords, LevelBoard.Directions dir) : base(target, tcoords, dir) 
+        public Consume(Agent agent, Piece target) : base(agent, target) 
         {
             this.Target = target;
 
-            this.Consuming = target.Coords == tcoords;
+            this.Consuming = this.TargetCoords == this.MoveCoords;
         }
         #endregion
 
@@ -43,10 +43,27 @@ namespace Puzzle.Actions
 
             if(baseAction != null)
             {
-                return new Consume(baseAction.Target, baseAction.TargetCoords, baseAction.Direction);
+                return new Consume(agent, baseAction.Target);
             }
 
             return null;
+        }
+
+        public override bool Confirm(Agent agent)
+        {
+            if(this.Consuming)
+            {
+                if(agent.Board.GetPiece(this.TargetCoords) == this.Target)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return base.Confirm(agent);
+            }
+
+            return false;
         }
 
         override public bool Execute(Agent agent)
@@ -59,16 +76,21 @@ namespace Puzzle.Actions
                     this.Removed = true;
                 }
 
-                if (agent.Rotate(this.Direction))
+                var rotated = agent.Rotate(this.Direction);
+
+                var moved = agent.Move(this.MoveCoords);
+
+                if (rotated && moved)
                 {
-                    if(agent.Move(this.TargetCoords))
-                    {
-                        GameObject.Destroy(this.Target.gameObject);
+                    var pos = this.Target.transform.position;
 
-                        agent.Stats.Food++;
+                    pos.y = -2f;
 
-                        return true;
-                    }
+                    this.Target.transform.position = pos;
+
+                    agent.Stats.Food++;
+
+                    return true;
                 }
             }
             else
@@ -87,7 +109,14 @@ namespace Puzzle.Actions
 
                 if (this.Removed)
                 {
-                    this.Target = this.RecreateTarget(agent.Puzzle);
+                    var pos = this.Target.transform.position;
+
+                    pos.y = 1f;
+
+                    this.Target.transform.position = pos;
+
+                    this.Target.Coords = this.MoveCoords;
+
                     agent.Puzzle.AddPiece(this.Target);
                     this.Removed = false;
                 }
@@ -107,7 +136,7 @@ namespace Puzzle.Actions
         #region === Aux Methods ===
         protected Piece RecreateTarget(Puzzle puzzle)
         {
-            var target = Piece.CreatePiece(puzzle, this.TargetCoords, this.TargetCaracteristics.ToString());
+            var target = Piece.CreatePiece(puzzle, this.MoveCoords, this.TargetCaracteristics.ToString());
 
             return target;
         }

@@ -91,6 +91,9 @@ namespace Creator
 
         private void OnInputUp(Lean.Touch.LeanFinger finger)
         {
+            //ignore finger up that happened over the ui
+            if (finger.StartedOverGui) { return; }
+
             // If we have an item to place then it must be placed
             if (!this.PuzzleEditor.HasItemToPlace())
             {

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 
-public interface ICoordSelector
+public interface ICoordSelector: ITransformSelector
 {
-    Vector2Int GetCoords(Ray ray);
+    Vector2Int GetCoords();
+
+    Vector2Int GetOffset();
 
     bool GetHover();
    

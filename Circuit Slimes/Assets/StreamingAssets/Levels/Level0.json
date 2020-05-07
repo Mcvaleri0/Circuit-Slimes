@@ -5,11 +5,11 @@
     },
     "Pieces": [
         {
-            "PrefabName": "AABattery",
+            "PrefabName": "WaterSlime",
             "Coords": [
                 {
-                    "x": 4,
-                    "y": 4
+                    "x": 1,
+                    "y": 2
                 }
             ],
             "Orientations": [
@@ -20,21 +20,28 @@
             "PrefabName": "WaterCandy",
             "Coords": [
                 {
-                    "x": 6,
-                    "y": 4
-                },
+                    "x": 1,
+                    "y": 5
+                }
+            ],
+            "Orientations": [
+                0
+            ]
+        },
+        {
+            "PrefabName": "SolderSlime",
+            "Coords": [
                 {
                     "x": 1,
                     "y": 1
                 }
             ],
             "Orientations": [
-                0,
                 0
             ]
         },
         {
-            "PrefabName": "WaterSlime",
+            "PrefabName": "SolderCandy",
             "Coords": [
                 {
                     "x": 1,
@@ -50,10 +57,6 @@
         {
             "PrefabName": "SolderTile",
             "Coords": [
-                {
-                    "x": 5,
-                    "y": 4
-                },
                 {
                     "x": 6,
                     "y": 4

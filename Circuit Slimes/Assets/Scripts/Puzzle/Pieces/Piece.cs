@@ -17,6 +17,8 @@ namespace Puzzle
 
         public LevelBoard.Directions Orientation { get; set; }
 
+        public virtual Vector2Int[] Footprint { get; set; } = { new Vector2Int(0, 0) };
+
         #region /* Enums */
 
         public enum Categories
@@ -441,50 +443,97 @@ namespace Puzzle
         // Update is called once per frame
         protected virtual void Update()
         {
-            
+
         }
         #endregion
 
 
         #region === Piece Methods ===
-        public virtual Vector2Int[] GetFootprint()
-        {
-            Vector2Int[] footprint = new Vector2Int[1]
+
+        //Calculate footprint in world coords
+        private Vector2Int[] CalculateFootprint(Vector2Int coords, LevelBoard.Directions orientation) {
+            
+            //SINGLE TILE
+            if (this.Footprint.Length == 1) return new Vector2Int[] { coords };
+
+            //MULTI-TILE
+            var footprint = new Vector2Int[this.Footprint.Length];
+
+            for (var i = 0; i < footprint.Length; i++)
             {
-                this.Coords
-            };
+                //rotate footprint to match orientation
+                var xx = this.Footprint[i].x;
+                var yy = this.Footprint[i].y;
+
+                switch (orientation)
+                {
+                    // 0 degree rotation 
+                    case LevelBoard.Directions.East:
+                    default:
+                        footprint[i].x = xx;
+                        footprint[i].y = yy;
+                        break;
+
+                    // +90 degree rotation
+                    case LevelBoard.Directions.North:
+                        footprint[i].x = yy;
+                        footprint[i].y = -xx;
+                        break;
+
+                    // +180 degree rotation
+                    case LevelBoard.Directions.West:
+                        footprint[i].x = -xx;
+                        footprint[i].y = -yy;
+                        break;
+
+                    // -90 degree rotation
+                    case LevelBoard.Directions.South:
+                        footprint[i].x = -yy;
+                        footprint[i].y = xx;
+                        break;
+                }
+
+                //apply footprint to world coord point
+                footprint[i] = coords + footprint[i];
+            }
 
             return footprint;
+        }
+
+
+        //Methods for getting footprint with diferent orientation and position
+        public virtual Vector2Int[] GetFootprint()
+        {
+            return this.CalculateFootprint(this.Coords, this.Orientation);
         }
 
         public virtual Vector2Int[] GetFootprintAt(Vector2Int coords)
         {
-            var footprint = this.GetFootprint();
+            return this.CalculateFootprint(coords, this.Orientation);
+        }
 
-            var move = coords - footprint[0];
-
-            for(var i = 0; i < footprint.Length; i++)
-            {
-                footprint[i] += move;
-            }
-
-            return footprint;
+        public virtual Vector2Int[] GetFootprintAt(LevelBoard.Directions orientation)
+        {
+            return this.CalculateFootprint(this.Coords, orientation);
         }
 
         public virtual Vector2Int[] GetFootprintAt(Vector2Int coords, LevelBoard.Directions orientation)
         {
-            var footprint = this.GetFootprint();
-
-            var move = coords - footprint[0];
-
-            for (var i = 0; i < footprint.Length; i++)
-            {
-                footprint[i] += move;
-            }
-
-            return footprint;
+            return this.CalculateFootprint(coords, orientation);
         }
 
+
+        //Gets the Offset between point coords and the footprint's origin
+        public Vector2Int GetFootPrintOffset(Vector2Int coords)
+        {
+            var footprint = this.GetFootprint();
+            var orig = footprint[0];
+
+            return coords - orig;
+        }
+
+
+        //rotate piece
         public virtual bool Rotate(LevelBoard.Directions targetDir)
         {
             float targetAngle = 360 - ((float) targetDir) * 45f;

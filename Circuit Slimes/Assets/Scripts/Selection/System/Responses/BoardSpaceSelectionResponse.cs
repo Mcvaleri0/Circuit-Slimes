@@ -63,6 +63,10 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
 
         for (var i = 0; i < numSpaces; i++)
         {
+
+            //if no board is present abort
+            if(GameObject.Find("Puzzle") == null) { return; }
+
             //create object
             var boardSpaceSelection = Instantiate(BoardSpaceSelection, this.Manager.PuzzleTransform);
 
@@ -85,7 +89,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
     public void UpdateSelection(Vector2Int boardCoords, bool boardHover, Transform selection) {
 
         // if we loose reference, re-init
-        if(this.SelectionSpaces[0].Transform == null)
+        if (this.SelectionSpaces.Count != this.NumSpaces || this.SelectionSpaces[0].Transform == null)
         {
             this.SelectionSpacesInit(this.NumSpaces);
         }
@@ -98,8 +102,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         //if we have something selected highight in the whole footprint, with colors
         else
         {
-            //FootPrintHighlight(boardCoords, boardHover, selection);
-            SingleSpaceHighlight(boardCoords, boardHover);
+            FootPrintHighlight(boardCoords, boardHover, selection);
         }
     }
 
