@@ -24,7 +24,7 @@ namespace Game
         public const int EMPTY_LEVEL = -2;
 
         public int CurrentLevel { get; private set; }
-        
+
         // set on editor
         public int nLevels;
 
@@ -50,13 +50,22 @@ namespace Game
         #endregion
 
 
-        #region /* Scenes Attibutes */
+        #region /* Scenes Attributes */
 
         public const string MAIN_MENU = "MainMenu";
         public const string CREATOR   = "Creator";
         public const string LEVELS    = "Levels";
 
         #endregion
+
+
+        #region /* Game Attributes */
+
+        private const string PREFAB_PATH = "Prefabs/GameController";
+        private const string CONTROLLER_NAME = "GameController";
+
+        #endregion
+
 
 
         #region === Unity Events ===
@@ -76,6 +85,25 @@ namespace Game
 
 
         #region === Game Methods ===
+
+        public static GameController CreateGameController()
+        {
+            GameObject controllerObj = GameObject.Find(CONTROLLER_NAME);
+
+            if (controllerObj == null)
+            {
+                controllerObj = GameObject.Instantiate(Resources.Load(PREFAB_PATH)) as GameObject;
+                controllerObj.name = CONTROLLER_NAME;
+
+                GameObject.DontDestroyOnLoad(controllerObj);
+
+                Debug.LogError("GameController -> created " + controllerObj.GetInstanceID());
+            }
+
+            Debug.LogError("GameController -> found " + controllerObj.GetInstanceID());
+            return controllerObj.GetComponent<GameController>();
+        }
+
 
         public void QuitGame()
         {
@@ -104,11 +132,6 @@ namespace Game
         {
             if (SceneManager.GetActiveScene().name != MAIN_MENU)
             {
-                if (this.Puzzle != null)
-                {
-                    this.Puzzle.Destroy();
-                }
-
                 this.LoadLevel(this.CurrentLevel);
 
                 this.InitialiazeControllers();
@@ -183,6 +206,11 @@ namespace Game
             string path;
             string name;
 
+            if (this.Puzzle != null)
+            {
+                this.Puzzle.Destroy();
+            }
+
             if (level == PLAYERS_LEVEL)
             {
                 if (this.CreatePlayersLevel())
@@ -239,10 +267,10 @@ namespace Game
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
 
+
         public void NextLevel()
         {
             //this.State = RunState.Idle;
-
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
             this.LoadLevel(this.CurrentLevel);

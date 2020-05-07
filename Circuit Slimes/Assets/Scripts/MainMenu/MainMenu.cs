@@ -39,9 +39,8 @@ public class MainMenu : MonoBehaviour
     #region === Unity Events ===
     private void Awake()
     {
-        this.Controller = GameObject.Find("GameController").GetComponent<GameController>();
-
-        GameObject.DontDestroyOnLoad(this.Controller);
+        this.Controller = GameController.CreateGameController();
+        Debug.LogError("MainMenu -> found " + this.Controller.gameObject.GetInstanceID());
     }
 
     // Start is called before the first frame update

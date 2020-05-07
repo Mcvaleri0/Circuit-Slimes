@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.4972635, g: 0.52406865, b: 0.5830382, a: 1}
+  m_IndirectSpecularColor: {r: 0.4972151, g: 0.5240277, b: 0.5830044, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -203,8 +203,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
-        m_MethodName: StepBack
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -430,9 +431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a729ff9bd23554690faf79c3cb0d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentLevel: 0
-  nLevels: 1
-  Creator: 0
 --- !u!4 &102120463
 Transform:
   m_ObjectHideFlags: 0
@@ -638,7 +636,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: 1db30ce1061b62540961fe9a99d713c3, type: 3}
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
         m_MethodName: 
         m_Mode: 1
         m_Arguments:
@@ -703,7 +702,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &307306580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,7 +1120,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
+      - m_Target: {fileID: 4317242645231984912, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
         m_MethodName: PreviousLevel
         m_Mode: 1
         m_Arguments:
@@ -1327,7 +1327,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
+      - m_Target: {fileID: 4317242645231984912, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
         m_MethodName: NextLevel
         m_Mode: 1
         m_Arguments:
@@ -2911,8 +2912,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
-        m_MethodName: Pause
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3490,8 +3492,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
-        m_MethodName: StepForward
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3656,8 +3659,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
-        m_MethodName: Restart
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3785,8 +3789,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 102120462}
-        m_MethodName: Play
+      - m_Target: {fileID: 4317242645231984913, guid: 27f6e717946a2a74c834090456ebbf51,
+          type: 3}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
