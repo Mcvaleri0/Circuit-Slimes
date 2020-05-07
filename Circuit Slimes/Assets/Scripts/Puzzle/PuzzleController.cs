@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+
 using Puzzle.Pieces;
-using Creator;
+using Game;
 
 
 
@@ -41,6 +42,13 @@ namespace Puzzle
         #endregion
 
 
+        #region /* Game Attributes */
+
+        private GameController GameController { get; set; }
+
+        #endregion
+
+
 
         #region === Init / Update Puzzle Info ===
 
@@ -69,6 +77,12 @@ namespace Puzzle
 
 
         #region === Unity Events ===
+
+        private void Awake()
+        {
+            this.GameController = GameController.CreateGameController();
+        }
+
 
         // Update is called once per frame
         void Update()

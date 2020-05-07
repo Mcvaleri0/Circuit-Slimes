@@ -127,7 +127,6 @@ namespace Creator
         private void Awake()
         {
             this.PuzzleController = GameController.CreateGameController();
-            Debug.LogError("Creator -> found " + this.PuzzleController.gameObject.GetInstanceID());
         }
 
 
@@ -161,9 +160,9 @@ namespace Creator
 
         #region === Init/Update Methods ===
 
-        public void Initialize(GameController controller, Puzzle.Puzzle puzzle, bool creator)
+        public void Initialize(Puzzle.Puzzle puzzle, bool creator)
         {
-            this.InitializePuzzleInfo(controller, puzzle);
+            this.InitializePuzzleInfo(puzzle);
 
             this.InitializeSelectionSystem();
 
@@ -188,10 +187,8 @@ namespace Creator
 
         #region === Puzzle Methods ===
 
-        private void InitializePuzzleInfo(GameController controller, Puzzle.Puzzle puzzle)
+        private void InitializePuzzleInfo(Puzzle.Puzzle puzzle)
         {
-            this.PuzzleController = controller;
-
             this.PuzzleEditor = new PuzzleEditor(puzzle);
         }
 

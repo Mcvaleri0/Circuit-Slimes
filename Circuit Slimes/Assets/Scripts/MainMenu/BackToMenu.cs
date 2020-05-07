@@ -33,7 +33,6 @@ public class BackToMenu : MonoBehaviour
     private void Awake()
     {
         this.Controller = GameController.CreateGameController();
-        Debug.LogError("Back -> found " + this.Controller.gameObject.GetInstanceID());
     }
 
 

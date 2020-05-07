@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 using Puzzle;
@@ -96,12 +97,11 @@ namespace Game
                 controllerObj.name = CONTROLLER_NAME;
 
                 GameObject.DontDestroyOnLoad(controllerObj);
-
-                Debug.LogError("GameController -> created " + controllerObj.GetInstanceID());
             }
 
-            Debug.LogError("GameController -> found " + controllerObj.GetInstanceID());
-            return controllerObj.GetComponent<GameController>();
+            GameController controller = controllerObj.GetComponent<GameController>();
+
+            return controller;
         }
 
 
@@ -171,7 +171,7 @@ namespace Game
             if (controller != null)
             {
                 this.CreatorController = controller.GetComponent<CreatorController>();
-                this.CreatorController.Initialize(this, this.Puzzle, this.Creator);
+                this.CreatorController.Initialize(this.Puzzle, this.Creator);
             }
 
             controller = GameObject.Find("PuzzleController");

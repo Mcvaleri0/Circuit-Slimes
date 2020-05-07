@@ -42,7 +42,6 @@ public class MainMenu : MonoBehaviour
     private void Awake()
     {
         this.Controller = GameController.CreateGameController();
-        Debug.LogError("MainMenu -> found " + this.Controller.gameObject.GetInstanceID());
     }
 
 
