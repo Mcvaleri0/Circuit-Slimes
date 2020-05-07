@@ -124,6 +124,13 @@ namespace Creator
 
         #region === Unity Events ===
 
+        private void Awake()
+        {
+            this.PuzzleController = GameController.CreateGameController();
+            Debug.LogError("Creator -> found " + this.PuzzleController.gameObject.GetInstanceID());
+        }
+
+
         private void OnEnable()
         {
             //hook input down
@@ -135,6 +142,7 @@ namespace Creator
             //hook input drag
             Lean.Touch.LeanTouch.OnFingerSet += this.OnInputDrag;
         }
+
 
         private void OnDisable()
         {

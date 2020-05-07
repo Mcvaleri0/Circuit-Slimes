@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
     private Button LevelEditButton;
     private Button ReadMeButton;
 
+    private Button QuitButton;
+
     #endregion
 
 
@@ -43,12 +45,14 @@ public class MainMenu : MonoBehaviour
         Debug.LogError("MainMenu -> found " + this.Controller.gameObject.GetInstanceID());
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
         PlayButton = transform.Find("Play Button").GetComponent<Button>();
         LevelEditButton = transform.Find("LevelEdit Button").GetComponent<Button>();
         ReadMeButton = transform.Find("ReadMe Button").GetComponent<Button>();
+        QuitButton = GameObject.Find("QuitButton").GetComponent<Button>();
 
         ReadMeButtonText = ReadMeButton.GetComponentInChildren<Text>();
 
@@ -58,6 +62,8 @@ public class MainMenu : MonoBehaviour
         LevelEditButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.CREATOR));
 
         ReadMeButton.onClick.AddListener(() => ReadMeCallBack());
+
+        QuitButton.onClick.AddListener(() => this.Controller.QuitGame());
     }
 
     #endregion
