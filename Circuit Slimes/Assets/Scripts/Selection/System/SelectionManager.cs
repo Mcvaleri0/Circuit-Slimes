@@ -190,7 +190,7 @@ public class SelectionManager : MonoBehaviour
         }
 
         //Board Selection Response
-        this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection);
+        this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection, this.BoardCoordsOffset);
 
         //Debug 
         //this.PrintAttributes();

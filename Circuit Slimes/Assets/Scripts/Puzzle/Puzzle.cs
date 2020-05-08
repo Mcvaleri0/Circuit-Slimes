@@ -190,6 +190,11 @@ namespace Puzzle
 
         #region === Utility ===
 
+        public bool OutOfBounds(Vector2Int coords)
+        {
+            return this.Board.OutOfBounds(coords);
+        }
+
         public Vector3 AtBoardSurface(Vector3 coords)
         {
             return this.Board.AtBoardSurface(coords);
