@@ -4,6 +4,10 @@ using UnityEngine;
 
 using Lean.Touch;
 
+using Game;
+
+
+
 public class SelectionManager : MonoBehaviour
 {
 
@@ -13,7 +17,7 @@ public class SelectionManager : MonoBehaviour
     private IPieceSelectionResponse PieceSelectionResponse;
     private IBoardSelectionResponse BoardSelectionResponse;
 
-    public Puzzle.PuzzleController PuzzleController { get; private set; }
+    public GameController PuzzleController { get; private set; }
     public Transform PuzzleTransform { get; private set; }
 
     public Transform BoardTransform { get; private set; }
@@ -33,7 +37,7 @@ public class SelectionManager : MonoBehaviour
 
     #region  === Initialization === 
 
-    public void Initialize(Puzzle.PuzzleController puzzleController)
+    public void Initialize(GameController puzzleController)
     {
         //puzzle
         this.PuzzleController = puzzleController;
@@ -50,11 +54,11 @@ public class SelectionManager : MonoBehaviour
         this.BoardSelectionResponse = this.GetComponent<IBoardSelectionResponse>();
     }
 
-    public void ReInitialise(Puzzle.PuzzleController puzzleController)
+    public void ReInitialise(GameController puzzleController)
     {
         //puzzle
         this.PuzzleController = puzzleController;
-        this.PuzzleTransform = GameObject.Find("Puzzle").transform;
+        this.PuzzleTransform = puzzleController.Puzzle.transform;
 
         //board
         this.BoardTransform = this.PuzzleTransform.Find("Board").transform;
@@ -145,7 +149,8 @@ public class SelectionManager : MonoBehaviour
     private void Update()
     {
         //re-init if reference is lost
-        if (this.BoardTransform == null) {
+        if (this.BoardTransform == null)
+        {
             this.ReInitialise(this.PuzzleController);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Game;
 using Puzzle;
 using Creator.UI;
 using Creator.Mode;
@@ -24,7 +25,7 @@ namespace Creator
 
         #region /* Puzzle Atributes */
 
-        private PuzzleController PuzzleController { get; set; }
+        private GameController PuzzleController { get; set; }
 
         private PuzzleEditor PuzzleEditor { get; set; }
 
@@ -126,6 +127,12 @@ namespace Creator
 
         #region === Unity Events ===
 
+        private void Awake()
+        {
+            this.PuzzleController = GameController.CreateGameController();
+        }
+
+
         private void OnEnable()
         {
             //hook input down
@@ -137,6 +144,7 @@ namespace Creator
             //hook input drag
             Lean.Touch.LeanTouch.OnFingerSet += this.OnInputDrag;
         }
+
 
         private void OnDisable()
         {
@@ -155,9 +163,9 @@ namespace Creator
 
         #region === Init/Update Methods ===
 
-        public void Initialize(PuzzleController controller, Puzzle.Puzzle puzzle, bool creator)
+        public void Initialize(Puzzle.Puzzle puzzle, bool creator)
         {
-            this.InitializePuzzleInfo(controller, puzzle);
+            this.InitializePuzzleInfo(puzzle);
 
             this.InitializeSelectionSystem();
 
@@ -182,10 +190,8 @@ namespace Creator
 
         #region === Puzzle Methods ===
 
-        private void InitializePuzzleInfo(PuzzleController controller, Puzzle.Puzzle puzzle)
+        private void InitializePuzzleInfo(Puzzle.Puzzle puzzle)
         {
-            this.PuzzleController = controller;
-
             this.PuzzleEditor = new PuzzleEditor(puzzle);
         }
 
