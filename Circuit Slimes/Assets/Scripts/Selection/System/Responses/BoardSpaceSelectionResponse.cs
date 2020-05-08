@@ -17,15 +17,23 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         {
             White,
             Red,
-            Green
+            Pink,
+            Yellow,
+            Green,
+            Blue,
+            Purple
         };
 
         //Color Values
         private Dictionary<Colors, Color> ColorDict = new Dictionary<Colors, Color>()
         {
-            { Colors.White, Color.white },
-            { Colors.Red,   Color.HSVToRGB(0, 0.80f, 1) },
-            { Colors.Green, Color.green },
+            { Colors.White,     Color.white },
+            { Colors.Red,       Color.HSVToRGB(0, 0.80f, 1) },
+            { Colors.Pink,      Color.magenta },
+            { Colors.Yellow,    Color.magenta },
+            { Colors.Green,     Color.green },
+            { Colors.Blue,      Color.blue },
+            { Colors.Purple,    Color.HSVToRGB(0.78f, 0.98f, 0.9f)  },
         };
 
         //attributes
@@ -33,6 +41,7 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         private Transform Transform;
         private Renderer Renderer;
         private MaterialPropertyBlock PropBlock;
+        private Colors Col;
 
         public SelectionSpace(Vector2Int _coords, Transform _transform, Renderer _renderer)
         {
@@ -48,6 +57,12 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         public Transform GetTransform()
         {
             return Transform;
+        }
+
+        //get color
+        public Colors GetColor()
+        {
+            return Col;
         }
 
         //set visibility
@@ -69,13 +84,13 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
         //set color
         public void SetColor(Colors color)
         {
-            var col = ColorDict[color]; 
+            this.Col = color;
+
+            var col = ColorDict[color];            
 
             Renderer.GetPropertyBlock(PropBlock);
             PropBlock.SetColor("_Color", col);
             Renderer.SetPropertyBlock(PropBlock);
-            
-            Debug.Log(color);
         }
     }
 
