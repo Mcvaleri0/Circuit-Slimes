@@ -501,6 +501,13 @@ namespace Puzzle
         }
 
 
+        //get the shape of footprint (aka footprint centered at 0,0)
+        public virtual Vector2Int[] GetFootprintShape()
+        {
+            return this.CalculateFootprint(new Vector2Int(0,0), this.Orientation);
+        }
+
+
         //Methods for getting footprint with diferent orientation and position
         public virtual Vector2Int[] GetFootprint()
         {

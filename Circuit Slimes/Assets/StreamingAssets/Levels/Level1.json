@@ -5,11 +5,11 @@
     },
     "Pieces": [
         {
-            "PrefabName": "WaterSlime",
+            "PrefabName": "AABattery",
             "Coords": [
                 {
-                    "x": 2,
-                    "y": 3
+                    "x": 4,
+                    "y": 4
                 }
             ],
             "Orientations": [
@@ -20,32 +20,25 @@
             "PrefabName": "WaterCandy",
             "Coords": [
                 {
-                    "x": 3,
-                    "y": 5
+                    "x": 6,
+                    "y": 4
+                },
+                {
+                    "x": 7,
+                    "y": 6
                 }
             ],
             "Orientations": [
+                0,
                 0
             ]
         },
         {
-            "PrefabName": "SolderSlime",
+            "PrefabName": "WaterSlime",
             "Coords": [
                 {
                     "x": 3,
-                    "y": 1
-                }
-            ],
-            "Orientations": [
-                0
-            ]
-        },
-        {
-            "PrefabName": "SolderCandy",
-            "Coords": [
-                {
-                    "x": 1,
-                    "y": 5
+                    "y": 3
                 }
             ],
             "Orientations": [
@@ -58,12 +51,8 @@
             "PrefabName": "SolderTile",
             "Coords": [
                 {
-                    "x": 4,
-                    "y": 2
-                },
-                {
-                    "x": 4,
-                    "y": 1
+                    "x": 5,
+                    "y": 4
                 },
                 {
                     "x": 6,
@@ -76,14 +65,21 @@
                 {
                     "x": 4,
                     "y": 3
+                },
+                {
+                    "x": 4,
+                    "y": 1
+                },
+                {
+                    "x": 4,
+                    "y": 2
                 }
             ]
         }
     ],
     "Permissions": [
         "SolderCandy",
-        "SolderSlime",
-        "WaterCandy"
+        "SolderSlime"
     ],
     "Condition": 0
 }

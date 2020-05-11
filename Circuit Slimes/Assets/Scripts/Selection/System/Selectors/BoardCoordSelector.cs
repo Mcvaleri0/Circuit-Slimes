@@ -13,12 +13,14 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
 
     private Vector2Int BoardCoordsOffset;
 
+    private List<Transform> WhiteList;
 
 
     void Start()
     {
         this.Manager = this.GetComponent<SelectionManager>();
     }
+
 
     //ignore selection thanks to ui or touch gesture
     private bool IgnoreSelection(Ray ray)
@@ -45,7 +47,6 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
 
     public Transform Check(Ray ray)
     {
-
         var board = this.Manager.BoardTransform.GetComponent<BoxCollider>();
         var puzzle = this.Manager.PuzzleController.Puzzle;
 
@@ -56,6 +57,8 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
         this.BoardCoordsOffset = new Vector2Int(0, 0); 
 
         if (board.Raycast(ray, out var hit, 1000) && !this.IgnoreSelection(ray)) {
+
+            this.WhiteList = Manager.WhiteList;
 
             //hover
             this.BoardHover = true;
@@ -71,14 +74,26 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
             //get the right transform (piece >> tile)
             if (piece != null)
             {
-                this.Selection = piece.transform;
-                this.BoardCoordsOffset = piece.GetFootPrintOffset(this.BoardCoords);
+                var tr = piece.transform;
+
+                //check if filter allows it
+                if ( WhiteList == null || (WhiteList.Count != 0 && WhiteList.Contains(tr)))
+                {
+                    this.Selection = tr;
+
+                    this.BoardCoordsOffset = piece.GetFootPrintOffset(this.BoardCoords);
+                }
             }
             else if (tile != null )
             {
-                this.Selection = tile.transform;
-            }
+                var tr = tile.transform;
 
+                //check if filter allows it
+                if ( WhiteList == null || (WhiteList.Count != 0 && WhiteList.Contains(tr)))
+                {
+                    this.Selection = tr;
+                }
+            }
         }
 
         return this.Selection;
