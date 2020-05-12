@@ -45,8 +45,6 @@ namespace Creator
 
         public bool Creator { get; private set; }
 
-        public Dictionary<Vector2Int, Piece.Caracteristics> PiecesAdded { get; private set; }
-
         #endregion
 
 
@@ -84,7 +82,7 @@ namespace Creator
             //if double click delete
             else if (this.SelectionSystem.DoubleClick())
             {
-                this.PuzzleEditor.RemoveItem();
+                this.PuzzleEditor.RemoveItemSelected();
             }
         }
 
@@ -195,6 +193,12 @@ namespace Creator
             this.PuzzleEditor = new PuzzleEditor(puzzle);
         }
 
+
+        public void RemoveItemsPlaced()
+        {
+            this.PuzzleEditor.RemoveItemsPlaced();
+        }
+
         #endregion
 
 
@@ -224,8 +228,6 @@ namespace Creator
             }
 
             this.Mode.DefineSelectableList();
-
-            this.PiecesAdded = new Dictionary<Vector2Int, Piece.Caracteristics>();
         }
 
         #endregion

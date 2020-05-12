@@ -27,6 +27,8 @@ namespace Creator.Editor
         private string Item { get; set; }
         private OptionButton ItemButton { get; set; }
 
+        List<Transform> ItemsPlaced { get; set; }
+
         #endregion
 
 
@@ -36,6 +38,7 @@ namespace Creator.Editor
         public PuzzleEditor(Puzzle.Puzzle puzzle)
         {
             this.Puzzle = puzzle;
+            this.ItemsPlaced = new List<Transform>();
         }
 
         #endregion
@@ -99,6 +102,7 @@ namespace Creator.Editor
                     if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
                     {
                         this.Selection.AddItemToWhiteList(newTile.transform);
+                        this.ItemsPlaced.Add(newTile.transform);
                     }
                     else
                     {
@@ -112,6 +116,7 @@ namespace Creator.Editor
                     if (this.Puzzle.AddPiece(newPiece))
                     {
                         this.Selection.AddItemToWhiteList(newPiece.transform);
+                        this.ItemsPlaced.Add(newPiece.transform);
                     }
                     else
                     {
@@ -126,7 +131,7 @@ namespace Creator.Editor
         }
 
 
-        public void RemoveItem()
+        public void RemoveItemSelected()
         {
             if (this.Selection.SomethingSelected())
             {
@@ -152,6 +157,12 @@ namespace Creator.Editor
                     GameObject.Destroy(objToRemove);
                 }
             }
+        }
+
+
+        public void RemoveItemsPlaced()
+        {
+
         }
 
 
