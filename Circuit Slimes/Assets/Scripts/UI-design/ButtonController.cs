@@ -68,6 +68,8 @@ namespace UI
         {
             this.HintButton.onClick.AddListener(() => this.GameController.Help());
 
+            this.PlayButton.onClick.AddListener(() => this.GameController.Play());
+
             this.PreviousButton.onClick.AddListener(() => this.GameController.PreviousLevel());
             this.NextButton.onClick.AddListener(() => this.GameController.NextLevel());
         }

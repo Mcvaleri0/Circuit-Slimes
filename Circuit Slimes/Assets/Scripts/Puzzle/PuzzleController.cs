@@ -204,6 +204,11 @@ namespace Puzzle
                     {
                         this.State = RunState.Idle;
                         this.Turn--;
+
+                        if (this.Turn == 0)
+                        {
+                            this.GameController.RewindFinished();
+                        }
                     }
                     break;
             }

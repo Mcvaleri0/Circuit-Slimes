@@ -369,7 +369,17 @@ namespace Game
 
         #region === Simuation Methods ===
 
+        public void Play()
+        {
+            this.CreatorController.gameObject.SetActive(false);
+            this.PuzzleController.Play();
+        }
 
+
+        public void RewindFinished()
+        {
+            this.CreatorController.gameObject.SetActive(true);
+        }
 
         #endregion
 
