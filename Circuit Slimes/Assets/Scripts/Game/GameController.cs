@@ -9,6 +9,7 @@ using Puzzle;
 using Puzzle.Data;
 using Creator;
 using Hint;
+using UI;
 
 
 
@@ -54,6 +55,13 @@ namespace Game
         #region /* Hint Attributes */
 
         private HintController Hint { get; set; }
+
+        #endregion
+
+
+        #region /* Buttons Attributes */
+
+        private ButtonController ButtonController { get; set; }
 
         #endregion
 
@@ -189,6 +197,13 @@ namespace Game
                 this.PuzzleController = controller.GetComponent<PuzzleController>();
                 this.PuzzleController.Initialize(this.Puzzle);
             }
+
+            controller = GameObject.Find("UI");
+            if (controller != null)
+            {
+                this.ButtonController = controller.GetComponent<ButtonController>();
+                this.ButtonController.Initialize();
+            }
         }
 
 
@@ -202,6 +217,11 @@ namespace Game
             if (this.PuzzleController != null)
             {
                 this.PuzzleController.UpdatePuzzle(this.Puzzle);
+            }
+
+            if (this.ButtonController != null)
+            {
+                this.ButtonController.ReInitialize();
             }
         }
 
@@ -279,8 +299,6 @@ namespace Game
 
         public void NextLevel()
         {
-            Debug.Log("Next");
-
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
             this.LoadLevel(this.CurrentLevel);
@@ -291,8 +309,6 @@ namespace Game
 
         public void PreviousLevel()
         {
-            Debug.Log("Previous");
-
             this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
 
             if (this.CurrentLevel < 0)

@@ -11,7 +11,7 @@ using Creator;
 
 namespace UI
 {
-    public class Buttons : MonoBehaviour
+    public class ButtonController : MonoBehaviour
     {
         #region /* Controllers */
 
@@ -45,29 +45,51 @@ namespace UI
             this.GameController = GameController.CreateGameController();
         }
 
+        #endregion
 
-        void Start()
+
+        #region === Init Methods ===
+
+        public void Initialize()
+        {
+            this.GetButtons();
+            this.InitializeCallBackFunctions();
+        }
+
+
+        public void ReInitialize()
+        {
+            this.PlayButton.gameObject.SetActive(true);
+            this.PauseButton.gameObject.SetActive(false);
+        }
+
+
+        private void InitializeCallBackFunctions()
+        {
+            this.HintButton.onClick.AddListener(() => this.GameController.Help());
+
+            this.PreviousButton.onClick.AddListener(() => this.GameController.PreviousLevel());
+            this.NextButton.onClick.AddListener(() => this.GameController.NextLevel());
+        }
+
+
+        private void GetButtons()
         {
             Transform buttonsArea = this.transform.Find("ButtonArea").Find("Buttons");
 
             this.HintButton = buttonsArea.Find("HorizontalLayout").Find("Hint").GetComponent<Button>();
 
-            this.RemoveButton   = buttonsArea.Find("Remove").GetComponent<Button>();
-            this.ResetButton    = buttonsArea.Find("Reset").GetComponent<Button>();
-            this.ForwardButton  = buttonsArea.Find("Forward").GetComponent<Button>();
-            this.PlayButton     = buttonsArea.Find("Play").GetComponent<Button>();
-            this.PauseButton    = buttonsArea.Find("Pause").GetComponent<Button>();
+            this.RemoveButton = buttonsArea.Find("Remove").GetComponent<Button>();
+            this.ResetButton = buttonsArea.Find("Reset").GetComponent<Button>();
+            this.ForwardButton = buttonsArea.Find("Forward").GetComponent<Button>();
+            this.PlayButton = buttonsArea.Find("Play").GetComponent<Button>();
+            this.PauseButton = buttonsArea.Find("Pause").GetComponent<Button>();
             this.BackwardButton = buttonsArea.Find("Backward").GetComponent<Button>();
 
             buttonsArea = this.transform.Find("Level Buttons");
 
             this.PreviousButton = buttonsArea.Find("Previous Level").GetComponent<Button>();
-            this.NextButton     = buttonsArea.Find("Next Level").GetComponent<Button>();
-
-            this.HintButton.onClick.AddListener(() => this.GameController.Help());
-
-            this.PreviousButton.onClick.AddListener(() => this.GameController.PreviousLevel());
-            this.NextButton.onClick.AddListener(() => this.GameController.NextLevel());
+            this.NextButton = buttonsArea.Find("Next Level").GetComponent<Button>();
         }
 
         #endregion
