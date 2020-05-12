@@ -953,42 +953,42 @@ PrefabInstance:
     - target: {fileID: 4599292162426540688, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162426540688, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162426540688, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162426540688, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162578730608, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162578730608, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162646576708, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162646576708, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162853185232, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
@@ -1058,32 +1058,32 @@ PrefabInstance:
     - target: {fileID: 4599292162853185234, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162870813342, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292162870813342, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292163620084675, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292163620084675, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4599292163793206886, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 12.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6262842518685332794, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
@@ -1567,10 +1567,10 @@ RectTransform:
   m_Father: {fileID: 1912386871}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103.2, y: -576.5}
-  m_SizeDelta: {x: 206.4, y: 1153}
+  m_AnchoredPosition: {x: 103.2, y: 0}
+  m_SizeDelta: {x: 206.4, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1396048807
 MonoBehaviour:
@@ -2316,10 +2316,10 @@ RectTransform:
   m_Father: {fileID: 1280706976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -920.8, y: -0.00016117}
-  m_SizeDelta: {x: 206.4, y: 1153}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -920.8, y: 0}
+  m_SizeDelta: {x: 206.4, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1912386872
 MonoBehaviour:
