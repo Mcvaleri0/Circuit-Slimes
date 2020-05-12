@@ -10,7 +10,7 @@ namespace Puzzle
     {
         #region /* Attributes */
         
-        private string Prefab { get; set; }
+        public string Prefab { get; private set; }
         private int Amount { get; set; }
 
         #endregion
