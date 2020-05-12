@@ -418,6 +418,7 @@ namespace Game
         public void RewindFinished()
         {
             this.CreatorController.gameObject.SetActive(true);
+            this.ButtonController.ReInitialize();
         }
 
         #endregion

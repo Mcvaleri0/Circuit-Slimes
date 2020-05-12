@@ -59,11 +59,15 @@
             "Coords": [
                 {
                     "x": 4,
-                    "y": 2
+                    "y": 3
                 },
                 {
                     "x": 4,
                     "y": 1
+                },
+                {
+                    "x": 4,
+                    "y": 2
                 },
                 {
                     "x": 6,
@@ -72,10 +76,6 @@
                 {
                     "x": 7,
                     "y": 4
-                },
-                {
-                    "x": 4,
-                    "y": 3
                 }
             ]
         }
@@ -83,7 +83,8 @@
     "Permissions": [
         "SolderCandy",
         "SolderSlime",
-        "WaterCandy"
+        "WaterCandy",
+        "WaterSlime"
     ],
     "Condition": 0
 }
