@@ -188,6 +188,12 @@ namespace Game
             if (controller != null)
             {
                 this.CreatorController = controller.GetComponent<CreatorController>();
+
+                if (SceneManager.GetActiveScene().name == CREATOR)
+                {
+                    this.Creator = true;
+                }
+
                 this.CreatorController.Initialize(this.Puzzle, this.Creator);
             }
 
@@ -268,8 +274,6 @@ namespace Game
             }
 
             this.Puzzle = PuzzleData.Load(path, name);
-
-            //this.WinCondition = this.Puzzle.WinCondition;
         }
 
 
