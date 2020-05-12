@@ -23,6 +23,7 @@ namespace Puzzle
         public List<string> Permissions { get; private set; }
 
         public WinCondition WinCondition { get; private set; }
+
         #endregion
 
 
