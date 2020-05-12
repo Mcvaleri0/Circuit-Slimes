@@ -367,12 +367,46 @@ namespace Game
         #endregion
 
 
+        #region === Puzzle Methods ===
+
+        public void RemoveAllItensPlaced()
+        {
+            Debug.LogError("Option not implemented yet");
+        }
+
+        #endregion
+
+
         #region === Simuation Methods ===
 
         public void Play()
         {
             this.CreatorController.gameObject.SetActive(false);
             this.PuzzleController.Play();
+        }
+
+
+        public void Pause()
+        {
+            this.PuzzleController.Pause();
+        }
+
+
+        public void Restart()
+        {
+            this.PuzzleController.Restart();
+        }
+
+
+        public void Forward()
+        {
+            this.PuzzleController.StepForward();
+        }
+
+
+        public void Backward()
+        {
+            this.PuzzleController.StepBack();
         }
 
 

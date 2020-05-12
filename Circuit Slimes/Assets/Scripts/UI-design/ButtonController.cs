@@ -15,7 +15,7 @@ namespace UI
     {
         #region /* Controllers */
 
-        private GameController GameController { get; set; }
+        private GameController Controller { get; set; }
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace UI
 
         private void Awake()
         {
-            this.GameController = GameController.CreateGameController();
+            this.Controller = GameController.CreateGameController();
         }
 
         #endregion
@@ -66,12 +66,17 @@ namespace UI
 
         private void InitializeCallBackFunctions()
         {
-            this.HintButton.onClick.AddListener(() => this.GameController.Help());
+            this.HintButton.onClick.AddListener(() => this.Controller.Help());
 
-            this.PlayButton.onClick.AddListener(() => this.GameController.Play());
+            this.RemoveButton.onClick.AddListener(() => this.Controller.RemoveAllItensPlaced());
+            this.ResetButton.onClick.AddListener(() => this.Controller.Restart());
+            this.ForwardButton.onClick.AddListener(() => this.Controller.Forward());
+            this.PlayButton.onClick.AddListener(() => this.Controller.Play());
+            this.PauseButton.onClick.AddListener(() => this.Controller.Pause());
+            this.BackwardButton.onClick.AddListener(() => this.Controller.Backward());
 
-            this.PreviousButton.onClick.AddListener(() => this.GameController.PreviousLevel());
-            this.NextButton.onClick.AddListener(() => this.GameController.NextLevel());
+            this.PreviousButton.onClick.AddListener(() => this.Controller.PreviousLevel());
+            this.NextButton.onClick.AddListener(() => this.Controller.NextLevel());
         }
 
 
