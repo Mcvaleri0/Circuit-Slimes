@@ -123,15 +123,21 @@ namespace Creator.Selection
         }
 
 
+        public void EmptyWhiteList()
+        {
+            this.Manager.WhiteList = new List<Transform>();
+        }
+
+
         public void AddItemToWhiteList(Transform newItem)
         {
             this.Manager.WhiteList.Add(newItem);
         }
 
 
-        public void EmptyWhiteList()
+        public void RemoveItemFromWhiteList(Transform item)
         {
-            this.Manager.WhiteList = new List<Transform>();
+            this.Manager.WhiteList.Remove(item);
         }
 
 

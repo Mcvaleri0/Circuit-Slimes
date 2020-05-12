@@ -373,9 +373,12 @@ namespace Game
 
         #region === Puzzle Methods ===
 
-        public void RemoveAllItensPlaced()
+        public void RemoveItemsPlaced()
         {
-            Debug.LogError("Option not implemented yet");
+            if (this.CreatorController.isActiveAndEnabled)
+            {
+                this.CreatorController.RemoveItemsPlaced();
+            }
         }
 
         #endregion

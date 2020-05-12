@@ -155,6 +155,8 @@ namespace Creator.Editor
                 if (removed)
                 {
                     GameObject.Destroy(objToRemove);
+                    this.Selection.RemoveItemFromWhiteList(objToRemove.transform);
+                    this.ItemsPlaced.Remove(objToRemove.transform);
                 }
             }
         }
@@ -162,7 +164,39 @@ namespace Creator.Editor
 
         public void RemoveItemsPlaced()
         {
+            Piece piece;
+            Tile  tile;
+            bool removed;
 
+            List<Transform> itens = new List<Transform>();
+
+            foreach (Transform item in this.ItemsPlaced)
+            {
+                piece = item.GetComponent<Piece>();
+                tile  = item.GetComponent<Tile>();
+                removed = false;
+
+                if (piece != null)
+                {
+                    removed = this.Puzzle.RemovePiece(piece);
+                }
+                else if (tile != null)
+                {
+                    removed = this.Puzzle.RemoveTile(tile);
+                }
+
+                if (removed)
+                {
+                    GameObject.Destroy(item.gameObject);
+                    this.Selection.RemoveItemFromWhiteList(item);
+                }
+                else
+                {
+                    itens.Add(item);
+                }
+            }
+
+            this.ItemsPlaced = itens;
         }
 
 

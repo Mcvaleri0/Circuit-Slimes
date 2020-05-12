@@ -68,7 +68,7 @@ namespace UI
         {
             this.HintButton.onClick.AddListener(() => this.Controller.Help());
 
-            this.RemoveButton.onClick.AddListener(() => this.Controller.RemoveAllItensPlaced());
+            this.RemoveButton.onClick.AddListener(() => this.Controller.RemoveItemsPlaced());
             this.ResetButton.onClick.AddListener(() => this.Controller.Restart());
             this.ForwardButton.onClick.AddListener(() => this.Controller.Forward());
             this.PlayButton.onClick.AddListener(() => this.Controller.Play());
