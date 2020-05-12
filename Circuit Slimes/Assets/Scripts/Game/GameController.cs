@@ -400,6 +400,7 @@ namespace Game
 
         public void Forward()
         {
+            this.CreatorController.gameObject.SetActive(false);
             this.PuzzleController.StepForward();
         }
 
