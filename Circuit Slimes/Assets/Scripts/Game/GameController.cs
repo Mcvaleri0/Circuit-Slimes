@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Puzzle;
 using Puzzle.Data;
 using Creator;
+using Hint;
 
 
 
@@ -45,8 +46,14 @@ namespace Game
 
         private CreatorController CreatorController { get; set; }
 
-        // set on editor
         private bool Creator { get; set; }
+
+        #endregion
+
+
+        #region /* Hint Attributes */
+
+        private HintController Hint { get; set; }
 
         #endregion
 
@@ -135,6 +142,8 @@ namespace Game
                 this.LoadLevel(this.CurrentLevel);
 
                 this.InitialiazeControllers();
+
+                this.InitializeHints();
             }
         }
 
@@ -270,6 +279,8 @@ namespace Game
 
         public void NextLevel()
         {
+            Debug.Log("Next");
+
             this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
 
             this.LoadLevel(this.CurrentLevel);
@@ -280,6 +291,8 @@ namespace Game
 
         public void PreviousLevel()
         {
+            Debug.Log("Previous");
+
             this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
 
             if (this.CurrentLevel < 0)
@@ -318,6 +331,29 @@ namespace Game
 
             return false;
         }
+
+        #endregion
+
+
+        #region === Hint Methods ===
+
+        private void InitializeHints()
+        {
+            this.Hint = new HintController();
+        }
+
+
+        public void Help()
+        {
+            this.Hint.Help();
+        }
+
+        #endregion
+
+
+        #region === Simuation Methods ===
+
+
 
         #endregion
 
