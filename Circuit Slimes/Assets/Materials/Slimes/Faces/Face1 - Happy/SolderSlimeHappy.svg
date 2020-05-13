@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 853 792" style="enable-background:new 0 0 853 792;" xml:space="preserve">
+<g id="Layer_1_1_">
+</g>
+<g id="SolderSlime">
+	<g id="HappyFace_2_">
+		
+			<ellipse style="fill:#FFFFFF;stroke:#9B9B9B;stroke-width:20;stroke-miterlimit:10;" cx="181.164" cy="331.785" rx="55.25" ry="64.668"/>
+		
+			<ellipse style="fill:#FFFFFF;stroke:#9B9B9B;stroke-width:20;stroke-miterlimit:10;" cx="669.785" cy="331.785" rx="55.25" ry="64.668"/>
+		
+			<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="422.0781" y1="267.1178" x2="422.0781" y2="414.5052" gradientTransform="matrix(1 0 0 -1 0 792)">
+			<stop  offset="0" style="stop-color:#484848"/>
+			<stop  offset="1" style="stop-color:#262626"/>
+		</linearGradient>
+		<path style="fill:url(#SVGID_1_);stroke:#6E6E6E;stroke-width:20;stroke-miterlimit:10;" d="M579.02,422.176
+			c-1.697-16.415-15.307-31.036-32.704-38.424c-17.396-7.387-38.229-7.922-56.89-3.239c-15.294,3.838-44.25,15.548-44.293,15.561
+			c0,0-15.495,3.838-23.133,4.092c-7.638-0.254-23.133-4.092-23.133-4.092c-0.043-0.013-0.087-0.026-0.13-0.039
+			c-14.999-4.596-28.869-11.685-44.163-15.522c-18.661-4.682-39.494-4.148-56.89,3.239c-17.396,7.387-30.763,22.036-32.704,38.424
+			c-2.797,23.623,7.595,57.247,36.595,75.017c28.3,17.341,65.043,27.08,120.425,27.667c54.862,0.582,92.125-10.326,120.425-27.667
+			C571.426,479.424,582.414,455,579.02,422.176z"/>
+		<ellipse style="fill:#FFAEE8;" cx="158.5" cy="445.189" rx="71" ry="30"/>
+		<ellipse style="fill:#FFAEE8;" cx="694.5" cy="445.189" rx="71" ry="30"/>
+	</g>
+</g>
+</svg>
