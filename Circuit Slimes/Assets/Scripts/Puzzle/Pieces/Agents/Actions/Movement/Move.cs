@@ -27,7 +27,7 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
-            return agent.Board.CanPlacePiece(this.MoveCoords, this.Direction, agent);
+            return agent.CanMove(this.MoveCoords);
         }
 
         override public bool Execute(Agent agent)
@@ -44,10 +44,10 @@ namespace Puzzle.Actions
             agent.Rotate(this.Direction, 1f);
 
             var oppositeDir = (LevelBoard.Directions) (((int) this.Direction + 4) % 8);
-            var origCoords = agent.Board.GetAdjacentCoords(this.MoveCoords, oppositeDir);
+            var origCoords  = LevelBoard.GetAdjacentCoords(this.MoveCoords, oppositeDir);
             
             agent.transform.position = LevelBoard.WorldCoords(origCoords);
-            agent.Board.MovePiece(origCoords, agent);
+            agent.Move(origCoords, 1000f);
 
             return base.Undo(agent);
         }

@@ -29,7 +29,7 @@ namespace Puzzle.Actions
                 {
                     var dir = (LevelBoard.Directions) (ind * 2);
 
-                    var tcoords = agent.Board.GetAdjacentCoords(agent.Coords, dir);
+                    var tcoords = LevelBoard.GetAdjacentCoords(agent.Coords, dir);
 
                     if (tcoords.sqrMagnitude > 1000f) continue;
 
@@ -42,7 +42,7 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
-            var tile = agent.Board.GetTile(this.MoveCoords);
+            var tile = agent.TileAt(this.MoveCoords);
 
             if (tile != null && tile.Type == Tile.Types.Solder)
             {
@@ -65,7 +65,7 @@ namespace Puzzle.Actions
                 {
                     var coords = agent.Coords + LevelBoard.DirectionalVectors[i * 2];
 
-                    var tile = agent.Board.GetTile(coords);
+                    var tile = agent.TileAt(coords);
 
                     if (tile == null || tile.Type != Tile.Types.Solder) adjacents[i] = false;
                 }

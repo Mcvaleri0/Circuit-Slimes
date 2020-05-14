@@ -53,7 +53,7 @@ namespace Puzzle.Actions
         {
             if(this.Consuming)
             {
-                if(agent.Board.GetPiece(this.TargetCoords) == this.Target)
+                if(agent.PieceAt(this.TargetCoords) == this.Target)
                 {
                     return true;
                 }
@@ -72,7 +72,7 @@ namespace Puzzle.Actions
             {
                 if (!this.Removed)
                 {
-                    agent.Puzzle.RemovePiece(this.Target);
+                    agent.RemovePiece(this.MoveCoords);
                     this.Removed = true;
                 }
 
@@ -113,11 +113,10 @@ namespace Puzzle.Actions
 
                     pos.y = 1f;
 
+                    agent.PlacePiece(this.Target, this.MoveCoords);
+
                     this.Target.transform.position = pos;
 
-                    this.Target.Coords = this.MoveCoords;
-
-                    agent.Puzzle.AddPiece(this.Target);
                     this.Removed = false;
                 }
 
@@ -129,16 +128,6 @@ namespace Puzzle.Actions
             {
                 return base.Undo(agent);
             }
-        }
-        #endregion
-
-
-        #region === Aux Methods ===
-        protected Piece RecreateTarget(Puzzle puzzle)
-        {
-            var target = Piece.CreatePiece(puzzle, this.MoveCoords, this.TargetCaracteristics.ToString());
-
-            return target;
         }
         #endregion
     }

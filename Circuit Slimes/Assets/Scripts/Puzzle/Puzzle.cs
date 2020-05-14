@@ -44,14 +44,14 @@ namespace Puzzle
 
             foreach(var piece in pieces)
             {
-                this.Board.PlacePiece(piece.Coords, piece);
+                this.Board.PlacePiece(piece, piece.Coords);
             }
 
             this.Agents = this.Board.GetAllAgents();
 
             foreach (var tile in tiles)
             {
-                this.Board.PlaceTile(tile.Coords, tile);
+                this.Board.PlaceTile(tile, tile.Coords);
             }
 
             this.PiecesObj = this.transform.GetChild(0).gameObject;
@@ -68,16 +68,32 @@ namespace Puzzle
 
         #region === Piece Methods ===
 
-        public bool AddPiece(Piece piece)
+        public Piece CreatePiece(Piece.Caracteristics caracterization, Vector2Int coords,
+            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            if (!this.Board.PlacePiece(piece.Coords, piece)) return false;
+            var piece = Piece.CreatePiece(this, caracterization, coords, ori, turn);
+
+            if(!this.Board.PlacePiece(piece, coords))
+            {
+                Destroy(piece.gameObject);
+
+                return null;
+            }
 
             this.Pieces.Add(piece);
 
             if (piece is Agent agent) this.Agents.Add(agent);
 
-            if (piece.transform.parent == null)
-                piece.transform.parent = this.PiecesObj.transform;
+            return piece;
+        }
+
+        public bool PlacePiece(Piece piece, Vector2Int coords)
+        {
+            if (!this.Board.PlacePiece(piece, coords)) return false;
+
+            this.Pieces.Add(piece);
+
+            if (piece is Agent agent) this.Agents.Add(agent);
 
             return true;
         }
@@ -100,7 +116,13 @@ namespace Puzzle
 
         public bool MovePiece(Vector2Int coords, Piece piece)
         {
-            return this.Board.MovePiece(coords, piece);
+            return this.Board.MovePiece(piece, coords);
+        }
+
+
+        public bool RotatePiece(Piece piece, LevelBoard.Directions orientation)
+        {
+            return this.Board.RotatePiece(piece, orientation);
         }
 
 
@@ -109,6 +131,16 @@ namespace Puzzle
             return this.Board.GetPiece(coords);
         }
 
+
+        public bool CanPlacePiece(Vector2Int coords, Piece piece)
+        {
+            return this.Board.CanPlacePiece(coords, piece);
+        }
+
+        public bool CanPlacePiece(Vector2Int coords, LevelBoard.Directions orientation, Piece piece)
+        {
+            return this.Board.CanPlacePiece(coords, orientation, piece);
+        }
 
         public bool IsFree(Vector2Int coords, Piece piece) 
         {
@@ -119,10 +151,24 @@ namespace Puzzle
 
 
         #region === Tile Methods ===
-
-        public bool AddTile(Tile tile)
+        public Tile CreateTile(Tile.Types type, Vector2Int coords)
         {
-            bool success = this.Board.PlaceTile(tile.Coords, tile);
+            var tile = Tile.CreateTile(this, type, coords);
+
+            if (!this.Board.PlaceTile(tile, coords))
+            {
+                Destroy(tile.gameObject);
+
+                return null;
+            }
+
+            return tile;
+        }
+
+
+        public bool PlaceTile(Tile tile, Vector2Int coords)
+        {
+            bool success = this.Board.PlaceTile(tile, coords);
 
             if (tile.transform.parent == null)
                 tile.transform.parent = this.TilesObj.transform;

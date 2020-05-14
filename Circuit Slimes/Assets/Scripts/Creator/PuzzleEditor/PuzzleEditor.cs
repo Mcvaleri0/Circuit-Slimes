@@ -97,31 +97,11 @@ namespace Creator.Editor
 
                 if (this.Item.Contains("Tile"))
                 {
-                    Tile newTile = Tile.CreateTile(this.Puzzle, coords, this.Item);
-
-                    if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
-                    {
-                        this.Selection.AddItemToWhiteList(newTile.transform);
-                        this.ItemsPlaced.Add(newTile.transform);
-                    }
-                    else
-                    {
-                        GameObject.Destroy(newTile.gameObject);
-                    }
+                    this.Puzzle.CreateTile(Tile.GetType(this.Item), coords);
                 }
                 else
                 {
-                    Piece newPiece = Piece.CreatePiece(this.Puzzle, coords, this.Item);
-
-                    if (this.Puzzle.AddPiece(newPiece))
-                    {
-                        this.Selection.AddItemToWhiteList(newPiece.transform);
-                        this.ItemsPlaced.Add(newPiece.transform);
-                    }
-                    else
-                    {
-                        GameObject.Destroy(newPiece.gameObject);
-                    }
+                    this.Puzzle.CreatePiece(new Piece.Caracteristics(this.Item), coords);
                 }
             }
             else

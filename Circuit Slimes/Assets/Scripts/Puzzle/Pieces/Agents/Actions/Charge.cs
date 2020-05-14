@@ -33,8 +33,8 @@ namespace Puzzle.Actions
 
                     var coords = slime.Coords + LevelBoard.DirectionalVectors[ind];
 
-                    var piece = slime.Board.GetPiece(coords);
-                    var tile  = slime.Board.GetTile(coords);
+                    var piece = slime.PieceAt(coords);
+                    var tile  = slime.TileAt(coords);
 
                     // If there's a Solder Tile
                     if(tile != null && tile.Type == Tile.Types.Solder)

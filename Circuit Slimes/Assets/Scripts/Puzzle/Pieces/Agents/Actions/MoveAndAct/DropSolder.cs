@@ -24,7 +24,7 @@ namespace Puzzle.Actions
 
             if (consume != null)
             {
-                if (agent.Board.GetTile(consume.MoveCoords) == null)
+                if (agent.TileAt(consume.MoveCoords) == null)
                 {
                     return new DropSolder(agent, (Candy)consume.Target);
                 }
@@ -47,9 +47,7 @@ namespace Puzzle.Actions
                 {
                     this.Dropped = true;
 
-                    var tile = Tile.CreateTile(agent.Puzzle, agent.Coords, Tile.Types.Solder);
-
-                    agent.Puzzle.AddTile(tile);
+                    agent.CreateTile(Tile.Types.Solder, agent.Coords);
 
                     agent.Stats.Food--;
                 }
@@ -66,9 +64,9 @@ namespace Puzzle.Actions
             {
                 this.Dropped = false;
 
-                var tile = agent.Board.GetTile(agent.Coords);
+                var tile = agent.TileAt(agent.Coords);
 
-                agent.Puzzle.RemoveTile(tile);
+                agent.RemoveTile(agent.Coords);
 
                 GameObject.Destroy(tile.gameObject);
 

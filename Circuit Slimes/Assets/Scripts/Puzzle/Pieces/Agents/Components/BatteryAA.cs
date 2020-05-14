@@ -30,7 +30,7 @@ namespace Puzzle.Pieces.Components
 
         new public bool Rotate(LevelBoard.Directions targetDir)
         {
-            return this.Board.RotatePiece(this, targetDir);
+            return this.Puzzle.RotatePiece(this, targetDir);
         }
         #endregion
     }

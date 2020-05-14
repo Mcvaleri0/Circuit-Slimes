@@ -31,7 +31,7 @@ namespace Puzzle.Pieces.Components
 
             var origCoords = footprint[1];
 
-            var tile = this.Board.GetTile(origCoords);
+            var tile = this.Puzzle.GetTile(origCoords);
 
             if (tile == null || tile.Type != Tile.Types.Solder) return;
 
@@ -41,7 +41,7 @@ namespace Puzzle.Pieces.Components
             {
                 int dirId = i * 2;
 
-                tile = this.Board.GetTile(origCoords + LevelBoard.DirectionalVectors[dirId]);
+                tile = this.Puzzle.GetTile(origCoords + LevelBoard.DirectionalVectors[dirId]);
 
                 if (tile != null && tile.Type == Tile.Types.Solder)
                 {

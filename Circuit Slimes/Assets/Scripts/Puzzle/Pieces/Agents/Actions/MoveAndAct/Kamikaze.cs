@@ -46,11 +46,11 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
-            if(agent.Puzzle.Pieces.Contains(this.Target))
+            if(agent.PieceExists(this.Target))
             {
-                if(agent.Board.GetPiece(this.TargetCoords))
+                if(agent.PieceAt(this.TargetCoords) == this.Target)
                 {
-
+                    return true;
                 }
             }
 
@@ -63,11 +63,11 @@ namespace Puzzle.Actions
             {
                 if (this.Consuming)
                 {
-                    var tile = agent.Board.GetTile(this.MoveCoords);
+                    var tile = agent.TileAt(this.MoveCoords);
 
                     if (tile != null && tile.Type == Tile.Types.Solder)
                     {
-                        agent.Puzzle.RemoveTile(tile);
+                        agent.RemoveTile(this.MoveCoords);
 
                         GameObject.Destroy(tile.gameObject);
                     }
@@ -99,26 +99,14 @@ namespace Puzzle.Actions
                 this.TargetDeactivated = false;
             }
 
-            var tile = agent.Board.GetTile(this.MoveCoords);
+            var tile = agent.TileAt(this.MoveCoords);
 
             if (tile == null)
             {
-                tile = this.RecreateSolderTile(agent.Puzzle);
-
-                agent.Puzzle.AddTile(tile);
+                agent.CreateTile(Tile.Types.Solder, this.MoveCoords);
             }
 
             return base.Undo(agent);
-        }
-        #endregion
-
-
-        #region === Aux Methods ===
-        protected Tile RecreateSolderTile(Puzzle puzzle)
-        {
-            var target = Tile.CreateTile(puzzle, this.MoveCoords, Tile.Types.Solder);
-
-            return target;
         }
         #endregion
     }

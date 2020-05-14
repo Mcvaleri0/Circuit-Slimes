@@ -193,7 +193,7 @@ namespace Puzzle.Pieces
 
             var coors = this.Coords;
 
-            this.Board.RemovePiece(this);
+            this.Puzzle.RemovePiece(this);
 
             this.Coords = coors;
 
@@ -205,7 +205,9 @@ namespace Puzzle.Pieces
         {
             this.Active = true;
 
-            this.Board.PlacePiece(coords, this);
+            this.Coords = coords;
+
+            this.Puzzle.PlacePiece(this, coords);
 
             this.transform.position = LevelBoard.WorldCoords(coords);
         }
@@ -236,11 +238,13 @@ namespace Puzzle.Pieces
             return false;
         }
 
-        virtual public bool Move(Vector2Int targetCoords)
+        virtual public bool Move(Vector2Int targetCoords, float minSpeed = 0f)
         {
             var targetPosition = LevelBoard.WorldCoords(targetCoords);
 
-            var maxVelocity = this.Stats.Speed / 100f;
+            var speed = Mathf.Max(minSpeed, this.Stats.Speed);
+
+            var maxVelocity = speed / 100f;
 
             var currentPosition = this.transform.position;
 
@@ -262,10 +266,53 @@ namespace Puzzle.Pieces
             {
                 this.transform.position = targetPosition; // Set their position to the Target Position
 
-                this.Board.MovePiece(targetCoords, this);
+                this.Puzzle.MovePiece(targetCoords, this);
 
                 return true;
             }
+        }
+
+
+        virtual public Piece CreatePiece(Caracteristics caracterization, Vector2Int coords,
+            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
+        {
+            return this.Puzzle.CreatePiece(caracterization, coords, ori, turn);
+        }
+
+        virtual public Tile CreateTile(Tile.Types type, Vector2Int coords)
+        {
+            return this.Puzzle.CreateTile(type, coords);
+        }
+
+
+        virtual public bool PlacePiece(Piece piece, Vector2Int coords)
+        {
+            return this.Puzzle.PlacePiece(piece, coords);
+        }
+
+
+        virtual public bool RemovePiece(Vector2Int coords)
+        {
+            var piece = this.PieceAt(coords);
+
+            if(piece != null)
+            {
+                return this.Puzzle.RemovePiece(piece);
+            }
+
+            return false;
+        }
+
+        virtual public bool RemoveTile(Vector2Int coords)
+        {
+            var tile = this.TileAt(coords);
+
+            if(tile != null)
+            {
+                return this.Puzzle.RemoveTile(tile);
+            }
+
+            return false;
         }
         #endregion
 
@@ -274,7 +321,29 @@ namespace Puzzle.Pieces
         // Returns true if at the coordinates, on the board, there is no Piece
         public bool IsFree(Vector2Int coords)
         {
-            return !this.Board.OutOfBounds(coords) && this.Board.GetPiece(coords) == null;
+            return !this.Puzzle.OutOfBounds(coords) && this.Puzzle.GetPiece(coords) == null;
+        }
+
+        
+        public bool CanMove(Vector2Int coords)
+        {
+            return this.Puzzle.CanPlacePiece(coords, this);
+        }
+
+        public bool CanRotate(LevelBoard.Directions orientation)
+        {
+            return this.Puzzle.CanPlacePiece(this.Coords, orientation, this);
+        }
+
+        public bool CanMoveAndRotate(Vector2Int coords, LevelBoard.Directions orientation)
+        {
+            return this.Puzzle.CanPlacePiece(coords, orientation, this);
+        }
+
+
+        public Piece PieceAt(Vector2Int coords)
+        {
+            return this.Puzzle.GetPiece(coords);
         }
 
         public List<Piece> PiecesInSight(float range)
@@ -316,12 +385,12 @@ namespace Puzzle.Pieces
                             for (int i = 0; i < 8; i++)
                             {
                                 LevelBoard.Directions checkDir = (LevelBoard.Directions)(i % 8);
-                                adjCoords = this.Board.GetAdjacentCoords(coords, checkDir);
+                                adjCoords = LevelBoard.GetAdjacentCoords(coords, checkDir);
 
                                 // Out of Bounds
                                 if (adjCoords.x == -1) continue;
 
-                                found = this.Board.GetPiece(adjCoords);
+                                found = this.Puzzle.GetPiece(adjCoords);
 
                                 // No Piece in the space
                                 if (found == null)
@@ -350,7 +419,7 @@ namespace Puzzle.Pieces
                                 if (checkDir == LevelBoard.Directions.None) checkDir = LevelBoard.Directions.SouthEast;
 
                                 // Get adjacent space coordinates
-                                adjCoords = this.Board.GetAdjacentCoords(coords, checkDir);
+                                adjCoords = LevelBoard.GetAdjacentCoords(coords, checkDir);
 
                                 // Out of Bounds
                                 if (adjCoords.x == -1) continue;
@@ -361,7 +430,7 @@ namespace Puzzle.Pieces
                                     toExpandNext.Add(adjCoords, checkDir); // List direction it was reached from
                                 }
 
-                                found = this.Board.GetPiece(adjCoords);
+                                found = this.Puzzle.GetPiece(adjCoords);
 
                                 // No Piece in the space
                                 if (found == null) continue;
@@ -374,7 +443,7 @@ namespace Puzzle.Pieces
                         case LevelBoard.Directions.SouthWest:
                         case LevelBoard.Directions.NorthEast:
                         case LevelBoard.Directions.NorthWest:
-                            adjCoords = this.Board.GetAdjacentCoords(coords, originDir);
+                            adjCoords = LevelBoard.GetAdjacentCoords(coords, originDir);
 
                             // Out of Bounds
                             if (adjCoords.x == -1) continue;
@@ -385,7 +454,7 @@ namespace Puzzle.Pieces
                                 toExpandNext.Add(adjCoords, originDir); // List direction it was reached from
                             }
 
-                            found = this.Board.GetPiece(adjCoords);
+                            found = this.Puzzle.GetPiece(adjCoords);
 
                             // No Piece in the space
                             if (found == null) continue;
@@ -403,6 +472,17 @@ namespace Puzzle.Pieces
             }
 
             return pieces;
+        }
+
+        public bool PieceExists(Piece piece)
+        {
+            return this.Puzzle.Pieces.Contains(piece);
+        }
+
+
+        public Tile TileAt(Vector2Int coords)
+        {
+            return this.Puzzle.GetTile(coords);
         }
         #endregion
     }

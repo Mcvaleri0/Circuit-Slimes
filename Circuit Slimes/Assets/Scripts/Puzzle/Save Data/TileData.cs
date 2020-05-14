@@ -47,7 +47,7 @@ namespace Puzzle.Data
             var i = 0;
             foreach(var coords in this.Coords)
             {
-                tiles[i] = Tile.CreateTile(puzzle, this.Coords[i], this.PrefabName);
+                tiles[i] = Tile.CreateTile(puzzle, this.PrefabName, this.Coords[i]);
                 i++;
             }
 

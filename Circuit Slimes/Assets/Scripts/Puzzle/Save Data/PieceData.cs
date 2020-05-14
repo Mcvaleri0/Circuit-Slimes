@@ -54,7 +54,7 @@ namespace Puzzle.Data
             var i = 0;
             foreach(var coords in this.Coords)
             {
-                pieces[i] = Piece.CreatePiece(puzzle, this.Coords[i], this.PrefabName, this.Orientations[i], default);
+                pieces[i] = Piece.CreatePiece(puzzle, this.PrefabName, this.Coords[i], this.Orientations[i], default);
                 i++;
             }
 

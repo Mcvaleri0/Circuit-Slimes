@@ -75,7 +75,7 @@ namespace Puzzle.Actions
 
         override public bool Confirm(Agent agent)
         {
-            if(agent.Puzzle.Pieces.Contains(this.Target))
+            if(agent.PieceExists(this.Target))
             {
                 return base.Confirm(agent);
             }

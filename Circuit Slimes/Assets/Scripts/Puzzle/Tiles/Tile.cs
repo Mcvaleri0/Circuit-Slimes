@@ -25,12 +25,12 @@ namespace Puzzle
 
 
         #region === Create Tile ===
-        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, Types type)
+        public static Tile CreateTile(Puzzle puzzle, Types type, Vector2Int coords)
         {
-            return CreateTile(puzzle, coords, Tile.GetName(type));
+            return CreateTile(puzzle, Tile.GetName(type), coords);
         }
 
-        public static Tile CreateTile(Puzzle puzzle, Vector2Int coords, string prefabName)
+        public static Tile CreateTile(Puzzle puzzle, string prefabName, Vector2Int coords)
         {
             Transform parent = puzzle.TilesObj.transform;
 

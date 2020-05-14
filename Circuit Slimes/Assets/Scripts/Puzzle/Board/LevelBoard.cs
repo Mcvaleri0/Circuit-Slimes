@@ -40,6 +40,7 @@ namespace Puzzle.Board
         public int Width  { get; private set; }
         public int Height { get; private set; }
 
+        private Dictionary<Vector2Int, Change> Changes;
 
         public void Initialize(int width, int height)
         {
@@ -47,6 +48,8 @@ namespace Puzzle.Board
             this.Height = height;
 
             this.Rows = new Dictionary<int, Row>();
+
+            this.Changes = new Dictionary<Vector2Int, Change>();
         }
 
 
@@ -207,7 +210,7 @@ namespace Puzzle.Board
         #endregion
 
         // Returns true if it succeeds at placing the Piece at the given Coords
-        public bool PlacePiece(Vector2Int coords, Piece piece)
+        public bool PlacePiece(Piece piece, Vector2Int coords)
         {
             // If the Piece cannot be placed at the Coords return false
             if (!this.CanPlacePiece(coords, piece)) return false;
@@ -249,7 +252,7 @@ namespace Puzzle.Board
         #endregion
 
         // Returns true if the Piece is successfully moved to the given Coords
-        public bool MovePiece(Vector2Int coords, Piece piece)
+        public bool MovePiece(Piece piece, Vector2Int coords)
         {
             // Get what Piece is at the given Coords
             var foundPiece = this.GetPiece(piece.Coords);
@@ -319,7 +322,7 @@ namespace Puzzle.Board
 
 
         #region === Tile Methods ===
-        public bool PlaceTile(Vector2Int coords, Tile tile)
+        public bool PlaceTile(Tile tile, Vector2Int coords)
         {
             if (OutOfBounds(coords))
             {
@@ -391,7 +394,7 @@ namespace Puzzle.Board
             {
                 this.RemoveTileAt(tile.Coords);
 
-                this.PlaceTile(coords, tile);
+                this.PlaceTile(tile, coords);
 
                 return true;
             }
@@ -444,6 +447,7 @@ namespace Puzzle.Board
         #endregion
 
 
+
         #region === Utility ===
         public bool OutOfBounds(Vector2Int coords)
         {
@@ -462,7 +466,7 @@ namespace Puzzle.Board
         }
 
         // Returns the coordinates of the space next to the one provided in a direction
-        public Vector2Int GetAdjacentCoords(Vector2Int coords, Directions direction)
+        public static Vector2Int GetAdjacentCoords(Vector2Int coords, Directions direction)
         {
             Vector2Int adjCoords = new Vector2Int(coords.x, coords.y);
 
@@ -504,12 +508,7 @@ namespace Puzzle.Board
                     break;
             }
 
-            if (!OutOfBounds(adjCoords))
-            {
-                return adjCoords;
-            }
-
-            return new Vector2Int(-1, -1);
+            return adjCoords;
         }
 
         public static Vector2Int Discretize(Vector3 position)

@@ -9,9 +9,7 @@ namespace Puzzle
 {
     public class Piece : MonoBehaviour
     {
-        public Puzzle Puzzle { get; private set; }
-
-        public LevelBoard Board { get; private set; }
+        protected Puzzle Puzzle { get; private set; }
 
         public Vector2Int Coords { get; set; }
 
@@ -368,13 +366,13 @@ namespace Puzzle
 
 
         #region === Create Piece ===
-        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
+        public static Piece CreatePiece(Puzzle puzzle, Caracteristics caracterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            return CreatePiece(puzzle, coords, caracterization.ToString(), ori, turn);
+            return CreatePiece(puzzle, caracterization.ToString(), coords, ori, turn);
         }
 
-        public static Piece CreatePiece(Puzzle puzzle, Vector2Int coords, string prefabName,
+        public static Piece CreatePiece(Puzzle puzzle, string prefabName, Vector2Int coords,
                                         LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
             GameObject obj = Instantiate(puzzle, prefabName, coords);
@@ -423,8 +421,6 @@ namespace Puzzle
         protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization)
         {
             this.Puzzle = puzzle;
-
-            this.Board = puzzle.Board;
 
             this.Coords = coords;
 

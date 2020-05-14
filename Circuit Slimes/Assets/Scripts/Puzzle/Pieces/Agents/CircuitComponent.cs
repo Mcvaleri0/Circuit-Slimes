@@ -76,7 +76,7 @@ namespace Puzzle.Pieces.Components
 
         virtual protected void UpdateConnections()
         {
-            var tile = this.Board.GetTile(this.Coords);
+            var tile = this.Puzzle.GetTile(this.Coords);
 
             if (tile == null || tile.Type != Tile.Types.Solder) return;
 
@@ -86,7 +86,7 @@ namespace Puzzle.Pieces.Components
             {
                 int dirId = i * 2;
 
-                tile = this.Board.GetTile(this.Coords + LevelBoard.DirectionalVectors[dirId]);
+                tile = this.Puzzle.GetTile(this.Coords + LevelBoard.DirectionalVectors[dirId]);
 
                 if(tile != null && tile.Type == Tile.Types.Solder)
                 {
