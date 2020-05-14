@@ -48,7 +48,7 @@ namespace Puzzle.Actions
                         var coords = component.RouteEnergy(inDir);
 
                         // If an approapriate connection was found
-                        if(!component.Board.OutOfBounds(coords) && coords.x != -1)
+                        if(coords.x != -1)
                         {
                             return new Discharge(charge, coords); // Return the potential Action
                         }
@@ -59,7 +59,7 @@ namespace Puzzle.Actions
                     {
                         var coords = component.RouteEnergy(LevelBoard.Directions.South);
 
-                        if(!component.Board.OutOfBounds(coords))
+                        if(coords.x != -1)
                         {
                             return new Discharge(charge, coords);
                         }
@@ -68,6 +68,11 @@ namespace Puzzle.Actions
             }
 
             return null;
+        }
+
+        public override bool Confirm(Agent agent)
+        {
+            return agent.IsFree(this.TargetCoords);
         }
 
         override public bool Execute(Agent agent)

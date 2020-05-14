@@ -11,6 +11,8 @@ namespace Puzzle.Actions
     {
         new public ElectricSlime Target { get; private set; }
 
+        private bool Consuming = true;
+
         private bool TargetDeactivated = false;
 
         public Kamikaze() : base(new Piece.Caracteristics("ElectricSlime")) { }
@@ -42,27 +44,43 @@ namespace Puzzle.Actions
             return null;
         }
 
+        public override bool Confirm(Agent agent)
+        {
+            if(agent.Puzzle.Pieces.Contains(this.Target))
+            {
+                if(agent.Board.GetPiece(this.TargetCoords))
+                {
+
+                }
+            }
+
+            return false;
+        }
+
         public override bool Execute(Agent agent)
         {
             if(base.Execute(agent))
             {
-                var tile = agent.Board.GetTile(this.MoveCoords);
-
-                if(tile != null && tile.Type == Tile.Types.Solder)
+                if (this.Consuming)
                 {
-                    agent.Puzzle.RemoveTile(tile);
+                    var tile = agent.Board.GetTile(this.MoveCoords);
 
-                    GameObject.Destroy(tile.gameObject);
+                    if (tile != null && tile.Type == Tile.Types.Solder)
+                    {
+                        agent.Puzzle.RemoveTile(tile);
+
+                        GameObject.Destroy(tile.gameObject);
+                    }
+
+                    if (!this.TargetDeactivated)
+                    {
+                        this.Target.Deactivate();
+
+                        this.TargetDeactivated = true;
+                    }
+
+                    agent.Deactivate();
                 }
-
-                if (!this.TargetDeactivated)
-                {
-                    this.Target.Deactivate();
-
-                    this.TargetDeactivated = true;
-                }
-
-                agent.Deactivate();
 
                 return true;
             }

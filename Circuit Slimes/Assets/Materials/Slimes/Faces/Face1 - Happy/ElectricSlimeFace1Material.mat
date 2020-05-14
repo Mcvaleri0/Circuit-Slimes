@@ -52,11 +52,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
-        m_Texture: {fileID: 2800000, guid: 11fafa0a9a17ebb47954dea4f03dd997, type: 3}
+        m_Texture: {fileID: 6192944022281365145, guid: 2484551edd2370a42adb31747189fc6b,
+          type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTextureBlink:
-        m_Texture: {fileID: 2800000, guid: 0acd52326d0a3c84ab518e71c53ad130, type: 3}
+        m_Texture: {fileID: 6192944022281365145, guid: f15d6f681d50f0047b4e359297fe9bd6,
+          type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -110,7 +112,7 @@ Material:
     - _WaterIntensity: 1
     - _WaterSpeed: 0.1294118
     - _ZWrite: 1
-    - __dirty: 1
+    - __dirty: 0
     m_Colors:
     - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

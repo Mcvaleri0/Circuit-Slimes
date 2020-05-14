@@ -192,7 +192,14 @@ namespace Puzzle.Board
 
             foreach (var entry in this.Rows)
             {
-                agents.AddRange(entry.Value.GetAllAgents());
+                var agentsInRow = entry.Value.GetAllAgents();
+
+                foreach(var agent in agentsInRow)
+                {
+                    if (agents.Contains(agent)) continue;
+
+                    agents.Add(agent);
+                }
             }
 
             return agents;

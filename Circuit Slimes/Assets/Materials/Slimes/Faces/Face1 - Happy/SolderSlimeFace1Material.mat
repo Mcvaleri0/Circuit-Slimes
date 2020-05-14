@@ -52,11 +52,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTexture:
-        m_Texture: {fileID: 2800000, guid: 90b01d4d59617364fad33ca8a99b5b04, type: 3}
+        m_Texture: {fileID: 6192944022281365145, guid: b043f7413c423324e9707aab6f5532ec,
+          type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTextureBlink:
-        m_Texture: {fileID: 2800000, guid: f0a1b1db8120c244988d68a4e0ef01d5, type: 3}
+        m_Texture: {fileID: 6192944022281365145, guid: fcaaf35d0dc5dd5419397920985798bc,
+          type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
