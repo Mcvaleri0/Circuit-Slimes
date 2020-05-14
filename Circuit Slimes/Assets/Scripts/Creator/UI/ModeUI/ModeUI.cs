@@ -100,7 +100,6 @@ namespace Creator.UI.ModeUI
         
         public abstract void InitializeResources();
 
-
         #endregion
 
 

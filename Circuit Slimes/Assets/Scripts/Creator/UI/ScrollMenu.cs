@@ -54,14 +54,14 @@ namespace Creator.UI
             this.OptionButton    = Resources.Load(BUTTONS_PATH + "OptionButton");
             this.AvailableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
 
-            this.Initialize(options);
+            this.Initialize(options, this.OptionButton);
         }
 
 
-        private void Initialize(List<string> options)
+        private void Initialize(List<string> options, Object button)
         {
             this.ResizeMenu();
-            this.PopulateContent(options);
+            this.PopulateContent(options, button);
         }
 
         #endregion
@@ -77,18 +77,18 @@ namespace Creator.UI
         }
 
 
-        private void PopulateContent(List<string> options)
+        private void PopulateContent(List<string> options, Object button)
         {
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt);
+                this.InstantiateOption(opt, button);
             }
         }
 
 
-        private void InstantiateOption(string text)
+        private void InstantiateOption(string text, Object button)
         {
-            GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
+            GameObject newObj = (GameObject)GameObject.Instantiate(button, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
             OptionButton optionButton = newObj.GetComponent<OptionButton>();
@@ -100,7 +100,7 @@ namespace Creator.UI
         {
             this.ClearMenu();
 
-            this.PopulateContent(newOptions);
+            this.PopulateContent(newOptions, this.OptionButton);
         }
 
 
