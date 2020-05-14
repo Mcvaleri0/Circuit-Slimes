@@ -158,7 +158,7 @@ namespace Game
 
         public void LoadScene(string name)
         {
-            this.CurrentLevel = 1;
+            this.CurrentLevel = 0;
 
             switch (name)
             {

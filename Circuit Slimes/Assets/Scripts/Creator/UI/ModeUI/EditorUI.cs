@@ -39,8 +39,8 @@ namespace Creator.UI.ModeUI
             RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
             saveRect.pivot = new Vector2(1, 1);
-            float x = - 30; //x margin
-            float y = - 30; //y margin
+            float x = -30; //x margin
+            float y = -30; //y margin
 
             saveRect.anchoredPosition = new Vector2(x, y);
 
@@ -52,13 +52,25 @@ namespace Creator.UI.ModeUI
 
         override public void InitializeItems()
         {
-            base.ItemsButton.gameObject.SetActive(false);
+            RectTransform rect = base.ItemsButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  95; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
         }
 
 
         override public void InitializeResources()
         {
-            base.ResourcesButton.gameObject.SetActive(false);
+            RectTransform rect = base.ResourcesButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  30; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
         }
 
         #endregion
