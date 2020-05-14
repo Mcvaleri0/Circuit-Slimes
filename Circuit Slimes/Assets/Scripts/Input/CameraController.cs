@@ -8,22 +8,40 @@ public class CameraController : MonoBehaviour
 {
     class CameraState
     {
-        public float yaw;
         public float pitch;
+        public float yaw;
         public float roll;
         public float x;
         public float y;
         public float z;
         public float zoom;
 
+        public CameraState() { }
+
+        public CameraState(Vector3 p, float z, Vector3 r)
+        {
+            pitch = r.x;
+            yaw = r.y;
+            roll = r.z;
+
+            x = p.x;
+            y = p.y;
+            z = p.z;
+
+            zoom = z;
+        }
+
         private float GetZoomDistance()
         {
-            var n = new Vector3(0, 1, 0);
+            //plane
+            var n = Vector3.up;
+            var p = new Vector3(0, 1, 0);
+
+            //ray
             var o = new Vector3(x, y, z);
             var d = Quaternion.Euler(new Vector3(pitch, yaw, roll)) * Vector3.forward;
             d.Normalize();
-
-            var t = -(Vector3.Dot(o, n) / Vector3.Dot(n, d));
+            var t = (Vector3.Dot(p - o, n) / Vector3.Dot(n, d));
 
             return t;
         }
@@ -66,15 +84,17 @@ public class CameraController : MonoBehaviour
 
         public void UpdateTransform(Transform t)
         {
+            //rotation
+            t.eulerAngles = new Vector3(pitch, yaw, roll);
+
             //panning
-            var pos = new Vector3(x, 0, z);
+            var pos = new Vector3(x, 1, z);
 
             //zoom
             var d = Quaternion.Euler(new Vector3(pitch, yaw, roll)) * Vector3.forward;
             pos += zoom * - d.normalized;
 
-            //update
-            t.eulerAngles = new Vector3(pitch, yaw, roll);
+            //update pos
             t.position = pos;
         }
 
@@ -99,14 +119,16 @@ public class CameraController : MonoBehaviour
         public float Vertical;
     }
 
+    //Current and target states
     CameraState m_TargetCameraState = new CameraState();
     CameraState m_InterpolatingCameraState = new CameraState();
 
-    CameraState StartState = new CameraState();
+    //state used for reset
+    CameraState StartState;
 
     //camera move and rotate speed
     public float positionLerpTime = 0.2f;
-    public float rotationLerpTime = 0.01f;
+    public float rotationLerpTime = 0.4f;
     public float zoommingLerpTime = 0.5f;
 
     //filter the number of fingers that need to be used (for camera controlls -> 2)
@@ -133,26 +155,40 @@ public class CameraController : MonoBehaviour
         m_TargetCameraState.Copy(this.StartState);
     }
 
-    public void SetStartState(Vector3 pos, float zoom) {
+    public void SetStartState(Vector3 pos, float zoom, Vector3 rot) {
 
-        m_TargetCameraState.x = pos.x;
-        m_TargetCameraState.y = pos.y;
-        m_TargetCameraState.z = pos.z;
-
-        m_TargetCameraState.zoom = zoom;
+        this.SetTargetState(pos, zoom, rot);
+            
+        StartState = new CameraState();
 
         this.StartState.Copy(m_TargetCameraState);
+  
     }
 
-    public void SetState(Vector3 pos, float zoom)
+    public void SetTargetState(Vector3 pos, float zoom, Vector3 rot) 
     {
+        this.SetPosition(pos);
 
-        m_TargetCameraState.x = pos.x;
-        m_TargetCameraState.y = pos.y;
-        m_TargetCameraState.z = pos.z;
+        this.SetZoom(zoom);
 
-        m_TargetCameraState.zoom = zoom;
+        this.SetRotation(rot);
     }
+
+    public void EditMode()
+    {
+        this.ResetCamera();
+
+        var topRot = new Vector3(90, this.StartState.yaw, this.StartState.roll);
+
+        this.SetRotation(topRot);
+    }
+
+    public void PlayMode()
+    {
+        this.ResetCamera();
+    }
+
+    // Setters
 
     public void SetPosition(Vector3 pos)
     {
@@ -164,6 +200,13 @@ public class CameraController : MonoBehaviour
     public void SetZoom(float zoom)
     {
         m_TargetCameraState.zoom = zoom;
+    }
+
+    public void SetRotation(Vector3 rot)
+    {
+        m_TargetCameraState.pitch = rot.x;
+        m_TargetCameraState.yaw   = rot.y;
+        m_TargetCameraState.roll  = rot.z;
     }
 
     #endregion
@@ -208,9 +251,9 @@ public class CameraController : MonoBehaviour
         var zz = 0.0f;
 
         //x
+        var limit = this.CamLimtits.Vertical;
         var current = m_TargetCameraState.x;
         var target = current + translation.x;
-        var limit = this.CamLimtits.Vertical;
         var anchor = this.StartState.x;
 
         if (translation.x > 0)
@@ -223,9 +266,9 @@ public class CameraController : MonoBehaviour
         }
 
         //z
+        limit = this.CamLimtits.Horizontal;
         current = m_TargetCameraState.z;
         target = current + translation.z;
-        limit = this.CamLimtits.Horizontal;
         anchor = this.StartState.z;
 
         if (translation.z > 0)
@@ -293,7 +336,7 @@ public class CameraController : MonoBehaviour
         m_TargetCameraState.SetFromTransform(transform);
         m_InterpolatingCameraState.SetFromTransform(transform);
 
-        this.SetStartState(transform.position, this.CamLimtits.MaxZoom);
+        this.SetStartState(transform.position, this.CamLimtits.MaxZoom, transform.eulerAngles);
     }
 
     private void Start()
@@ -316,6 +359,16 @@ public class CameraController : MonoBehaviour
             this.ResetCamera();
         }
 
+        //test
+        if (Input.GetKey(KeyCode.L))
+        {
+            this.EditMode();
+        }
+        if (Input.GetKey(KeyCode.K))
+        {
+            this.PlayMode();
+        }
+
         // Framerate-independent interpolation
         // Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
         var positionLerpPct = 1f - Mathf.Exp((Mathf.Log(1f - 0.99f) / positionLerpTime) * Time.deltaTime);
@@ -327,5 +380,28 @@ public class CameraController : MonoBehaviour
         // Update distance used for depth in translation
         ScreenDepth.Distance = transform.position.y;
     }
+
+    private void OnDrawGizmos()
+    {
+        /*
+        //LookAt Position
+        var ini = new Vector3(this.m_InterpolatingCameraState.x, 1, this.m_InterpolatingCameraState.z);
+        var end = new Vector3(this.m_InterpolatingCameraState.x, 3, this.m_InterpolatingCameraState.z);
+        Debug.DrawLine(ini, end, Color.blue);
+
+        //Camera Ray
+        var n = Vector3.up;
+        var p = new Vector3(0, 1, 0);
+
+        var o = transform.position;
+        var d = transform.forward;
+        var t = (Vector3.Dot(p - o, n) / Vector3.Dot(n, d));
+
+        var ini2 = o;
+        var end2 = o + t * d;
+        Debug.DrawLine(ini2, end2, Color.yellow);
+        */
+    }
+
     #endregion
 }
