@@ -50,15 +50,13 @@ namespace Creator.UI.ModeUI
             this.Selection  = selection;
             this.Mode       = mode;
 
-            this.SaveButton = canvas.Find("Save Button");
-
             this.Initialize(canvas);
         }
 
 
         private void Initialize(Transform canvas)
         {
-            this.InitializeSaveButton();
+            this.InitializeButtons(canvas);
             this.InitializeScrollMenu(canvas);
         }
 
@@ -69,7 +67,7 @@ namespace Creator.UI.ModeUI
 
         public void UpdateInfo()
         {
-            this.ScrollMenu.UpdateContent(this.MenuOptions(), this.Editor.Permissions());
+            this.ScrollMenu.UpdateContent(this.MenuOptions());
         }
 
         #endregion
@@ -77,7 +75,17 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        public abstract void InitializeSaveButton();
+        private void InitializeButtons(Transform canvas)
+        {
+            Transform buttons = canvas.Find("Buttons");
+            RectTransform rectTransform = buttons.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
+
+            this.SaveButton = buttons.Find("Save Button");
+            this.InitializeSave();
+        }
+
+        public abstract void InitializeSave();
 
         #endregion
 
@@ -89,7 +97,7 @@ namespace Creator.UI.ModeUI
             Transform menu = canvas.Find("Scroll Menu");
 
             this.ScrollMenu = new ScrollMenu(this.Editor, this.Selection, this.Mode,
-                                    menu, this.MenuOptions(), this.Editor.Permissions());
+                                    menu, this.MenuOptions());
         }
 
         public abstract List<string> MenuOptions();

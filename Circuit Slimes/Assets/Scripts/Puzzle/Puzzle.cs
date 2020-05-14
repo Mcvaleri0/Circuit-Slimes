@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
@@ -189,6 +190,31 @@ namespace Puzzle
         public void RemovePermission(string prefab)
         {
             this.Permissions.Remove(prefab);
+        }
+
+        #endregion
+
+
+        #region === Resources Methods ===
+
+        public Resource GetResource(string prefab)
+        {
+            try
+            {
+                return this.Resources[prefab];
+            }
+            catch (KeyNotFoundException)
+            {
+                Resource resource = new Resource(prefab);
+                this.Resources[prefab] = resource;
+                return resource;
+            }
+        }
+
+
+        public List<string> GetAllResources()
+        {
+            return this.Resources.Keys.ToList();
         }
 
         #endregion

@@ -310,6 +310,22 @@ namespace Creator.Editor
         #endregion
 
 
+        #region === Resources Methods ===
+
+        public List<string> Resources()
+        {
+            return this.Puzzle.GetAllResources();
+        }
+
+
+        public Resource GetResource(string name)
+        {
+            return this.Puzzle.GetResource(name);
+        }
+
+        #endregion
+
+
         #region === Auxiliary Functions ===
 
         public Vector2Int Discretize(Vector3 pos)

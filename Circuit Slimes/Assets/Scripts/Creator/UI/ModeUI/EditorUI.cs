@@ -34,13 +34,13 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
             saveRect.pivot = new Vector2(1, 1);
-            float x = -30; //x margin
-            float y = -30; //y margin
+            float x = - 30; //x margin
+            float y = - 30; //y margin
 
             saveRect.anchoredPosition = new Vector2(x, y);
 
