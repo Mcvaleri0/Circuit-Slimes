@@ -191,11 +191,11 @@ namespace Puzzle.Pieces
         {
             this.Active = false;
 
-            var coors = this.Coords;
+            var coords = this.Coords;
 
-            this.Puzzle.RemovePiece(this);
+            this.Puzzle.DeactivateAgent(this);
 
-            this.Coords = coors;
+            this.Coords = coords;
 
             this.transform.position = new Vector3(this.transform.position.x, -2, this.transform.position.z);
         }
@@ -207,7 +207,7 @@ namespace Puzzle.Pieces
 
             this.Coords = coords;
 
-            this.Puzzle.PlacePiece(this, coords);
+            this.Puzzle.ReactivateAgent(this, coords);
 
             this.transform.position = LevelBoard.WorldCoords(coords);
         }

@@ -36,6 +36,7 @@ namespace Puzzle
         [SerializeField]
         private RunState State;
 
+        [SerializeField]
         private int Turn     =   0;
         private int MaxTurn  = 250;
         private int GoalTurn =   0;

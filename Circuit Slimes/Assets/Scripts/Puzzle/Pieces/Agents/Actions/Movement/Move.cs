@@ -41,13 +41,11 @@ namespace Puzzle.Actions
 
         public override bool Undo(Agent agent)
         {
-            agent.Rotate(this.Direction, 1f);
-
             var oppositeDir = (LevelBoard.Directions) (((int) this.Direction + 4) % 8);
             var origCoords  = LevelBoard.GetAdjacentCoords(this.MoveCoords, oppositeDir);
             
-            agent.transform.position = LevelBoard.WorldCoords(origCoords);
             agent.Move(origCoords, 1000f);
+            agent.Rotate(this.Direction, 1f);
 
             return base.Undo(agent);
         }

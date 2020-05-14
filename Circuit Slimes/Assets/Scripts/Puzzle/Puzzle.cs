@@ -126,6 +126,16 @@ namespace Puzzle
         }
 
 
+        public void ReactivateAgent(Agent agent, Vector2Int coords)
+        {
+            this.Board.PlacePiece(agent, coords);
+        }
+
+        public void DeactivateAgent(Agent agent)
+        {
+            this.Board.RemovePiece(agent);
+        }
+
         public Piece GetPiece(Vector2Int coords)
         {
             return this.Board.GetPiece(coords);
