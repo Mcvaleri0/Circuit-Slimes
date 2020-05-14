@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour
             zoom = z;
         }
 
-        private float GetZoomDistance()
+        public float GetZoomDistance()
         {
             //plane
             var n = Vector3.up;
@@ -145,7 +145,7 @@ public class CameraController : MonoBehaviour
     public CameraLimits CamLimtits = new CameraLimits();
 
     //Input
-    InputController InputController;
+    private InputController InputController;
 
 
     #region === CAMERA CONTROLS ===
@@ -179,13 +179,15 @@ public class CameraController : MonoBehaviour
         this.ResetCamera();
 
         var topRot = new Vector3(90, this.StartState.yaw, this.StartState.roll);
-
         this.SetRotation(topRot);
     }
 
     public void PlayMode()
     {
         this.ResetCamera();
+
+        var topRot = new Vector3(60, this.StartState.yaw, this.StartState.roll);
+        this.SetRotation(topRot);
     }
 
     // Setters
@@ -329,6 +331,27 @@ public class CameraController : MonoBehaviour
     #endregion
 
 
+    #region === INIT ===
+
+    public void Initialize(Puzzle.Puzzle puzzle)
+    {
+
+        var board = puzzle.Board.transform;
+
+        this.CamLimtits.Vertical    = board.lossyScale.x;
+;       this.CamLimtits.Horizontal  = board.lossyScale.z;
+
+        var pos = board.position;
+        var zoom = this.CamLimtits.MaxZoom;
+        var rot = new Vector3(60, 270, 0);
+
+        this.SetStartState(pos, zoom, rot);
+
+    }
+
+    #endregion
+
+
     #region === UNITY METHODS ===
 
     void OnEnable()
@@ -354,12 +377,8 @@ public class CameraController : MonoBehaviour
         var zoom = this.ClampZoom(this.GetInputZoom());
         m_TargetCameraState.Zoom(zoom);
 
-        //Reset Camera
-        if (Input.GetKeyDown(KeyCode.R)) {
-            this.ResetCamera();
-        }
-
-        //test
+        //Test edit mode <-> play mode
+        /*
         if (Input.GetKey(KeyCode.L))
         {
             this.EditMode();
@@ -368,6 +387,7 @@ public class CameraController : MonoBehaviour
         {
             this.PlayMode();
         }
+        */
 
         // Framerate-independent interpolation
         // Calculate the lerp amount, such that we get 99% of the way to our target in the specified time
@@ -378,7 +398,7 @@ public class CameraController : MonoBehaviour
         m_InterpolatingCameraState.UpdateTransform(transform);
 
         // Update distance used for depth in translation
-        ScreenDepth.Distance = transform.position.y;
+        ScreenDepth.Distance = m_InterpolatingCameraState.zoom;
     }
 
     private void OnDrawGizmos()
