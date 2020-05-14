@@ -33,6 +33,8 @@ namespace Creator.UI.ModeUI
         #region /* UI Attributes */
 
         public Transform SaveButton { get; private set; }
+        public Transform ItemsButton { get; private set; }
+        public Transform ResourcesButton { get; private set; }
 
         private ScrollMenu ScrollMenu { get; set; }
 
@@ -83,9 +85,21 @@ namespace Creator.UI.ModeUI
 
             this.SaveButton = buttons.Find("Save Button");
             this.InitializeSave();
+
+            this.ItemsButton = buttons.Find("Items Button");
+            this.InitializeItems();
+
+            this.ResourcesButton = buttons.Find("Resources Button");
+            this.InitializeResources();
         }
 
+
         public abstract void InitializeSave();
+        
+        public abstract void InitializeItems();
+        
+        public abstract void InitializeResources();
+
 
         #endregion
 

@@ -49,6 +49,18 @@ namespace Creator.UI.ModeUI
             base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
         }
 
+
+        override public void InitializeItems()
+        {
+            base.ItemsButton.gameObject.SetActive(false);
+        }
+
+
+        override public void InitializeResources()
+        {
+            base.ResourcesButton.gameObject.SetActive(false);
+        }
+
         #endregion
 
 

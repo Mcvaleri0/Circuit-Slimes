@@ -28,6 +28,18 @@ namespace Creator.UI.ModeUI
         {
             base.SaveButton.gameObject.SetActive(false);
         }
+        
+        
+        override public void InitializeItems()
+        {
+            base.ItemsButton.gameObject.SetActive(false);
+        }
+        
+        
+        override public void InitializeResources()
+        {
+            base.ResourcesButton.gameObject.SetActive(false);
+        }
 
         #endregion
 
