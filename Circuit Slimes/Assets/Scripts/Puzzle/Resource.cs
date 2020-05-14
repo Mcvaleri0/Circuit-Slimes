@@ -11,7 +11,7 @@ namespace Puzzle
         #region /* Attributes */
         
         public string Prefab { get; private set; }
-        private int Amount { get; set; }
+        public int Amount { get; private set; }
 
         #endregion
 
@@ -24,12 +24,29 @@ namespace Puzzle
             this.Prefab = prefab;
             this.Amount = 0;
         }
+        
+        
+        public Resource(string prefab, int amount)
+        {
+            this.Prefab = prefab;
+            this.Amount = amount;
+        }
+
+        #endregion
+
+
+        #region === Info Methods ===
+
+        public bool WorthSaving()
+        {
+            return this.Amount != 0;
+        }
 
         #endregion
 
 
         #region === Amount Methods ===
-        
+
         public void Increase()
         {
             this.Amount++;

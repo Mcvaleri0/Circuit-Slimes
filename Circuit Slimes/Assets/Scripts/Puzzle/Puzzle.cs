@@ -22,7 +22,7 @@ namespace Puzzle
 
         public List<string> Permissions { get; private set; }
 
-        public List<Resource> Resources { get; private set; }
+        public Dictionary<string, Resource> Resources { get; private set; }
 
         public WinCondition WinCondition { get; private set; }
 
@@ -33,15 +33,18 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null);
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null, new Dictionary<string, Resource>());
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions, WinCondition winCondition)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, 
+                               List<string> permissions, WinCondition winCondition,
+                               Dictionary<string, Resource> resources)
         {
             this.Board  = board;
             this.Pieces = pieces;
             this.Permissions = permissions;
             this.WinCondition = winCondition;
+            this.Resources = resources;
 
             this.Agents = new List<Agent>();
 
