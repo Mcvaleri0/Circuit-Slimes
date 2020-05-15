@@ -9,7 +9,7 @@ using Puzzle.Data;
 
 namespace Level
 {
-    public class LevelController : MonoBehaviour  
+    public class LevelController
     {
         #region /* Level Names */
 
@@ -21,18 +21,33 @@ namespace Level
 
 
         #region /* Level IDs */
-        
-        public const int PLAYERS_LEVEL = -1;
-        public const int EMPTY_LEVEL = -2;
+
+        private const int PLAYERS_LEVEL = -1;
+        private const int EMPTY_LEVEL = -2;
 
         public int CurrentLevel { get; private set; }
-
-        // set on editor
-        public int nLevels;
+        private int nLevels { get; set; }
 
         #endregion
 
 
+
+        #region === Init Methods ===
+
+        public LevelController()
+        {
+            this.CurrentLevel = 0;
+            this.nLevels = 2;
+        }
+
+
+        public Puzzle.Puzzle Initialize()
+        {
+            return this.LoadLevel(this.CurrentLevel);
+        }
+
+        #endregion
+        
 
         #region === Load / Save Level ===
 

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 using Puzzle;
-using Puzzle.Data;
 using Creator;
 using Hint;
 using UI;
+using Level;
 
 
 
@@ -17,28 +17,26 @@ namespace Game
 {
     public class GameController : MonoBehaviour
     {
-        #region /* Level Attributes */
+        #region /* Game Attributes */
 
-        private const string LEVELS_PATH = "Levels";
-        private const string PLAYERS_LEVEL_NAME = "LevelPlayer";
-        private const string EMPTY_LEVEL_NAME = "newLevel";
-
-        public const int PLAYERS_LEVEL = -1;
-        public const int EMPTY_LEVEL = -2;
-
-        public int CurrentLevel { get; private set; }
-
-        // set on editor
-        public int nLevels;
+        private const string PREFAB_PATH = "Prefabs/GameController";
+        private const string CONTROLLER_NAME = "GameController";
 
         #endregion
 
 
-        #region /* Puzzle Attibutes */
+        #region /* Scenes Attributes */
 
-        public Puzzle.Puzzle Puzzle { get; private set; }
+        public const string MAIN_MENU = "MainMenu";
+        public const string CREATOR = "Creator";
+        public const string LEVELS = "Levels";
 
-        private PuzzleController PuzzleController { get; set; }
+        #endregion
+
+
+        #region /* Level Attributes */
+
+        private LevelController LevelController { get; set; }
 
         #endregion
 
@@ -52,14 +50,16 @@ namespace Game
         #endregion
 
 
-        #region /* Hint Attributes */
+        #region /* Puzzle Attibutes */
 
-        private HintController Hint { get; set; }
+        public Puzzle.Puzzle Puzzle { get; private set; }
+
+        private PuzzleController PuzzleController { get; set; }
 
         #endregion
 
 
-        #region /* Buttons Attributes */
+        #region /* UI Attributes */
 
         private ButtonController ButtonController { get; set; }
 
@@ -73,19 +73,9 @@ namespace Game
         #endregion
 
 
-        #region /* Scenes Attributes */
+        #region /* Hint Attributes */
 
-        public const string MAIN_MENU = "MainMenu";
-        public const string CREATOR   = "Creator";
-        public const string LEVELS    = "Levels";
-
-        #endregion
-
-
-        #region /* Game Attributes */
-
-        private const string PREFAB_PATH = "Prefabs/GameController";
-        private const string CONTROLLER_NAME = "GameController";
+        private HintController Hint { get; set; }
 
         #endregion
 
@@ -130,9 +120,7 @@ namespace Game
         public void QuitGame()
         {
             #if UNITY_EDITOR
-                // Application.Quit() does not work in the editor so
-                // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-                UnityEditor.EditorApplication.isPlaying = false;
+                 UnityEditor.EditorApplication.isPlaying = false;
             #else
                 Application.Quit();
             #endif
@@ -154,19 +142,13 @@ namespace Game
         {
             if (SceneManager.GetActiveScene().name != MAIN_MENU)
             {
-                this.LoadLevel(this.CurrentLevel);
-
                 this.InitialiazeControllers();
-
-                this.EditMode();
             }
         }
 
 
         public void LoadScene(string name)
         {
-            this.CurrentLevel = 0;
-
             switch (name)
             {
                 case MAIN_MENU:
@@ -187,9 +169,96 @@ namespace Game
         #endregion
 
 
-        #region === Controller Methods ===
+        #region === Controllers Methods ===
 
         private void InitialiazeControllers()
+        {
+            this.InitializeLevel();
+
+            this.InitializeCreator();
+
+            this.InitiliazePuzzle();
+
+            this.InitializeUI();
+
+            this.InitializeCamera();
+
+            this.InitializeHints();
+        }
+
+
+        private void UpdateControllers()
+        {
+            this.UpdateCreator();
+
+            this.UpdatePuzzle();
+
+            this.UpdateUI();
+
+            this.UpdateCamera();
+        }
+
+        #endregion
+
+
+        #region === Level Methods ===
+
+        private void InitializeLevel()
+        {
+            this.LevelController = new LevelController();
+
+            if (this.Puzzle != null)
+            {
+                this.Puzzle.Destroy();
+            }
+
+            this.Puzzle = this.LevelController.Initialize();
+        }
+
+
+        public int CurrentLevel()
+        {
+            return this.LevelController.CurrentLevel;
+        }
+
+
+        public void SaveLevel(int level)
+        {
+            this.LevelController.SaveLevel(level, this.Puzzle);
+        }
+
+
+        public void NextLevel()
+        {
+            if (this.Puzzle != null)
+            {
+                this.Puzzle.Destroy();
+            }
+
+            this.Puzzle = this.LevelController.NextLevel();
+
+            this.UpdateControllers();
+        }
+
+
+        public void PreviousLevel()
+        {
+            if (this.Puzzle != null)
+            {
+                this.Puzzle.Destroy();
+            }
+
+            this.Puzzle = this.LevelController.PreviousLevel();
+
+            this.UpdateControllers();
+        }
+
+        #endregion
+
+
+        #region === Creator Methods ===
+
+        private void InitializeCreator()
         {
             GameObject controller = GameObject.Find("CreatorController");
             if (controller != null)
@@ -203,173 +272,113 @@ namespace Game
 
                 this.CreatorController.Initialize(this.Puzzle, this.Creator);
             }
+        }
 
-            controller = GameObject.Find("PuzzleController");
+
+        private void UpdateCreator()
+        {
+            if (this.CreatorController != null)
+            {
+                this.CreatorController.UpdateInfo(this.Puzzle);
+            }
+        }
+
+        #endregion
+
+
+        #region === Puzzle Methods ===
+
+        private void InitiliazePuzzle()
+        {
+            GameObject controller = GameObject.Find("PuzzleController");
             if (controller != null)
             {
                 this.PuzzleController = controller.GetComponent<PuzzleController>();
                 this.PuzzleController.Initialize(this.Puzzle);
             }
+        }
 
-            controller = GameObject.Find("UI");
+
+        private void UpdatePuzzle()
+        {
+            if (this.PuzzleController != null)
+            {
+                this.PuzzleController.UpdatePuzzle(this.Puzzle);
+            }
+        }
+
+
+        public void RemoveItemsPlaced()
+        {
+            if (this.CreatorController.isActiveAndEnabled)
+            {
+                this.CreatorController.RemoveItemsPlaced();
+            }
+        }
+
+        #endregion
+
+
+        #region === UI Methods ===
+
+        private void InitializeUI()
+        {
+            GameObject controller = GameObject.Find("UI");
             if (controller != null)
             {
                 this.ButtonController = controller.GetComponent<ButtonController>();
                 this.ButtonController.Initialize();
             }
-     
+        }
+
+
+        private void UpdateUI()
+        {
+            if (this.ButtonController != null)
+            {
+                this.ButtonController.ReInitialize();
+            }
+        }
+
+        #endregion
+
+
+        #region === Camera Methods ===
+
+        private void InitializeCamera()
+        {
             if (Camera.main != null)
             {
                 this.CameraController = Camera.main.GetComponent<CameraController>();
                 this.CameraController.Initialize(this.Puzzle);
             }
 
-            this.InitializeHints();
+            this.EditMode();
         }
 
 
-        private void UpdateControllers()
+        private void UpdateCamera()
         {
-            if (this.CreatorController != null)
-            {
-                this.CreatorController.UpdateInfo(this.Puzzle);
-            }
-
-            if (this.PuzzleController != null)
-            {
-                this.PuzzleController.UpdatePuzzle(this.Puzzle);
-            }
-
-            if (this.ButtonController != null)
-            {
-                this.ButtonController.ReInitialize();
-            }
-
             if (Camera.main != null)
             {
                 this.CameraController.Initialize(this.Puzzle);
             }
-        }
 
-        #endregion
-
-
-        #region === Level Functions ===
-
-        private void LoadLevel(int level)
-        {
-            string path;
-            string name;
-
-            if (this.Puzzle != null)
-            {
-                this.Puzzle.Destroy();
-            }
-
-            if (level == PLAYERS_LEVEL)
-            {
-                if (this.CreatePlayersLevel())
-                {
-                    path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                    name = EMPTY_LEVEL_NAME;
-                }
-                else
-                {
-                    path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-                    name = PLAYERS_LEVEL_NAME;
-                }
-            }
-            else
-            {
-                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                name = "Level" + level;
-
-                /*
-                if (!System.IO.File.Exists(Path.Combine(path, name)))
-                {
-                    name = EMPTY_LEVEL_NAME;
-                    Debug.Log("File not found - Loading New Level");
-                }
-                */
-            }
-
-            this.Puzzle = PuzzleData.Load(path, name);
+            this.EditMode();
         }
 
 
-        public void SaveLevel(int level)
+        private void EditMode()
         {
-            string path;
-            string name;
-
-            if (level == PLAYERS_LEVEL)
-            {
-                path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-                name = PLAYERS_LEVEL_NAME;
-            }
-            else
-            {
-                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                name = "Level" + level;
-            }
-
-
-            PuzzleData puzzleData = new PuzzleData(this.Puzzle);
-            puzzleData.Save(path, name);
-
-            Debug.Log("Puzzle Saved. Wait for the file to update");
+            this.CreatorController.gameObject.SetActive(true);
+            this.CameraController.EditMode();
         }
 
 
-        public void NextLevel()
+        private void PlayMode()
         {
-            this.CurrentLevel = (this.CurrentLevel + 1) % this.nLevels;
-
-            this.LoadLevel(this.CurrentLevel);
-
-            this.UpdateControllers();
-        }
-
-
-        public void PreviousLevel()
-        {
-            this.CurrentLevel = (this.CurrentLevel - 1) % this.nLevels;
-
-            if (this.CurrentLevel < 0)
-            {
-                this.CurrentLevel += this.nLevels;
-            }
-
-            this.LoadLevel(this.CurrentLevel);
-
-            this.UpdateControllers();
-        }
-
-        #endregion
-
-
-        #region === Player's Levels Methods ===
-
-        private bool CreatePlayersLevel()
-        {
-            string path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-            string completePath = Path.Combine(path, PLAYERS_LEVEL_NAME + ".json");
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-                var file = File.Create(completePath);
-                file.Dispose();
-                return true;
-            }
-            else if (!File.Exists(completePath))
-            {
-                var file = File.Create(completePath);
-                file.Dispose();
-                return true;
-            }
-
-            return false;
+            this.CameraController.PlayMode();
+            this.CreatorController.gameObject.SetActive(false);
         }
 
         #endregion
@@ -386,19 +395,6 @@ namespace Game
         public void Help()
         {
             this.Hint.Help();
-        }
-
-        #endregion
-
-
-        #region === Puzzle Methods ===
-
-        public void RemoveItemsPlaced()
-        {
-            if (this.CreatorController.isActiveAndEnabled)
-            {
-                this.CreatorController.RemoveItemsPlaced();
-            }
         }
 
         #endregion
@@ -446,22 +442,5 @@ namespace Game
 
         #endregion
 
-
-        #region === Camera Modes ===
-
-        private void EditMode()
-        {
-            this.CreatorController.gameObject.SetActive(true);
-            this.CameraController.EditMode();
-        }
-
-
-        private void PlayMode()
-        {
-            this.CameraController.PlayMode();
-            this.CreatorController.gameObject.SetActive(false);
-        }
-
-        #endregion
     }
 }
