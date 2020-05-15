@@ -25,16 +25,4 @@ public class LedLight : MonoBehaviour
     {
         this.LedRenderer.material = OffMaterial;
     }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            this.TurnOff();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            this.TurnOn();
-        }
-    }
 }

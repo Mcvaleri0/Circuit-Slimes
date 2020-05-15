@@ -86,6 +86,8 @@ namespace Puzzle.Board
 
                 if(piece != null && piece is Agent agent)
                 {
+                    if (agents.Contains(agent)) continue;
+
                     agents.Add(agent);
                 }
             }

@@ -27,6 +27,8 @@ namespace Creator.Editor
         private string Item { get; set; }
         private OptionButton ItemButton { get; set; }
 
+        List<Transform> ItemsPlaced { get; set; }
+
         #endregion
 
 
@@ -36,6 +38,7 @@ namespace Creator.Editor
         public PuzzleEditor(Puzzle.Puzzle puzzle)
         {
             this.Puzzle = puzzle;
+            this.ItemsPlaced = new List<Transform>();
         }
 
         #endregion
@@ -99,6 +102,7 @@ namespace Creator.Editor
                     if (this.Puzzle.IsFree(coords, newTile) && this.Puzzle.AddTile(newTile))
                     {
                         this.Selection.AddItemToWhiteList(newTile.transform);
+                        this.ItemsPlaced.Add(newTile.transform);
                     }
                     else
                     {
@@ -112,6 +116,7 @@ namespace Creator.Editor
                     if (this.Puzzle.AddPiece(newPiece))
                     {
                         this.Selection.AddItemToWhiteList(newPiece.transform);
+                        this.ItemsPlaced.Add(newPiece.transform);
                     }
                     else
                     {
@@ -126,7 +131,7 @@ namespace Creator.Editor
         }
 
 
-        public void RemoveItem()
+        public void RemoveItemSelected()
         {
             if (this.Selection.SomethingSelected())
             {
@@ -150,8 +155,48 @@ namespace Creator.Editor
                 if (removed)
                 {
                     GameObject.Destroy(objToRemove);
+                    this.Selection.RemoveItemFromWhiteList(objToRemove.transform);
+                    this.ItemsPlaced.Remove(objToRemove.transform);
                 }
             }
+        }
+
+
+        public void RemoveItemsPlaced()
+        {
+            Piece piece;
+            Tile  tile;
+            bool removed;
+
+            List<Transform> itens = new List<Transform>();
+
+            foreach (Transform item in this.ItemsPlaced)
+            {
+                piece = item.GetComponent<Piece>();
+                tile  = item.GetComponent<Tile>();
+                removed = false;
+
+                if (piece != null)
+                {
+                    removed = this.Puzzle.RemovePiece(piece);
+                }
+                else if (tile != null)
+                {
+                    removed = this.Puzzle.RemoveTile(tile);
+                }
+
+                if (removed)
+                {
+                    GameObject.Destroy(item.gameObject);
+                    this.Selection.RemoveItemFromWhiteList(item);
+                }
+                else
+                {
+                    itens.Add(item);
+                }
+            }
+
+            this.ItemsPlaced = itens;
         }
 
 

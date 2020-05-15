@@ -177,6 +177,19 @@ namespace Puzzle
                     break;
 
                 case RunState.BeginActing:
+                    #region
+                    if(this.StoppedAgents >= this.Agents.Count)
+                    {
+                        foreach(var agent in this.Agents)
+                        {
+                            agent.Turn = this.Turn;
+                        }
+
+                        this.State = RunState.Idle;
+
+                        return;
+                    }
+
                     foreach(var agent in this.Agents)
                     {
                         if(agent.State == Agent.States.ReadyToAct)
@@ -186,9 +199,11 @@ namespace Puzzle
                     }
 
                     this.State = RunState.AwaitConclusion;
+                    #endregion
                     break;
 
                 case RunState.AwaitConclusion:
+                    #region
                     foreach(var agent in this.Agents)
                     {
                         if (agent.State != Agent.States.Waiting) return;
@@ -197,14 +212,22 @@ namespace Puzzle
                     this.Turn++;
 
                     this.State = RunState.Idle;
+                    #endregion
                     break;
 
                 case RunState.Rewinding:
+                    #region
                     if (this.RewindAgents())
                     {
                         this.State = RunState.Idle;
                         this.Turn--;
+
+                        if (this.Turn == 0)
+                        {
+                            this.GameController.RewindFinished();
+                        }
                     }
+                    #endregion
                     break;
             }
         }

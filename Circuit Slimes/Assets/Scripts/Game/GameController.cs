@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using Puzzle;
 using Puzzle.Data;
 using Creator;
+using Hint;
+using UI;
 
 
 
@@ -45,11 +47,30 @@ namespace Game
 
         private CreatorController CreatorController { get; set; }
 
-        // set on editor
         private bool Creator { get; set; }
 
         #endregion
 
+
+        #region /* Hint Attributes */
+
+        private HintController Hint { get; set; }
+
+        #endregion
+
+
+        #region /* Buttons Attributes */
+
+        private ButtonController ButtonController { get; set; }
+
+        #endregion
+
+
+        #region /* Camera Atributes */
+
+        private CameraController CameraController { get; set; }
+
+        #endregion
 
         #region /* Scenes Attributes */
 
@@ -135,6 +156,8 @@ namespace Game
                 this.LoadLevel(this.CurrentLevel);
 
                 this.InitialiazeControllers();
+
+                this.InitializeHints();
             }
         }
 
@@ -171,6 +194,12 @@ namespace Game
             if (controller != null)
             {
                 this.CreatorController = controller.GetComponent<CreatorController>();
+
+                if (SceneManager.GetActiveScene().name == CREATOR)
+                {
+                    this.Creator = true;
+                }
+
                 this.CreatorController.Initialize(this.Puzzle, this.Creator);
             }
 
@@ -179,6 +208,19 @@ namespace Game
             {
                 this.PuzzleController = controller.GetComponent<PuzzleController>();
                 this.PuzzleController.Initialize(this.Puzzle);
+            }
+
+            controller = GameObject.Find("UI");
+            if (controller != null)
+            {
+                this.ButtonController = controller.GetComponent<ButtonController>();
+                this.ButtonController.Initialize();
+            }
+     
+            if (Camera.main != null)
+            {
+                this.CameraController = Camera.main.GetComponent<CameraController>();
+                this.CameraController.Initialize(this.Puzzle);
             }
         }
 
@@ -193,6 +235,16 @@ namespace Game
             if (this.PuzzleController != null)
             {
                 this.PuzzleController.UpdatePuzzle(this.Puzzle);
+            }
+
+            if (this.ButtonController != null)
+            {
+                this.ButtonController.ReInitialize();
+            }
+
+            if (Camera.main != null)
+            {
+                this.CameraController.Initialize(this.Puzzle);
             }
         }
 
@@ -239,8 +291,6 @@ namespace Game
             }
 
             this.Puzzle = PuzzleData.Load(path, name);
-
-            //this.WinCondition = this.Puzzle.WinCondition;
         }
 
 
@@ -317,6 +367,78 @@ namespace Game
             }
 
             return false;
+        }
+
+        #endregion
+
+
+        #region === Hint Methods ===
+
+        private void InitializeHints()
+        {
+            this.Hint = new HintController();
+        }
+
+
+        public void Help()
+        {
+            this.Hint.Help();
+        }
+
+        #endregion
+
+
+        #region === Puzzle Methods ===
+
+        public void RemoveItemsPlaced()
+        {
+            if (this.CreatorController.isActiveAndEnabled)
+            {
+                this.CreatorController.RemoveItemsPlaced();
+            }
+        }
+
+        #endregion
+
+
+        #region === Simuation Methods ===
+
+        public void Play()
+        {
+            this.CreatorController.gameObject.SetActive(false);
+            this.PuzzleController.Play();
+        }
+
+
+        public void Pause()
+        {
+            this.PuzzleController.Pause();
+        }
+
+
+        public void Restart()
+        {
+            this.PuzzleController.Restart();
+        }
+
+
+        public void Forward()
+        {
+            this.CreatorController.gameObject.SetActive(false);
+            this.PuzzleController.StepForward();
+        }
+
+
+        public void Backward()
+        {
+            this.PuzzleController.StepBack();
+        }
+
+
+        public void RewindFinished()
+        {
+            this.CreatorController.gameObject.SetActive(true);
+            this.ButtonController.ReInitialize();
         }
 
         #endregion
