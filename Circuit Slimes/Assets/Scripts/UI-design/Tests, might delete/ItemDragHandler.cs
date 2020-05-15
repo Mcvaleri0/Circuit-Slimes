@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
 {
-    
+    public Vector3 StartPosition;
+
     public void OnDrag(PointerEventData eventData)
     {
          transform.position = Input.mousePosition;
@@ -15,7 +16,7 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = StartPosition;
 
     }
 
