@@ -6,26 +6,17 @@ using UnityEngine.EventSystems;
 
 public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+         transform.position = Input.mousePosition;
+            
     }
 
-    public void OnEndDrag(PointerEventData eventData) 
+    public void OnEndDrag(PointerEventData eventData)
     {
         transform.localPosition = Vector3.zero;
+
     }
 
 }
