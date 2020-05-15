@@ -24,9 +24,21 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             base.SaveButton.gameObject.SetActive(false);
+        }
+        
+        
+        override public void InitializeItems()
+        {
+            base.ItemsButton.gameObject.SetActive(false);
+        }
+        
+        
+        override public void InitializeResources()
+        {
+            base.ResourcesButton.gameObject.SetActive(false);
         }
 
         #endregion
@@ -36,7 +48,7 @@ namespace Creator.UI.ModeUI
 
         override public List<string> MenuOptions()
         {
-            return this.Editor.Permissions();
+            return this.Editor.Resources();
         }
 
         #endregion

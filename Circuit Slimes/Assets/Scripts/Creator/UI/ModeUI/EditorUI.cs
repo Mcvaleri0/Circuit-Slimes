@@ -34,7 +34,7 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
@@ -47,6 +47,30 @@ namespace Creator.UI.ModeUI
             // add click listener
             int level = this.Controller.CurrentLevel;
             base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
+        }
+
+
+        override public void InitializeItems()
+        {
+            RectTransform rect = base.ItemsButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  95; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
+        }
+
+
+        override public void InitializeResources()
+        {
+            RectTransform rect = base.ResourcesButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  30; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
         }
 
         #endregion

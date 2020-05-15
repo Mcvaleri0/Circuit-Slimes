@@ -81,5 +81,23 @@
         "SolderCandy",
         "SolderSlime"
     ],
+    "ResourcesAvailable": [
+        {
+            "Name": "SolderCandy",
+            "Amount": 1
+        },
+        {
+            "Name": "SolderSlime",
+            "Amount": 1
+        },
+        {
+            "Name": "WaterCandy",
+            "Amount": 1
+        },
+        {
+            "Name": "WaterSlime",
+            "Amount": 1
+        }
+    ],
     "Condition": 0
 }
