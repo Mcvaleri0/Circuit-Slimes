@@ -8,6 +8,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using Level;
+
+
 
 namespace Puzzle.Data
 {
@@ -110,9 +113,8 @@ namespace Puzzle.Data
             string filePath = Path.Combine(path, name + ".json");
 
             string dataAsJson = JsonUtility.ToJson(this, true);
-            byte[] jsonBytes  = Encoding.ASCII.GetBytes(dataAsJson);
 
-            File.WriteAllBytes(filePath, jsonBytes);
+            FileHelper.WriteLevel(dataAsJson, filePath);
         }
 
 
@@ -120,22 +122,7 @@ namespace Puzzle.Data
         {
             string filePath = Path.Combine(path, name + ".json");
 
-            string jsonString;
-            
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                UnityWebRequest www = UnityWebRequest.Get(filePath);
-                www.SendWebRequest();
-                
-                while (!www.isDone) { }
-
-                jsonString = www.downloadHandler.text;
-            }
-            else
-            {
-                byte[] jsonBytes = File.ReadAllBytes(filePath);
-                jsonString = Encoding.ASCII.GetString(jsonBytes);
-            }
+            string jsonString = FileHelper.LoadLevel(filePath);
 
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonString);
 
