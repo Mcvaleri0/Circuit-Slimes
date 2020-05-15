@@ -53,58 +53,18 @@ namespace Level
 
         private Puzzle.Puzzle LoadLevel(int level)
         {
-            string path;
-            string name;
+            string name = "Level" + level;
 
-            if (level == PLAYERS_LEVEL)
-            {
-                if (this.CreatePlayersLevel())
-                {
-                    path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                    name = EMPTY_LEVEL_NAME;
-                }
-                else
-                {
-                    path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-                    name = PLAYERS_LEVEL_NAME;
-                }
-            }
-            else
-            {
-                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                name = "Level" + level;
-
-                /*
-                if (!System.IO.File.Exists(Path.Combine(path, name)))
-                {
-                    name = EMPTY_LEVEL_NAME;
-                    Debug.Log("File not found - Loading New Level");
-                }
-                */
-            }
-
-            return PuzzleData.Load(path, name);
+            return PuzzleData.Load(name);
         }
 
 
         public void SaveLevel(int level, Puzzle.Puzzle puzzle)
         {
-            string path;
-            string name;
-
-            if (level == PLAYERS_LEVEL)
-            {
-                path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-                name = PLAYERS_LEVEL_NAME;
-            }
-            else
-            {
-                path = Path.Combine(Application.streamingAssetsPath, LEVELS_PATH);
-                name = "Level" + level;
-            }
+            string name = "Level" + level;
 
             PuzzleData puzzleData = new PuzzleData(puzzle);
-            puzzleData.Save(path, name);
+            puzzleData.Save(name);
 
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }

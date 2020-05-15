@@ -108,21 +108,17 @@ namespace Puzzle.Data
         }
 
 
-        public void Save(string path, string name)
+        public void Save(string name)
         {
-            string filePath = Path.Combine(path, name + ".json");
-
             string dataAsJson = JsonUtility.ToJson(this, true);
 
-            FileHelper.WriteLevel(dataAsJson, filePath);
+            FileHelper.WriteLevel(dataAsJson, name);
         }
 
 
-        public static Puzzle Load(string path, string name)
+        public static Puzzle Load(string name)
         {
-            string filePath = Path.Combine(path, name + ".json");
-
-            string jsonString = FileHelper.LoadLevel(filePath);
+            string jsonString = FileHelper.LoadLevel(name);
 
             PuzzleData puzzleData = JsonUtility.FromJson<PuzzleData>(jsonString);
 
