@@ -97,11 +97,23 @@ namespace Creator.Editor
 
                 if (this.Item.Contains("Tile"))
                 {
-                    this.Puzzle.CreateTile(Tile.GetType(this.Item), coords);
+                    Tile res = this.Puzzle.CreateTile(Tile.GetType(this.Item), coords);
+                    
+                    if (res != null)
+                    {
+                        this.Selection.AddItemToWhiteList(res.transform);
+                        this.ItemsPlaced.Add(res.transform);
+                    }
                 }
                 else
                 {
-                    this.Puzzle.CreatePiece(new Piece.Caracteristics(this.Item), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Caracteristics(this.Item), coords);
+
+                    if (res != null)
+                    {
+                        this.Selection.AddItemToWhiteList(res.transform);
+                        this.ItemsPlaced.Add(res.transform);
+                    }
                 }
             }
             else
