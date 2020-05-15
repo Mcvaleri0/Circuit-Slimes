@@ -157,7 +157,7 @@ namespace Game
 
                 this.InitialiazeControllers();
 
-                this.InitializeHints();
+                this.EditMode();
             }
         }
 
@@ -222,6 +222,8 @@ namespace Game
                 this.CameraController = Camera.main.GetComponent<CameraController>();
                 this.CameraController.Initialize(this.Puzzle);
             }
+
+            this.InitializeHints();
         }
 
 
@@ -405,7 +407,7 @@ namespace Game
 
         public void Play()
         {
-            this.CreatorController.gameObject.SetActive(false);
+            this.PlayMode();
             this.PuzzleController.Play();
         }
 
@@ -424,7 +426,7 @@ namespace Game
 
         public void Forward()
         {
-            this.CreatorController.gameObject.SetActive(false);
+            this.PlayMode();
             this.PuzzleController.StepForward();
         }
 
@@ -437,11 +439,28 @@ namespace Game
 
         public void RewindFinished()
         {
-            this.CreatorController.gameObject.SetActive(true);
+            this.EditMode();
             this.ButtonController.ReInitialize();
         }
 
         #endregion
 
+
+        #region === Camera Modes ===
+
+        private void EditMode()
+        {
+            this.CreatorController.gameObject.SetActive(true);
+            this.CameraController.EditMode();
+        }
+
+
+        private void PlayMode()
+        {
+            this.CameraController.PlayMode();
+            this.CreatorController.gameObject.SetActive(false);
+        }
+
+        #endregion
     }
 }
