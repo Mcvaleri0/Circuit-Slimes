@@ -66,6 +66,12 @@ namespace Game
         #endregion
 
 
+        #region /* Camera Atributes */
+
+        private CameraController CameraController { get; set; }
+
+        #endregion
+
         #region /* Scenes Attributes */
 
         public const string MAIN_MENU = "MainMenu";
@@ -210,6 +216,12 @@ namespace Game
                 this.ButtonController = controller.GetComponent<ButtonController>();
                 this.ButtonController.Initialize();
             }
+     
+            if (Camera.main != null)
+            {
+                this.CameraController = Camera.main.GetComponent<CameraController>();
+                this.CameraController.Initialize(this.Puzzle);
+            }
         }
 
 
@@ -228,6 +240,11 @@ namespace Game
             if (this.ButtonController != null)
             {
                 this.ButtonController.ReInitialize();
+            }
+
+            if (Camera.main != null)
+            {
+                this.CameraController.Initialize(this.Puzzle);
             }
         }
 
