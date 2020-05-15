@@ -33,6 +33,8 @@ namespace Creator.UI.ModeUI
         #region /* UI Attributes */
 
         public Transform SaveButton { get; private set; }
+        public Transform ItemsButton { get; private set; }
+        public Transform ResourcesButton { get; private set; }
 
         private ScrollMenu ScrollMenu { get; set; }
 
@@ -50,15 +52,13 @@ namespace Creator.UI.ModeUI
             this.Selection  = selection;
             this.Mode       = mode;
 
-            this.SaveButton = canvas.Find("Save Button");
-
             this.Initialize(canvas);
         }
 
 
         private void Initialize(Transform canvas)
         {
-            this.InitializeSaveButton();
+            this.InitializeButtons(canvas);
             this.InitializeScrollMenu(canvas);
         }
 
@@ -69,7 +69,7 @@ namespace Creator.UI.ModeUI
 
         public void UpdateInfo()
         {
-            this.ScrollMenu.UpdateContent(this.MenuOptions(), this.Editor.Permissions());
+            this.ScrollMenu.UpdateContent(this.MenuOptions());
         }
 
         #endregion
@@ -77,7 +77,28 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        public abstract void InitializeSaveButton();
+        private void InitializeButtons(Transform canvas)
+        {
+            Transform buttons = canvas.Find("Buttons");
+            RectTransform rectTransform = buttons.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
+
+            this.SaveButton = buttons.Find("Save Button");
+            this.InitializeSave();
+
+            this.ItemsButton = buttons.Find("Items Button");
+            this.InitializeItems();
+
+            this.ResourcesButton = buttons.Find("Resources Button");
+            this.InitializeResources();
+        }
+
+
+        public abstract void InitializeSave();
+        
+        public abstract void InitializeItems();
+        
+        public abstract void InitializeResources();
 
         #endregion
 
@@ -89,7 +110,7 @@ namespace Creator.UI.ModeUI
             Transform menu = canvas.Find("Scroll Menu");
 
             this.ScrollMenu = new ScrollMenu(this.Editor, this.Selection, this.Mode,
-                                    menu, this.MenuOptions(), this.Editor.Permissions());
+                                    menu, this.MenuOptions());
         }
 
         public abstract List<string> MenuOptions();

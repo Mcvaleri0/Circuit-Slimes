@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -21,6 +22,7 @@ namespace Puzzle.Data
         public PieceData[]  Pieces;
         public TileData[]   Tiles;
         public string[]     Permissions;
+        public ResourceData[] ResourcesAvailable;
         public WinCondition.Conditions Condition;
 
         public PuzzleData(Puzzle puzzle)
@@ -100,6 +102,18 @@ namespace Puzzle.Data
             #endregion
 
             this.Permissions = puzzle.Permissions.ToArray();
+
+            #region Resources
+            List<Resource> resources = puzzle.Resources.Values.Where(r => r.WorthSaving()).ToList();
+            int nResources = resources.Count;
+
+            this.ResourcesAvailable = new ResourceData[nResources];
+
+            for (int i = 0; i < nResources; i++)
+            {
+                this.ResourcesAvailable[i] = new ResourceData(resources[i]);
+            }
+            #endregion
 
             this.Condition = puzzle.WinCondition.Condition;
         }
@@ -185,8 +199,20 @@ namespace Puzzle.Data
             }
             #endregion
 
+            #region Resources
+            Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
+
+            if (puzzleData.ResourcesAvailable != null)
+            {
+                foreach (ResourceData resource in puzzleData.ResourcesAvailable)
+                {
+                    resources.Add(resource.Name, resource.CreateResource());
+                }
+            }
+            #endregion
+
             // Initialiaze Puzzle
-            puzzle.Initialize(board, pieceList, tileList, permList, new WinCondition(puzzleData.Condition));
+            puzzle.Initialize(board, pieceList, tileList, permList, new WinCondition(puzzleData.Condition), resources);
 
             return puzzle;
         }
