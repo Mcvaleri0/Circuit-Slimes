@@ -42,6 +42,7 @@ namespace Puzzle
         private int GoalTurn =   0;
 
         private int CurrentAgent  = 0;
+        [SerializeField]
         private int StoppedAgents = 0;
 
         private List<Agent> Agents;
@@ -109,6 +110,7 @@ namespace Puzzle
                     }
                     else if (this.GoalTurn < this.Turn)
                     {
+                        this.StoppedAgents = 0;
                         this.CurrentAgent = this.Puzzle.Agents.Count - 1;
                         this.State = RunState.Rewinding;
                     }

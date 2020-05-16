@@ -38,7 +38,7 @@ namespace Puzzle.Actions
                 return null;
             }
         }
-        
+
         override public bool Execute(Agent agent)
         {
             if(base.Execute(agent))

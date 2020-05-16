@@ -12,6 +12,8 @@ namespace Puzzle.Actions
     {
         private Vector2Int TargetCoords;
 
+        private bool NewCharge = false;
+
         public ElectricSlime Charge { get; private set; }
 
         public Discharge() { }
@@ -32,19 +34,18 @@ namespace Puzzle.Actions
             if (agent is CircuitComponent component)
             {
                 // If the Component is connected and has surplus charge
-                if (component.Connections.Count > 0 && 
-                    component.Stats.Food > component.Stats.MaxFood &&
-                    component.Stats.Food > 0)
+                if (component.Connections.Count > 0 && component.Stats.Food > 0)
                 {
                     ElectricSlime charge = null;
 
                     // If there are Slimes stored
                     if (component.Charges.Count > 0)
                     {
-                        charge = component.Charges[0]; // Get the next Slime to be discharged
+                        charge = component.Charges[component.Charges.Count - 1]; // Get the next Slime to be discharged
 
                         // Find the approapriate connection to discharge it to
-                        var inDir  = LevelBoard.GetDirection(charge.Coords, component.Coords);
+                        var componentExitCoords = component.Coords + component.Footprint[component.Footprint.Length - 1];
+                        LevelBoard.Directions inDir = LevelBoard.GetDirection(charge.Coords, component.Coords);
                         var coords = component.RouteEnergy(inDir);
 
                         // If an approapriate connection was found
@@ -72,25 +73,45 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
-            return agent.IsFree(this.TargetCoords);
+            if (agent is CircuitComponent component)
+            {
+                if (component.IsFree(this.TargetCoords))
+                {
+                    if (component.Charges.Count == 0)
+                    {
+                        var componentExitCoords = component.Coords + component.Footprint[component.Footprint.Length - 1];
+                        LevelBoard.Directions ori = LevelBoard.GetDirection(componentExitCoords, this.TargetCoords);
+
+                        var piece = component.CreatePiece(new Piece.Caracteristics("ElectricSlime"),
+                            this.TargetCoords, ori, component.Turn + 1);
+
+                        this.Charge = (ElectricSlime) piece;
+
+                        this.NewCharge = true;
+                    }
+                    else
+                    {
+                        component.ReleaseCharge(this.Charge, this.TargetCoords);
+
+                        var outDir = LevelBoard.GetDirection(agent.Coords, this.TargetCoords);
+
+                        this.Charge.RotateInBoard(outDir);
+                        this.Charge.Rotate(outDir, 1f);
+                    }
+
+                    this.Charge.Hide();
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         override public bool Execute(Agent agent)
         {
             if (agent is CircuitComponent component) {
-                if (this.Charge == null)
-                {
-                    LevelBoard.Directions ori = LevelBoard.GetDirection(component.Coords, this.TargetCoords);
-
-                    var piece = component.CreatePiece(new Piece.Caracteristics("ElectricSlime"),
-                        this.TargetCoords, ori, component.Turn + 1);
-
-                    this.Charge = (ElectricSlime) piece;
-                }
-                else
-                {
-                    component.ReleaseCharge(this.TargetCoords);
-                }
+                this.Charge.Reveal();
                 
                 component.Stats.Food--;
             }
@@ -102,7 +123,14 @@ namespace Puzzle.Actions
         {
             if (agent is CircuitComponent component)
             {
-                component.ReceiveCharge(this.Charge);
+                if (this.NewCharge)
+                {
+                    component.DestroyPiece(this.Charge);
+                }
+                else
+                {
+                    component.ReceiveCharge(this.Charge);
+                }
 
                 component.Stats.Food++;
             }

@@ -12,11 +12,17 @@ namespace Puzzle.Actions
     {
         public CircuitComponent Component { get; private set; }
 
+        public Vector2Int ChargeCoords { get; private set; }
+
+        public Vector2Int ComponentCoords { get; private set; }
+
         public Charge() { }
 
         public Charge(CircuitComponent component) 
         {
             this.Component = component;
+
+            this.ComponentCoords = component.Coords;
         }
 
         #region Action Methods
@@ -44,7 +50,7 @@ namespace Puzzle.Actions
                         {
                             // If the component is not at full charge
                             if (piece is CircuitComponent component &&
-                                component.Stats.Food < component.Stats.MaxFood + 1)
+                                component.Stats.Food < component.Stats.MaxFood)
                             {
                                 return new Charge(component);
                             }
@@ -57,12 +63,26 @@ namespace Puzzle.Actions
             return null;
         }
 
+        public override bool Confirm(Agent agent)
+        {
+            // If Component is still in place
+            if(agent.PieceAt(this.ComponentCoords) == this.Component &&
+               this.Component.Stats.Food < this.Component.Stats.MaxFood)
+            {
+                this.ChargeCoords = agent.Coords;
+
+                this.Component.Stats.Food++;
+
+                return true;
+            }
+
+            return false;
+        }
+
         override public bool Execute(Agent agent)
         {
             if (agent is ElectricSlime slime) {
                 this.Component.ReceiveCharge(slime);
-
-                this.Component.Stats.Food++;
             }
 
             return true;
@@ -72,11 +92,14 @@ namespace Puzzle.Actions
         {
             if (agent is ElectricSlime slime)
             {
-                this.Component.ReleaseCharge(slime, slime.Coords);
-
-                slime.Orientation = (LevelBoard.Directions) (((int) slime.Orientation + 4) % 8);
-
                 this.Component.Stats.Food--;
+
+                this.Component.ReleaseCharge(slime, this.ChargeCoords);
+
+                var outDir = LevelBoard.GetDirection(this.ChargeCoords, this.Component.Coords);
+
+                slime.RotateInBoard(outDir);
+                slime.Rotate(outDir, 1f);
 
                 return true;
             }

@@ -50,6 +50,10 @@ namespace Puzzle.Actions
             {
                 if(agent.PieceAt(this.TargetCoords) == this.Target)
                 {
+                    agent.RemovePiece(this.TargetCoords);
+
+                    agent.RemovePiece(agent.Coords);
+
                     return true;
                 }
             }

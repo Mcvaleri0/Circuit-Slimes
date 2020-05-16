@@ -87,8 +87,10 @@ namespace Puzzle.Pieces
         }
 
         // Update is called once per frame
-        new protected virtual void Update()
+        override protected void Update()
         {
+            base.Update();
+
             switch (this.State)
             {
                 default:
@@ -193,28 +195,30 @@ namespace Puzzle.Pieces
 
             var coords = this.Coords;
 
-            this.Puzzle.DeactivateAgent(this);
+            this.RemovePiece(this.Coords);
 
             this.Coords = coords;
 
-            this.transform.position = new Vector3(this.transform.position.x, -2, this.transform.position.z);
+            this.Hide();
         }
 
         // Reactivates the Agent
         public void Reactivate(Vector2Int coords)
         {
-            this.Active = true;
+            this.Reveal();
 
-            this.Coords = coords;
-
-            this.Puzzle.ReactivateAgent(this, coords);
+            this.PlacePiece(this, coords);
 
             this.transform.position = LevelBoard.WorldCoords(coords);
+
+            this.Active = true;
         }
         #endregion
 
 
         #region === Actuator Methods ===
+        #region Self
+        // World
         virtual public bool Rotate(LevelBoard.Directions targetDir, float percentage = 0.33f)
         {
             float currentAngle = this.transform.eulerAngles.y;
@@ -266,13 +270,24 @@ namespace Puzzle.Pieces
             {
                 this.transform.position = targetPosition; // Set their position to the Target Position
 
-                this.Puzzle.MovePiece(targetCoords, this);
-
                 return true;
             }
         }
 
+        // Board
+        virtual public bool RotateInBoard(LevelBoard.Directions orientation)
+        {
+            return true;
+        }
+        
+        virtual public bool MoveInBoard(Vector2Int coords)
+        {
+            return this.Puzzle.MovePiece(coords, this);
+        }
+        #endregion
 
+
+        #region Create and Destroy
         virtual public Piece CreatePiece(Caracteristics caracterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
@@ -284,10 +299,22 @@ namespace Puzzle.Pieces
             return this.Puzzle.CreateTile(type, coords);
         }
 
+        virtual public bool DestroyPiece(Piece piece)
+        {
+            return this.Puzzle.RemovePiece(piece);
+        }
 
+        virtual public bool DestroyTile(Tile tile)
+        {
+            return this.Puzzle.RemoveTile(tile);
+        }
+        #endregion
+
+
+        #region Place and Remove
         virtual public bool PlacePiece(Piece piece, Vector2Int coords)
         {
-            return this.Puzzle.PlacePiece(piece, coords);
+            return this.Puzzle.Board.PlacePiece(piece, coords);
         }
 
 
@@ -295,13 +322,11 @@ namespace Puzzle.Pieces
         {
             var piece = this.PieceAt(coords);
 
-            if(piece != null)
-            {
-                return this.Puzzle.RemovePiece(piece);
-            }
+            if(piece != null) return this.Puzzle.Board.RemovePiece(piece);
 
             return false;
         }
+        
 
         virtual public bool RemoveTile(Vector2Int coords)
         {
@@ -314,6 +339,7 @@ namespace Puzzle.Pieces
 
             return false;
         }
+        #endregion
         #endregion
 
 
