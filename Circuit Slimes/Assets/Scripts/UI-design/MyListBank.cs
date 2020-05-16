@@ -19,10 +19,12 @@ public class MyListBank : BaseListBank
         return _contents.Length;
     }
 
-    public void GetSelectedContentID(int contentID)
+    public int GetSelectedContentID(int contentID)
     {
         Debug.Log("Selected content ID: " + contentID.ToString() +
             ", Content: " + GetListContent(contentID));
+
+        return contentID;
     }
 }
 
