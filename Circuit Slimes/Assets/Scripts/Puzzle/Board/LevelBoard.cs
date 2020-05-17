@@ -40,16 +40,12 @@ namespace Puzzle.Board
         public int Width  { get; private set; }
         public int Height { get; private set; }
 
-        private Dictionary<Vector2Int, Change> Changes;
-
         public void Initialize(int width, int height)
         {
             this.Width  = width;
             this.Height = height;
 
             this.Rows = new Dictionary<int, Row>();
-
-            this.Changes = new Dictionary<Vector2Int, Change>();
         }
 
 

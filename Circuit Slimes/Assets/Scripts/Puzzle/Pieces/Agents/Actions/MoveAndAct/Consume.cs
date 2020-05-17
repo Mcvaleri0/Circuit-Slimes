@@ -51,15 +51,24 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
+            // If a Piece will be consumed
             if(this.Consuming)
             {
+                // If the Target is still at its coordinates
                 if(agent.PieceAt(this.TargetCoords) == this.Target)
                 {
+                    // Remove Target from the Board
+                    agent.RemovePiece(this.TargetCoords);
+
+                    // Move Agent to the Target's Board Position
+                    agent.MoveInBoard(this.TargetCoords);
+
                     return true;
                 }
             }
             else
             {
+                // Confirm Move
                 return base.Confirm(agent);
             }
 
@@ -68,26 +77,22 @@ namespace Puzzle.Actions
 
         override public bool Execute(Agent agent)
         {
-            if(this.Consuming)
+            // If a Piece will be consumed
+            if (this.Consuming)
             {
-                if (!this.Removed)
-                {
-                    agent.RemovePiece(this.MoveCoords);
-                    this.Removed = true;
-                }
-
+                // Rotate Agent in the World
                 var rotated = agent.Rotate(this.Direction);
 
-                var moved = agent.Move(this.MoveCoords);
+                // Move Agent in the World
+                var moved   = agent.Move(this.MoveCoords);
 
+                // If Rotation and Movement are complete
                 if (rotated && moved)
                 {
-                    var pos = this.Target.transform.position;
+                    // Hide Target
+                    this.Target.Hide();
 
-                    pos.y = -2f;
-
-                    this.Target.transform.position = pos;
-
+                    // Increment Food
                     agent.Stats.Food++;
 
                     return true;
@@ -95,6 +100,7 @@ namespace Puzzle.Actions
             }
             else
             {
+                // Execute Movement
                 return base.Execute(agent);
             }
 
@@ -103,29 +109,26 @@ namespace Puzzle.Actions
 
         override public bool Undo(Agent agent)
         {
+            // If a Piece was consumed
             if (this.Consuming)
             {
+                // Decrement Food
+                agent.Stats.Food--;
+
+                // Reveal Target
+                this.Target.Reveal();
+
+                // Undo Movement
                 base.Undo(agent);
 
-                if (this.Removed)
-                {
-                    var pos = this.Target.transform.position;
-
-                    pos.y = 1f;
-
-                    agent.PlacePiece(this.Target, this.MoveCoords);
-
-                    this.Target.transform.position = pos;
-
-                    this.Removed = false;
-                }
-
-                agent.Stats.Food--;
+                // Return Target to its spot on the Board
+                agent.PlacePiece(this.Target, this.MoveCoords);
 
                 return true;
             }
             else
             {
+                // Undo Movement
                 return base.Undo(agent);
             }
         }

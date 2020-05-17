@@ -97,16 +97,19 @@ namespace Puzzle.Pieces.Components
  
         public Vector2Int RouteEnergy(LevelBoard.Directions entryDir)
         {
-            int dirId = (int) entryDir;
+            int dirId = ((int) entryDir + 6) % 8;
 
             for(int i = 0; i < 4; i++)
             {
-                LevelBoard.Directions checkDir = (LevelBoard.Directions) ((dirId + (i + 1) * 2) % 8);
+                LevelBoard.Directions checkDir = (LevelBoard.Directions) dirId;
 
                 if(this.Connections.ContainsKey(checkDir) && this.IsFree(this.Connections[checkDir]))
                 {
                     return this.Connections[checkDir];
                 }
+
+                dirId += 2;
+                dirId %= 8;
             }
 
             return new Vector2Int(-1,-1);
@@ -121,10 +124,7 @@ namespace Puzzle.Pieces.Components
 
         public void ReceiveCharge(ElectricSlime charge)
         {
-            if(charge.Active)
-            {
-                charge.Deactivate();
-            }
+            if(charge.Active) charge.Deactivate();
 
             this.Charges.Add(charge);
         }
@@ -136,9 +136,6 @@ namespace Puzzle.Pieces.Components
                 this.Charges.Remove(charge);
 
                 charge.Reactivate(coords);
-
-                var outDir = LevelBoard.GetDirection(this.Coords, coords);
-                charge.Orientation = outDir;
 
                 return charge;
             }
