@@ -14,8 +14,11 @@ namespace Level
     {
         #region /* Constants */
 
-        private const string SAVE_PATH   = "Assets/Resources/Levels";
-        private const string LEVELS_PATH = "Levels";
+        public const string LEVELS_PATH = "Levels";
+        public const string ITEMS_PATH  = "Prefabs/Board Items";
+        public const string BUTTON_PATH = "Prefabs/Button";
+
+        private const string SAVE_PATH = "Assets/Resources/Levels";
 
         #endregion
 
@@ -69,12 +72,26 @@ namespace Level
             return jsonString;
         }*/
 
-        #endregion
+
+        public static List<string> GetFileList(string pathInResources)
+        {
+            Object[] files = Resources.LoadAll(pathInResources);
+            List<string> res = new List<string>();
+
+            foreach (Object file in files)
+            {
+                res.Add(file.name);
+            }
+
+            return res;
+        }
+
+    #endregion
 
 
-        #region === Path Methods ===
+    #region === Path Methods ===
 
-        private static string PrepareSavePath(string fileName)
+    private static string PrepareSavePath(string fileName)
         {
             #if UNITY_EDITOR
                 return Path.Combine(SAVE_PATH, fileName + ".json");
