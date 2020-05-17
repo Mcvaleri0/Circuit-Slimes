@@ -15,6 +15,8 @@ namespace Puzzle.Actions
 
         private bool TargetDeactivated = false;
 
+        private Vector2Int AgentCoords { get; set; }
+
         public Kamikaze() : base(new Piece.Caracteristics("ElectricSlime")) { }
 
         public Kamikaze(Agent agent, ElectricSlime target)
@@ -52,6 +54,7 @@ namespace Puzzle.Actions
                 {
                     agent.RemovePiece(this.TargetCoords);
 
+                    this.AgentCoords = agent.Coords;
                     agent.RemovePiece(agent.Coords);
 
                     return true;
@@ -94,11 +97,11 @@ namespace Puzzle.Actions
 
         public override bool Undo(Agent agent)
         {
-            agent.Reactivate(agent.Coords);
+            agent.Reactivate(this.AgentCoords);
 
             if (this.TargetDeactivated)
             {
-                this.Target.Reactivate(this.Target.Coords);
+                this.Target.Reactivate(this.TargetCoords);
 
                 this.TargetDeactivated = false;
             }
