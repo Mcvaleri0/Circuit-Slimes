@@ -35,17 +35,21 @@ namespace Creator.UI.ModeUI
 
         override public void InitializeSaveButton()
         {
-            RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
+            #if UNITY_EDITOR
+                RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
-            saveRect.pivot = new Vector2(1, 1);
-            float x = -30; //x margin
-            float y = -30; //y margin
+                saveRect.pivot = new Vector2(1, 1);
+                float x = -30; //x margin
+                float y = -30; //y margin
 
-            saveRect.anchoredPosition = new Vector2(x, y);
+                saveRect.anchoredPosition = new Vector2(x, y);
 
-            // add click listener
-            string level = this.Controller.CurrentLevel();
-            base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
+                // add click listener
+                string level = this.Controller.CurrentLevel();
+                base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
+            #else
+                 base.SaveButton.gameObject.SetActive(false);
+            #endif
         }
 
         #endregion
@@ -63,7 +67,7 @@ namespace Creator.UI.ModeUI
             return this.AllItems;
         }
 
-        #endregion
+#endregion
 
     }
 }

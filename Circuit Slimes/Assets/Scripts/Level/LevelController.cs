@@ -72,7 +72,6 @@ namespace Level
 
             this.OptionButton = Resources.Load(FileHelper.BUTTON_PATH);
 
-            this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH).Where(f => !f.Equals(EMPTY_LEVEL)).ToList();
             this.PopulateMenu();
 
             this.CurrentInd = 0;
@@ -100,6 +99,8 @@ namespace Level
 
         private void PopulateMenu()
         {
+            this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH).Where(f => !f.Equals(EMPTY_LEVEL)).ToList();
+
             foreach (string level in this.Levels)
             {
                 GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.ContentTransform);
