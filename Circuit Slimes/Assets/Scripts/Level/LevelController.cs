@@ -41,9 +41,10 @@ namespace Level
 
         #region /* UI Attributes */
         
-        private Transform MenuTransform { get; set; }
-        private Transform ContentTransform { get; set; }
+        private Transform Menu { get; set; }
+        private Transform Content { get; set; }
         private Transform BackButton { get; set; }
+        private Transform NewButton { get; set; }
 
         private Object OptionButton { get; set; }
 
@@ -57,20 +58,38 @@ namespace Level
         {
             this.Controller = Controller;
             this.InitializeMenu(transform);
+            this.InitializeButtons();
+            this.InitializeOptions();
         }
 
 
         private void InitializeMenu(Transform transform)
         {
-            this.MenuTransform = transform.Find("Canvas").Find("Menu");
+            this.Menu = transform.Find("Canvas").Find("Menu");
             this.HideLevelMenu();
+        }
 
-            this.ContentTransform = this.MenuTransform.Find("LevelsMenu").Find("Viewport").Find("Content");
 
-            this.BackButton = this.MenuTransform.Find("BackButton");
+        private void InitializeButtons()
+        {
+            this.BackButton = this.Menu.Find("BackButton");
             this.BackButton.GetComponent<Button>().onClick.AddListener(() => this.Controller.ShowMainMenu());
 
             this.OptionButton = Resources.Load(FileHelper.BUTTON_PATH);
+
+            this.NewButton = this.Menu.Find("NewButton");
+
+            #if UNITY_EDITOR
+                this.NewButton.GetComponentInChildren<Button>().onClick.AddListener(() => this.CreateLevel());
+            #else
+                this.NewButton.gameObject.SetActive(false);
+            #endif
+        }
+
+
+        private void InitializeOptions()
+        {
+            this.Content = this.Menu.Find("LevelsMenu").Find("Viewport").Find("Content");
 
             this.PopulateMenu();
 
@@ -87,13 +106,13 @@ namespace Level
         public void ShowLevelMenu(string nextScene)
         {
             this.DefineOptionsCallBack(nextScene);
-            this.MenuTransform.gameObject.SetActive(true);
+            this.Menu.gameObject.SetActive(true);
         }
 
 
         public void HideLevelMenu()
         {
-            this.MenuTransform.gameObject.SetActive(false);
+            this.Menu.gameObject.SetActive(false);
         }
 
 
@@ -103,7 +122,7 @@ namespace Level
 
             foreach (string level in this.Levels)
             {
-                GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.ContentTransform);
+                GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.Content);
                 newObj.GetComponentInChildren<Text>().text = level;
             }
         }
@@ -111,7 +130,7 @@ namespace Level
 
         private void DefineOptionsCallBack(string nextScene)
         {
-            foreach (Transform option in this.ContentTransform)
+            foreach (Transform option in this.Content)
             {
                 Button optionButton = option.GetComponentInChildren<Button>();
                 string level = option.GetComponentInChildren<Text>().text;
@@ -181,6 +200,16 @@ namespace Level
             this.CurrentLevel = this.Levels[this.CurrentInd];
 
             return this.LoadLevel(this.CurrentLevel);
+        }
+
+        #endregion
+
+
+        #region === New Level Methods ===
+
+        private void CreateLevel()
+        {
+            Debug.LogError("Not implemented yet");
         }
 
         #endregion
