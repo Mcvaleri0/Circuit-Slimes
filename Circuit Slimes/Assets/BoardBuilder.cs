@@ -316,15 +316,16 @@ public class BoardBuilder
         GameObject gameObject = new GameObject("MeshTest", typeof(MeshFilter), typeof(MeshRenderer));
         gameObject.transform.parent = parent;
         gameObject.GetComponent<MeshFilter>().mesh = mesh;
-        gameObject.GetComponent<MeshRenderer>().material = parentRenderer.material;
+
+        var mainMaterial = parentRenderer.material;
+        gameObject.GetComponent<MeshRenderer>().material = mainMaterial;
 
         //add outline to board
-        /*
-        var outln = gameObject.AddComponent<Outline>();
-        outln.OutlineMode = Outline.Mode.OutlineAll;
-        outln.OutlineColor = Color.white;
+
+        var outln = gameObject.AddComponent<QuickOutline>();
+        outln.OutlineMode = QuickOutline.Mode.OutlineVisible;
+        outln.OutlineColor = new Color32(7, 80, 73, 255);
         outln.OutlineWidth = 5;
-        */
 
         return;
     }
