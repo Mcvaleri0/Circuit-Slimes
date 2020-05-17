@@ -4,7 +4,6 @@ using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
 using UnityEngine.Rendering;
-using UnityEditor.Animations;
 
 namespace Puzzle
 {
