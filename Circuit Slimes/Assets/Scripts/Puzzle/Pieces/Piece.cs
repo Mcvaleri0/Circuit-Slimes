@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
-
+using UnityEngine.Rendering;
 
 namespace Puzzle
 {
@@ -433,19 +433,19 @@ namespace Puzzle
         // Start is called before the first frame update
         protected virtual void Start()
         {
-
+            
         }
 
         // Update is called once per frame
         protected virtual void Update()
         {
-
+            
         }
         #endregion
 
 
         #region === Piece Methods ===
-
+        #region Footprint
         //Calculate footprint in world coords
         private Vector2Int[] CalculateFootprint(Vector2Int coords, LevelBoard.Directions orientation) {
             
@@ -534,7 +534,7 @@ namespace Puzzle
 
             return coords - orig;
         }
-
+        #endregion
 
         //rotate piece
         public virtual bool Rotate(LevelBoard.Directions targetDir)
@@ -553,6 +553,30 @@ namespace Puzzle
         public virtual bool TypeMatches(Piece other)
         {
             return this.Caracterization.Equals(other.Caracterization);
+        }
+
+
+        public virtual void Reveal()
+        {
+            var position = transform.position;
+
+            position.y = 1f;
+
+            transform.position = position;
+        }
+
+        public virtual void Hide()
+        {
+            var position = transform.position;
+
+            position.y = -2f;
+
+            transform.position = position;
+        }
+
+        public virtual bool IsHidden()
+        {
+            return transform.position.y == -2f;
         }
         #endregion
     }

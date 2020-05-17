@@ -27,14 +27,34 @@ namespace Puzzle.Actions
 
         public override bool Confirm(Agent agent)
         {
-            return agent.CanMove(this.MoveCoords);
+            // If the Agent can be moved to the new Coords
+            if(agent.CanMove(this.MoveCoords))
+            {
+                var origOrientation = agent.Orientation; // Save current Orientation
+
+                // Rotate the Agent in the Board
+                if (agent.RotateInBoard(this.Direction))
+                {
+                    // Move the Agent in the Board
+                    if (agent.MoveInBoard(this.MoveCoords))
+                    {
+                        return true;
+                    }
+                    // If it fails, Undo the rotation
+                    else
+                    {
+                        agent.RotateInBoard(origOrientation);
+                    }
+                }
+            }
+
+            return false;
         }
 
         override public bool Execute(Agent agent)
         {
             var rotated = agent.Rotate(this.Direction);
-
-            var moved = agent.Move(this.MoveCoords);
+            var moved   = agent.Move(this.MoveCoords);
                         
             return rotated && moved;
         }
@@ -46,6 +66,9 @@ namespace Puzzle.Actions
             
             agent.Move(origCoords, 1000f);
             agent.Rotate(this.Direction, 1f);
+
+            agent.MoveInBoard(origCoords);
+            agent.RotateInBoard(this.Direction);
 
             return base.Undo(agent);
         }

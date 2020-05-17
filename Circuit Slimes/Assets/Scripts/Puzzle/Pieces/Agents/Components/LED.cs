@@ -16,8 +16,6 @@ namespace Puzzle.Pieces.Components
         {
             base.Start();
 
-            this.KnownActions.Add(new Discharge());
-
             this.Light = this.GetComponent<LedLight>();
         }
         #endregion

@@ -90,6 +90,11 @@ namespace Game
 
 
         #region === Unity Events ===
+        private void Start()
+        {
+            Application.targetFrameRate = 60;
+        }
+
 
         void OnEnable()
         {
