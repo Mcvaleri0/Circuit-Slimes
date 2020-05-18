@@ -39,16 +39,38 @@ namespace Level
         #endregion
 
 
-        #region /* UI Attributes */
+        #region /* Menu Attributes */
         
         private Transform Menu { get; set; }
+
+        #endregion
+
+
+        #region /* Options Attributes */
+
+        private Transform ScrollMenu { get; set; }
         private Transform Content { get; set; }
-        private Transform BackButton { get; set; }
-        private Transform NewButton { get; set; }
 
         private Object OptionButton { get; set; }
 
         #endregion
+
+
+        #region /* Buttons Attributes */
+
+        private Transform BackButton { get; set; }
+        private Transform NewButton { get; set; }
+
+        #endregion
+
+
+        #region /* Form Attributes */
+
+        private Transform Form { get; set; }
+        private Text LevelName { get; set; }
+
+        #endregion
+
 
 
 
@@ -60,6 +82,7 @@ namespace Level
             this.InitializeMenu(transform);
             this.InitializeButtons();
             this.InitializeOptions();
+            this.InitializeForm();
         }
 
         #endregion
@@ -119,7 +142,8 @@ namespace Level
 
         private void InitializeOptions()
         {
-            this.Content = this.Menu.Find("LevelsMenu").Find("Viewport").Find("Content");
+            this.ScrollMenu = this.Menu.Find("LevelsMenu");
+            this.Content = this.ScrollMenu.Find("Viewport").Find("Content");
 
             this.PopulateMenu();
 
@@ -142,11 +166,7 @@ namespace Level
 
             this.NewButton = this.Menu.Find("NewButton");
 
-            #if UNITY_EDITOR
-                this.NewButton.GetComponentInChildren<Button>().onClick.AddListener(() => this.CreateLevel());
-            #else
-                this.NewButton.gameObject.SetActive(false);
-            #endif
+            this.NewButton.GetComponentInChildren<Button>().onClick.AddListener(() => this.ShowForm());
         }
 
 
@@ -158,8 +178,41 @@ namespace Level
             }
             else
             {
-                this.NewButton.gameObject.SetActive(true);
+                #if UNITY_EDITOR
+                    this.NewButton.gameObject.SetActive(true);
+                #else
+                    this.NewButton.gameObject.SetActive(false);
+                #endif
             }
+        }
+
+        #endregion
+
+
+        #region === Form Methods ===
+
+        private void InitializeForm()
+        {
+            this.Form = this.Menu.Find("NameForm");
+            this.LevelName = this.Form.Find("InputField").Find("Text").GetComponent<Text>();
+
+            this.Form.gameObject.SetActive(false);
+        }
+
+
+        private void ShowForm()
+        {
+            this.ScrollMenu.gameObject.SetActive(false);
+            this.NewButton.gameObject.SetActive(false);
+            this.Form.gameObject.SetActive(true);
+        }
+
+
+        private void HideForm()
+        {
+            this.Form.gameObject.SetActive(false);
+            this.NewButton.gameObject.SetActive(true);
+            this.ScrollMenu.gameObject.SetActive(true);
         }
 
         #endregion
