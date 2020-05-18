@@ -366,7 +366,7 @@ public class BoardBuilder
             }
         }
 
-        public void Build(GameObject obj, int w, int h, float realw, float realh)
+        public void Build(GameObject obj, Material mat, int w, int h, float realw, float realh)
         {
             var numNodes = this.Nodes.Count;
 
@@ -378,16 +378,20 @@ public class BoardBuilder
             renderer.alignment = LineAlignment.TransformZ;
             renderer.positionCount = numNodes;
             renderer.startWidth = LineWidth;
+            renderer.material = mat;
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
             List<Vector3> nodePos = new List<Vector3>();
             for (var i = 0; i < numNodes; i++)
             {
                 var n = this.Nodes[i];
 
-                var pos = new Vector3(n.x * (realw / w), YLevel + 0.1f, n.y * (realh / h));
+                var pos = new Vector3(n.x * (realw / (w-1)) , YLevel + 0.005f, n.y * (realh / (h-1)));
                 nodePos.Add(pos);
             }
             renderer.SetPositions(nodePos.ToArray());
+
+            
         }
     }
 
@@ -502,14 +506,47 @@ public class BoardBuilder
             return new Vector2Int(-1,-1);
         }
 
-        public List<Vector2Int> GetAllAdjacentFree(Vector2Int pos)
+        public List<Vector2Int> GetAllAdjacentFree(Vector2Int pos, Vector2Int targetpos)
         {
             List<Vector2Int> res = new List<Vector2Int>();
 
-            foreach (var d in System.Enum.GetValues(typeof(Direction)))
+            var bad = new Vector2Int(-1, -1);
+            
+            var test = (Direction[]) System.Enum.GetValues(typeof(Direction));
+            List<Direction> possibleDirections = new List<Direction>(test);
+
+            //if in border only allow 1 direction
+            if (pos.x == 0)     { possibleDirections = new List<Direction>() { Direction.E }; } 
+            if (pos.x == w - 1) { possibleDirections = new List<Direction>() { Direction.W }; }
+
+            if (pos.y == 0)     { possibleDirections = new List<Direction>() { Direction.N }; }
+            if (pos.y == h - 1) { possibleDirections = new List<Direction>() { Direction.S }; }
+
+            //if near border don't allow diagonals towards it
+            if (pos.x == 1)
+            {
+                possibleDirections.Remove(Direction.NW);
+                possibleDirections.Remove(Direction.SW);
+            }
+            if (pos.x == w - 2)
+            {
+                possibleDirections.Remove(Direction.NE);
+                possibleDirections.Remove(Direction.SE);
+            }
+            if (pos.y == 1)
+            {
+                possibleDirections.Remove(Direction.SE);
+                possibleDirections.Remove(Direction.SW);
+            }
+            if (pos.y == h - 2)
+            {
+                possibleDirections.Remove(Direction.NE);
+                possibleDirections.Remove(Direction.NW);
+            }
+
+            foreach (var d in possibleDirections)
             {
                 var diags = true;
-                var bad = new Vector2Int(-1, -1);
 
                 switch (d)
                 {
@@ -534,10 +571,20 @@ public class BoardBuilder
                         break;
                 }
 
-                var adj = GetAdjacentFree(pos, (Direction) d);
-                if(diags && adj != bad)
+                var adj = GetAdjacentFree(pos, (Direction)d);
+                if (diags && adj != bad)
                 {
-                    res.Add(adj);
+                    if (adj.x == 0 || adj.x == w - 1 || adj.y == 0 || adj.y == h - 1)
+                    {
+                        if (adj == targetpos)
+                        {
+                            res.Add(adj);
+                        }
+                    }
+                    else
+                    {
+                        res.Add(adj);
+                    }
                 }
             }
             return res;
@@ -596,11 +643,11 @@ public class BoardBuilder
             }
         }
 
-        public void BuildLines(GameObject obj)
+        public void BuildLines(GameObject obj, Material mat)
         {
             foreach (var line in this.Lines)
             {
-                line.Build(obj, this.w, this.h, this.realw, this.realh);
+                line.Build(obj, mat, this.w, this.h, this.realw, this.realh);
             }
         }
 
@@ -766,32 +813,22 @@ public class BoardBuilder
         var targetpos = target.GetNode(0);
 
         //list of nodes opened
-        List<Vector2Int> open = new List<Vector2Int>
-        {
-            line.GetNode(0)
-        };
+        List<Vector2Int> open = new List<Vector2Int>{ line.GetNode(0) };
 
         //list of nodes closed
         List<Vector2Int> closed = new List<Vector2Int>();
 
-
         //pathfind
         do {
-            if (open.Count == 0)
-            {
-                Debug.Log("No path");
-                return;
-            }
-
             var currentpos = grid.GetBest(open, targetpos);
             if(currentpos == targetpos)
             {
-                Debug.Log("Path Found");
+                //found a full path!
                 grid.TraceBackwards(line, targetpos);
                 return;
             }
 
-            var allpossible = grid.GetAllAdjacentFree(currentpos);
+            var allpossible = grid.GetAllAdjacentFree(currentpos, targetpos);
             foreach(var pos in allpossible)
             {
                 if(!open.Contains(pos) && !closed.Contains(pos))
@@ -806,7 +843,12 @@ public class BoardBuilder
         }
         while (open.Count != 0);
 
-        Debug.Log("Path Not Found");
+        /*
+        if(closed.Count >= 3 && Random.Range(0, 5) == 1)
+        {
+            grid.TraceBackwards(line, closed[Random.Range(closed.Count/2, closed.Count)]);
+        }
+        */
         return;
     }
 
@@ -818,13 +860,15 @@ public class BoardBuilder
         foreach(var line in grid.Lines)
         {
             //if line desnt exist ignore
-            if (line == null) continue;
+            if (!grid.IsFree(line.GetNode(0))) continue;
 
             //chose target and if none can be chosen ignore
             var target = grid.ChooseTarget(line);
             if (target == null) continue;
 
             PathFindLine(grid, line, target);
+
+            grid.Print();
         } 
     }
 
@@ -833,6 +877,7 @@ public class BoardBuilder
     //Build All
     public static void Build(GameObject boardObj, int width, int height, float unitSize)
     {
+        /*
         //board ports
         var allPorts = GeneratePorts(width, height);
 
@@ -847,6 +892,7 @@ public class BoardBuilder
 
         //create lines from ports to other ports
         PathFindLines(grid);
+        */
 
         //Create base mesh
         Mesh mesh = CreateBoardBaseMesh(width, height, unitSize);
@@ -861,7 +907,10 @@ public class BoardBuilder
         gameObject.transform.parent = parent;
         gameObject.GetComponent<MeshFilter>().mesh = mesh;
 
-        var mainMaterial = parentRenderer.material;
+        var mats = new List<Material>();
+        parentRenderer.GetMaterials(mats);
+        var mainMaterial = mats[0];
+        var lineMaterial = mats[1];
         gameObject.GetComponent<MeshRenderer>().material = mainMaterial;
 
         //add outline to board
@@ -870,8 +919,7 @@ public class BoardBuilder
         outln.OutlineColor = new Color32(7, 80, 73, 255);
         outln.OutlineWidth = 5;
 
-        grid.DrawDebug();
-        grid.BuildLines(gameObject);
+        //grid.BuildLines(gameObject, lineMaterial);
 
         return;
     }

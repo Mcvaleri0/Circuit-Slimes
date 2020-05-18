@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BoardTemp
+  m_Name: BoardMain
   m_Shader: {fileID: 4800000, guid: 327e8172d27f03544930f3d7f97f41b6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
