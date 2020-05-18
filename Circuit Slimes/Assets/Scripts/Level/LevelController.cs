@@ -59,6 +59,7 @@ namespace Level
         #region /* Buttons Attributes */
 
         private Transform BackButton { get; set; }
+        
         private Transform NewButton { get; set; }
 
         #endregion
@@ -67,6 +68,7 @@ namespace Level
         #region /* Form Attributes */
 
         private Transform Form { get; set; }
+
         private Text LevelName { get; set; }
 
         #endregion
@@ -195,6 +197,9 @@ namespace Level
         {
             this.Form = this.Menu.Find("NameForm");
             this.LevelName = this.Form.Find("InputField").Find("Text").GetComponent<Text>();
+
+            this.Form.Find("CancelButton").GetComponentInChildren<Button>().onClick.AddListener(() => this.HideForm());
+            this.Form.Find("CreateButton").GetComponentInChildren<Button>().onClick.AddListener(() => this.CreateLevel());
 
             this.Form.gameObject.SetActive(false);
         }
