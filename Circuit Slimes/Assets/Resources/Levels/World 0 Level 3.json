@@ -3,7 +3,21 @@
         "Width": 8,
         "Height": 8
     },
-    "Pieces": [],
+    "Pieces": [
+        {
+            "PrefabName": "AABattery",
+            "Coords": [
+                {
+                    "x": 2,
+                    "y": 4
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        }
+    ],
     "Tiles": [],
-    "Permissions": []
+    "Permissions": [],
+    "Condition": 0
 }
