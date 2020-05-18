@@ -23,8 +23,6 @@ namespace Level
 
         #region /* Level IDs */
 
-        private const string EMPTY_LEVEL = "EmptyLevel";
-
         public string CurrentLevel { get; private set; }
         private int CurrentInd { get; set; }
         private int nLevels { get; set; }
@@ -101,6 +99,7 @@ namespace Level
 
         public void ShowLevelMenu(string nextScene)
         {
+            this.PopulateMenu();
             this.DefineOptionsCallBack(nextScene);
             this.ShowButtons(nextScene);
             this.Menu.gameObject.SetActive(true);
@@ -115,26 +114,27 @@ namespace Level
 
         private void PopulateMenu()
         {
-            this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH).Where(f => !f.Equals(EMPTY_LEVEL)).ToList();
-
-            foreach (string level in this.Levels)
+            if (this.Levels == null)
             {
-                GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.Content);
-                newObj.GetComponentInChildren<Text>().text = level;
+                this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH).Where(f => !f.Equals(FileHelper.EMPTY_LEVEL)).ToList();
+
+                foreach (string level in this.Levels)
+                {
+                    GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.Content);
+                    newObj.GetComponentInChildren<Text>().text = level;
+                }
             }
         }
 
 
-        private void DefineOptionsCallBack(string nextScene)
+        private void ClearMenu()
         {
             foreach (Transform option in this.Content)
             {
-                Button optionButton = option.GetComponentInChildren<Button>();
-                string level = option.GetComponentInChildren<Text>().text;
-
-                optionButton.onClick.RemoveAllListeners();
-                optionButton.onClick.AddListener(() => this.ChooseLevel(level, nextScene));
+                GameObject.Destroy(option.gameObject);
             }
+
+            this.Levels = null;
         }
 
         #endregion
@@ -152,6 +152,19 @@ namespace Level
             this.CurrentInd = 0;
             this.CurrentLevel = this.Levels[this.CurrentInd];
             this.nLevels = this.Levels.Count;
+        }
+
+
+        private void DefineOptionsCallBack(string nextScene)
+        {
+            foreach (Transform option in this.Content)
+            {
+                Button optionButton = option.GetComponentInChildren<Button>();
+                string level = option.GetComponentInChildren<Text>().text;
+
+                optionButton.onClick.RemoveAllListeners();
+                optionButton.onClick.AddListener(() => this.ChooseLevel(level, nextScene));
+            }
         }
 
         #endregion
@@ -289,7 +302,33 @@ namespace Level
 
         private void CreateLevel()
         {
-            Debug.LogError("Not implemented yet");
+            if (!this.GoodLevelName(this.LevelName.text))
+            {
+                this.Form.Find("InputField").GetComponent<Image>().color = Color.red;
+                this.LevelName.color = Color.white;
+            }
+            else
+            {
+                this.Form.Find("InputField").GetComponent<Image>().color = Color.white;
+                this.LevelName.color = Color.black;
+
+                string empty = FileHelper.LoadLevel(FileHelper.EMPTY_LEVEL);
+                FileHelper.WriteLevel(empty, this.LevelName.text);
+
+                this.CurrentLevel = this.LevelName.text;
+
+                this.HideForm();
+                
+                this.ClearMenu();
+
+                this.Controller.LoadScene(GameController.CREATOR);
+            }
+        }
+
+
+        private bool GoodLevelName(string name)
+        {
+            return ((name.Length > 0) && (!name.Equals(FileHelper.EMPTY_LEVEL)) && (!this.Levels.Contains(name)));
         }
 
         #endregion
