@@ -20,10 +20,10 @@ namespace Puzzle.Pieces.Components
         public Dictionary<LevelBoard.Directions, Vector2Int> Connections { get; protected set; }
 
         // Init Method
-        public override void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
+        public override void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, caracterization, ori, turn);
+            base.Initialize(puzzle, coords, Characterization, ori, turn);
 
             this.Charges = new List<ElectricSlime>();
 

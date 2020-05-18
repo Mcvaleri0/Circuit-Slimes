@@ -17,7 +17,7 @@ namespace Puzzle.Actions
 
         private Vector2Int AgentCoords { get; set; }
 
-        public Kamikaze() : base(new Piece.Caracteristics("ElectricSlime")) { }
+        public Kamikaze() : base(new Piece.Characteristics("ElectricSlime")) { }
 
         public Kamikaze(Agent agent, ElectricSlime target)
             : base(agent, target) 

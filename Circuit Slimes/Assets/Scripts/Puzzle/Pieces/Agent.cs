@@ -59,10 +59,10 @@ namespace Puzzle.Pieces
         public bool Active { get; protected set; }
 
         // Init Method
-        virtual public void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
+        virtual public void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, caracterization);
+            base.Initialize(puzzle, coords, Characterization);
 
             this.State = States.Idle;
 
@@ -288,10 +288,10 @@ namespace Puzzle.Pieces
 
 
         #region Create and Destroy
-        virtual public Piece CreatePiece(Caracteristics caracterization, Vector2Int coords,
+        virtual public Piece CreatePiece(Characteristics Characterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            return this.Puzzle.CreatePiece(caracterization, coords, ori, turn);
+            return this.Puzzle.CreatePiece(Characterization, coords, ori, turn);
         }
 
         virtual public Tile CreateTile(Tile.Types type, Vector2Int coords)

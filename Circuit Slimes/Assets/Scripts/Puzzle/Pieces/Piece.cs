@@ -59,7 +59,7 @@ namespace Puzzle
 
         #endregion
 
-        public struct Caracteristics
+        public struct Characteristics
         {
             public Piece.Categories Category { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Puzzle
 
             public Piece.CandyTypes CandyType { get; private set; }
 
-            public Caracteristics(Piece.Categories category, Piece.SlimeTypes sType)
+            public Characteristics(Piece.Categories category, Piece.SlimeTypes sType)
             {
                 this.Category = category;
 
@@ -80,7 +80,7 @@ namespace Puzzle
                 this.CandyType = Piece.CandyTypes.None;
             }
 
-            public Caracteristics(Piece.Categories category, Piece.ComponentTypes cType)
+            public Characteristics(Piece.Categories category, Piece.ComponentTypes cType)
             {
                 this.Category = category;
 
@@ -91,7 +91,7 @@ namespace Puzzle
                 this.CandyType = Piece.CandyTypes.None;
             }
 
-            public Caracteristics(Piece.Categories category, Piece.CandyTypes cdType)
+            public Characteristics(Piece.Categories category, Piece.CandyTypes cdType)
             {
                 this.Category = category;
 
@@ -102,7 +102,7 @@ namespace Puzzle
                 this.CandyType = cdType;
             }
 
-            public Caracteristics(string name)
+            public Characteristics(string name)
             {
                 this.Category = ParseCategory(name);
 
@@ -134,7 +134,7 @@ namespace Puzzle
                 }
             }
 
-            #region Parse Caracteristics
+            #region Parse Characteristics
             public static Piece.Categories ParseCategory(string name)
             {
                 if (name.Contains("Slime"))
@@ -344,9 +344,9 @@ namespace Puzzle
             #endregion
 
             #region Equals
-            public bool Matches(Caracteristics caracteristics)
+            public bool Matches(Characteristics Characteristics)
             {
-                if (this.Category == caracteristics.Category)
+                if (this.Category == Characteristics.Category)
                 {
                     switch (this.Category)
                     {
@@ -354,13 +354,13 @@ namespace Puzzle
                             break;
 
                         case Piece.Categories.Slime:
-                            return this.SlimeType == caracteristics.SlimeType;
+                            return this.SlimeType == Characteristics.SlimeType;
 
                         case Piece.Categories.Component:
-                            return this.ComponentType == caracteristics.ComponentType;
+                            return this.ComponentType == Characteristics.ComponentType;
 
                         case Piece.Categories.Candy:
-                            return this.CandyType == caracteristics.CandyType;
+                            return this.CandyType == Characteristics.CandyType;
                     }
                 }
 
@@ -369,14 +369,14 @@ namespace Puzzle
             #endregion
         }
 
-        public Caracteristics Caracterization;
+        public Characteristics Characterization;
 
 
         #region === Create Piece ===
-        public static Piece CreatePiece(Puzzle puzzle, Caracteristics caracterization, Vector2Int coords,
+        public static Piece CreatePiece(Puzzle puzzle, Characteristics Characterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
-            return CreatePiece(puzzle, caracterization.ToString(), coords, ori, turn);
+            return CreatePiece(puzzle, Characterization.ToString(), coords, ori, turn);
         }
 
         public static Piece CreatePiece(Puzzle puzzle, string prefabName, Vector2Int coords,
@@ -394,19 +394,19 @@ namespace Puzzle
                 // Slime Init
                 if (agent is Pieces.Slimes.Slime slime)
                 {
-                    slime.Initialize(puzzle, coords, new Caracteristics(prefabName), ori, turn);
+                    slime.Initialize(puzzle, coords, new Characteristics(prefabName), ori, turn);
                 }
                 // Component Init
                 else  if(agent is Pieces.Components.CircuitComponent component)
                 {
-                    component.Initialize(puzzle, coords, new Caracteristics(prefabName), ori, turn);
+                    component.Initialize(puzzle, coords, new Characteristics(prefabName), ori, turn);
                 }
             }
 
             // Piece Init
             else
             {
-                piece.Initialize(puzzle, coords, new Caracteristics(prefabName));
+                piece.Initialize(puzzle, coords, new Characteristics(prefabName));
             }
 
             return piece;
@@ -425,13 +425,13 @@ namespace Puzzle
         }
 
 
-        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization)
+        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization)
         {
             this.Puzzle = puzzle;
 
             this.Coords = coords;
 
-            this.Caracterization = caracterization;
+            this.Characterization = Characterization;
         }
         #endregion
         
@@ -559,7 +559,7 @@ namespace Puzzle
 
         public virtual bool TypeMatches(Piece other)
         {
-            return this.Caracterization.Equals(other.Caracterization);
+            return this.Characterization.Equals(other.Characterization);
         }
 
 
