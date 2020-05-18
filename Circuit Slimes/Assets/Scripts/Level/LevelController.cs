@@ -99,6 +99,8 @@ namespace Level
 
         public void ShowLevelMenu(string nextScene)
         {
+            this.BackButton.gameObject.SetActive(true);
+            this.ScrollMenu.gameObject.SetActive(true);
             this.PopulateMenu();
             this.DefineOptionsCallBack(nextScene);
             this.ShowButtons(nextScene);
@@ -106,8 +108,19 @@ namespace Level
         }
 
 
+        public void Hide()
+        {
+            this.Form.gameObject.SetActive(false);
+            this.ScrollMenu.gameObject.SetActive(false);
+            this.BackButton.gameObject.SetActive(false);
+            this.NewButton.gameObject.SetActive(false);
+            this.Menu.gameObject.SetActive(false);
+        }
+
+
         public void HideLevelMenu()
         {
+            //this.HideForm();
             this.Menu.gameObject.SetActive(false);
         }
 
