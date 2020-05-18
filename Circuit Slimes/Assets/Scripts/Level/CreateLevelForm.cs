@@ -15,7 +15,7 @@ namespace Level
         
         private LevelMenu LevelMenu { get; set; }
         
-        private NewLevelController LevelController { get; set; }
+        private LevelController LevelController { get; set; }
 
         private GameController GameController { get; set; }
 

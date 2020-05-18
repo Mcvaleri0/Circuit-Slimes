@@ -51,8 +51,7 @@ namespace Game
 
         #region /* Level Attributes */
 
-        //private LevelController LevelController { get; set; }
-        public NewLevelController LevelController { get; private set; }
+        public LevelController LevelController { get; private set; }
 
         #endregion
 
@@ -202,9 +201,6 @@ namespace Game
 
         private void InitialiazeControllers()
         {
-            //this.LevelController.HideLevelMenu();
-            //this.LoadLevel();
-
             this.InitializeCreator();
 
             this.InitiliazePuzzle();
@@ -258,9 +254,6 @@ namespace Game
         {
             this.MainMenu.SetActive(true);
             this.QuitButton.SetActive(true);
-
-            //this.LevelController.Hide();
-            //this.LevelController.HideLevelMenu();
         }
 
 
@@ -302,7 +295,7 @@ namespace Game
         {
             if (this.LevelController == null)
             {
-                this.LevelController = new NewLevelController();
+                this.LevelController = new LevelController();
             }
         }
 
@@ -351,70 +344,6 @@ namespace Game
         {
             this.LevelController.SaveLevel(this.Puzzle);
         }
-
-
-        //private void InitializeLevel()
-        //{
-        //    if (this.LevelController == null)
-        //    {
-        //        this.LevelController = new LevelController(this, this.transform);
-        //    }
-        //}
-
-
-        //public void ChooseLevel(string nextScene)
-        //{
-        //    this.HideMainMenu();
-        //    this.LevelController.ShowLevelMenu(nextScene);
-        //}
-
-
-        //private void LoadLevel()
-        //{
-        //    if (this.Puzzle != null)
-        //    {
-        //        this.Puzzle.Destroy();
-        //    }
-        //    this.Puzzle = this.LevelController.LoadLevel();
-        //}
-
-
-        //public string CurrentLevel()
-        //{
-        //    return this.LevelController.CurrentLevel;
-        //}
-
-
-        //public void SaveLevel(string level)
-        //{
-        //    this.LevelController.SaveLevel(level, this.Puzzle);
-        //}
-
-
-        //public void NextLevel()
-        //{
-        //    if (this.Puzzle != null)
-        //    {
-        //        this.Puzzle.Destroy();
-        //    }
-
-        //    this.Puzzle = this.LevelController.NextLevel();
-
-        //    this.UpdateControllers();
-        //}
-
-
-        //public void PreviousLevel()
-        //{
-        //    if (this.Puzzle != null)
-        //    {
-        //        this.Puzzle.Destroy();
-        //    }
-
-        //    this.Puzzle = this.LevelController.PreviousLevel();
-
-        //    this.UpdateControllers();
-        //}
 
         #endregion
 
