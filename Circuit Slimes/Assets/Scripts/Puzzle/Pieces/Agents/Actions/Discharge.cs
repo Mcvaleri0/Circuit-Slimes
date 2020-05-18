@@ -58,7 +58,7 @@ namespace Puzzle.Actions
                     // If there are no Slimes stored
                     else
                     {
-                        var coords = component.RouteEnergy(LevelBoard.Directions.South);
+                        var coords = component.RouteEnergy(LevelBoard.Directions.North);
 
                         if(coords.x != -1)
                         {
@@ -79,8 +79,8 @@ namespace Puzzle.Actions
                 {
                     if (component.Charges.Count == 0)
                     {
-                        var componentExitCoords = component.Coords + component.Footprint[component.Footprint.Length - 1];
-                        LevelBoard.Directions ori = LevelBoard.GetDirection(componentExitCoords, this.TargetCoords);
+                        var componentFootprint = component.GetFootprint();
+                        LevelBoard.Directions ori = LevelBoard.GetDirection(componentFootprint[componentFootprint.Length - 1], this.TargetCoords);
 
                         var piece = component.CreatePiece(new Piece.Caracteristics("ElectricSlime"),
                             this.TargetCoords, ori, component.Turn + 1);

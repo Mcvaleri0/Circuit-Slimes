@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Level;
 using Puzzle;
 using Creator.Editor;
 using Creator.Selection;
@@ -16,7 +17,7 @@ namespace Creator.UI
     {
         #region /* UI Elements */
 
-        private const string BUTTONS_PATH = "Prefabs/Creator/";
+        private const string BUTTONS_PATH = "Prefabs/";
 
         private Transform Menu { get; set; }
         private Transform MenuContent { get; set; }
@@ -51,8 +52,8 @@ namespace Creator.UI
             this.Menu = menu;
             this.MenuContent = content;
 
-            this.OptionButton    = Resources.Load(BUTTONS_PATH + "OptionButton");
-            this.AvailableButton = Resources.Load(BUTTONS_PATH + "AvailableButton");
+            this.OptionButton    = Resources.Load(FileHelper.BUTTON_PATH);
+            this.AvailableButton = Resources.Load(BUTTONS_PATH + "Creator/AvailableButton");
 
             this.Initialize(options, available);
         }
@@ -91,10 +92,8 @@ namespace Creator.UI
             GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
-            OptionButton optionButton = newObj.GetComponent<OptionButton>();
+            OptionButton optionButton = newObj.AddComponent<OptionButton>();
             optionButton.Initialize(this.Editor, text);
-
-            //newObj.GetComponent<Button>().onClick.AddListener(delegate { optionButton.Select(); });
             
             if (this.Mode is Mode.Editor)
             {

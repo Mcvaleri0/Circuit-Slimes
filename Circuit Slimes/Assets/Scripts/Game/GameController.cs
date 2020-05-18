@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+using UI;
+using Hint;
+using Level;
 using Puzzle;
 using Creator;
-using Hint;
-using UI;
-using Level;
 
 
 
@@ -19,7 +19,7 @@ namespace Game
     {
         #region /* Game Attributes */
 
-        private const string PREFAB_PATH = "Prefabs/GameController";
+        private const string PREFAB_PATH = "Prefabs/Game/GameController";
         private const string CONTROLLER_NAME = "GameController";
 
         #endregion
@@ -30,6 +30,14 @@ namespace Game
         public const string MAIN_MENU = "MainMenu";
         public const string CREATOR = "Creator";
         public const string LEVELS = "Levels";
+
+        #endregion
+
+
+        #region /* Main Menu Attributes */
+
+        private GameObject MainMenu { get; set; }
+        private GameObject QuitButton { get; set; }
 
         #endregion
 
@@ -145,10 +153,18 @@ namespace Game
 
         private void InitializeScene()
         {
-            if (SceneManager.GetActiveScene().name != MAIN_MENU)
+            this.InitializeLevel();
+
+            if (SceneManager.GetActiveScene().name == MAIN_MENU)
+            {
+                this.MainMenu = GameObject.Find("MainMenu");
+                this.QuitButton = GameObject.Find("QuitButton");
+            }
+            else
             {
                 this.InitialiazeControllers();
             }
+
         }
 
 
@@ -178,7 +194,8 @@ namespace Game
 
         private void InitialiazeControllers()
         {
-            this.InitializeLevel();
+            this.LevelController.HideLevelMenu();
+            this.LoadLevel();
 
             this.InitializeCreator();
 
@@ -206,28 +223,61 @@ namespace Game
         #endregion
 
 
+        #region === Main Menu Methods ===
+
+        private void HideMainMenu()
+        {
+            this.MainMenu.SetActive(false);
+            this.QuitButton.SetActive(false);
+        }
+
+
+        public void ShowMainMenu()
+        {
+            this.MainMenu.SetActive(true);
+            this.QuitButton.SetActive(true);
+
+            this.LevelController.HideLevelMenu();
+        }
+
+        #endregion
+
+
         #region === Level Methods ===
 
         private void InitializeLevel()
         {
-            this.LevelController = new LevelController();
+            if (this.LevelController == null)
+            {
+                this.LevelController = new LevelController(this, this.transform);
+            }
+        }
 
+
+        public void ChooseLevel(string nextScene)
+        {
+            this.HideMainMenu();
+            this.LevelController.ShowLevelMenu(nextScene);
+        }
+
+
+        private void LoadLevel()
+        {
             if (this.Puzzle != null)
             {
                 this.Puzzle.Destroy();
             }
-
-            this.Puzzle = this.LevelController.Initialize();
+            this.Puzzle = this.LevelController.LoadLevel();
         }
 
 
-        public int CurrentLevel()
+        public string CurrentLevel()
         {
             return this.LevelController.CurrentLevel;
         }
 
 
-        public void SaveLevel(int level)
+        public void SaveLevel(string level)
         {
             this.LevelController.SaveLevel(level, this.Puzzle);
         }
