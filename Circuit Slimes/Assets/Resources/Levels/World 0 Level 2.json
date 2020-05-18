@@ -5,14 +5,72 @@
     },
     "Pieces": [
         {
-            "PrefabName": "CellBattery",
+            "PrefabName": "AABattery",
+            "Coords": [
+                {
+                    "x": 1,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 2
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "RedLED",
+            "Coords": [
+                {
+                    "x": 5,
+                    "y": 1
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "GreenLED",
+            "Coords": [
+                {
+                    "x": 1,
+                    "y": 1
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        }
+    ],
+    "Tiles": [
+        {
+            "PrefabName": "SolderTile",
             "Coords": [
                 {
                     "x": 1,
                     "y": 2
                 },
                 {
-                    "x": 2,
+                    "x": 5,
+                    "y": 2
+                },
+                {
+                    "x": 1,
+                    "y": 3
+                },
+                {
+                    "x": 5,
                     "y": 3
                 },
                 {
@@ -20,24 +78,36 @@
                     "y": 4
                 },
                 {
+                    "x": 1,
+                    "y": 4
+                },
+                {
+                    "x": 2,
+                    "y": 4
+                },
+                {
                     "x": 4,
-                    "y": 5
+                    "y": 4
                 },
                 {
                     "x": 5,
-                    "y": 6
+                    "y": 4
+                },
+                {
+                    "x": 1,
+                    "y": 5
+                },
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 5,
+                    "y": 1
                 }
-            ],
-            "Orientations": [
-                6,
-                6,
-                6,
-                6,
-                6
             ]
         }
     ],
-    "Tiles": [],
     "Permissions": [],
     "Condition": 0
 }
