@@ -98,7 +98,7 @@ namespace Puzzle.Board
 
 
         #region === Tile Methods ===
-        public void PlaceTile(int x, Tile tile)
+        public bool PlaceTile(int x, Tile tile)
         {
             Space space;
             try
@@ -111,7 +111,13 @@ namespace Puzzle.Board
                 this.Spaces[x] = space;
             }
 
-            space.Tile = tile;
+            if (space.Tile == null)
+            {
+                space.Tile = tile;
+                return true;
+            }
+
+            return false;
         }
 
         public Tile RemoveTile(int x)
