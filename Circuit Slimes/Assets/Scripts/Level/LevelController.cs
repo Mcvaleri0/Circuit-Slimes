@@ -62,6 +62,10 @@ namespace Level
             this.InitializeOptions();
         }
 
+        #endregion
+
+
+        #region === Menu Methods ===
 
         private void InitializeMenu(Transform transform)
         {
@@ -70,42 +74,10 @@ namespace Level
         }
 
 
-        private void InitializeButtons()
-        {
-            this.BackButton = this.Menu.Find("BackButton");
-            this.BackButton.GetComponent<Button>().onClick.AddListener(() => this.Controller.ShowMainMenu());
-
-            this.OptionButton = Resources.Load(FileHelper.BUTTON_PATH);
-
-            this.NewButton = this.Menu.Find("NewButton");
-
-            #if UNITY_EDITOR
-                this.NewButton.GetComponentInChildren<Button>().onClick.AddListener(() => this.CreateLevel());
-            #else
-                this.NewButton.gameObject.SetActive(false);
-            #endif
-        }
-
-
-        private void InitializeOptions()
-        {
-            this.Content = this.Menu.Find("LevelsMenu").Find("Viewport").Find("Content");
-
-            this.PopulateMenu();
-
-            this.CurrentInd = 0;
-            this.CurrentLevel = this.Levels[this.CurrentInd];
-            this.nLevels = this.Levels.Count;
-        }
-
-        #endregion
-
-
-        #region === Menu Methods ===
-
         public void ShowLevelMenu(string nextScene)
         {
             this.DefineOptionsCallBack(nextScene);
+            this.ShowButtons(nextScene);
             this.Menu.gameObject.SetActive(true);
         }
 
@@ -137,6 +109,56 @@ namespace Level
 
                 optionButton.onClick.RemoveAllListeners();
                 optionButton.onClick.AddListener(() => this.ChooseLevel(level, nextScene));
+            }
+        }
+
+        #endregion
+
+
+        #region === Options Methods ===
+
+        private void InitializeOptions()
+        {
+            this.Content = this.Menu.Find("LevelsMenu").Find("Viewport").Find("Content");
+
+            this.PopulateMenu();
+
+            this.CurrentInd = 0;
+            this.CurrentLevel = this.Levels[this.CurrentInd];
+            this.nLevels = this.Levels.Count;
+        }
+
+        #endregion
+
+
+        #region === Buttons Methods ===
+
+        private void InitializeButtons()
+        {
+            this.BackButton = this.Menu.Find("BackButton");
+            this.BackButton.GetComponent<Button>().onClick.AddListener(() => this.Controller.ShowMainMenu());
+
+            this.OptionButton = Resources.Load(FileHelper.BUTTON_PATH);
+
+            this.NewButton = this.Menu.Find("NewButton");
+
+            #if UNITY_EDITOR
+                this.NewButton.GetComponentInChildren<Button>().onClick.AddListener(() => this.CreateLevel());
+            #else
+                this.NewButton.gameObject.SetActive(false);
+            #endif
+        }
+
+
+        private void ShowButtons(string scene)
+        {
+            if (scene.Equals(GameController.LEVELS))
+            {
+                this.NewButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.NewButton.gameObject.SetActive(true);
             }
         }
 
