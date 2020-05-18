@@ -337,14 +337,18 @@ namespace Puzzle.Board
                 this.Rows[coords.y] = row;
             }
 
-            row.PlaceTile(coords.x, tile);
-            tile.Coords = coords;
+            if (row.PlaceTile(coords.x, tile))
+            {
+                tile.Coords = coords;
 
-            //visual update
-            tile.UpdateTile();
-            tile.UpdateCrossTiles();
+                //visual update
+                tile.UpdateTile();
+                tile.UpdateCrossTiles();
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
 
         public Tile RemoveTileAt(Vector2Int coords)
