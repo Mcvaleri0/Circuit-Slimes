@@ -12,8 +12,8 @@ namespace Puzzle.Actions
 
         public SmartElectricMovement() : base() { }
 
-        public SmartElectricMovement(LevelBoard.Directions dir, Vector2Int coords) :
-            base(dir, coords) { }
+        public SmartElectricMovement(LevelBoard.Directions dir, Vector2Int coords, bool crossing) :
+            base(dir, coords) { this.Crossing = crossing; }
 
 
         #region Action Methods
@@ -30,13 +30,13 @@ namespace Puzzle.Actions
             {
                 var dir = adjacents[0];
 
-                return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(agent.Coords, dir));
+                return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(agent.Coords, dir), false);
             }
             else if(agent is SmartElectricSlime slime)
             {
-                if (adjacents.Count > 2) this.Crossing = true;
-
                 LevelBoard.Directions choice = LevelBoard.Directions.None;
+
+                var crossing = adjacents.Count > 2;
 
                 for (var i = 0; i < 4; i++)
                 {
@@ -44,20 +44,20 @@ namespace Puzzle.Actions
 
                     if (adjacents.Contains(dir))
                     {
-                        slime.ExploredPaths.TryGetValue(slime.Coords, out var explored);
+                        var explored = slime.GetExploredPaths(agent.Coords);
 
-                        if (this.Crossing && explored != null && explored.Contains(dir))
+                        if (crossing && explored != null && explored.Contains(dir))
                         {
                             choice = dir;
                         }
                         else
                         {
-                            return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(slime.Coords, dir));
+                            return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(slime.Coords, dir), crossing);
                         }
                     }
                 }
 
-                return new SmartElectricMovement(choice, LevelBoard.GetAdjacentCoords(slime.Coords, choice));
+                return new SmartElectricMovement(choice, LevelBoard.GetAdjacentCoords(slime.Coords, choice), crossing);
             }
 
             return null;
@@ -66,13 +66,14 @@ namespace Puzzle.Actions
         public override bool Confirm(Agent agent)
         {
             if (agent is SmartElectricSlime slime) {
+                var origCoords = slime.Coords;
                 var tile = slime.TileAt(this.MoveCoords);
 
                 if (tile != null && tile.Type == Tile.Types.Solder)
                 {
                     if (base.Confirm(slime))
                     {
-                        slime.RegisterExploredPath(slime.Coords, LevelBoard.GetDirection(slime.Coords, this.MoveCoords));
+                        if(this.Crossing) slime.RegisterExploredPath(origCoords, this.Direction);
 
                         return true;
                     }
@@ -81,11 +82,24 @@ namespace Puzzle.Actions
 
             return false;
         }
+
+        public override bool Undo(Agent agent)
+        {
+            if(agent is SmartElectricSlime slime)
+            {
+                var oppositeDir = (LevelBoard.Directions) ((((int) this.Direction) + 4) % 8);
+                var origCoords  = LevelBoard.GetAdjacentCoords(slime.Coords, oppositeDir);
+
+                slime.UnregisterExploredPath(origCoords, this.Direction);
+            }
+
+            return base.Undo(agent);
+        }
         #endregion
 
 
         #region Aux
-        protected List<LevelBoard.Directions> CheckAdjacentSolderTiles(Agent agent)
+        protected new List<LevelBoard.Directions> CheckAdjacentSolderTiles(Agent agent)
         {
             var adjacents = new List<LevelBoard.Directions>();
 
@@ -99,7 +113,7 @@ namespace Puzzle.Actions
                     var tile = agent.TileAt(coords);
 
                     // If it has a Solder Tile
-                    if (tile == null || tile.Type != Tile.Types.Solder)
+                    if (tile != null && tile.Type == Tile.Types.Solder)
                         adjacents.Add((LevelBoard.Directions)(i * 2));
                 }
             }

@@ -8,9 +8,7 @@ namespace Puzzle.Pieces.Slimes
 {
     public class SmartElectricSlime : ElectricSlime
     {
-        public List<SmartElectricSlime> Society { get; private set; }
-
-        public Dictionary<Vector2Int, List<LevelBoard.Directions>> ExploredPaths { get; private set; }
+        public ElectricHivemind Hivemind { get; private set; }
 
         #region === Unity Events ===
 
@@ -19,6 +17,7 @@ namespace Puzzle.Pieces.Slimes
         {
             base.Start();
 
+            this.KnownActions.Clear();
             this.KnownActions.Add(new Charge());
             this.KnownActions.Add(new SmartElectricMovement());
 
@@ -40,41 +39,33 @@ namespace Puzzle.Pieces.Slimes
         #region === Personal Methods ===
         private void InitializeSociety()
         {
-            foreach(var agent in this.Puzzle.Agents)
+            var parentObj = transform.parent.gameObject;
+
+            parentObj.TryGetComponent<ElectricHivemind>(out var hivemind);
+
+            if(hivemind == null)
             {
-                if(agent != this && agent is SmartElectricSlime slime)
-                {
-                    if(slime.Society != null)
-                    {
-                        this.Society = slime.Society;
-                    }
-
-                    if(slime.ExploredPaths != null)
-                    {
-                        this.ExploredPaths = slime.ExploredPaths;
-                    }
-                }
+                this.Hivemind = (ElectricHivemind) parentObj.AddComponent(typeof(ElectricHivemind));
             }
-
-            if (this.Society == null) this.Society = new List<SmartElectricSlime>();
-
-            this.Society.Add(this);
-
-            if (this.ExploredPaths == null) this.ExploredPaths = new Dictionary<Vector2Int, List<LevelBoard.Directions>>();
+            else
+            {
+                this.Hivemind = hivemind;
+            }
         }
 
         public void RegisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
         {
-            this.ExploredPaths.TryGetValue(crossingCoords, out var explored);
+            this.Hivemind.RegisterExplored(crossingCoords, chosenDirection);
+        }
 
-            if (explored == null)
-            {
-                explored = new List<LevelBoard.Directions>();
+        public List<LevelBoard.Directions> GetExploredPaths(Vector2Int crossingCoords)
+        {
+            return this.Hivemind.GetExplored(crossingCoords);
+        }
 
-                this.ExploredPaths.Add(crossingCoords, explored);
-            }
-
-            if (!explored.Contains(chosenDirection)) explored.Add(chosenDirection);
+        public void UnregisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
+        {
+            this.Hivemind.UnregisterExplored(crossingCoords, chosenDirection);
         }
         #endregion
     }
