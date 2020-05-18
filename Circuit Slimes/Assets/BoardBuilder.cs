@@ -11,7 +11,12 @@ public class BoardBuilder
     private static readonly float BordersWidth = 0.5f;
     private static readonly float YLevel = 1;
 
-    private class Line
+    private static readonly int Subspaces = 3;
+    private static readonly Color LineColor = new Color32(11, 222, 162, 255);
+    private static readonly float LineWidth = 0.2f;
+
+
+    private class Edge
     {
         public float x0 = 0;
         public float y0 = YLevel;
@@ -21,7 +26,7 @@ public class BoardBuilder
         public float y1 = YLevel;
         public float z1 = 0;
 
-        public Line(float x0, float z0, float x1, float z1)
+        public Edge(float x0, float z0, float x1, float z1)
         {
             this.x0 = x0;
             this.z0 = z0;
@@ -99,31 +104,31 @@ public class BoardBuilder
 
     private class Strip
     {
-        public List<Line> lines = new List<Line>();
+        public List<Edge> edges = new List<Edge>();
 
-        public void AddLine(Line line)
+        public void AddEdge(Edge edge)
         {
-            lines.Add(line);
+            edges.Add(edge);
         }
 
         public int[] Build(List<Vector3> vertices, List<int> triangles)
         {
-            if (lines.Count <= 1) return null;
+            if (edges.Count <= 1) return null;
 
             //verts is the id of the first and last vertex
             var verts = new int[2];
             verts[0] = vertices.Count;
 
             //first line
-            var line = lines[0];
-            vertices.Add(new Vector3(line.x0, line.y0, line.z0));
-            vertices.Add(new Vector3(line.x1, line.y1, line.z1));
+            var edge = edges[0];
+            vertices.Add(new Vector3(edge.x0, edge.y0, edge.z0));
+            vertices.Add(new Vector3(edge.x1, edge.y1, edge.z1));
 
-            for (var i = 1; i < lines.Count; i++)
+            for (var i = 1; i < edges.Count; i++)
             {
-                line = lines[i];
-                vertices.Add(new Vector3(line.x0, line.y0, line.z0));
-                vertices.Add(new Vector3(line.x1, line.y1, line.z1));
+                edge = edges[i];
+                vertices.Add(new Vector3(edge.x0, edge.y0, edge.z0));
+                vertices.Add(new Vector3(edge.x1, edge.y1, edge.z1));
 
                 var n = vertices.Count;
 
@@ -139,214 +144,6 @@ public class BoardBuilder
             return verts;
         }
     }
-
-
-    private class LineGrid
-    {
-        public enum Border
-        {
-            Left,
-            Top,
-            Right,
-            Bottom
-        }
-
-        public enum Direction
-        {
-            W, NW, N, NE, E, SE, S, SW
-        }
-
-        public Dictionary<Direction, Vector2Int> Directions = new Dictionary<Direction, Vector2Int>{
-            { Direction.W,  new Vector2Int( 0, -1) },
-            { Direction.NW, new Vector2Int(-1, -1) },
-            { Direction.N,  new Vector2Int(-1,  0) },
-            { Direction.NE, new Vector2Int(-1,  1) },
-            { Direction.E,  new Vector2Int( 0,  1) },
-            { Direction.SE, new Vector2Int( 1,  1) },
-            { Direction.S,  new Vector2Int( 1,  0) },
-            { Direction.SW, new Vector2Int( 1, -1) },
-        };
-
-        private int[,] grid;
-        public int h { get; private set; }
-        public int w { get; private set; }
-
-        public LineGrid(int h, int w)
-        {
-            this.h = h;
-            this.w = w;
-            this.grid = new int[h, w];
-        }
-
-        public int Get(int i, int j)
-        {
-            return grid[i, j];
-        }
-
-        public void Set(int i, int j, int val)
-        {
-            grid[i, j] = val;
-        }
-
-        public bool IsOutOfBounds(int i, int j)
-        {
-            if(i < 0 || i >= h || j < 0 || j >= w)
-            {
-                return true; 
-            }
-            return false;
-        }
-
-        public bool IsFree(int i, int j)
-        {
-            if(IsOutOfBounds(i, j))
-            {
-                return false;
-            }
-            return (Get(i, j) == 0);
-        }
-
-        public int GetAdjacent(int i, int j, Direction dir)
-        {
-            var ti = 0 + Directions[dir].x;
-            var tj = 0 + Directions[dir].y; 
-
-            if (ti != -1 && tj != -1 && !IsOutOfBounds(ti, tj))
-            {
-                return grid[i, j]; 
-            }
-            return -1;
-        }
-
-        public List<float> ScoreDirs(List<Direction> dirs, Vector2 v)
-        {
-            var res = new List<float>();
-            foreach (var d in dirs)
-            {
-                var dv = Directions[d];
-                float angle = Mathf.Atan2(dv.y - v.x, dv.x - v.y);
-                res.Add(angle);
-            }
-
-            return res;
-        }
-
-        public void Print()
-        {
-            var res = "";
-
-            for (int i = 0; i < h; i++)
-            {
-                for (int j = 0; j < w; j++)
-                {
-                    res += grid[i, j] + "\t";
-                }
-                res += "\n";
-            }
-
-            Debug.Log(res);
-        }
-    }
-
-
- 
-    public static List<int> GenerateRandom(int count, int min, int max)
-    {
-        if (max <= min || count < 0 || (count > max - min && max - min > 0))
-        {
-            return null;
-        }
-
-        // generate count random values.
-        HashSet<int> candidates = new HashSet<int>();
-
-        // start count values before max, and end at max
-        for (int top = max - count; top < max; top++)
-        {
-            // May strike a duplicate.
-            // Need to add +1 to make inclusive generator
-            // +1 is safe even for MaxVal max value because top < max
-            if (!candidates.Add((int) Random.Range(min, top + 1)))
-            {
-                // collision, add inclusive max.
-                // which could not possibly have been added before.
-                candidates.Add(top);
-            }
-        }
-
-        // load them in to a list, to sort
-        List<int> result = candidates.ToList();
-        result.Sort();
-
-        return result;
-    }
-
-
-    private static List<int>[] GeneratePorts(int width, int height) {
-
-        //generate ports randomly for all borders
-        var minPortsH = 1;
-        var maxPortsH = width / 2;
-        var minPortsV = 1;
-        var maxPortsV = height / 2;
-
-        var numLeftPorts = (int)Random.Range(minPortsV, maxPortsV);
-        var numTopPorts = (int)Random.Range(minPortsH, maxPortsH);
-        var numRightPorts = (int)Random.Range(minPortsV, maxPortsV);
-        var numBottomPorts = (int)Random.Range(minPortsH, maxPortsH);
-
-        var leftPorts = GenerateRandom(numLeftPorts, 1, height-1);
-        var topPorts = GenerateRandom(numTopPorts, 1, width-1);
-        var rightPorts = GenerateRandom(numRightPorts, 1, height-1);
-        var bottomPorts = GenerateRandom(numBottomPorts, 1, width-1);
-
-        return new List<int>[4]{leftPorts, topPorts, rightPorts, bottomPorts};
-    }
-
-
-    private static void PopulatePorts(LineGrid grid, int subspaces, List<int>[] allPorts, int numLines)
-    {
-        //LEFT
-        var ports = allPorts[0];
-        foreach(var i in ports)
-        {
-            for(var j = 0; j < subspaces; j++)
-            {
-                grid.Set(i*subspaces + j, 0, 1);
-            }
-        }
-
-        //TOP
-        ports = allPorts[1];
-        foreach (var i in ports)
-        {
-            for (var j = 0; j < subspaces; j++)
-            {
-                grid.Set(grid.h-1, i * subspaces + j, 1);
-            }
-        }
-
-        //RIGHT
-        ports = allPorts[2];
-        foreach (var i in ports)
-        {
-            for (var j = 0; j < subspaces; j++)
-            {
-                grid.Set(i * subspaces + j, grid.w-1, 1);
-            }
-        }
-
-        //BOTTOM
-        ports = allPorts[3];
-        foreach (var i in ports)
-        {
-            for (var j = 0; j < subspaces; j++)
-            {
-                grid.Set(0, i * subspaces + j, 1);
-            }
-        }
-    }
-
 
     //Build the mesh for the base
     private static Mesh CreateBoardBaseMesh(int width, int height, float unitSize)
@@ -369,11 +166,11 @@ public class BoardBuilder
         var bottomStrip = new Strip();
         for (var i = 0; i < width + 1; i++)
         {
-            var line = new Line(unitSize * i, h, unitSize * i, h + BordersWidth);
-            topStrip.AddLine(line);
+            var edge = new Edge(unitSize * i, h, unitSize * i, h + BordersWidth);
+            topStrip.AddEdge(edge);
 
-            line = new Line(unitSize * i, -BordersWidth, unitSize * i, 0);
-            bottomStrip.AddLine(line);
+            edge = new Edge(unitSize * i, -BordersWidth, unitSize * i, 0);
+            bottomStrip.AddEdge(edge);
         }
         var top = topStrip.Build(vertices, triangles);
         var bottom = bottomStrip.Build(vertices, triangles);
@@ -383,11 +180,11 @@ public class BoardBuilder
         var rightStrip = new Strip();
         for (var i = 0; i < height + 1; i++)
         {
-            var line = new Line(0, unitSize * i, -BordersWidth, unitSize * i);
-            leftStrip.AddLine(line);
+            var edge = new Edge(0, unitSize * i, -BordersWidth, unitSize * i);
+            leftStrip.AddEdge(edge);
 
-            line = new Line(w + BordersWidth, unitSize * i, w, unitSize * i);
-            rightStrip.AddLine(line);
+            edge = new Edge(w + BordersWidth, unitSize * i, w, unitSize * i);
+            rightStrip.AddEdge(edge);
         }
         var left = leftStrip.Build(vertices, triangles);
         var right = rightStrip.Build(vertices, triangles);
@@ -472,7 +269,7 @@ public class BoardBuilder
         outerEdges.Add(new Vector2Int(right[1] - 1, top[1]));
         outerEdges.Add(new Vector2Int(bottom[1] - 1, right[0]));
         outerEdges.Add(new Vector2Int(left[0] + 1, bottom[0]));
-        
+
         //extrude
         for (var i = 0; i < outerEdges.Count; i++)
         {
@@ -512,23 +309,544 @@ public class BoardBuilder
     }
 
 
+
+    private class Line
+    {
+        private List<Vector2Int> Nodes;
+        public int id = -1;
+        public int target = -1;
+
+        public Line(Vector2Int startnode, int id, int target)
+        {
+            this.Nodes = new List<Vector2Int>
+            {
+                startnode
+            };
+            this.id = id;
+            this.target = target;
+        }
+
+        public int GetSize()
+        {
+            return this.Nodes.Count;
+        }
+
+        public Vector2Int GetNode(int ind)
+        {
+            return this.Nodes[ind];
+        }
+
+        public void AddNode(Vector2Int node)
+        {
+            Nodes.Add(node);
+        }
+
+        public void Clear()
+        {
+            Nodes.Clear();
+        }
+
+        public void DrawDebug(int w, int h, float realw, float realh)
+        {
+            var col = new Color(
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f)
+            );
+
+            for (var i = 0; i < this.Nodes.Count-1; i++)
+            {
+                var n0 = this.Nodes[i];
+                var n1 = this.Nodes[i+1];
+                
+                var pos1 = new Vector3(n0.x * (realw/w), YLevel, n0.y * (realh/h));
+                var pos2 = new Vector3(n1.x * (realw/w), YLevel, n1.y * (realh/h));
+
+                Debug.DrawLine(pos1, pos2, col, 5000, true);
+            }
+        }
+
+        public void Build(GameObject obj, int w, int h, float realw, float realh)
+        {
+            var numNodes = this.Nodes.Count;
+
+            var lineobj = new GameObject();
+            lineobj.transform.parent = obj.transform;
+            lineobj.transform.localEulerAngles = new Vector3(90, 0, 0);
+
+            var renderer = lineobj.AddComponent<LineRenderer>();
+            renderer.alignment = LineAlignment.TransformZ;
+            renderer.positionCount = numNodes;
+            renderer.startWidth = LineWidth;
+
+            List<Vector3> nodePos = new List<Vector3>();
+            for (var i = 0; i < numNodes; i++)
+            {
+                var n = this.Nodes[i];
+
+                var pos = new Vector3(n.x * (realw / w), YLevel + 0.1f, n.y * (realh / h));
+                nodePos.Add(pos);
+            }
+            renderer.SetPositions(nodePos.ToArray());
+        }
+    }
+
+
+    private class LineGrid
+    {
+        public enum Border
+        {
+            Left,
+            Top,
+            Right,
+            Bottom
+        }
+
+        public enum Direction
+        {
+            W, NW, N, NE, E, SE, S, SW
+        }
+
+        public Dictionary<Direction, Vector2Int> Directions = new Dictionary<Direction, Vector2Int>{
+            { Direction.W,  new Vector2Int(-1,  0) },
+            { Direction.NW, new Vector2Int(-1,  1) },
+            { Direction.N,  new Vector2Int( 0,  1) },
+            { Direction.NE, new Vector2Int( 1,  1) },
+            { Direction.E,  new Vector2Int( 1,  0) },
+            { Direction.SE, new Vector2Int( 1, -1) },
+            { Direction.S,  new Vector2Int( 0, -1) },
+            { Direction.SW, new Vector2Int(-1, -1) },
+        };
+
+        private int[,] grid;
+        private Dictionary<Vector2Int, Vector2Int> parents;
+
+        public int w { get; private set; }
+        public int h { get; private set; }
+        public float realw{ get; private set; }
+        public float realh { get; private set; }
+
+        public List<Line> Lines;
+
+
+        public LineGrid(int w, int h, float realw, float realh)
+        {
+            this.w = w;
+            this.h = h;
+            this.realw = realw;
+            this.realh = realh;
+
+            this.grid = new int[w,h];
+            this.parents = new Dictionary<Vector2Int, Vector2Int>();
+
+            this.Lines = new List<Line>();
+        }
+
+
+        public int Get(Vector2Int pos)
+        {
+            var i = pos.x;
+            var j = pos.y;
+            return grid[i, j];
+        }
+
+        public void Set(Vector2Int pos, int val)
+        {
+            var i = pos.x;
+            var j = pos.y;
+            grid[i, j] = val;
+        }
+
+        public void SetParent(Vector2Int pos, Vector2Int parent)
+        {
+            parents[pos] = parent;
+        }
+
+        public Vector2Int GetParent(Vector2Int pos)
+        {
+            return parents[pos];
+        }
+
+
+        public bool IsOutOfBounds(Vector2Int pos)
+        {
+            var i = pos.x;
+            var j = pos.y;
+
+            if (i < 0 || i >= w || j < 0 || j >= h)
+            {
+                return true; 
+            }
+            return false;
+        }
+
+        public bool IsFree(Vector2Int pos)
+        {
+            if(IsOutOfBounds(pos))
+            {
+                return false;
+            }
+            return (Get(pos) == 0);
+        }
+
+        public Vector2Int GetAdjacentFree(Vector2Int pos, Direction dir)
+        {
+            var ti = pos.x + Directions[dir].x;
+            var tj = pos.y + Directions[dir].y;
+            var tpos = new Vector2Int(ti, tj);
+
+            if (!IsOutOfBounds(tpos) && IsFree(tpos))
+            {
+                return tpos; 
+            }
+            return new Vector2Int(-1,-1);
+        }
+
+        public List<Vector2Int> GetAllAdjacentFree(Vector2Int pos)
+        {
+            List<Vector2Int> res = new List<Vector2Int>();
+
+            foreach (var d in System.Enum.GetValues(typeof(Direction)))
+            {
+                var diags = true;
+                var bad = new Vector2Int(-1, -1);
+
+                switch (d)
+                {
+                    case Direction.SE:
+                        diags &= GetAdjacentFree(pos, Direction.S) != bad;
+                        diags &= GetAdjacentFree(pos, Direction.E) != bad;
+                        break;
+
+                    case Direction.NE:
+                        diags &= GetAdjacentFree(pos, Direction.N) != bad;
+                        diags &= GetAdjacentFree(pos, Direction.E) != bad;
+                        break;
+
+                    case Direction.NW:
+                        diags &= GetAdjacentFree(pos, Direction.N) != bad;
+                        diags &= GetAdjacentFree(pos, Direction.W) != bad;
+                        break;
+
+                    case Direction.SW:
+                        diags &= GetAdjacentFree(pos, Direction.S) != bad;
+                        diags &= GetAdjacentFree(pos, Direction.W) != bad;
+                        break;
+                }
+
+                var adj = GetAdjacentFree(pos, (Direction) d);
+                if(diags && adj != bad)
+                {
+                    res.Add(adj);
+                }
+            }
+            return res;
+        }
+
+        public Vector2Int GetBest(List<Vector2Int> list, Vector2Int target)
+        {
+            var minpos = new Vector2Int();
+            var mindist = float.MaxValue;
+
+            foreach (var p in list)
+            {
+                var dist = Vector2Int.Distance(p, target);
+                if(dist < mindist)
+                {
+                    mindist = dist;
+                    minpos = p;
+                }
+            }
+            return minpos;
+        }
+
+
+        public void AddLine(Line line)
+        {
+            if (this.IsFree(line.GetNode(0)))
+            {
+                this.Lines.Add(line);
+            }
+        }
+
+        public void TraceBackwards(Line line, Vector2Int finalpos)
+        {
+            
+            var startpos = line.GetNode(0);
+            var pos = finalpos;
+
+            line.Clear();
+
+            while (pos != startpos)
+            {
+                Set(pos, line.id);
+                line.AddNode(pos);
+
+                pos = GetParent(pos);
+            }
+            Set(pos, line.id);
+            line.AddNode(pos);
+        }
+
+        public void DrawDebug()
+        {
+            foreach (var line in this.Lines)
+            {
+                line.DrawDebug(this.w, this.h, this.realw, this.realh);
+            }
+        }
+
+        public void BuildLines(GameObject obj)
+        {
+            foreach (var line in this.Lines)
+            {
+                line.Build(obj, this.w, this.h, this.realw, this.realh);
+            }
+        }
+
+        public Line ChooseTarget(Line line)
+        {
+            foreach (var l in this.Lines)
+            {
+                //check if it is a good candidate
+                if (l.id == line.id || l.target != line.target)
+                {
+                    continue;
+                }
+
+                //check if target is valid
+                if(l.GetSize() == 1 && IsFree(l.GetNode(0)))
+                {
+                    return l;
+                }
+            }
+            //no target found
+            return null;
+        }
+
+        public void Print()
+        {
+            var res = "";
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    res += grid[i, j] + "\t";
+                }
+                res += "\n";
+            }
+            Debug.Log(res);            
+        }
+    }
+
+
+
+    //Generate 'count' random numbers between 'min' and 'max' (max not inclusive)
+    public static List<int> GenerateRandom(int count, int min, int max)
+    {
+        if (max <= min || count < 0 || (count > max - min && max - min > 0))
+        {
+            return null;
+        }
+
+        // generate count random values.
+        HashSet<int> candidates = new HashSet<int>();
+
+        // start count values before max, and end at max
+        for (int top = max - count; top < max; top++)
+        {
+            // May strike a duplicate.
+            // Need to add +1 to make inclusive generator
+            // +1 is safe even for MaxVal max value because top < max
+            if (!candidates.Add((int) Random.Range(min, top + 1)))
+            {
+                // collision, add inclusive max.
+                // which could not possibly have been added before.
+                candidates.Add(top);
+            }
+        }
+
+        // load them in to a list, to sort
+        List<int> result = candidates.ToList();
+        result.Sort();
+
+        return result;
+    }
+
+    //Generate ports to be used in the borders of the board
+    private static List<int>[] GeneratePorts(int width, int height) {
+
+        //generate ports randomly for all borders
+        var minPortsH = 1;
+        var maxPortsH = width / 2;
+        var minPortsV = 1;
+        var maxPortsV = height / 2;
+
+        var numLeftPorts = (int)Random.Range(minPortsV, maxPortsV);
+        var numTopPorts = (int)Random.Range(minPortsH, maxPortsH);
+        var numRightPorts = (int)Random.Range(minPortsV, maxPortsV);
+        var numBottomPorts = (int)Random.Range(minPortsH, maxPortsH);
+
+        var leftPorts = GenerateRandom(numLeftPorts, 1, height-1);
+        var topPorts = GenerateRandom(numTopPorts, 1, width-1);
+        var rightPorts = GenerateRandom(numRightPorts, 1, height-1);
+        var bottomPorts = GenerateRandom(numBottomPorts, 1, width-1);
+
+        return new List<int>[4]{leftPorts, topPorts, rightPorts, bottomPorts};
+    }
+
+    //Populate the line grid with line points from the ports
+    private static void PopulatePorts(LineGrid grid, int subspaces, List<int>[] allPorts, int numLines)
+    {
+        var id = 1;
+
+        //LEFT
+        var target = 0;
+        var ports = allPorts[0];
+        foreach(var i in ports)
+        {
+            for(var j = 0; j < subspaces; j++)
+            {
+                var line = new Line(new Vector2Int(0, i * subspaces + j), id++, target);
+                grid.AddLine(line);
+
+                target = (target + 1) % numLines;
+            }
+        }
+
+        //TOP
+        target = 0;
+        ports = allPorts[1];
+        foreach (var i in ports)
+        {
+            for (var j = 0; j < subspaces; j++)
+            {
+                var line = new Line(new Vector2Int(i * subspaces + j, grid.h - 1), id++, target);
+                grid.AddLine(line);
+
+                target = (target + 1) % numLines;
+            }
+        }
+
+        //RIGHT
+        target = 0;
+        ports = allPorts[2];
+        foreach (var i in ports)
+        {
+            for (var j = 0; j < subspaces; j++)
+            {
+                var line = new Line(new Vector2Int(grid.w - 1, i * subspaces + j), id++, target);
+                grid.AddLine(line);
+
+                target = (target + 1) % numLines;
+            }
+        }
+
+        //BOTTOM
+        target = 0;
+        ports = allPorts[3];
+        foreach (var i in ports)
+        {
+            for (var j = 0; j < subspaces; j++)
+            {
+                var line = new Line(new Vector2Int(i * subspaces + j, 0), id++, target);
+                grid.AddLine(line);
+
+                target = (target + 1) % numLines;
+            }
+        }
+    }
+
+
+    //pathfind to connect individual Line
+    private static void PathFindLine(LineGrid grid, Line line, Line target)
+    {
+        //target position
+        var targetpos = target.GetNode(0);
+
+        //list of nodes opened
+        List<Vector2Int> open = new List<Vector2Int>
+        {
+            line.GetNode(0)
+        };
+
+        //list of nodes closed
+        List<Vector2Int> closed = new List<Vector2Int>();
+
+
+        //pathfind
+        do {
+            if (open.Count == 0)
+            {
+                Debug.Log("No path");
+                return;
+            }
+
+            var currentpos = grid.GetBest(open, targetpos);
+            if(currentpos == targetpos)
+            {
+                Debug.Log("Path Found");
+                grid.TraceBackwards(line, targetpos);
+                return;
+            }
+
+            var allpossible = grid.GetAllAdjacentFree(currentpos);
+            foreach(var pos in allpossible)
+            {
+                if(!open.Contains(pos) && !closed.Contains(pos))
+                {
+                    open.Add(pos);
+                    grid.SetParent(pos, currentpos);
+                }
+            }
+            
+            open.Remove(currentpos);
+            closed.Add(currentpos);
+        }
+        while (open.Count != 0);
+
+        Debug.Log("Path Not Found");
+        return;
+    }
+
+
+    //pathfind to connect the lines 
+    private static void PathFindLines(LineGrid grid)
+    {
+
+        foreach(var line in grid.Lines)
+        {
+            //if line desnt exist ignore
+            if (line == null) continue;
+
+            //chose target and if none can be chosen ignore
+            var target = grid.ChooseTarget(line);
+            if (target == null) continue;
+
+            PathFindLine(grid, line, target);
+        } 
+    }
+
+
+
     //Build All
     public static void Build(GameObject boardObj, int width, int height, float unitSize)
     {
         //board ports
-        var allPorts = GeneratePorts(height, width);
+        var allPorts = GeneratePorts(width, height);
 
         //grid
-        var subspaces = 3;
-        var gridh = height * subspaces;
-        var gridw = width * subspaces;
-        LineGrid grid = new LineGrid(gridh, gridw);
+        var gridw = width  * Subspaces;
+        var gridh = height * Subspaces;
+        LineGrid grid = new LineGrid(gridw, gridh, width * unitSize, height * unitSize);
 
         //populate grid with port points
-        var numLines = (int) ((allPorts[0].Count + allPorts[1].Count + allPorts[2].Count + allPorts[3].Count) * subspaces)/4;
-        PopulatePorts(grid, subspaces, allPorts, numLines);
-        grid.Print();
+        var numLines = (int) ((allPorts[0].Count + allPorts[1].Count + allPorts[2].Count + allPorts[3].Count) * Subspaces)/4;
+        PopulatePorts(grid, Subspaces, allPorts, numLines);
 
+        //create lines from ports to other ports
+        PathFindLines(grid);
 
         //Create base mesh
         Mesh mesh = CreateBoardBaseMesh(width, height, unitSize);
@@ -551,6 +869,9 @@ public class BoardBuilder
         outln.OutlineMode = QuickOutline.Mode.OutlineVisible;
         outln.OutlineColor = new Color32(7, 80, 73, 255);
         outln.OutlineWidth = 5;
+
+        grid.DrawDebug();
+        grid.BuildLines(gameObject);
 
         return;
     }
