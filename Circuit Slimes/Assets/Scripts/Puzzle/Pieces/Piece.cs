@@ -32,7 +32,8 @@ namespace Puzzle
             None,
             Electric,
             Water,
-            Solder
+            Solder,
+            SElectric
         }
 
         public enum ComponentTypes
@@ -167,6 +168,9 @@ namespace Puzzle
                     case "SolderSlime":
                         return SlimeTypes.Solder;
 
+                    case "SmartElectricSlime":
+                        return SlimeTypes.SElectric;
+
                     default:
                         return SlimeTypes.None;
                 }
@@ -281,6 +285,9 @@ namespace Puzzle
 
                     case SlimeTypes.Water:
                         return "Water";
+
+                    case SlimeTypes.SElectric:
+                        return "SmartElectric";
                 }
             }
 
