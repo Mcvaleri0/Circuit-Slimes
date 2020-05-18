@@ -4,6 +4,8 @@ using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
 using Puzzle.Pieces.Slimes;
+using Puzzle.Pieces.Components;
+
 namespace Puzzle.Actions
 {
     public class SmartElectricMovement : ElectricMovement
@@ -23,20 +25,22 @@ namespace Puzzle.Actions
 
             if (adjacents.Count == 0) return null;
 
+            var moveCoords = new Vector2Int(-1, -1);
+            var chosenDir  = LevelBoard.Directions.None;
+            var crossing   = adjacents.Count > 2;
+
             var start = ((int)agent.Orientation) / 2;
 
             // If there's only one way to go
             if(adjacents.Count == 1)
             {
-                var dir = adjacents[0];
+                chosenDir = adjacents[0];
 
-                return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(agent.Coords, dir), false);
+                moveCoords = LevelBoard.GetAdjacentCoords(agent.Coords, chosenDir);
             }
             else if(agent is SmartElectricSlime slime)
             {
-                LevelBoard.Directions choice = LevelBoard.Directions.None;
-
-                var crossing = adjacents.Count > 2;
+                if(crossing) adjacents = this.CrosscheckUnexplored(slime, adjacents);
 
                 for (var i = 0; i < 4; i++)
                 {
@@ -44,20 +48,13 @@ namespace Puzzle.Actions
 
                     if (adjacents.Contains(dir))
                     {
-                        var explored = slime.GetExploredPaths(agent.Coords);
+                        moveCoords = LevelBoard.GetAdjacentCoords(slime.Coords, dir);
 
-                        if (crossing && explored != null && explored.Contains(dir))
-                        {
-                            choice = dir;
-                        }
-                        else
-                        {
-                            return new SmartElectricMovement(dir, LevelBoard.GetAdjacentCoords(slime.Coords, dir), crossing);
-                        }
+                        //DO STUFF
                     }
                 }
 
-                return new SmartElectricMovement(choice, LevelBoard.GetAdjacentCoords(slime.Coords, choice), crossing);
+                return new SmartElectricMovement(chosenDir, moveCoords, crossing);
             }
 
             return null;
@@ -107,8 +104,10 @@ namespace Puzzle.Actions
             {
                 var coords = agent.Coords + LevelBoard.DirectionalVectors[i * 2];
 
-                // If that Space is free
-                if (agent.IsFree(coords))
+                var piece = agent.PieceAt(coords);
+
+                // If that Space is free or has a Component
+                if (piece == null || piece is CircuitComponent)
                 {
                     var tile = agent.TileAt(coords);
 
@@ -119,6 +118,14 @@ namespace Puzzle.Actions
             }
 
             return adjacents;
+        }
+
+
+        protected List<LevelBoard.Directions> CrosscheckUnexplored(SmartElectricSlime slime, List<LevelBoard.Directions> adjacents)
+        {
+            slime.UpdateCrossing(slime.Coords, adjacents);
+
+            return slime.GetUnexploredPaths(slime.Coords);
         }
         #endregion
     }

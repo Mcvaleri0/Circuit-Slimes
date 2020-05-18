@@ -8,11 +8,9 @@ namespace Puzzle {
     {
         public Puzzle Puzzle { get; private set; }
     
-        [SerializeField]
         public List<SmartElectricSlime> Society { get; private set; }
 
-        [SerializeField]
-        public Dictionary<Vector2Int, List<LevelBoard.Directions>> ExploredPaths { get; private set; }
+        public Dictionary<Vector2Int, Crossing> Crossings { get; private set; }
 
 
         #region === Unity Methods ===
@@ -48,21 +46,28 @@ namespace Puzzle {
 
 
         #region === Exploration Methods ===
+        public void UpdateCrossing(Vector2Int crossingCoords, List<LevelBoard.Directions> available)
+        {
+            this.Crossings[crossingCoords].Update(available);
+        }
+
         public void RegisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
         {
-            this.ExploredPaths.TryGetValue(crossingCoords, out var explored);
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
 
-            if (explored == null)
+            if (crossing == null)
             {
-                explored = new List<LevelBoard.Directions>();
+                crossing = new Crossing();
 
                 this.ExploredPaths.Add(crossingCoords, explored);
             }
 
             if (!explored.Contains(exploredPath)) explored.Add(exploredPath);
+
+            if (explored.Count == 4) explored.Clear();
         }
 
-        public List<LevelBoard.Directions> GetExplored(Vector2Int crossingCoords)
+        public List<LevelBoard.Directions> GetUnexplored(Vector2Int crossingCoords)
         {
             this.ExploredPaths.TryGetValue(crossingCoords, out var explored);
 

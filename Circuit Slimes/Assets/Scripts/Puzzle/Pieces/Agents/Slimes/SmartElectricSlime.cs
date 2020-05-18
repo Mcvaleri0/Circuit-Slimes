@@ -53,14 +53,19 @@ namespace Puzzle.Pieces.Slimes
             }
         }
 
+        public void UpdateCrossing(Vector2Int crossingCoords, List<LevelBoard.Directions> available)
+        {
+            this.Hivemind.UpdateCrossing(crossingCoords, available);
+        }
+
         public void RegisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
         {
             this.Hivemind.RegisterExplored(crossingCoords, chosenDirection);
         }
 
-        public List<LevelBoard.Directions> GetExploredPaths(Vector2Int crossingCoords)
+        public List<LevelBoard.Directions> GetUnexploredPaths(Vector2Int crossingCoords)
         {
-            return this.Hivemind.GetExplored(crossingCoords);
+            return this.Hivemind.GetUnexplored(crossingCoords);
         }
 
         public void UnregisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
