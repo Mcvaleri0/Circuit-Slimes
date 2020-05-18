@@ -12,10 +12,20 @@ namespace Level
 {
     public class FileHelper
     {
-        #region /* Constants */
+        #region /* Paths */
 
-        private const string SAVE_PATH   = "Assets/Resources/Levels";
-        private const string LEVELS_PATH = "Levels";
+        public const string LEVELS_PATH = "Levels";
+        public const string ITEMS_PATH  = "Prefabs/Board Items";
+        public const string BUTTON_PATH = "Prefabs/Button";
+
+        private const string SAVE_PATH = "Assets/Resources/Levels";
+
+        #endregion
+
+
+        #region /* Files Names */
+
+        public const string EMPTY_LEVEL = "EmptyLevel";
 
         #endregion
 
@@ -69,13 +79,27 @@ namespace Level
             return jsonString;
         }*/
 
+
+        public static List<string> GetFileList(string pathInResources)
+        {
+            Object[] files = Resources.LoadAll(pathInResources);
+            List<string> res = new List<string>();
+
+            foreach (Object file in files)
+            {
+                res.Add(file.name);
+            }
+
+            return res;
+        }
+
         #endregion
 
 
         #region === Path Methods ===
 
         private static string PrepareSavePath(string fileName)
-        {
+            {
             #if UNITY_EDITOR
                 return Path.Combine(SAVE_PATH, fileName + ".json");
             #else

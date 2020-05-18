@@ -69,7 +69,7 @@ namespace Puzzle
         #region === Piece Methods ===
 
         public Piece CreatePiece(Piece.Caracteristics caracterization, Vector2Int coords,
-            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
+            LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             var piece = Piece.CreatePiece(this, caracterization, coords, ori, turn);
 

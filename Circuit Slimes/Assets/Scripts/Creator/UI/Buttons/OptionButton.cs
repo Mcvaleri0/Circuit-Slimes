@@ -39,6 +39,8 @@ namespace Creator.UI.Buttons
             this.NotSelectedColor = Color.white;
 
             this.ChangeColor();
+
+            this.GetComponent<Button>().onClick.AddListener(() => this.Select());
         }
 
         #endregion

@@ -92,6 +92,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OutlineWidth1: 0.07
     - _Parallax: 0.02
     - _RimOffset: 0.71
     - _RimPower: 0
@@ -103,13 +104,15 @@ Material:
     - _SpecularIntensity: 0.16
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WaterIntensity: 0.5
+    - _WaterIntensity: 0.6235205
     - _WaterSpeed: 0.2
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _ASEOutlineColor: {r: 0, g: 0.2784314, b: 0.76470596, a: 1}
+    - _ASEOutlineColor: {r: 0, g: 0.30538806, b: 0.6886792, a: 1}
     - _Color: {r: 0.24056602, g: 1, b: 0.9844916, a: 1}
     - _EmissionColor: {r: 0.36320752, g: 0.97641516, b: 1, a: 1}
     - _FaceOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0.21012294, b: 0.745283, a: 0}
+    - _OutlineColor1: {r: 0, g: 0.30588236, b: 0.6901961, a: 0}
     - _RimLightColor: {r: 0.759434, g: 0.9846447, b: 1, a: 0}

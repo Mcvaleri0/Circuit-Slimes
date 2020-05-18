@@ -367,13 +367,13 @@ namespace Puzzle
 
         #region === Create Piece ===
         public static Piece CreatePiece(Puzzle puzzle, Caracteristics caracterization, Vector2Int coords,
-            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
+            LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             return CreatePiece(puzzle, caracterization.ToString(), coords, ori, turn);
         }
 
         public static Piece CreatePiece(Puzzle puzzle, string prefabName, Vector2Int coords,
-                                        LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
+                                        LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             GameObject obj = Instantiate(puzzle, prefabName, coords);
 
