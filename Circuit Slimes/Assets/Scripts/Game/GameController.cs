@@ -237,7 +237,8 @@ namespace Game
             this.MainMenu.SetActive(true);
             this.QuitButton.SetActive(true);
 
-            this.LevelController.HideLevelMenu();
+            this.LevelController.Hide();
+            //this.LevelController.HideLevelMenu();
         }
 
         #endregion
