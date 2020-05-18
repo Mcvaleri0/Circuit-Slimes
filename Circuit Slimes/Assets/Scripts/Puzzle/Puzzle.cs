@@ -76,7 +76,7 @@ namespace Puzzle
         #region === Piece Methods ===
 
         public Piece CreatePiece(Piece.Caracteristics caracterization, Vector2Int coords,
-            LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
+            LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             var piece = Piece.CreatePiece(this, caracterization, coords, ori, turn);
 
@@ -117,6 +117,8 @@ namespace Puzzle
             // Remove the Piece from the Board
             if (!this.Board.RemovePieceAt(piece.Coords)) return false;
 
+            Destroy(piece.gameObject);
+
             return true;
         }
 
@@ -132,16 +134,6 @@ namespace Puzzle
             return this.Board.RotatePiece(piece, orientation);
         }
 
-
-        public void ReactivateAgent(Agent agent, Vector2Int coords)
-        {
-            this.Board.PlacePiece(agent, coords);
-        }
-
-        public void DeactivateAgent(Agent agent)
-        {
-            this.Board.RemovePiece(agent);
-        }
 
         public Piece GetPiece(Vector2Int coords)
         {
