@@ -27,11 +27,23 @@ namespace Creator.UI.Buttons
 
 
 
+        #region /* Permission Attributes */
+        
+        private string prefab { get; set; }
+        private PuzzleEditor Editor { get; set; }
+        
+        #endregion
+
+
+
         #region === Init Methods ===
 
-        public void Initialize(Resource resource, bool available)
+        public void Initialize(PuzzleEditor editor, string prefab, bool available)
+        //public void Initialize(Resource resource, bool available)
         {
-            this.Resource  = resource;
+            //this.Resource  = resource;
+            this.prefab = prefab;
+            this.Editor = editor;
             this.Available = available;
 
             this.AvailableColor = Color.green;
@@ -70,12 +82,14 @@ namespace Creator.UI.Buttons
             if (available)
             {
                 this.Available = available;
-                this.Resource.Increase();
+                //this.Resource.Increase();
+                this.Editor.AddPermission(this.prefab);
             }
             else
             {
                 this.Available = available;
-                this.Resource.Decrease();
+                //this.Resource.Decrease();
+                this.Editor.RemovePermission(this.prefab);
             }
 
             this.ChangeColor();

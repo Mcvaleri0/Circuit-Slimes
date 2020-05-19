@@ -94,13 +94,14 @@ namespace Creator.UI
 
             OptionButton optionButton = newObj.AddComponent<OptionButton>();
             optionButton.Initialize(this.Editor, text);
-            
+
             if (this.Mode is Mode.Editor)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);
                 AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
 
-                avlBtnScrp.Initialize(this.Editor, text, available.Contains(text));
+                avlBtnScrp.Initialize(this.Editor, text, this.Editor.Permissions().Contains(text));
+                //avlBtnScrp.Initialize(this.Editor, text, available.Contains(text));
             }
         }
 
