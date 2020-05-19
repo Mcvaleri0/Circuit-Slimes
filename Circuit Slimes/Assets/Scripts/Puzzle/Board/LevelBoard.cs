@@ -167,7 +167,6 @@ namespace Puzzle.Board
             // If the Coords are Out Of Bounds
             if (OutOfBounds(coords))
             {
-                Debug.Log("GetPiece - OutOfBoundsException - " + coords);
                 return null;
             }
 
@@ -322,7 +321,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("PlaceTile - OutOfBoundsException - " + coords);
                 return false;
             }
 
@@ -406,7 +404,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("GetTile - OutOfBoundsException - " + coords);
                 return null;
             }
 

@@ -61,5 +61,16 @@ namespace Puzzle {
         {
             if (this.Explored.Contains(dir)) this.Explored.Remove(dir);
         }
+
+
+        public bool FullyExplored()
+        {
+            return this.Available.Count == this.Explored.Count;
+        }
+
+        public void ClearExplored()
+        {
+            this.Explored.Clear();
+        }
     }
 }

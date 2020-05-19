@@ -21,7 +21,7 @@ namespace Puzzle {
 
             this.Society = new List<SmartElectricSlime>();
 
-            this.ExploredPaths = new Dictionary<Vector2Int, List<LevelBoard.Directions>>();
+            this.Crossings = new Dictionary<Vector2Int, Crossing>();
         }
 
         // Update is called once per frame
@@ -48,40 +48,44 @@ namespace Puzzle {
         #region === Exploration Methods ===
         public void UpdateCrossing(Vector2Int crossingCoords, List<LevelBoard.Directions> available)
         {
-            this.Crossings[crossingCoords].Update(available);
+            bool _new;
+
+            if (!this.Crossings.ContainsKey(crossingCoords)) this.Crossings.Add(crossingCoords, new Crossing(available)); _new = true;
+
+            var crossing = this.Crossings[crossingCoords];
+
+            if(!_new) crossing.Update(available);
         }
 
         public void RegisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
         {
             this.Crossings.TryGetValue(crossingCoords, out var crossing);
 
-            if (crossing == null)
-            {
-                crossing = new Crossing();
+            // Should never happen
+            if (crossing == null) return;
 
-                this.ExploredPaths.Add(crossingCoords, explored);
-            }
+            crossing.MarkExplored(exploredPath);
 
-            if (!explored.Contains(exploredPath)) explored.Add(exploredPath);
-
-            if (explored.Count == 4) explored.Clear();
+            if (crossing.FullyExplored()) crossing.ClearExplored();
         }
 
         public List<LevelBoard.Directions> GetUnexplored(Vector2Int crossingCoords)
         {
-            this.ExploredPaths.TryGetValue(crossingCoords, out var explored);
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
 
-            return explored;
+            if (crossing == null) return null;
+
+            return crossing.GetUnexplored();
         }
 
         public void UnregisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
         {
-            this.ExploredPaths.TryGetValue(crossingCoords, out var explored);
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
 
-            if (explored != null && explored.Contains(exploredPath))
-            {
-                explored.Remove(exploredPath);
-            }
+            //Should never happen
+            if (crossing == null) return;
+
+            crossing.UnmarkExplored(exploredPath);
         }
         #endregion
     }

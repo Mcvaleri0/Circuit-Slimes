@@ -8,7 +8,7 @@ using Puzzle.Pieces.Components;
 
 namespace Puzzle.Actions
 {
-    public class SmartElectricMovement : ElectricMovement
+    public class SmartElectricMovement : Move
     {
         private bool Crossing = false;
 
@@ -23,38 +23,65 @@ namespace Puzzle.Actions
         {
             var adjacents = CheckAdjacentSolderTiles(agent);
 
-            if (adjacents.Count == 0) return null;
+            #region Crossing Attributes
+            var crossing = false;
 
-            var moveCoords = new Vector2Int(-1, -1);
-            var chosenDir  = LevelBoard.Directions.None;
-            var crossing   = adjacents.Count > 2;
+            List<LevelBoard.Directions> unexplored = null;
 
-            var start = ((int)agent.Orientation) / 2;
-
-            // If there's only one way to go
-            if(adjacents.Count == 1)
+            if(adjacents.Count > 2)
             {
-                chosenDir = adjacents[0];
+                crossing = true;
 
-                moveCoords = LevelBoard.GetAdjacentCoords(agent.Coords, chosenDir);
+                var slime = (SmartElectricSlime)agent;
+
+                slime.UpdateCrossing(slime.Coords, new List<LevelBoard.Directions>(adjacents.Keys));
+
+                unexplored = slime.GetUnexploredPaths(slime.Coords);
             }
-            else if(agent is SmartElectricSlime slime)
+            #endregion
+
+            var start = ((int)(agent.Orientation)) / 2;
+
+            var maxUtility = 0;
+            var bestChoice = LevelBoard.Directions.None;
+            var isMove     = true;
+
+            // For each cardinal Direction
+            for(var i = 0; i < 4; i++)
             {
-                if(crossing) adjacents = this.CrosscheckUnexplored(slime, adjacents);
+                // Make the Direction
+                var dir = (LevelBoard.Directions)(((start + i + 3) * 2) % 8);
 
-                for (var i = 0; i < 4; i++)
+                // If there is an adjacent Solder Tile
+                if(adjacents.TryGetValue(dir, out var piece))
                 {
-                    var dir = (LevelBoard.Directions)((start + i + 3) % 4 * 2);
+                    var utility = 1;
 
-                    if (adjacents.Contains(dir))
+                    // If there's a Piece that is not a Component
+                    // Or a Component that is at capacity, check the next Direction
+                    if ((piece != null && !(piece is CircuitComponent)) ||
+                        (piece is CircuitComponent component && component.Stats.Food >= component.Stats.MaxFood)) continue;
+
+                    // If this Direction has not been explored
+                    if (crossing && unexplored.Contains(dir)) utility += 1;
+
+                    // If the utility is better going this way
+                    if(utility > maxUtility)
                     {
-                        moveCoords = LevelBoard.GetAdjacentCoords(slime.Coords, dir);
+                        maxUtility = utility;
 
-                        //DO STUFF
+                        bestChoice = dir;
+
+                        isMove = piece == null;
                     }
                 }
+            }
 
-                return new SmartElectricMovement(chosenDir, moveCoords, crossing);
+            // If the best choice is not to stay in place
+            if(bestChoice != LevelBoard.Directions.None)
+            {
+                if (isMove) return new SmartElectricMovement(bestChoice, LevelBoard.GetAdjacentCoords(agent.Coords, bestChoice), crossing);
+                else return new Charge((CircuitComponent) adjacents[bestChoice], crossing);
             }
 
             return null;
@@ -96,36 +123,33 @@ namespace Puzzle.Actions
 
 
         #region Aux
-        protected new List<LevelBoard.Directions> CheckAdjacentSolderTiles(Agent agent)
+        protected Dictionary<LevelBoard.Directions, Piece> CheckAdjacentSolderTiles(Agent agent)
         {
-            var adjacents = new List<LevelBoard.Directions>();
+            Dictionary<LevelBoard.Directions, Piece> adjacents = new Dictionary<LevelBoard.Directions, Piece>();
 
-            for(var i = 0; i < 4; i++)
+            // For each cardinal direction
+            for (var i = 0; i < 4; i++)
             {
-                var coords = agent.Coords + LevelBoard.DirectionalVectors[i * 2];
+                var dir = (LevelBoard.Directions)(i * 2); // Create Direction
 
-                var piece = agent.PieceAt(coords);
+                // Get coordinates of adjacent Space in that Direction
+                var coords = LevelBoard.GetAdjacentCoords(agent.Coords, dir);
 
-                // If that Space is free or has a Component
-                if (piece == null || piece is CircuitComponent)
+                // Get Tile at that Space
+                var tile = agent.TileAt(coords);
+
+                // If there's a Solder Tile there
+                if (tile != null && tile.Type == Tile.Types.Solder)
                 {
-                    var tile = agent.TileAt(coords);
+                    // Get Piece at that Space
+                    var piece = agent.PieceAt(coords);
 
-                    // If it has a Solder Tile
-                    if (tile != null && tile.Type == Tile.Types.Solder)
-                        adjacents.Add((LevelBoard.Directions)(i * 2));
+                    // Add adjacency
+                    adjacents.Add(dir, piece);
                 }
             }
 
             return adjacents;
-        }
-
-
-        protected List<LevelBoard.Directions> CrosscheckUnexplored(SmartElectricSlime slime, List<LevelBoard.Directions> adjacents)
-        {
-            slime.UpdateCrossing(slime.Coords, adjacents);
-
-            return slime.GetUnexploredPaths(slime.Coords);
         }
         #endregion
     }
