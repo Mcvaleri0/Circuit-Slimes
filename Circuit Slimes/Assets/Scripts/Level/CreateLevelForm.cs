@@ -118,7 +118,7 @@ namespace Level
         
         private void CreateLevel()
         {
-            if (this.LevelController.CreateLevel(this.Name.text))
+            if (this.LevelController.CreateLevel(this.Name.text, int.Parse(this.Width.text), int.Parse(this.Height.text)))
             {
                 this.LevelMenu.Update();
                 this.GameController.LoadScene(GameController.CREATOR);
