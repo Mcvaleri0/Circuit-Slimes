@@ -8,6 +8,8 @@ namespace Puzzle.Pieces
 {
     public class Agent : Piece
     {
+        private const double EXPECTED_DELTA = 1d / 60d;
+
         protected int StartTurn;
 
         public int Turn;
@@ -225,7 +227,7 @@ namespace Puzzle.Pieces
             float targetAngle  = 360 - ((float) targetDir) * 45f;
             if (targetAngle == 360) targetAngle = 0;
 
-            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, percentage);
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * (Time.deltaTime / EXPECTED_DELTA)));
 
             if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
 
@@ -260,7 +262,7 @@ namespace Puzzle.Pieces
 
                 var norm = (new Vector3(dX, 0, dZ)).normalized; // Normalize the distance vector;
 
-                this.transform.position += norm * maxVelocity; // Apply movement
+                this.transform.position += norm * ((float) (maxVelocity * (Time.deltaTime / EXPECTED_DELTA))); // Apply movement
 
                 return false;
             }
