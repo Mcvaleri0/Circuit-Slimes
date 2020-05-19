@@ -107,7 +107,7 @@ namespace Puzzle.Data
             this.Permissions = puzzle.Permissions.ToArray();
 
             #region Resources
-            List<Resource> resources = puzzle.Resources.Values.Where(r => r.WorthSaving()).ToList();
+            List<Resource> resources = puzzle.ResourcesAvailable.Values.Where(r => r.WorthSaving()).ToList();
             int nResources = resources.Count;
 
             this.ResourcesAvailable = new ResourceData[nResources];

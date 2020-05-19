@@ -10,17 +10,10 @@ public class OutlineSelectionResponse : MonoBehaviour, IPieceSelectionResponse
 
         if(outline == null)
         {
-            var outln = selection.gameObject.AddComponent<Outline>();
+            outline = selection.gameObject.AddComponent<Outline>();
+        }
 
-            outln.OutlineMode  = Outline.Mode.OutlineAll;
-            outln.OutlineColor = Color.white;
-            
-            outln.OutlineWidth = 5;
-        }
-        else
-        {
-            outline.OutlineWidth = 5;
-        }
+        outline.Select();
     }
 
     public void OnDeselect(Transform selection)
@@ -29,7 +22,7 @@ public class OutlineSelectionResponse : MonoBehaviour, IPieceSelectionResponse
 
         if (outline != null)
         {
-            outline.OutlineWidth = 0;
+            outline.DeSelect();
         }
     }
 }

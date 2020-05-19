@@ -5,6 +5,8 @@ using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
 
+
+
 namespace Puzzle
 {
     public class Puzzle : MonoBehaviour
@@ -23,7 +25,7 @@ namespace Puzzle
 
         public List<string> Permissions { get; private set; }
 
-        public Dictionary<string, Resource> Resources { get; private set; }
+        public Dictionary<string, Resource> ResourcesAvailable { get; private set; }
 
         public WinCondition WinCondition { get; private set; }
 
@@ -32,9 +34,26 @@ namespace Puzzle
 
         #region === Initialization Methods ===
 
+        public static Puzzle CreateEmpty(int width, int height)
+        {
+            GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
+            puzzleObj.name = "Puzzle";
+            Puzzle puzzle = puzzleObj.GetComponent<Puzzle>();
+
+            GameObject boardObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Board"));
+            boardObj.name = "Board";
+            boardObj.transform.parent = puzzleObj.transform;
+            LevelBoard board = boardObj.GetComponent<LevelBoard>();
+
+            board.Initialize(width, height);
+            puzzle.Initialize(board);
+
+            return puzzle;
+        }
+
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null, new Dictionary<string, Resource>());
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
         }
 
         public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, 
@@ -45,7 +64,7 @@ namespace Puzzle
             this.Pieces = pieces;
             this.Permissions = permissions;
             this.WinCondition = winCondition;
-            this.Resources = resources;
+            this.ResourcesAvailable = resources;
 
             this.Agents = new List<Agent>();
 
@@ -160,6 +179,7 @@ namespace Puzzle
 
 
         #region === Tile Methods ===
+ 
         public Tile CreateTile(Tile.Types type, Vector2Int coords)
         {
             var tile = Tile.CreateTile(this, type, coords);
@@ -224,7 +244,6 @@ namespace Puzzle
             }
         }
 
-
         #endregion
 
 
@@ -249,12 +268,12 @@ namespace Puzzle
         {
             try
             {
-                return this.Resources[prefab];
+                return this.ResourcesAvailable[prefab];
             }
             catch (KeyNotFoundException)
             {
                 Resource resource = new Resource(prefab);
-                this.Resources[prefab] = resource;
+                this.ResourcesAvailable[prefab] = resource;
                 return resource;
             }
         }
@@ -262,7 +281,7 @@ namespace Puzzle
 
         public List<string> GetAllResources()
         {
-            return this.Resources.Keys.ToList();
+            return this.ResourcesAvailable.Keys.ToList();
         }
 
         #endregion
