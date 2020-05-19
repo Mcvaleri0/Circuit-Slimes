@@ -16,6 +16,7 @@ namespace Puzzle.Actions
 
         public Vector2Int ComponentCoords { get; private set; }
 
+
         public Charge() { }
 
         public Charge(CircuitComponent component) 
@@ -25,7 +26,8 @@ namespace Puzzle.Actions
             this.ComponentCoords = component.Coords;
         }
 
-        #region Action Methods
+
+        #region === Action Methods ===
 
         override public Action Available(Agent agent)
         {
