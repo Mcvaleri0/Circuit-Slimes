@@ -127,15 +127,14 @@ namespace Level
         private void GetLevels()
         {
             this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH);
-            this.Levels = this.Levels.Where(level => !level.Equals(FileHelper.EMPTY_LEVEL)).ToList();
-            
+           
             this.nLevels = this.Levels.Count;
         }
 
 
         private bool ValidName(string name)
         {
-            return ((name.Length > 0) && (!name.Equals(FileHelper.EMPTY_LEVEL)) && (!this.Levels.Contains(name)));
+            return ((name.Length > 0) && (!this.Levels.Contains(name)));
         }
 
         #endregion
