@@ -57,8 +57,8 @@ public class MainMenu : MonoBehaviour
 
         ReadMeInfo = transform.Find("ReadMe Info");
 
-        PlayButton.onClick.AddListener(() => this.Controller.ChooseLevel(GameController.LEVELS));
-        LevelEditButton.onClick.AddListener(() => this.Controller.ChooseLevel(GameController.CREATOR));
+        PlayButton.onClick.AddListener(() => this.Controller.ShowLevelMenu(GameController.LEVELS));
+        LevelEditButton.onClick.AddListener(() => this.Controller.ShowLevelMenu(GameController.CREATOR));
 
         ReadMeButton.onClick.AddListener(() => ReadMeCallBack());
 
