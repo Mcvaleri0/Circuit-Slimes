@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
-using Game;
 using Puzzle.Data;
 
 
@@ -14,134 +11,81 @@ namespace Level
 {
     public class LevelController
     {
-        #region /* Game Controller */
+        #region /* Level List */
+        
+        public List<string> Levels { get; private set; }
 
-        private GameController Controller { get; set; }
-
-        #endregion
-
-
-        #region /* Level IDs */
-
-        private const string EMPTY_LEVEL = "EmptyLevel";
-
-        public string CurrentLevel { get; private set; }
-        private int CurrentInd { get; set; }
         private int nLevels { get; set; }
 
         #endregion
 
 
-        #region /* Level List */
-
-        private List<string> Levels { get; set; }
-
-        #endregion
-
-
-        #region /* UI Attributes */
+        #region /* Current Level */
         
-        private Transform MenuTransform { get; set; }
-        private Transform ContentTransform { get; set; }
-        private Transform BackButton { get; set; }
+        private string CurrentLevel { get; set; }
 
-        private Object OptionButton { get; set; }
+        private int CurrentInd { get; set; }
 
         #endregion
 
 
 
         #region === Init Methods ===
-
-        public LevelController(GameController Controller, Transform transform)
+        
+        public LevelController()
         {
-            this.Controller = Controller;
-            this.InitializeMenu(transform);
-        }
-
-
-        private void InitializeMenu(Transform transform)
-        {
-            this.MenuTransform = transform.Find("Canvas").Find("Menu");
-            this.HideLevelMenu();
-
-            this.ContentTransform = this.MenuTransform.Find("LevelsMenu").Find("Viewport").Find("Content");
-
-            this.BackButton = this.MenuTransform.Find("BackButton");
-            this.BackButton.GetComponent<Button>().onClick.AddListener(() => this.Controller.ShowMainMenu());
-
-            this.OptionButton = Resources.Load(FileHelper.BUTTON_PATH);
-
-            this.PopulateMenu();
+            this.GetLevels();
 
             this.CurrentInd = 0;
             this.CurrentLevel = this.Levels[this.CurrentInd];
-            this.nLevels = this.Levels.Count;
-        }
-
-        #endregion
-
-
-        #region === Menu Methods ===
-
-        public void ShowLevelMenu(string nextScene)
-        {
-            this.DefineOptionsCallBack(nextScene);
-            this.MenuTransform.gameObject.SetActive(true);
         }
 
 
-        public void HideLevelMenu()
+        public bool CreateLevel(string name, int width, int height)
         {
-            this.MenuTransform.gameObject.SetActive(false);
-        }
-
-
-        private void PopulateMenu()
-        {
-            this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH).Where(f => !f.Equals(EMPTY_LEVEL)).ToList();
-
-            foreach (string level in this.Levels)
+            if (this.ValidName(name))
             {
-                GameObject newObj = (GameObject) GameObject.Instantiate(this.OptionButton, this.ContentTransform);
-                newObj.GetComponentInChildren<Text>().text = level;
+                Puzzle.Puzzle empty = Puzzle.Puzzle.CreateEmpty(width, height);
+                empty.gameObject.SetActive(false);
+                this.SaveLevel(empty, name);
+                this.GetLevels();
+                this.Current(name);
+                return true;
             }
-        }
-
-
-        private void DefineOptionsCallBack(string nextScene)
-        {
-            foreach (Transform option in this.ContentTransform)
+            else
             {
-                Button optionButton = option.GetComponentInChildren<Button>();
-                string level = option.GetComponentInChildren<Text>().text;
-
-                optionButton.onClick.RemoveAllListeners();
-                optionButton.onClick.AddListener(() => this.ChooseLevel(level, nextScene));
+                return false;
             }
         }
 
         #endregion
 
 
-        #region === Load / Save Level ===
+        #region === Current Level Methods ===
+        
+        public void Current(string level)
+        {
+            this.CurrentLevel = level;
+            this.CurrentInd = this.Levels.IndexOf(level);
+        }
+
 
         public Puzzle.Puzzle LoadLevel()
         {
-            return this.LoadLevel(this.CurrentLevel);
+            return PuzzleData.Load(this.CurrentLevel);
         }
 
 
-        private Puzzle.Puzzle LoadLevel(string LevelName)
+        public void SaveLevel(Puzzle.Puzzle puzzle)
         {
-            return PuzzleData.Load(LevelName);
+            this.SaveLevel(puzzle, this.CurrentLevel);
         }
 
 
-        public void SaveLevel(string level, Puzzle.Puzzle puzzle)
+        private void SaveLevel(Puzzle.Puzzle puzzle, string name)
         {
             PuzzleData puzzleData = new PuzzleData(puzzle);
-            puzzleData.Save(level);
+            puzzleData.Save(name);
 
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
@@ -149,15 +93,7 @@ namespace Level
         #endregion
 
 
-        #region === Change Level ===
-
-        private void ChooseLevel(string levelName, string nextScene)
-        {
-            this.CurrentLevel = levelName;
-            this.CurrentInd   = this.Levels.IndexOf(this.CurrentLevel);
-            this.Controller.LoadScene(nextScene);
-        }
-
+        #region === Next / Previous Level Methods ===
 
         public Puzzle.Puzzle NextLevel()
         {
@@ -165,7 +101,7 @@ namespace Level
 
             this.CurrentLevel = this.Levels[this.CurrentInd];
 
-            return this.LoadLevel(this.CurrentLevel);
+            return this.LoadLevel();
         }
 
 
@@ -180,37 +116,27 @@ namespace Level
 
             this.CurrentLevel = this.Levels[this.CurrentInd];
 
-            return this.LoadLevel(this.CurrentLevel);
+            return this.LoadLevel();
         }
 
         #endregion
 
 
-        //#region === Player's Levels Methods ===
+        #region === Level Name Methods ===
 
-        //private bool CreatePlayersLevel()
-        //{
-        //    string path = Path.Combine(Application.persistentDataPath, LEVELS_PATH);
-        //    string completePath = Path.Combine(path, PLAYERS_LEVEL_NAME + ".json");
+        private void GetLevels()
+        {
+            this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH);
+           
+            this.nLevels = this.Levels.Count;
+        }
 
-        //    if (!Directory.Exists(path))
-        //    {
-        //        Directory.CreateDirectory(path);
-        //        var file = File.Create(completePath);
-        //        file.Dispose();
-        //        return true;
-        //    }
-        //    else if (!File.Exists(completePath))
-        //    {
-        //        var file = File.Create(completePath);
-        //        file.Dispose();
-        //        return true;
-        //    }
 
-        //    return false;
-        //}
+        private bool ValidName(string name)
+        {
+            return ((name.Length > 0) && (!this.Levels.Contains(name)));
+        }
 
-        //#endregion
-
+        #endregion
     }
 }

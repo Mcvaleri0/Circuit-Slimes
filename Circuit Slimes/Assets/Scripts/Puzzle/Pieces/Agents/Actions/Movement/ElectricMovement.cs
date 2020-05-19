@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
+using Puzzle.Pieces.Components;
 
 namespace Puzzle.Actions
 {
@@ -17,23 +18,28 @@ namespace Puzzle.Actions
         #region Action Methods
         override public Action Available(Agent agent)
         {
-            ArrayList adjacents = CheckAdjacentSolderTiles(agent);
+            var adjacents = CheckAdjacentSolderTiles(agent);
                        
             var start = ((int) agent.Orientation) / 2;
 
             for (var i = 0; i < 4; i++)
             {
-                var ind = (start + i + 3) % 4;
+                var dir = (LevelBoard.Directions) (((start + i + 3) % 4) * 2);
 
-                if((bool) adjacents[ind] == true)
+                if(adjacents.TryGetValue(dir, out var component))
                 {
-                    var dir = (LevelBoard.Directions) (ind * 2);
-
                     var tcoords = LevelBoard.GetAdjacentCoords(agent.Coords, dir);
 
                     if (tcoords.sqrMagnitude > 1000f) continue;
 
-                    return new ElectricMovement(dir, tcoords);
+                    if (component == null)
+                    {
+                        return new ElectricMovement(dir, tcoords);
+                    }
+                    else
+                    {
+                        return new Charge(component);
+                    }
                 }
             }
 
@@ -55,19 +61,32 @@ namespace Puzzle.Actions
 
 
         #region Aux
-        protected ArrayList CheckAdjacentSolderTiles(Agent agent)
+        protected Dictionary<LevelBoard.Directions, CircuitComponent> CheckAdjacentSolderTiles(Agent agent)
         {
-            ArrayList adjacents = CheckCrossAdjacents(agent);
+            Dictionary<LevelBoard.Directions, CircuitComponent> adjacents = new Dictionary<LevelBoard.Directions, CircuitComponent>();
             
             for(var i = 0; i < 4; i++)
             {
-                if((bool) adjacents[i])
+                var dir = (LevelBoard.Directions) (i * 2);
+
+                var coords = LevelBoard.GetAdjacentCoords(agent.Coords, dir);
+
+                var tile  = agent.TileAt(coords);
+
+                // If there's a Solder Tile there
+                if(tile != null && tile.Type == Tile.Types.Solder)
                 {
-                    var coords = agent.Coords + LevelBoard.DirectionalVectors[i * 2];
+                    var piece = agent.PieceAt(coords);
 
-                    var tile = agent.TileAt(coords);
-
-                    if (tile == null || tile.Type != Tile.Types.Solder) adjacents[i] = false;
+                    if (piece == null)
+                    {
+                        adjacents.Add(dir, null);
+                    }
+                    else if(piece is CircuitComponent component &&
+                        component.Stats.Food < component.Stats.MaxFood)
+                    {
+                        adjacents.Add(dir, component);
+                    }
                 }
             }
 

@@ -46,8 +46,18 @@
                 },
                 {
                     "x": 6,
-                    "y": 0
-                },
+                    "y": 4
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        }
+    ],
+    "Tiles": [
+        {
+            "PrefabName": "SolderTile",
+            "Coords": [
                 {
                     "x": 4,
                     "y": 0

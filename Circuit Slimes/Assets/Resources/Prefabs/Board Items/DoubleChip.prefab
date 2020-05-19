@@ -206,7 +206,7 @@ MonoBehaviour:
   Turn: 0
   State: 0
   MaxCharges: 0
-  StartingCharges: 1
+  StartingCharges: 0
 --- !u!65 &619052207
 BoxCollider:
   m_ObjectHideFlags: 0

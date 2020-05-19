@@ -93,6 +93,7 @@ Material:
     - _Mode: 0
     - _NormalScale: 1
     - _OcclusionStrength: 1
+    - _OutlineWidth: 0.1
     - _Parallax: 0.02
     - _RimOffset: 0.29
     - _RimPower: 1.38
@@ -110,5 +111,6 @@ Material:
     - _ASEOutlineColor: {r: 0.7019608, g: 0.0759434, b: 0, a: 1}
     - _Color: {r: 0.60903394, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 0.32339624, b: 0.23113209, a: 1}
+    - _OutlineColor: {r: 1, g: 0.48584908, b: 0.48584908, a: 0}
     - _RimLightColor: {r: 1, g: 0.65565306, b: 0.6273585, a: 0}
     - _Tint: {r: 1, g: 0.089900136, b: 0.033018887, a: 0}

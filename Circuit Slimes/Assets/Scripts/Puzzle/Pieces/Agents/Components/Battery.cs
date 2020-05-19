@@ -31,7 +31,7 @@ namespace Puzzle.Pieces.Components
         {
             var footprint = this.GetFootprint();
 
-            var origCoords = footprint[1];
+            var origCoords = footprint[footprint.Length - 1];
 
             var tile = this.Puzzle.GetTile(origCoords);
 
