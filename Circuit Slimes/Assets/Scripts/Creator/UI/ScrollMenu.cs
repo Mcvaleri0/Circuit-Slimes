@@ -41,7 +41,7 @@ namespace Creator.UI
         #region === Initialization Methods === 
 
         public ScrollMenu(PuzzleEditor editor, SelectionSystem selection, Mode.Mode mode,
-            Transform menu, List<string> options, List<string> available)
+            Transform menu, List<string> options)
         {
             this.Editor    = editor;
             this.Selection = selection;
@@ -55,14 +55,14 @@ namespace Creator.UI
             this.OptionButton    = Resources.Load(FileHelper.BUTTON_PATH);
             this.AvailableButton = Resources.Load(BUTTONS_PATH + "Creator/AvailableButton");
 
-            this.Initialize(options, available);
+            this.Initialize(options, this.OptionButton);
         }
 
 
-        private void Initialize(List<string> options, List<string> available)
+        private void Initialize(List<string> options, Object button)
         {
             this.ResizeMenu();
-            this.PopulateContent(options, available);
+            this.PopulateContent(options, button);
         }
 
         #endregion
@@ -78,38 +78,39 @@ namespace Creator.UI
         }
 
 
-        private void PopulateContent(List<string> options, List<string> available)
+        private void PopulateContent(List<string> options, Object button)
         {
             foreach (string opt in options)
             {
-                this.InstantiateOption(opt, available);
+                this.InstantiateOption(opt, button);
             }
         }
 
 
-        private void InstantiateOption(string text, List<string> available)
+        private void InstantiateOption(string text, Object button)
         {
-            GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionButton, this.MenuContent);
+            GameObject newObj = (GameObject)GameObject.Instantiate(button, this.MenuContent);
             newObj.GetComponentInChildren<Text>().text = text;
 
             OptionButton optionButton = newObj.AddComponent<OptionButton>();
             optionButton.Initialize(this.Editor, text);
-            
+
             if (this.Mode is Mode.Editor)
             {
                 GameObject avlBtnObj = (GameObject)GameObject.Instantiate(this.AvailableButton, newObj.transform);
                 AvailableButton avlBtnScrp = avlBtnObj.GetComponent<AvailableButton>();
 
-                avlBtnScrp.Initialize(this.Editor, text, available.Contains(text));
+                avlBtnScrp.Initialize(this.Editor, text, this.Editor.Permissions().Contains(text));
+                //avlBtnScrp.Initialize(this.Editor, text, available.Contains(text));
             }
         }
 
 
-        public void UpdateContent(List<string> newOptions, List<string> available)
+        public void UpdateContent(List<string> newOptions)
         {
             this.ClearMenu();
 
-            this.PopulateContent(newOptions, available);
+            this.PopulateContent(newOptions, this.OptionButton);
         }
 
 

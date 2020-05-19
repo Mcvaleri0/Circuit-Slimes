@@ -41,12 +41,13 @@ namespace Level
         }
 
 
-        public bool CreateLevel(string name)
+        public bool CreateLevel(string name, int width, int height)
         {
             if (this.ValidName(name))
             {
-                string emptyLevel = FileHelper.LoadLevel(FileHelper.EMPTY_LEVEL);
-                FileHelper.WriteLevel(emptyLevel, name);
+                Puzzle.Puzzle empty = Puzzle.Puzzle.CreateEmpty(width, height);
+                empty.gameObject.SetActive(false);
+                this.SaveLevel(empty, name);
                 this.GetLevels();
                 this.Current(name);
                 return true;
@@ -77,8 +78,14 @@ namespace Level
 
         public void SaveLevel(Puzzle.Puzzle puzzle)
         {
+            this.SaveLevel(puzzle, this.CurrentLevel);
+        }
+
+
+        private void SaveLevel(Puzzle.Puzzle puzzle, string name)
+        {
             PuzzleData puzzleData = new PuzzleData(puzzle);
-            puzzleData.Save(this.CurrentLevel);
+            puzzleData.Save(name);
 
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
@@ -120,15 +127,14 @@ namespace Level
         private void GetLevels()
         {
             this.Levels = FileHelper.GetFileList(FileHelper.LEVELS_PATH);
-            this.Levels = this.Levels.Where(level => !level.Equals(FileHelper.EMPTY_LEVEL)).ToList();
-            
+           
             this.nLevels = this.Levels.Count;
         }
 
 
         private bool ValidName(string name)
         {
-            return ((name.Length > 0) && (!name.Equals(FileHelper.EMPTY_LEVEL)) && (!this.Levels.Contains(name)));
+            return ((name.Length > 0) && (!this.Levels.Contains(name)));
         }
 
         #endregion

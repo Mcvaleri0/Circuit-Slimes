@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 
 using Creator.Editor;
+using Puzzle;
 
 
 
@@ -18,27 +19,38 @@ namespace Creator.UI.Buttons
         #endregion
 
 
-        #region /* Puzzle Attributes */
+        #region /* Resource Attributes */
 
+        private Resource Resource { get; set; }
+
+        #endregion
+
+
+
+        #region /* Permission Attributes */
+        
+        private string prefab { get; set; }
         private PuzzleEditor Editor { get; set; }
-        private string Prefab { get; set; }
-
+        
         #endregion
 
 
 
         #region === Init Methods ===
 
-        public void Initialize(PuzzleEditor editor, string prefab, bool available = false)
+        public void Initialize(PuzzleEditor editor, string prefab, bool available)
+        //public void Initialize(Resource resource, bool available)
         {
-            this.Editor    = editor;
-            this.Prefab    = prefab;
+            //this.Resource  = resource;
+            this.prefab = prefab;
+            this.Editor = editor;
             this.Available = available;
 
-            this.AvailableColor    = Color.green;
+            this.AvailableColor = Color.green;
             this.NotAvailableColor = Color.white;
 
             this.ChangeColor();
+
         }
 
         #endregion
@@ -70,12 +82,14 @@ namespace Creator.UI.Buttons
             if (available)
             {
                 this.Available = available;
-                this.Editor.AddPermission(this.Prefab);
+                //this.Resource.Increase();
+                this.Editor.AddPermission(this.prefab);
             }
             else
             {
                 this.Available = available;
-                this.Editor.RemovePermission(this.Prefab);
+                //this.Resource.Decrease();
+                this.Editor.RemovePermission(this.prefab);
             }
 
             this.ChangeColor();

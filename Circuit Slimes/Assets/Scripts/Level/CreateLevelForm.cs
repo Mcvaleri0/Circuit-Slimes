@@ -32,6 +32,8 @@ namespace Level
         #region /* Input Fields */
 
         private Transform NameInput { get; set; }
+        private Transform WidthInput { get; set; }
+        private Transform HeightInput { get; set; }
 
         #endregion
 
@@ -47,6 +49,8 @@ namespace Level
         #region /* Data */
         
         private Text Name { get; set; }
+        private Text Width { get; set; }
+        private Text Height { get; set; }
 
         #endregion
 
@@ -64,12 +68,17 @@ namespace Level
 
             this.Form = menu.Find("Form");
 
-            this.NameInput = this.Form.Find("InputField");
+            this.NameInput   = this.Form.Find("NameInput");
+            this.WidthInput  = this.Form.Find("WidthInput");
+            this.HeightInput = this.Form.Find("HeightInput");
 
-            this.CancelButton = this.Form.Find("CancelButton");
-            this.CreateButton = this.Form.Find("CreateButton");
+            Transform buttons = this.Form.Find("Buttons");
+            this.CancelButton = buttons.Find("CancelButton");
+            this.CreateButton = buttons.Find("CreateButton");
 
-            this.Name = this.NameInput.Find("Text").GetComponent<Text>();
+            this.Name   = this.NameInput.Find("Text").GetComponent<Text>();
+            this.Width  = this.WidthInput.Find("Text").GetComponent<Text>();
+            this.Height = this.HeightInput.Find("Text").GetComponent<Text>();
 
             this.DefineCallBackFunction();
         }
@@ -109,7 +118,7 @@ namespace Level
         
         private void CreateLevel()
         {
-            if (this.LevelController.CreateLevel(this.Name.text))
+            if (this.LevelController.CreateLevel(this.Name.text, int.Parse(this.Width.text), int.Parse(this.Height.text)))
             {
                 this.LevelMenu.Update();
                 this.GameController.LoadScene(GameController.CREATOR);
@@ -129,6 +138,12 @@ namespace Level
         {
             this.NameInput.GetComponent<Image>().color = Color.red;
             this.Name.color = Color.white;
+
+            this.WidthInput.GetComponent<Image>().color = Color.red;
+            this.Width.color = Color.white;
+
+            this.HeightInput.GetComponent<Image>().color = Color.red;
+            this.Height.color = Color.white;
         }
 
 
@@ -137,6 +152,14 @@ namespace Level
             this.NameInput.GetComponent<Image>().color = Color.white;
             this.NameInput.GetComponent<InputField>().text = "";
             this.Name.color = Color.black;
+
+            this.WidthInput.GetComponent<Image>().color = Color.white;
+            this.WidthInput.GetComponent<InputField>().text = "";
+            this.Width.color = Color.black;
+
+            this.HeightInput.GetComponent<Image>().color = Color.white;
+            this.HeightInput.GetComponent<InputField>().text = "";
+            this.Height.color = Color.black;
         }
 
         #endregion

@@ -39,6 +39,8 @@ namespace Puzzle.Data
 
             board.Initialize(this.Width, this.Height);
 
+            BoardBuilder.Build(boardObj, this.Width, this.Height, LevelBoard.SpaceSize);
+
             return board;
         }
 

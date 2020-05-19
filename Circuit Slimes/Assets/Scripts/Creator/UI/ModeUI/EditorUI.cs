@@ -33,7 +33,7 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             #if UNITY_EDITOR
                 RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
@@ -48,6 +48,30 @@ namespace Creator.UI.ModeUI
             #else
                  base.SaveButton.gameObject.SetActive(false);
             #endif
+        }
+
+
+        override public void InitializeItems()
+        {
+            RectTransform rect = base.ItemsButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  95; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
+        }
+
+
+        override public void InitializeResources()
+        {
+            RectTransform rect = base.ResourcesButton.GetComponent<RectTransform>();
+
+            rect.pivot = new Vector2(1, 0);
+            float x = -30; //x margin
+            float y =  30; //y margin
+
+            rect.anchoredPosition = new Vector2(x, y);
         }
 
         #endregion

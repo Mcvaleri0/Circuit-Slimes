@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
+
+
 
 namespace Puzzle
 {
@@ -22,23 +25,46 @@ namespace Puzzle
 
         public List<string> Permissions { get; private set; }
 
+        public Dictionary<string, Resource> ResourcesAvailable { get; private set; }
+
         public WinCondition WinCondition { get; private set; }
+
         #endregion
 
 
         #region === Initialization Methods ===
 
-        public void Initialize(LevelBoard board)
+        public static Puzzle CreateEmpty(int width, int height)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null);
+            GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
+            puzzleObj.name = "Puzzle";
+            Puzzle puzzle = puzzleObj.GetComponent<Puzzle>();
+
+            GameObject boardObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Board"));
+            boardObj.name = "Board";
+            boardObj.transform.parent = puzzleObj.transform;
+            LevelBoard board = boardObj.GetComponent<LevelBoard>();
+
+            board.Initialize(width, height);
+            puzzle.Initialize(board);
+
+            return puzzle;
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions, WinCondition winCondition)
+        public void Initialize(LevelBoard board)
+        {
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
+        }
+
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, 
+                               List<string> permissions, WinCondition winCondition,
+                               Dictionary<string, Resource> resources)
         {
             this.Board  = board;
             this.Pieces = pieces;
             this.Permissions = permissions;
             this.WinCondition = winCondition;
+            this.ResourcesAvailable = resources;
 
             this.Agents = new List<Agent>();
 
@@ -153,6 +179,7 @@ namespace Puzzle
 
 
         #region === Tile Methods ===
+ 
         public Tile CreateTile(Tile.Types type, Vector2Int coords)
         {
             var tile = Tile.CreateTile(this, type, coords);
@@ -217,7 +244,6 @@ namespace Puzzle
             }
         }
 
-
         #endregion
 
 
@@ -231,6 +257,31 @@ namespace Puzzle
         public void RemovePermission(string prefab)
         {
             this.Permissions.Remove(prefab);
+        }
+
+        #endregion
+
+
+        #region === Resources Methods ===
+
+        public Resource GetResource(string prefab)
+        {
+            try
+            {
+                return this.ResourcesAvailable[prefab];
+            }
+            catch (KeyNotFoundException)
+            {
+                Resource resource = new Resource(prefab);
+                this.ResourcesAvailable[prefab] = resource;
+                return resource;
+            }
+        }
+
+
+        public List<string> GetAllResources()
+        {
+            return this.ResourcesAvailable.Keys.ToList();
         }
 
         #endregion
