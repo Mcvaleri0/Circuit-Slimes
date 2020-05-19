@@ -13,7 +13,7 @@ public class BoardBuilder
 
     private static readonly int Subspaces = 3;
     private static readonly Color LineColor = new Color32(11, 222, 162, 255);
-    private static readonly float LineWidth = 0.2f;
+    private static readonly float LineWidth = 0.1f;
 
 
     private class Edge
@@ -499,11 +499,15 @@ public class BoardBuilder
             var tj = pos.y + Directions[dir].y;
             var tpos = new Vector2Int(ti, tj);
 
-            if (!IsOutOfBounds(tpos) && IsFree(tpos))
+            ///*
+            return tpos;
+            /*/
+            if (IsFree(tpos))
             {
                 return tpos; 
             }
             return new Vector2Int(-1,-1);
+            //*/
         }
 
         public List<Vector2Int> GetAllAdjacentFree(Vector2Int pos, Vector2Int targetpos)
@@ -740,6 +744,11 @@ public class BoardBuilder
         var rightPorts = GenerateRandom(numRightPorts, 1, height-1);
         var bottomPorts = GenerateRandom(numBottomPorts, 1, width-1);
 
+        if (leftPorts == null) leftPorts = new List<int>();
+        if (topPorts == null) topPorts = new List<int>();
+        if (rightPorts == null) rightPorts = new List<int>();
+        if (bottomPorts == null) bottomPorts = new List<int>();
+
         return new List<int>[4]{leftPorts, topPorts, rightPorts, bottomPorts};
     }
 
@@ -753,7 +762,7 @@ public class BoardBuilder
         var ports = allPorts[0];
         foreach(var i in ports)
         {
-            for(var j = 0; j < subspaces; j++)
+            for(var j = subspaces-1; j >= 0; j--)
             {
                 var line = new Line(new Vector2Int(0, i * subspaces + j), id++, target);
                 grid.AddLine(line);
@@ -781,7 +790,7 @@ public class BoardBuilder
         ports = allPorts[2];
         foreach (var i in ports)
         {
-            for (var j = 0; j < subspaces; j++)
+            for (var j = subspaces - 1; j >= 0; j--)
             {
                 var line = new Line(new Vector2Int(grid.w - 1, i * subspaces + j), id++, target);
                 grid.AddLine(line);
@@ -821,6 +830,14 @@ public class BoardBuilder
         //pathfind
         do {
             var currentpos = grid.GetBest(open, targetpos);
+
+            if (!grid.IsFree(currentpos))
+            {
+                //ahh too bad... (uncomplete path)
+                grid.TraceBackwards(line, currentpos);
+                return;
+            }
+
             if(currentpos == targetpos)
             {
                 //found a full path!
@@ -843,12 +860,12 @@ public class BoardBuilder
         }
         while (open.Count != 0);
 
-        /*
+        
         if(closed.Count >= 3 && Random.Range(0, 5) == 1)
         {
             grid.TraceBackwards(line, closed[Random.Range(closed.Count/2, closed.Count)]);
         }
-        */
+        
         return;
     }
 
@@ -868,49 +885,58 @@ public class BoardBuilder
 
             PathFindLine(grid, line, target);
 
-            grid.Print();
+            //grid.Print();
         } 
     }
 
 
 
     //Build All
-    public static void Build(GameObject boardObj, int width, int height, float unitSize)
+    public static void Build(GameObject boardObj, int height, int width, float unitSize)
     {
-        /*
-        //board ports
-        var allPorts = GeneratePorts(width, height);
-
-        //grid
-        var gridw = width  * Subspaces;
-        var gridh = height * Subspaces;
-        LineGrid grid = new LineGrid(gridw, gridh, width * unitSize, height * unitSize);
-
-        //populate grid with port points
-        var numLines = (int) ((allPorts[0].Count + allPorts[1].Count + allPorts[2].Count + allPorts[3].Count) * Subspaces)/4;
-        PopulatePorts(grid, Subspaces, allPorts, numLines);
-
-        //create lines from ports to other ports
-        PathFindLines(grid);
-        */
-
-        //Create base mesh
-        Mesh mesh = CreateBoardBaseMesh(width, height, unitSize);
-
         //parent transf
         var parent = boardObj.transform;
         var parentRenderer = parent.GetComponent<MeshRenderer>();
         parentRenderer.enabled = false;
 
         //Create the gameobject
-        GameObject gameObject = new GameObject("MeshTest", typeof(MeshFilter), typeof(MeshRenderer));
+        GameObject gameObject = new GameObject("BoardMesh", typeof(MeshFilter), typeof(MeshRenderer));
         gameObject.transform.parent = parent;
-        gameObject.GetComponent<MeshFilter>().mesh = mesh;
 
+        //Get Maerials from parent
         var mats = new List<Material>();
         parentRenderer.GetMaterials(mats);
         var mainMaterial = mats[0];
         var lineMaterial = mats[1];
+
+
+        // LINES
+        if(height >= 3 && width >= 3)
+        {
+            //board ports
+            var allPorts = GeneratePorts(width, height);
+
+            //grid
+            var gridw = width * Subspaces;
+            var gridh = height * Subspaces;
+            LineGrid grid = new LineGrid(gridw, gridh, width * unitSize, height * unitSize);
+
+            //populate grid with port points
+            var numLines = (int) ((allPorts[0].Count + allPorts[1].Count + allPorts[2].Count + allPorts[3].Count) * Subspaces) / 4;
+            PopulatePorts(grid, Subspaces, allPorts, numLines);
+
+            //create lines from ports to other ports
+            PathFindLines(grid);
+
+            //build lines
+            grid.BuildLines(gameObject, lineMaterial);
+        }
+
+        // BOARD MESH
+        Mesh mesh = CreateBoardBaseMesh(width, height, unitSize);
+
+        //Set mesh
+        gameObject.GetComponent<MeshFilter>().mesh = mesh;
         gameObject.GetComponent<MeshRenderer>().material = mainMaterial;
 
         //add outline to board
@@ -918,8 +944,6 @@ public class BoardBuilder
         outln.OutlineMode = QuickOutline.Mode.OutlineVisible;
         outln.OutlineColor = new Color32(7, 80, 73, 255);
         outln.OutlineWidth = 5;
-
-        //grid.BuildLines(gameObject, lineMaterial);
 
         return;
     }
