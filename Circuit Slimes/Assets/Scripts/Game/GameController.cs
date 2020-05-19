@@ -42,9 +42,16 @@ namespace Game
         #endregion
 
 
+        #region /* Level Menu Attributes */
+        
+        private LevelMenu LevelMenu { get; set; }
+
+        #endregion
+
+
         #region /* Level Attributes */
 
-        private LevelController LevelController { get; set; }
+        public LevelController LevelController { get; private set; }
 
         #endregion
 
@@ -90,6 +97,7 @@ namespace Game
 
 
         #region === Unity Events ===
+
         private void Start()
         {
             Application.targetFrameRate = 60;
@@ -139,7 +147,6 @@ namespace Game
             #endif
         }
 
-
         #endregion
 
 
@@ -154,17 +161,17 @@ namespace Game
         private void InitializeScene()
         {
             this.InitializeLevel();
+            this.InitializeLevelMenu();
 
             if (SceneManager.GetActiveScene().name == MAIN_MENU)
             {
-                this.MainMenu = GameObject.Find("MainMenu");
-                this.QuitButton = GameObject.Find("QuitButton");
+                this.InitializeMainMenu();
             }
             else
             {
+                this.Puzzle = this.LevelController.LoadLevel();
                 this.InitialiazeControllers();
             }
-
         }
 
 
@@ -194,9 +201,6 @@ namespace Game
 
         private void InitialiazeControllers()
         {
-            this.LevelController.HideLevelMenu();
-            this.LoadLevel();
-
             this.InitializeCreator();
 
             this.InitiliazePuzzle();
@@ -225,6 +229,20 @@ namespace Game
 
         #region === Main Menu Methods ===
 
+        private void InitializeMainMenu()
+        {
+            if (this.MainMenu == null)
+            {
+                this.MainMenu = GameObject.Find("MainMenu");
+            }
+
+            if (this.QuitButton == null)
+            {
+                this.QuitButton = GameObject.Find("QuitButton");
+            }
+        }
+
+
         private void HideMainMenu()
         {
             this.MainMenu.SetActive(false);
@@ -236,9 +254,36 @@ namespace Game
         {
             this.MainMenu.SetActive(true);
             this.QuitButton.SetActive(true);
+        }
 
-            this.LevelController.Hide();
-            //this.LevelController.HideLevelMenu();
+
+        public void GoToMainMenu()
+        {
+            this.LevelMenu.Hide();
+            this.ShowMainMenu();
+        }
+
+        #endregion
+
+
+        #region === Level Menu Methods ===
+        
+        private void InitializeLevelMenu()
+        {
+            if (this.LevelMenu == null)
+            {
+                this.LevelMenu = new LevelMenu(this);
+                this.LevelMenu.Initialize(this.LevelController.Levels);
+            }
+
+            this.LevelMenu.Hide();
+        }
+
+
+        public void ShowLevelMenu(string nextScene)
+        {
+            this.HideMainMenu();
+            this.LevelMenu.Show(nextScene);
         }
 
         #endregion
@@ -250,37 +295,22 @@ namespace Game
         {
             if (this.LevelController == null)
             {
-                this.LevelController = new LevelController(this, this.transform);
+                this.LevelController = new LevelController();
             }
         }
 
 
-        public void ChooseLevel(string nextScene)
+        public List<string> Levels()
         {
-            this.HideMainMenu();
-            this.LevelController.ShowLevelMenu(nextScene);
+            return this.LevelController.Levels;
         }
 
 
-        private void LoadLevel()
+        public void ChooseLevel(string level, string nextScene)
         {
-            if (this.Puzzle != null)
-            {
-                this.Puzzle.Destroy();
-            }
-            this.Puzzle = this.LevelController.LoadLevel();
-        }
-
-
-        public string CurrentLevel()
-        {
-            return this.LevelController.CurrentLevel;
-        }
-
-
-        public void SaveLevel(string level)
-        {
-            this.LevelController.SaveLevel(level, this.Puzzle);
+            this.LevelMenu.Hide();
+            this.LevelController.Current(level);
+            this.LoadScene(nextScene);
         }
 
 
@@ -307,6 +337,12 @@ namespace Game
             this.Puzzle = this.LevelController.PreviousLevel();
 
             this.UpdateControllers();
+        }
+
+
+        public void SaveLevel()
+        {
+            this.LevelController.SaveLevel(this.Puzzle);
         }
 
         #endregion

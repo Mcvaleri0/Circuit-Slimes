@@ -44,9 +44,7 @@ namespace Creator.UI.ModeUI
 
                 saveRect.anchoredPosition = new Vector2(x, y);
 
-                // add click listener
-                string level = this.Controller.CurrentLevel();
-                base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(level); });
+                base.SaveButton.GetComponent<Button>().onClick.AddListener(delegate { this.Controller.SaveLevel(); });
             #else
                  base.SaveButton.gameObject.SetActive(false);
             #endif
