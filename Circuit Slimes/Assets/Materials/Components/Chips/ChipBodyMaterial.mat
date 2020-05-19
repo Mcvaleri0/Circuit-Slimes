@@ -63,6 +63,7 @@ Material:
     - _Gloss: 0.4
     - _NomalMapStrength: 1
     - _NormalScale: 1
+    - _OutlineWidth: 0.1
     - _RimOffset: 0.44
     - _RimPower: 1.29
     - _ShadowOffset: 0.21
@@ -77,6 +78,7 @@ Material:
     - _ASEOutlineColor: {r: 0.1981132, g: 0.19010323, b: 0.18409576, a: 1}
     - _Color0: {r: 1, g: 0, b: 0.9104991, a: 0}
     - _EmissionColor: {r: 0.9952283, g: 1, b: 0, a: 1}
+    - _OutlineColor: {r: 0.1509434, g: 0.1502314, b: 0.1502314, a: 0}
     - _RimLightColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 0}
     - _SpecRange: {r: 1.29, g: 1.87, b: 0, a: 0}
     - _Tint: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 0}

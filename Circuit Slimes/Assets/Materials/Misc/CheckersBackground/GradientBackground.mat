@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Float12: 0.0067
-    - _GridSize: 0.0089
+    - _GridSize: 0.0087
     - __dirty: 0
     - _transparency: -0.1
     m_Colors:

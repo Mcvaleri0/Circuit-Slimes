@@ -23,13 +23,6 @@ namespace Level
         #endregion
 
 
-        #region /* Files Names */
-
-        public const string EMPTY_LEVEL = "EmptyLevel";
-
-        #endregion
-
-
 
         #region === File Methods ===
 

@@ -4,6 +4,8 @@ using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
 
+
+
 namespace Puzzle
 {
     public class Puzzle : MonoBehaviour
@@ -28,9 +30,26 @@ namespace Puzzle
 
         #region === Initialization Methods ===
 
+        public static Puzzle CreateEmpty(int width, int height)
+        {
+            GameObject puzzleObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Puzzle"));
+            puzzleObj.name = "Puzzle";
+            Puzzle puzzle = puzzleObj.GetComponent<Puzzle>();
+
+            GameObject boardObj = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Board"));
+            boardObj.name = "Board";
+            boardObj.transform.parent = puzzleObj.transform;
+            LevelBoard board = boardObj.GetComponent<LevelBoard>();
+
+            board.Initialize(width, height);
+            puzzle.Initialize(board);
+
+            return puzzle;
+        }
+
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), null);
+            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), new WinCondition(WinCondition.Conditions.None));
         }
 
         public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions, WinCondition winCondition)
@@ -153,6 +172,7 @@ namespace Puzzle
 
 
         #region === Tile Methods ===
+ 
         public Tile CreateTile(Tile.Types type, Vector2Int coords)
         {
             var tile = Tile.CreateTile(this, type, coords);
@@ -216,7 +236,6 @@ namespace Puzzle
                 return false;
             }
         }
-
 
         #endregion
 
