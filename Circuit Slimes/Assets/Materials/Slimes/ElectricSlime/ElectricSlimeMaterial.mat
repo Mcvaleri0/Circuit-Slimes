@@ -67,6 +67,7 @@ Material:
     - _LightPower: 0.2
     - _LightningFresnelPower: 3.48
     - _LightninglFresnelScale: 6.59
+    - _OutlineWidth: 0.07
     - _RimOffset: 0.62
     - _RimPower: 0
     - _ShadowOffset: 0.45
@@ -81,5 +82,6 @@ Material:
     - _Color0: {r: 1, g: 0.7844253, b: 0, a: 1}
     - _EmissionColor: {r: 0.52358484, g: 1, b: 0.9553949, a: 0}
     - _FaceOffset1: {r: 0, g: 0, b: 0, a: 0}
-    - _LightningColor: {r: 1, g: 0.8228512, b: 0.2028302, a: 1}
+    - _LightningColor: {r: 1, g: 0.5686275, b: 0, a: 1}
+    - _OutlineColor: {r: 0.6698113, g: 0.3442094, b: 0.009478444, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
