@@ -38,9 +38,9 @@ namespace Puzzle
             {
                 if(piece is LED led)
                 {
-                    if((led.Caracterization.ComponentType == Piece.ComponentTypes.GreenLED &&
+                    if((led.characterization.ComponentType == Piece.ComponentTypes.GreenLED &&
                        led.Stats.Food < led.Stats.MaxFood) ||
-                       (led.Caracterization.ComponentType == Piece.ComponentTypes.RedLED &&
+                       (led.characterization.ComponentType == Piece.ComponentTypes.RedLED &&
                        led.Stats.Food >= led.Stats.MaxFood))
                     {
                         return false;

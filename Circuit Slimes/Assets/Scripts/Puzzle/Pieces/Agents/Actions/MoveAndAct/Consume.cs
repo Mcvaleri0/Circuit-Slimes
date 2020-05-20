@@ -14,17 +14,17 @@ namespace Puzzle.Actions
 
 
         #region === Constructors ===
-        public Consume(Piece.Caracteristics targetCaracterization) : base(targetCaracterization) { }
+        public Consume(Piece.Characteristics targetcharacterization) : base(targetcharacterization) { }
 
         public Consume(Piece.SlimeTypes slimeType) :
-            base(new Piece.Caracteristics(Piece.Categories.Slime, slimeType))
+            base(new Piece.Characteristics(Piece.Categories.Slime, slimeType))
         { }
         public Consume(Piece.ComponentTypes componentType) :
-            base(new Piece.Caracteristics(Piece.Categories.Component, componentType))
+            base(new Piece.Characteristics(Piece.Categories.Component, componentType))
         { }
 
         public Consume(Piece.CandyTypes candyType) :
-            base(new Piece.Caracteristics(Piece.Categories.Candy, candyType))
+            base(new Piece.Characteristics(Piece.Categories.Candy, candyType))
         { }
 
         public Consume(Agent agent, Piece target) : base(agent, target) 

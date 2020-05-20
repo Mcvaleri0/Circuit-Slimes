@@ -28,7 +28,7 @@ namespace Puzzle.Data
             this.Orientations = new LevelBoard.Directions[1];
             this.Orientations[0] = piece.Orientation;
 
-            this.PrefabName = piece.Caracterization.ToString();
+            this.PrefabName = piece.characterization.ToString();
         }
 
         public PieceData(Piece[] pieces)
@@ -43,7 +43,7 @@ namespace Puzzle.Data
                 this.Orientations[i++] = piece.Orientation;
             }
 
-            this.PrefabName = pieces[0].Caracterization.ToString();
+            this.PrefabName = pieces[0].characterization.ToString();
         }
 
 
