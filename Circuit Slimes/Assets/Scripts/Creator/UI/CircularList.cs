@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,38 +50,33 @@ namespace Creator.UI
         {
             int nOptions = options.Count;
 
-            if (nOptions > 0)
+            int[] ids = new int[nOptions];
+            ListBox[] items = new ListBox[nOptions];
+
+            this.ListController.centeredContentID = nOptions / 2;
+
+            int i = 0;
+
+            foreach (string opt in options)
             {
-                int[] ids = new int[nOptions];
-                ListBox[] items = new ListBox[nOptions];
+                GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionPrefab, this.List);
+                newObj.name = opt;
 
-                this.ListController.centeredContentID = nOptions / 2;
+                Transform sprite = newObj.transform.Find("Sprite");
+                sprite.GetComponent<ItemDragHandler>().selectionWheel = this.ListController;
 
-                int i = 0;
+                string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, opt);
+                Sprite newSprite = Resources.Load<Sprite>(spritePath);
+                sprite.GetComponent<Image>().sprite = newSprite;
 
-                foreach (string opt in options)
-                {
-                    GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionPrefab, this.List);
-                    newObj.name = opt;
+                ids[i] = i;
+                items[i] = newObj.GetComponent<ListBox>();
 
-                    Transform sprite = newObj.transform.Find("Sprite");
-                    //sprite.GetComponent<Image>().sprite;
-                    sprite.GetComponent<ItemDragHandler>().selectionWheel = this.ListController;
-
-                    ids[i] = i;
-                    items[i] = newObj.GetComponent<ListBox>();
-
-                    i++;
-                }
-
-                this.ListController.listBoxes = items;
-                this.ListBank._contents = ids;
+                i++;
             }
-            else
-            {
-                this.ListController.listBoxes = new ListBox[0];
-                this.ListBank._contents = new int[0];
-            }
+
+            this.ListController.listBoxes = items;
+            this.ListBank._contents = ids;
         }
 
 

@@ -19,6 +19,7 @@ namespace Level
         public const string BUTTON_PATH = "Prefabs/Button";
 
         public const string WHEEL_OPTION_PATH = "Prefabs/Creator/WheelOption";
+        public const string ITEMS_SPRITES_PATH = "Sprites";
 
         private const string SAVE_PATH = "Assets/Resources/Levels";
 
