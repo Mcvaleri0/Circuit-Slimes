@@ -94,10 +94,10 @@ namespace Puzzle
 
         #region === Piece Methods ===
 
-        public Piece CreatePiece(Piece.Caracteristics caracterization, Vector2Int coords,
+        public Piece CreatePiece(Piece.Characteristics characterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
-            var piece = Piece.CreatePiece(this, caracterization, coords, ori, turn);
+            var piece = Piece.CreatePiece(this, characterization, coords, ori, turn);
 
             if(!this.Board.PlacePiece(piece, coords))
             {

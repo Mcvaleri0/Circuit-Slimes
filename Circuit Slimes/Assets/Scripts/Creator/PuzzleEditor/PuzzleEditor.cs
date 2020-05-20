@@ -107,7 +107,7 @@ namespace Creator.Editor
                 }
                 else
                 {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Caracteristics(this.Item), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(this.Item), coords);
 
                     if (res != null)
                     {

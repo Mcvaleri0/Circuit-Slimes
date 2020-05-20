@@ -167,7 +167,6 @@ namespace Puzzle.Board
             // If the Coords are Out Of Bounds
             if (OutOfBounds(coords))
             {
-                Debug.Log("GetPiece - OutOfBoundsException - " + coords);
                 return null;
             }
 
@@ -322,7 +321,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("PlaceTile - OutOfBoundsException - " + coords);
                 return false;
             }
 
@@ -355,7 +353,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("RemoveTile - OutOfBoundsException - " + coords);
                 return null;
             }
 
@@ -385,7 +382,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("MoveTile - OutOfBoundsException - " + coords);
                 return false;
             }
 
@@ -406,7 +402,6 @@ namespace Puzzle.Board
         {
             if (OutOfBounds(coords))
             {
-                Debug.Log("GetTile - OutOfBoundsException - " + coords);
                 return null;
             }
 
@@ -539,7 +534,11 @@ namespace Puzzle.Board
 
             int intAngle = (int) (angle / 45f);
 
-            return (LevelBoard.Directions) intAngle;
+            var dir = (LevelBoard.Directions) intAngle;
+
+            Debug.Log("Angle: " + angle);
+
+            return dir;
         }
         #endregion
     }

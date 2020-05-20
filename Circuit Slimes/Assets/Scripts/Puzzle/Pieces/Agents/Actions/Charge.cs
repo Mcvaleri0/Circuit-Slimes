@@ -16,6 +16,7 @@ namespace Puzzle.Actions
 
         public Vector2Int ComponentCoords { get; private set; }
 
+
         public Charge() { }
 
         public Charge(CircuitComponent component) 
@@ -25,7 +26,8 @@ namespace Puzzle.Actions
             this.ComponentCoords = component.Coords;
         }
 
-        #region Action Methods
+
+        #region === Action Methods ===
 
         override public Action Available(Agent agent)
         {
@@ -46,7 +48,7 @@ namespace Puzzle.Actions
                     if(tile != null && tile.Type == Tile.Types.Solder)
                     {
                         // If there's a Circuit Component
-                        if(piece != null && piece.Caracterization.Category == Piece.Categories.Component)
+                        if(piece != null && piece.characterization.Category == Piece.Categories.Component)
                         {
                             // If the component is not at full charge
                             if (piece is CircuitComponent component &&

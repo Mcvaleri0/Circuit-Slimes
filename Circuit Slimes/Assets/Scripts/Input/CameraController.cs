@@ -306,7 +306,7 @@ public class CameraController : MonoBehaviour
         var lastScreenPoint = Lean.Touch.LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = Lean.Touch.LeanGesture.GetScreenCenter(fingers);
 
-        var pinchScale = Lean.Touch.LeanGesture.GetPinchScale(fingers, -ZoomSensitivity * 0.1f);
+        var pinchScale = Lean.Touch.LeanGesture.GetPinchScale(fingers, -ZoomSensitivity * 0.04f);
 
         return (1 - Mathf.Clamp(pinchScale, 0, 2)) * ZoomSensitivity;
     }
@@ -342,8 +342,15 @@ public class CameraController : MonoBehaviour
 ;       this.CamLimtits.Horizontal  = board.lossyScale.z;
 
         var pos = board.position;
-        var zoom = this.CamLimtits.MaxZoom;
         var rot = new Vector3(60, 270, 0);
+
+        var maxDim = Mathf.Max(this.CamLimtits.Vertical, this.CamLimtits.Horizontal);
+
+        this.CamLimtits.MaxZoom = this.CamLimtits.MinZoom + 2 * (maxDim / 2);
+        var zoom = this.CamLimtits.MaxZoom;
+
+        Debug.Log(this.CamLimtits.MinZoom + "->" + this.CamLimtits.MaxZoom);
+
 
         this.SetStartState(pos, zoom, rot);
 
