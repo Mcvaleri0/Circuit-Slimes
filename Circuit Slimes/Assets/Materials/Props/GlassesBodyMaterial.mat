@@ -73,9 +73,9 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimOffset: 0
-    - _RimPower: 0
-    - _ShadowOffset: 0.22
-    - _ShadowScale: 2.7
+    - _RimPower: 0.4
+    - _ShadowOffset: -1.23
+    - _ShadowScale: 3.08
     - _SmoothnessTextureChannel: 0
     - _SpecularGloss: 0.73
     - _SpecularHighlights: 1
@@ -85,8 +85,8 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ASEOutlineColor: {r: 0.13396671, g: 0.013216449, b: 0.254717, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimLightColor: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 0}
-    - _Tint: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
+    - _RimLightColor: {r: 0.5101614, g: 0.25111246, b: 0.5377358, a: 0}
+    - _Tint: {r: 0.24883386, g: 0.035294108, b: 0.54901963, a: 0}

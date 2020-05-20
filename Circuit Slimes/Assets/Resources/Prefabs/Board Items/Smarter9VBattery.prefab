@@ -16,16 +16,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f515f64cd2e74b742afecfe8d51aa877, type: 2}
+      objectReference: {fileID: 2100000, guid: eebb9d583c0f3c64cbf5f2ed51a23f17, type: 2}
     - target: {fileID: 5897436730091451442, guid: 8764f3bf7ad18904ab80ba888fbcd55f,
         type: 3}
       propertyPath: m_Name
-      value: Smart9VBattery
+      value: Smarter9VBattery
       objectReference: {fileID: 0}
     - target: {fileID: 7461548333587744289, guid: 8764f3bf7ad18904ab80ba888fbcd55f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5057807
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7461548333587744289, guid: 8764f3bf7ad18904ab80ba888fbcd55f,
         type: 3}
@@ -35,7 +35,7 @@ PrefabInstance:
     - target: {fileID: 7461548333587744289, guid: 8764f3bf7ad18904ab80ba888fbcd55f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.2110567
+      value: -7.8877544
       objectReference: {fileID: 0}
     - target: {fileID: 7461548333587744289, guid: 8764f3bf7ad18904ab80ba888fbcd55f,
         type: 3}
