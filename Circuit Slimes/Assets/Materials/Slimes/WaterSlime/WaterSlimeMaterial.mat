@@ -104,7 +104,7 @@ Material:
     - _SpecularIntensity: 0.16
     - _SrcBlend: 1
     - _UVSec: 0
-    - _WaterIntensity: 0.6235205
+    - _WaterIntensity: 0.72
     - _WaterSpeed: 0.2
     - _ZWrite: 1
     - __dirty: 0
