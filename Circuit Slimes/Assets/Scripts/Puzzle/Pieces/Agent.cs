@@ -227,9 +227,13 @@ namespace Puzzle.Pieces
         {
             float currentAngle = this.transform.eulerAngles.y;
             float targetAngle  = 360 - ((float) targetDir) * 45f;
+
             if (targetAngle == 360) targetAngle = 0;
 
-            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * (Time.deltaTime / EXPECTED_DELTA)));
+            var rate = Time.deltaTime / EXPECTED_DELTA;
+            if (percentage == 1f) rate = 1f;
+
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * 1f));
 
             if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
 
@@ -264,7 +268,10 @@ namespace Puzzle.Pieces
 
                 var norm = (new Vector3(dX, 0, dZ)).normalized; // Normalize the distance vector;
 
-                this.transform.position += norm * ((float) (maxVelocity * (Time.deltaTime / EXPECTED_DELTA))); // Apply movement
+                var rate = Time.deltaTime / EXPECTED_DELTA;
+                if (minSpeed == 1f) rate = 1f;
+
+                this.transform.position += norm * ((float) (maxVelocity * rate)); // Apply movement
 
                 return false;
             }
@@ -281,7 +288,7 @@ namespace Puzzle.Pieces
         // Board
         virtual public bool RotateInBoard(LevelBoard.Directions orientation)
         {
-            return true;
+            return this.Puzzle.RotatePiece(this, orientation);
         }
         
         virtual public bool MoveInBoard(Vector2Int coords)

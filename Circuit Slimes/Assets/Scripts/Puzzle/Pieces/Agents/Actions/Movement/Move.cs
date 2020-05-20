@@ -12,6 +12,8 @@ namespace Puzzle.Actions
 
         public Vector2Int MoveCoords { get; protected set; }
 
+        private LevelBoard.Directions OrigOrientation { get; set; }
+
 
         public Move()
         {
@@ -30,7 +32,7 @@ namespace Puzzle.Actions
             // If the Agent can be moved to the new Coords
             if(agent.CanMove(this.MoveCoords))
             {
-                var origOrientation = agent.Orientation; // Save current Orientation
+                this.OrigOrientation = agent.Orientation; // Save current Orientation
 
                 // Rotate the Agent in the Board
                 if (agent.RotateInBoard(this.Direction))
@@ -43,7 +45,7 @@ namespace Puzzle.Actions
                     // If it fails, Undo the rotation
                     else
                     {
-                        agent.RotateInBoard(origOrientation);
+                        agent.RotateInBoard(this.OrigOrientation);
                     }
                 }
             }
@@ -65,10 +67,10 @@ namespace Puzzle.Actions
             var origCoords  = LevelBoard.GetAdjacentCoords(this.MoveCoords, oppositeDir);
             
             agent.Move(origCoords, 1000f);
-            agent.Rotate(this.Direction, 1f);
+            agent.Rotate(this.OrigOrientation, 1f);
 
             agent.MoveInBoard(origCoords);
-            agent.RotateInBoard(this.Direction);
+            agent.RotateInBoard(this.OrigOrientation);
 
             return base.Undo(agent);
         }
