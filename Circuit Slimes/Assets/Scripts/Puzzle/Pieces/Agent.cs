@@ -8,6 +8,8 @@ namespace Puzzle.Pieces
 {
     public class Agent : Piece
     {
+        private const double EXPECTED_DELTA = 1d / 60d;
+
         protected int StartTurn;
 
         public int Turn;
@@ -59,10 +61,10 @@ namespace Puzzle.Pieces
         public bool Active { get; protected set; }
 
         // Init Method
-        virtual public void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization,
+        virtual public void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics characterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, Characterization);
+            base.Initialize(puzzle, coords, characterization);
 
             this.State = States.Idle;
 
@@ -225,7 +227,7 @@ namespace Puzzle.Pieces
             float targetAngle  = 360 - ((float) targetDir) * 45f;
             if (targetAngle == 360) targetAngle = 0;
 
-            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, percentage);
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * (Time.deltaTime / EXPECTED_DELTA)));
 
             if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
 
@@ -260,7 +262,7 @@ namespace Puzzle.Pieces
 
                 var norm = (new Vector3(dX, 0, dZ)).normalized; // Normalize the distance vector;
 
-                this.transform.position += norm * maxVelocity; // Apply movement
+                this.transform.position += norm * ((float) (maxVelocity * (Time.deltaTime / EXPECTED_DELTA))); // Apply movement
 
                 return false;
             }
@@ -288,10 +290,10 @@ namespace Puzzle.Pieces
 
 
         #region Create and Destroy
-        virtual public Piece CreatePiece(Characteristics Characterization, Vector2Int coords,
+        virtual public Piece CreatePiece(Characteristics characterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.East, int turn = 0)
         {
-            return this.Puzzle.CreatePiece(Characterization, coords, ori, turn);
+            return this.Puzzle.CreatePiece(characterization, coords, ori, turn);
         }
 
         virtual public Tile CreateTile(Tile.Types type, Vector2Int coords)

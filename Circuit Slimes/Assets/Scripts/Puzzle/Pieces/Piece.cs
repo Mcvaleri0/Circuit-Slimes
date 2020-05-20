@@ -383,10 +383,10 @@ namespace Puzzle
 
 
         #region === Create Piece ===
-        public static Piece CreatePiece(Puzzle puzzle, Characteristics Characterization, Vector2Int coords,
+        public static Piece CreatePiece(Puzzle puzzle, Characteristics characterization, Vector2Int coords,
             LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
-            return CreatePiece(puzzle, Characterization.ToString(), coords, ori, turn);
+            return CreatePiece(puzzle, characterization.ToString(), coords, ori, turn);
         }
 
         public static Piece CreatePiece(Puzzle puzzle, string prefabName, Vector2Int coords,
@@ -435,13 +435,13 @@ namespace Puzzle
         }
 
 
-        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization)
+        protected virtual void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics characterization)
         {
             this.Puzzle = puzzle;
 
             this.Coords = coords;
 
-            this.Characterization = Characterization;
+            this.Characterization = characterization;
         }
         #endregion
         

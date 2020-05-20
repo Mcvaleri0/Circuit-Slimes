@@ -29,10 +29,10 @@ namespace Puzzle.Pieces.Components
         public Dictionary<LevelBoard.Directions, Vector2Int> Connections { get; protected set; }
 
         // Init Method
-        public override void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics Characterization,
+        public override void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics characterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, Characterization, ori, turn);
+            base.Initialize(puzzle, coords, characterization, ori, turn);
 
             this.Charges = new List<ElectricSlime>();
 

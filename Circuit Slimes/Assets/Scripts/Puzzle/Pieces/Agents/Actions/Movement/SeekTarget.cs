@@ -52,6 +52,7 @@ namespace Puzzle.Actions
             this.MoveCoords = targetCoords;
 
             this.Direction = LevelBoard.GetDirection(agent.Coords, targetCoords);
+            Debug.Log(this.Direction);
         }
 
 

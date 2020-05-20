@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MagicAuraMaterial
-  m_Shader: {fileID: 4800000, guid: 5395cd9976c64294faf44cb3433ebf88, type: 3}
+  m_Name: GlassesBodyMaterial
+  m_Shader: {fileID: 4800000, guid: 8d56b502477669241848cbc79e0c057c, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -55,15 +55,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: 9dd57f4f906cc1041ad7160a9a308064, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _texcoord:
-        m_Texture: {fileID: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: a01b538848797dc4ab5c717ee3b99fc0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _ASEOutlineWidth: 0.003
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -74,15 +71,22 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0.64
     - _Parallax: 0.02
-    - _Radius: 1
+    - _RimOffset: 0
+    - _RimPower: 0
+    - _ShadowOffset: 0.22
+    - _ShadowScale: 2.7
     - _SmoothnessTextureChannel: 0
+    - _SpecularGloss: 0.73
     - _SpecularHighlights: 1
+    - _SpecularIntensity: 0.19
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
+    - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimLightColor: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 0}
+    - _Tint: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
