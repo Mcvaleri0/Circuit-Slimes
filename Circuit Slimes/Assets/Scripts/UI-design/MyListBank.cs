@@ -6,7 +6,7 @@ using UnityEngine;
 public class MyListBank : BaseListBank
 {
     private int[] _contents = {
-        1, 2, 3
+        0
     };
 
     public override string GetListContent(int index)
