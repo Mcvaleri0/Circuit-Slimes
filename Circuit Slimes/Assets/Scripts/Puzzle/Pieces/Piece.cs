@@ -29,7 +29,8 @@ namespace Puzzle
             None,
             Electric,
             Water,
-            Solder
+            Solder,
+            SElectric
         }
 
         public enum ComponentTypes
@@ -40,6 +41,7 @@ namespace Puzzle
             CellBattery,
             AABattery,
             V9Battery,
+            SmartV9Battery,
             SingleChip,
             DoubleChip,
             SquareChip,
@@ -130,6 +132,7 @@ namespace Puzzle
                 }
             }
 
+
             #region Parse Characteristics
             public static Piece.Categories ParseCategory(string name)
             {
@@ -164,6 +167,9 @@ namespace Puzzle
                     case "SolderSlime":
                         return SlimeTypes.Solder;
 
+                    case "SmartElectricSlime":
+                        return SlimeTypes.SElectric;
+
                     default:
                         return SlimeTypes.None;
                 }
@@ -187,6 +193,9 @@ namespace Puzzle
 
                     case "9VBattery":
                         return ComponentTypes.V9Battery;
+
+                    case "Smart9VBattery":
+                        return ComponentTypes.SmartV9Battery;
 
                     case "SingleChip":
                         return ComponentTypes.SingleChip;
@@ -220,6 +229,7 @@ namespace Puzzle
                 }
             }
             #endregion
+
 
             #region ToString
             override public string ToString()
@@ -278,6 +288,9 @@ namespace Puzzle
 
                     case SlimeTypes.Water:
                         return "Water";
+
+                    case SlimeTypes.SElectric:
+                        return "SmartElectric";
                 }
             }
 
@@ -299,6 +312,9 @@ namespace Puzzle
 
                     case ComponentTypes.V9Battery:
                         return "9VBattery";
+
+                    case ComponentTypes.SmartV9Battery:
+                        return "Smart9VBattery";
 
                     case ComponentTypes.SingleChip:
                         return "SingleChip";
@@ -332,6 +348,7 @@ namespace Puzzle
                 }
             }
             #endregion
+
 
             #region Equals
             public bool Matches(Characteristics Characteristics)

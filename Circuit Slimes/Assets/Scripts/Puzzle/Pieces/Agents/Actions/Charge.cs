@@ -16,6 +16,7 @@ namespace Puzzle.Actions
 
         public Vector2Int ComponentCoords { get; private set; }
 
+        private bool Crossing = false;
 
         public Charge() { }
 
@@ -26,6 +27,14 @@ namespace Puzzle.Actions
             this.ComponentCoords = component.Coords;
         }
 
+        public Charge(CircuitComponent component, bool crossing)
+        {
+            this.Component = component;
+
+            this.ComponentCoords = component.Coords;
+
+            this.Crossing = crossing;
+        }
 
         #region === Action Methods ===
 
@@ -102,6 +111,11 @@ namespace Puzzle.Actions
 
                 slime.RotateInBoard(outDir);
                 slime.Rotate(outDir, 1f);
+
+                if(this.Crossing && slime is SmartElectricSlime smart)
+                {
+                    smart.UnregisterExploredPath(this.ChargeCoords, outDir);
+                }
 
                 return true;
             }

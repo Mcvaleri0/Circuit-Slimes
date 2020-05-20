@@ -14,7 +14,7 @@ namespace Puzzle.Actions
 
 
         #region === Constructors ===
-        public Consume(Piece.Characteristics targetcharacterization) : base(targetcharacterization) { }
+        public Consume(Piece.Characteristics targetCharacterization) : base(targetCharacterization) { }
 
         public Consume(Piece.SlimeTypes slimeType) :
             base(new Piece.Characteristics(Piece.Categories.Slime, slimeType))
