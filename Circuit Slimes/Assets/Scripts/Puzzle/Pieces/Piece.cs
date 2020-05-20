@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Puzzle.Board;
+﻿using Puzzle.Board;
 using Puzzle.Pieces;
-using UnityEngine.Rendering;
+using UnityEngine;
 
 namespace Puzzle
 {
