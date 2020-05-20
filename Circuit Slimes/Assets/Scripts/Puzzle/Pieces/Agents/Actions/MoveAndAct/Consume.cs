@@ -27,10 +27,8 @@ namespace Puzzle.Actions
             base(new Piece.Characteristics(Piece.Categories.Candy, candyType))
         { }
 
-        public Consume(Agent agent, Piece target) : base(agent, target) 
+        public Consume(SeekTarget seek) : base(seek.MoveCoords, seek.Direction, seek.Target) 
         {
-            this.Target = target;
-
             this.Consuming = this.TargetCoords == this.MoveCoords;
         }
         #endregion
@@ -43,7 +41,7 @@ namespace Puzzle.Actions
 
             if(baseAction != null)
             {
-                return new Consume(agent, baseAction.Target);
+                return new Consume(baseAction);
             }
 
             return null;

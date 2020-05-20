@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Puzzle.Board;
+﻿using Puzzle.Board;
 using Puzzle.Pieces;
-using UnityEngine.Rendering;
+using UnityEngine;
 
 namespace Puzzle
 {
@@ -362,7 +359,7 @@ namespace Puzzle
             #endregion
         }
 
-        public Characteristics characterization;
+        public Characteristics Characterization;
 
 
         #region === Create Piece ===
@@ -424,7 +421,7 @@ namespace Puzzle
 
             this.Coords = coords;
 
-            this.characterization = characterization;
+            this.Characterization = characterization;
         }
         #endregion
         
@@ -552,7 +549,7 @@ namespace Puzzle
 
         public virtual bool TypeMatches(Piece other)
         {
-            return this.characterization.Equals(other.characterization);
+            return this.Characterization.Equals(other.Characterization);
         }
 
 

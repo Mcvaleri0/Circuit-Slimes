@@ -48,7 +48,7 @@ namespace Puzzle.Actions
                     if(tile != null && tile.Type == Tile.Types.Solder)
                     {
                         // If there's a Circuit Component
-                        if(piece != null && piece.characterization.Category == Piece.Categories.Component)
+                        if(piece != null && piece.Characterization.Category == Piece.Categories.Component)
                         {
                             // If the component is not at full charge
                             if (piece is CircuitComponent component &&

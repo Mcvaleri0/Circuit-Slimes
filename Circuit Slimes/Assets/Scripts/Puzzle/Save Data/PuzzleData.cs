@@ -40,7 +40,7 @@ namespace Puzzle.Data
             {
                 var piece = puzzle.Pieces[i];
 
-                var name = piece.characterization.ToString();
+                var name = piece.Characterization.ToString();
 
                 if (!pieceTypesFound.Contains(name))
                 {
