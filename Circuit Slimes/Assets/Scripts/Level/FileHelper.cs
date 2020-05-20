@@ -18,6 +18,8 @@ namespace Level
         public const string ITEMS_PATH  = "Prefabs/Board Items";
         public const string BUTTON_PATH = "Prefabs/Button";
 
+        public const string WHEEL_OPTION_PATH = "Prefabs/Creator/WheelOption";
+
         private const string SAVE_PATH = "Assets/Resources/Levels";
 
         #endregion

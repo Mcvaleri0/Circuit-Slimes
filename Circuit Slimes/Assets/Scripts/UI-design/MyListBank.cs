@@ -5,8 +5,7 @@ using UnityEngine;
 // The example of the simplest ListBank
 public class MyListBank : BaseListBank
 {
-    private int[] _contents = {
-        //0, 1, 2
+    public int[] _contents = {
         0, 1, 2, 3, 4
     };
 
