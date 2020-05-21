@@ -349,8 +349,7 @@ public class CameraController : MonoBehaviour
         this.CamLimtits.MaxZoom = this.CamLimtits.MinZoom + 2 * (maxDim / 2);
         var zoom = this.CamLimtits.MaxZoom;
 
-        Debug.Log(this.CamLimtits.MinZoom + "->" + this.CamLimtits.MaxZoom);
-
+        //Debug.Log(this.CamLimtits.MinZoom + "->" + this.CamLimtits.MaxZoom);
 
         this.SetStartState(pos, zoom, rot);
 
