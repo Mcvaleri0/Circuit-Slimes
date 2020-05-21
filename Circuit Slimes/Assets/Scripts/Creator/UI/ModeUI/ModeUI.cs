@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Game;
 using Puzzle;
+using Creator.UI.Wheel;
 using Creator.Editor;
 using Creator.Selection;
 
@@ -126,7 +127,7 @@ namespace Creator.UI.ModeUI
         private void InitiliazeList(Transform canvas)
         {
             Transform list = canvas.Find("CircularList");
-            this.CircularList = new CircularList(list, this.MenuOptions());
+            this.CircularList = new CircularList(this.Editor, list, this.MenuOptions());
         }
         
         #endregion

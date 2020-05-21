@@ -24,9 +24,6 @@ namespace Creator.Editor
 
         public Puzzle.Puzzle Puzzle { get; private set; }
 
-        private string Item { get; set; }
-        private OptionButton ItemButton { get; set; }
-
         List<Transform> ItemsPlaced { get; set; }
 
         #endregion
@@ -62,42 +59,15 @@ namespace Creator.Editor
 
         #region === Items Methods ===
 
-        public bool HasItemToPlace()
-        {
-            return this.Item != null;
-        }
-
-
-        public void ItemToPlace(string itemName, OptionButton itemButton)
-        {
-            if (this.HasItemToPlace())
-            {
-                this.ItemButton.Deselect();
-            }
-
-            this.Item = itemName;
-            this.ItemButton = itemButton;
-        }
-
-
-        public void RemoveItemToPlace()
-        {
-            this.ItemButton.Deselect();
-
-            this.Item = null;
-            this.ItemButton = null;
-        }
-
-
-        public void PlaceItem()
+        public void PlaceItem(string itemName)
         {
             if (this.Selection.BoardHover())
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (this.Item.Contains("Tile"))
+                if (itemName.Contains("Tile"))
                 {
-                    Tile res = this.Puzzle.CreateTile(Tile.GetType(this.Item), coords);
+                    Tile res = this.Puzzle.CreateTile(Tile.GetType(itemName), coords);
                     
                     if (res != null)
                     {
@@ -107,7 +77,7 @@ namespace Creator.Editor
                 }
                 else
                 {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(this.Item), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(itemName), coords);
 
                     if (res != null)
                     {
@@ -115,10 +85,6 @@ namespace Creator.Editor
                         this.ItemsPlaced.Add(res.transform);
                     }
                 }
-            }
-            else
-            {
-                this.RemoveItemToPlace();
             }
         }
 

@@ -5,13 +5,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Level;
+using Creator.Editor;
 
 
 
-namespace Creator.UI
+namespace Creator.UI.Wheel
 {
     public class CircularList 
     {
+        #region /* Puzzle Editor */
+        
+        private PuzzleEditor Editor { get; set; }
+        
+        #endregion
+
+
         #region /* List Attributes */
 
         private Transform List { get; set; }
@@ -28,8 +36,10 @@ namespace Creator.UI
 
         #region === Init Methods ===
 
-        public CircularList(Transform list, List<string> options)
+        public CircularList(PuzzleEditor Editor, Transform list, List<string> options)
         {
+            this.Editor = Editor;
+
             this.List = list;
             this.Background = this.List.Find("Background");
 
@@ -59,15 +69,8 @@ namespace Creator.UI
 
             foreach (string opt in options)
             {
-                GameObject newObj = (GameObject)GameObject.Instantiate(this.OptionPrefab, this.List);
-                newObj.name = opt;
-
-                Transform sprite = newObj.transform.Find("Sprite");
-                sprite.GetComponent<ItemDragHandler>().selectionWheel = this.ListController;
-
-                string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, opt);
-                Sprite newSprite = Resources.Load<Sprite>(spritePath);
-                sprite.GetComponent<Image>().sprite = newSprite;
+                GameObject newObj = WheelOption.CreateOption(this.Editor, this.ListController,
+                                        this.OptionPrefab, this.List, opt);
 
                 ids[i] = i;
                 items[i] = newObj.GetComponent<ListBox>();
