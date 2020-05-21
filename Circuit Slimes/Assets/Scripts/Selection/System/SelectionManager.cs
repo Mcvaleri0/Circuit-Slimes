@@ -123,6 +123,11 @@ public class SelectionManager : MonoBehaviour
         this.SelectionLocked = false;
     }
 
+    public void ForceSelection(Transform selection)
+    {
+        this.CurrentSelection = selection;
+    }
+
     #endregion
 
     #region === Unity Methods === 
@@ -198,7 +203,7 @@ public class SelectionManager : MonoBehaviour
         this.BoardSelectionResponse.UpdateSelection(this.BoardCoords, this.BoardHover, this.CurrentSelection, this.BoardCoordsOffset);
 
         //Debug 
-        //this.PrintAttributes();
+        this.PrintAttributes();
     }
 
     #endregion
