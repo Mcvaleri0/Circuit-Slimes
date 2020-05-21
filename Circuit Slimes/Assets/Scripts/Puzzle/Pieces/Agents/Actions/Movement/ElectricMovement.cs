@@ -61,7 +61,7 @@ namespace Puzzle.Actions
 
 
         #region Aux
-        protected Dictionary<LevelBoard.Directions, CircuitComponent> CheckAdjacentSolderTiles(Agent agent)
+        protected virtual Dictionary<LevelBoard.Directions, CircuitComponent> CheckAdjacentSolderTiles(Agent agent)
         {
             Dictionary<LevelBoard.Directions, CircuitComponent> adjacents = new Dictionary<LevelBoard.Directions, CircuitComponent>();
             

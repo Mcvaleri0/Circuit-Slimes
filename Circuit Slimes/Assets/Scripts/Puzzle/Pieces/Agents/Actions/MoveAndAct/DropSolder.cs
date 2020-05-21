@@ -12,7 +12,7 @@ namespace Puzzle.Actions
 
         public DropSolder() : base(Piece.CandyTypes.Solder) { }
 
-        public DropSolder(Agent agent, Candy target) : base(agent, target) 
+        public DropSolder(Consume consume) : base(consume) 
         { }
 
 
@@ -26,7 +26,7 @@ namespace Puzzle.Actions
             {
                 if (agent.TileAt(consume.MoveCoords) == null)
                 {
-                    return new DropSolder(agent, (Candy)consume.Target);
+                    return new DropSolder(consume);
                 }
                 else
                 {

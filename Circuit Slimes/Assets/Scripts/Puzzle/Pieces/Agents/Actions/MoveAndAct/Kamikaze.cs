@@ -19,10 +19,10 @@ namespace Puzzle.Actions
 
         public Kamikaze() : base(new Piece.Characteristics("ElectricSlime")) { }
 
-        public Kamikaze(Agent agent, ElectricSlime target)
-            : base(agent, target) 
+        public Kamikaze(SeekTarget seek)
+            : base(seek.MoveCoords, seek.Direction, seek.Target) 
         {
-            this.Target = target;
+            this.Target = (ElectricSlime) seek.Target;
         }
 
 
@@ -35,7 +35,7 @@ namespace Puzzle.Actions
             {
                 if((baseAction.Target.Coords - agent.Coords).magnitude < 2)
                 {
-                    return new Kamikaze(agent, (ElectricSlime) baseAction.Target);
+                    return new Kamikaze(baseAction);
                 }
                 else
                 {

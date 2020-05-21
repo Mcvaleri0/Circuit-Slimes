@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Puzzle.Actions;
 using Puzzle.Board;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Puzzle.Pieces
 {
@@ -225,9 +227,13 @@ namespace Puzzle.Pieces
         {
             float currentAngle = this.transform.eulerAngles.y;
             float targetAngle  = 360 - ((float) targetDir) * 45f;
+
             if (targetAngle == 360) targetAngle = 0;
 
-            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * (Time.deltaTime / EXPECTED_DELTA)));
+            var rate = Time.deltaTime / EXPECTED_DELTA;
+            if (percentage == 1f) rate = 1f;
+
+            currentAngle = Mathf.LerpAngle(currentAngle, targetAngle, (float) (percentage * 1f));
 
             if (Mathf.Abs((currentAngle % 360) - targetAngle) < 0.1f) currentAngle = targetAngle;
 
@@ -262,7 +268,10 @@ namespace Puzzle.Pieces
 
                 var norm = (new Vector3(dX, 0, dZ)).normalized; // Normalize the distance vector;
 
-                this.transform.position += norm * ((float) (maxVelocity * (Time.deltaTime / EXPECTED_DELTA))); // Apply movement
+                var rate = Time.deltaTime / EXPECTED_DELTA;
+                if (minSpeed == 1f) rate = 1f;
+
+                this.transform.position += norm * ((float) (maxVelocity * rate)); // Apply movement
 
                 return false;
             }
@@ -279,7 +288,7 @@ namespace Puzzle.Pieces
         // Board
         virtual public bool RotateInBoard(LevelBoard.Directions orientation)
         {
-            return true;
+            return this.Puzzle.RotatePiece(this, orientation);
         }
         
         virtual public bool MoveInBoard(Vector2Int coords)
@@ -505,6 +514,82 @@ namespace Puzzle.Pieces
         public bool PieceExists(Piece piece)
         {
             return this.Puzzle.Pieces.Contains(piece);
+        }
+
+        public List<Vector2Int> PathToNearest(Characteristics characterization, float range)
+        {
+            #region Search
+            var matches = new Dictionary<Piece, float>();
+
+            // Find all Pieces that match
+            foreach(var piece in this.Puzzle.Pieces)
+            {
+                if (piece.Characterization.Equals(characterization) &&
+                    this.PieceAt(piece.Coords) == piece)
+                    matches.Add(piece, (piece.Coords - this.Coords).magnitude);
+            }
+            #endregion
+
+            #region Sort Matches by distance
+            var sortedMatches = matches.ToList();
+            sortedMatches.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
+            #endregion
+
+            // Foreach match
+            foreach (var match in sortedMatches)
+            {
+                var target = match.Key; // Get Potential Target
+
+                var currentPosition = this.Coords; // Our Coords
+
+                // Temporary Path
+                var tempPath = new List<Vector2Int>() { this.Coords };
+
+                // While the target's position has not been reached
+                while (currentPosition != target.Coords)
+                {
+                    // Full Movement Vector
+                    var movement = target.Coords - currentPosition;
+
+                    // 1-Turn Movement Vector
+                    var clamped = new Vector2Int((int)Mathf.Clamp(movement.x, -1f, 1f), (int)Mathf.Clamp(movement.y, -1f, 1f));
+
+                    var nextPosition = currentPosition + clamped;
+
+                    var pieceAtPosition = this.PieceAt(nextPosition);
+
+                    // If it's free or is target
+                    if (pieceAtPosition == null || pieceAtPosition == target)
+                    {
+                        currentPosition = nextPosition;
+                        tempPath.Add(currentPosition);
+                    }
+                    // If it's a diagonal
+                    else if (clamped.sqrMagnitude > 1)
+                    {
+                        // Calculate next position (target is further away in the X axis)
+                        nextPosition = new Vector2Int(currentPosition.x + clamped.x, currentPosition.y);
+
+                        // Calculate next position (target is further away in the Y axis)
+                        if (Mathf.Abs(movement.x) <= Mathf.Abs(movement.y))
+                            nextPosition = new Vector2Int(currentPosition.x, currentPosition.y + clamped.y);
+
+                        // If the Path is not blocked
+                        if (this.IsFree(nextPosition))
+                        {
+                            currentPosition = nextPosition;
+                            tempPath.Add(currentPosition);
+                        }
+                        else break;
+                    }
+                    else break;
+                }
+
+                // Return Path
+                if (currentPosition == target.Coords) return tempPath;
+            }
+
+            return null;
         }
 
 
