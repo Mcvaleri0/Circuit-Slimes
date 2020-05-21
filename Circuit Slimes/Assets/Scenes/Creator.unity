@@ -808,12 +808,12 @@ PrefabInstance:
     - target: {fileID: 435945424532623691, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: listCurvature
-      value: 0
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: 435945424532623691, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: positionAdjust
-      value: 0
+      value: -0.65
       objectReference: {fileID: 0}
     - target: {fileID: 4501612537383115331, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
