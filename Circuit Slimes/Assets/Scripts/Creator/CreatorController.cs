@@ -148,7 +148,7 @@ namespace Creator
         #endregion
 
 
-        #region === Init/Update Methods ===
+        #region === Controller Methods ===
 
         public void Initialize(Puzzle.Puzzle puzzle, bool creator)
         {
@@ -160,6 +160,7 @@ namespace Creator
 
             this.InitializeUI();
         }
+
 
         public void UpdateInfo(Puzzle.Puzzle puzzle)
         {

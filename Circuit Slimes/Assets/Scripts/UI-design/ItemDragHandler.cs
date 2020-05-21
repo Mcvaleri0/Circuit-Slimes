@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-using Creator.UI.Wheel;
+using Creator.UI;
 
 
 
@@ -12,8 +12,6 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
     public Vector3 StartPosition;
     public ListPositionCtrl selectionWheel;
     public ListBox Slime;
-
-    public WheelOption Option { get; set; }
 
 
 
@@ -36,8 +34,6 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.Option.PlaceItem();
-
         this.transform.position = this.StartPosition;
         this.StartPosition = Vector3.zero;
     }
