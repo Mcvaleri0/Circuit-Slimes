@@ -107,7 +107,6 @@ public class BoardSpaceSelectionResponse : MonoBehaviour, IBoardSelectionRespons
 
         for (var i = 0; i < numSpaces; i++)
         {
-
             //if no board is present abort
             if(GameObject.Find("Puzzle") == null) { return; }
 
