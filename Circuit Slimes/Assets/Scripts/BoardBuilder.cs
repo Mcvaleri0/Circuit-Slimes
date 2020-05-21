@@ -903,7 +903,7 @@ public class BoardBuilder
         GameObject gameObject = new GameObject("BoardMesh", typeof(MeshFilter), typeof(MeshRenderer));
         gameObject.transform.parent = parent;
 
-        //Get Maerials from parent
+        //Get Materials from parent
         var mats = new List<Material>();
         parentRenderer.GetMaterials(mats);
         var mainMaterial = mats[0];
