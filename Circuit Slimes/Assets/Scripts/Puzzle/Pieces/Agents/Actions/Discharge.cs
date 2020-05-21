@@ -82,7 +82,7 @@ namespace Puzzle.Actions
                         var componentFootprint = component.GetFootprint();
                         LevelBoard.Directions ori = LevelBoard.GetDirection(componentFootprint[componentFootprint.Length - 1], this.TargetCoords);
 
-                        var piece = component.CreatePiece(new Piece.Caracteristics("ElectricSlime"),
+                        var piece = component.CreatePiece(new Piece.Characteristics(component.GetChargeType()),
                             this.TargetCoords, ori, component.Turn + 1);
 
                         this.Charge = (ElectricSlime) piece;

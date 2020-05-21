@@ -49,6 +49,7 @@ MonoBehaviour:
   State: 0
   MaxCharges: 0
   StartingCharges: 1
+  ChargeType: 0
 --- !u!65 &618420960203682235
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 79e079fd5cd600345b4b8a8e89a13afe, type: 2}
+  - {fileID: 2100000, guid: 4e51499d20f68e245a5b3b9424f24df5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

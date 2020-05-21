@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CellBatteryMaterial
+  m_Shader: {fileID: 4800000, guid: 40c376627da63ec41a5077b52850d84c, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: e8bac720fbf909a47a0c0807417666b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionTexture:
+        m_Texture: {fileID: 2800000, guid: 438a53c38158f6b4ba087c4e3c4148ee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: 510c251b16a529d49a57093a37e59f0b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecMap:
+        m_Texture: {fileID: 2800000, guid: 9effe5328d6bbe044a644810c8385e99, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 0454aff73353f304498b8f417c8b2c3b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: ad2283f400c25ea4891a3eb91bbbdbb8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: 063aabaf5aafcde4bbd7c7343c6a53be, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonRamp:
+        m_Texture: {fileID: 2800000, guid: a01b538848797dc4ab5c717ee3b99fc0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ASEOutlineWidth: 0.1
+    - _ColorStrength: 1.38
+    - _EmissionStrength: 4.8
+    - _Float0: -0.51
+    - _Gloss: 0.4
+    - _NomalMapStrength: 11.36
+    - _NormalScale: -0.87
+    - _OutlineWidth: 0.1
+    - _RimOffset: 0.74
+    - _RimPower: 0.49
+    - _ShadowOffset: 0.21
+    - _ShadowScale: 0.43
+    - _SpecMax: 3.06
+    - _SpecMin: 1
+    - _SpecularGloss: 0.65
+    - _SpecularIntensity: 0.17
+    - _Specularity: 15.87
+    - __dirty: 0
+    m_Colors:
+    - _ASEOutlineColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+    - _Color0: {r: 1, g: 0, b: 0.9104991, a: 0}
+    - _EmissionColor: {r: 0.573807, g: 0, b: 0.8867924, a: 1}
+    - _OutlineColor: {r: 0.5323811, g: 0.27394092, b: 0.7169812, a: 0}
+    - _RimLightColor: {r: 0.39015543, g: 0.0072089583, b: 0.509434, a: 0}
+    - _SpecRange: {r: 1.29, g: 1.87, b: 0, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 0}

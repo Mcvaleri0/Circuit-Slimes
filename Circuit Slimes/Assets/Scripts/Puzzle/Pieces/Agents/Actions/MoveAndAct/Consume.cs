@@ -14,23 +14,21 @@ namespace Puzzle.Actions
 
 
         #region === Constructors ===
-        public Consume(Piece.Caracteristics targetCaracterization) : base(targetCaracterization) { }
+        public Consume(Piece.Characteristics targetCharacterization) : base(targetCharacterization) { }
 
         public Consume(Piece.SlimeTypes slimeType) :
-            base(new Piece.Caracteristics(Piece.Categories.Slime, slimeType))
+            base(new Piece.Characteristics(Piece.Categories.Slime, slimeType))
         { }
         public Consume(Piece.ComponentTypes componentType) :
-            base(new Piece.Caracteristics(Piece.Categories.Component, componentType))
+            base(new Piece.Characteristics(Piece.Categories.Component, componentType))
         { }
 
         public Consume(Piece.CandyTypes candyType) :
-            base(new Piece.Caracteristics(Piece.Categories.Candy, candyType))
+            base(new Piece.Characteristics(Piece.Categories.Candy, candyType))
         { }
 
-        public Consume(Agent agent, Piece target) : base(agent, target) 
+        public Consume(SeekTarget seek) : base(seek.MoveCoords, seek.Direction, seek.Target) 
         {
-            this.Target = target;
-
             this.Consuming = this.TargetCoords == this.MoveCoords;
         }
         #endregion
@@ -43,7 +41,7 @@ namespace Puzzle.Actions
 
             if(baseAction != null)
             {
-                return new Consume(agent, baseAction.Target);
+                return new Consume(baseAction);
             }
 
             return null;

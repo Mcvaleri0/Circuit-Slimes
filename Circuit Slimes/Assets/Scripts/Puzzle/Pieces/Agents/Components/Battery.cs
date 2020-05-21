@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Actions;
 using Puzzle.Board;
+using System.Runtime.CompilerServices;
 
 namespace Puzzle.Pieces.Components
 {
     public class Battery : CircuitComponent
     {
-        #region Unity Events
+        #region === Unity Events ===
 
         // Start is called before the first frame update
         override protected void Start()
@@ -24,7 +25,8 @@ namespace Puzzle.Pieces.Components
         }
         #endregion
 
-        #region Component Methods
+
+        #region === Component Methods ===
         protected override void UpdateConnections()
         {
             var footprint = this.GetFootprint();
@@ -49,7 +51,6 @@ namespace Puzzle.Pieces.Components
                 }
             }
         }
-
 
         override public Action Think()
         {

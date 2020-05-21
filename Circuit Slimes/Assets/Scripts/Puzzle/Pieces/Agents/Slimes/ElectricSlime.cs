@@ -7,8 +7,6 @@ namespace Puzzle.Pieces.Slimes
 {
     public class ElectricSlime : Slime
     {
-        public ElectricSlime() : base() { }
-
         #region === Unity Events ===
 
         // Start is called before the first frame update
@@ -20,23 +18,6 @@ namespace Puzzle.Pieces.Slimes
             this.KnownActions.Add(new ElectricMovement());
 
             this.Stats = new Statistics(10, 10, 10);
-        }
-
-        protected override void Update()
-        {
-            base.Update();
-
-            if (Input.GetKeyUp(KeyCode.T) && (this.Coords.x == 0 || this.Coords.x == -1))
-            {
-                if(this.Active)
-                {
-                    this.Deactivate();
-                }
-                else
-                {
-                    this.Reactivate(this.Coords);
-                }
-            }
         }
         #endregion
 

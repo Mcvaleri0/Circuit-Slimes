@@ -17,13 +17,22 @@ namespace Puzzle.Pieces.Components
 
         public List<ElectricSlime> Charges { get; protected set; }
 
+        public enum ChargeTypes
+        {
+            Basic,
+            Smart
+        }
+
+        [SerializeField]
+        private ChargeTypes ChargeType = ChargeTypes.Basic;
+
         public Dictionary<LevelBoard.Directions, Vector2Int> Connections { get; protected set; }
 
         // Init Method
-        public override void Initialize(Puzzle puzzle, Vector2Int coords, Caracteristics caracterization,
+        public override void Initialize(Puzzle puzzle, Vector2Int coords, Characteristics characterization,
             LevelBoard.Directions ori = 0, int turn = 0)
         {
-            base.Initialize(puzzle, coords, caracterization, ori, turn);
+            base.Initialize(puzzle, coords, characterization, ori, turn);
 
             this.Charges = new List<ElectricSlime>();
 
@@ -148,6 +157,25 @@ namespace Puzzle.Pieces.Components
             ElectricSlime charge = this.Charges[0];
 
             return ReleaseCharge(charge, coords);
+        }
+
+
+        public string GetChargeType()
+        {
+            return GetChargePrefabName(this.ChargeType);
+        }
+
+
+        public static string GetChargePrefabName(ChargeTypes type)
+        {
+            switch (type)
+            {
+                default:
+                    return "ElectricSlime";
+
+                case ChargeTypes.Smart:
+                    return "SmartElectricSlime";
+            }
         }
         #endregion
     }

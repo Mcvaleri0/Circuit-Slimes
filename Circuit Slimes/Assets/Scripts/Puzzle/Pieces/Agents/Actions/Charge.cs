@@ -16,6 +16,8 @@ namespace Puzzle.Actions
 
         public Vector2Int ComponentCoords { get; private set; }
 
+        private bool Crossing = false;
+
         public Charge() { }
 
         public Charge(CircuitComponent component) 
@@ -25,7 +27,16 @@ namespace Puzzle.Actions
             this.ComponentCoords = component.Coords;
         }
 
-        #region Action Methods
+        public Charge(CircuitComponent component, bool crossing)
+        {
+            this.Component = component;
+
+            this.ComponentCoords = component.Coords;
+
+            this.Crossing = crossing;
+        }
+
+        #region === Action Methods ===
 
         override public Action Available(Agent agent)
         {
@@ -46,7 +57,7 @@ namespace Puzzle.Actions
                     if(tile != null && tile.Type == Tile.Types.Solder)
                     {
                         // If there's a Circuit Component
-                        if(piece != null && piece.Caracterization.Category == Piece.Categories.Component)
+                        if(piece != null && piece.Characterization.Category == Piece.Categories.Component)
                         {
                             // If the component is not at full charge
                             if (piece is CircuitComponent component &&
@@ -100,6 +111,11 @@ namespace Puzzle.Actions
 
                 slime.RotateInBoard(outDir);
                 slime.Rotate(outDir, 1f);
+
+                if(this.Crossing && slime is SmartElectricSlime smart)
+                {
+                    smart.UnregisterExploredPath(this.ChargeCoords, outDir);
+                }
 
                 return true;
             }

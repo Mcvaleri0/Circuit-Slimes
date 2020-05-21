@@ -12,62 +12,39 @@ namespace Puzzle.Actions
 
         public Vector2Int TargetCoords { get; protected set; }
 
-        protected Piece.Caracteristics TargetCaracteristics;
+        protected Piece.Characteristics TargetCharacteristics;
 
 
-        protected SeekTarget(Piece.Caracteristics caracteristics) : base()
+        protected SeekTarget(Piece.Characteristics Characteristics) : base()
         {
-            this.TargetCaracteristics = caracteristics;
+            this.TargetCharacteristics = Characteristics;
         }
 
-        public SeekTarget(Agent agent, Piece target)
+        public SeekTarget(Vector2Int moveCoords, LevelBoard.Directions direction, Piece target)
         {
+            this.Direction = direction;
+
             this.Target = target;
 
             this.TargetCoords = target.Coords;
 
-            this.TargetCaracteristics = new Piece.Caracteristics(target.Caracterization.ToString());
+            this.TargetCharacteristics = new Piece.Characteristics(target.Characterization.ToString());
 
-            int dX = target.Coords.x - agent.Coords.x;
-            int dY = target.Coords.y - agent.Coords.y;
-
-            Vector2Int moveCoords = target.Coords - agent.Coords;
-            moveCoords.x = (int)Mathf.Sign(moveCoords.x) * Mathf.Min(Mathf.Abs(moveCoords.x), 1);
-            moveCoords.y = (int)Mathf.Sign(moveCoords.y) * Mathf.Min(Mathf.Abs(moveCoords.y), 1);
-
-            Vector2Int targetCoords = agent.Coords + moveCoords;
-
-            if (!agent.IsFree(targetCoords) && target.Coords != targetCoords)
-            {
-                if (Mathf.Abs(dX) > Mathf.Abs(dY))
-                {
-                    targetCoords.y = agent.Coords.y;
-                }
-                else
-                {
-                    targetCoords.x = agent.Coords.x;
-                }
-            }
-
-            this.MoveCoords = targetCoords;
-
-            this.Direction = LevelBoard.GetDirection(agent.Coords, targetCoords);
+            this.MoveCoords = moveCoords;
         }
-
 
         #region Action Methods
         override public Action Available(Agent agent)
         {
-            List<Piece> foundPieces = agent.PiecesInSight(3);
+            List<Vector2Int> pathToTarget = agent.PathToNearest(this.TargetCharacteristics, 3);
 
-            if(foundPieces.Count > 0)
+            if(pathToTarget != null)
             {
-                foreach (Piece piece in foundPieces) {
-                    if (this.TargetCaracteristics.Matches(piece.Caracterization))
-                    {
-                        return new SeekTarget(agent, piece);
-                    }
-                }
+                var dir = LevelBoard.GetDirection(pathToTarget[0], pathToTarget[1]);
+
+                var target = agent.PieceAt(pathToTarget[pathToTarget.Count - 1]);
+
+                return new SeekTarget(pathToTarget[1], dir, target);
             }
 
             return null;

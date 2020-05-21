@@ -17,16 +17,21 @@ public class ItemDragHandler : MonoBehaviour, IDragHandler, IEndDragHandler
         int slimeId = Slime.listBoxID;
        // Debug.Log(slimeId == centeredId);
         if (slimeId == centeredId){
+
+            if (this.StartPosition == Vector3.zero)
+            {
+                this.StartPosition = this.transform.localPosition;
+            }
+
             transform.position = Input.mousePosition;
-
         }
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.localPosition = Vector3.zero;
-
+        this.transform.localPosition = this.StartPosition;
+        this.StartPosition = Vector3.zero;
+        //transform.localPosition = Vector3.zero;
     }
 
 }

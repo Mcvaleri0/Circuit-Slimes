@@ -37,6 +37,7 @@ namespace Creator.UI.ModeUI
         public Transform ResourcesButton { get; private set; }
 
         private ScrollMenu ScrollMenu { get; set; }
+        private CircularList CircularList { get; set; }
 
         #endregion
 
@@ -60,6 +61,7 @@ namespace Creator.UI.ModeUI
         {
             this.InitializeButtons(canvas);
             this.InitializeScrollMenu(canvas);
+            this.InitiliazeList(canvas);
         }
 
         #endregion
@@ -70,6 +72,7 @@ namespace Creator.UI.ModeUI
         public void UpdateInfo()
         {
             this.ScrollMenu.UpdateContent(this.MenuOptions());
+            this.CircularList.Update(this.MenuOptions());
         }
 
         #endregion
@@ -117,5 +120,15 @@ namespace Creator.UI.ModeUI
 
         #endregion
 
+
+        #region === Circular Lis Methods ===
+
+        private void InitiliazeList(Transform canvas)
+        {
+            Transform list = canvas.Find("CircularList");
+            this.CircularList = new CircularList(list, this.MenuOptions());
+        }
+        
+        #endregion
     }
 }
