@@ -56,7 +56,7 @@ public class BoardCoordSelector : MonoBehaviour, ICoordSelector
 
         this.BoardCoordsOffset = new Vector2Int(0, 0); 
 
-        if (board.Raycast(ray, out var hit, 1000) && !this.IgnoreSelection(ray)) {
+        if (board.Raycast(ray, out var hit, 1000)) {
 
             this.WhiteList = Manager.WhiteList;
 
