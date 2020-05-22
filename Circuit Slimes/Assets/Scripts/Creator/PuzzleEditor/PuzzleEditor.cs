@@ -116,6 +116,9 @@ namespace Creator.Editor
                     GameObject.Destroy(objToRemove);
                     this.Selection.RemoveItemFromWhiteList(objToRemove.transform);
                     this.ItemsPlaced.Remove(objToRemove.transform);
+
+                    Resource resource = this.GetResource(objToRemove.name);
+                    resource.Increase();
                 }
             }
         }
