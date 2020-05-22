@@ -69,14 +69,14 @@ namespace Creator.UI.Buttons
         {
             if (this.Selected)
             {
-                this.Editor.RemoveItemToPlace();
+                //this.Editor.RemoveItemToPlace();
             }
             else
             {
                 this.Selected = true;
                 this.ChangeColor();
 
-                this.Editor.ItemToPlace(this.Item, this);
+                //this.Editor.ItemToPlace(this.Item, this);
             }
         }
 
