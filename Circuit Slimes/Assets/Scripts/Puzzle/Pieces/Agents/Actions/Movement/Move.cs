@@ -12,7 +12,7 @@ namespace Puzzle.Actions
 
         public Vector2Int MoveCoords { get; protected set; }
 
-        private LevelBoard.Directions OrigOrientation { get; set; }
+        protected LevelBoard.Directions OrigOrientation { get; set; }
 
 
         public Move()
