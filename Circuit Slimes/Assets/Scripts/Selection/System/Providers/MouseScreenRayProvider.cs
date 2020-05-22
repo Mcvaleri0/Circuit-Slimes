@@ -7,8 +7,7 @@ public class MouseScreenRayProvider : MonoBehaviour, IRayProvider
     {
         var pos = Input.mousePosition;
 
-        if (LeanTouch.Fingers.Count > 0 &&
-        !LeanTouch.Fingers[0].StartedOverGui)
+        if (LeanTouch.Fingers.Count > 0)
         {
             pos = LeanTouch.Fingers[0].ScreenPosition;
         }

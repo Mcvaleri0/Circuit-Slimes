@@ -123,6 +123,11 @@ public class SelectionManager : MonoBehaviour
         this.SelectionLocked = false;
     }
 
+    public void ForceSelection(Transform selection)
+    {
+        this.CurrentSelection = selection;
+    }
+
     #endregion
 
     #region === Unity Methods === 

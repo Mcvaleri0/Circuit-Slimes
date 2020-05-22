@@ -20,11 +20,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 9dd57f4f906cc1041ad7160a9a308064, type: 3}
+        m_Texture: {fileID: 2800000, guid: 774535a0ab5d0fd4a8455573da9b1f19, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionTexture:
-        m_Texture: {fileID: 2800000, guid: 24fb97131d3fc424287384429e2e6d2b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 968838e533873cd48a317ca971ef50b8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecMap:
-        m_Texture: {fileID: 2800000, guid: 802766653923aed4b9316c723f49a46d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 345f6904fe8be61419009f281f32408d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
