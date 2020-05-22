@@ -59,7 +59,7 @@ namespace Creator.UI.Drawer
             InitializeButtons(buttons, ableToEdit);
             InitiliazeSprite(sprite, name);
             draggable.Initialize(controller, optionScp);
-            optionScp.Initialize(editor, name, amountText, draggable);
+            optionScp.Initialize(editor, name, amountText, draggable, ableToEdit);
         }
 
 
@@ -76,12 +76,12 @@ namespace Creator.UI.Drawer
         }
 
 
-        private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable)
+        private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable, bool ableToEdit)
         {
             this.Editor = editor;
 
             this.Resource = this.Editor.GetResource(item);
-            this.Resource.DefineUI(text, draggable);
+            this.Resource.DefineUI(text, draggable, ableToEdit);
         }
 
         #endregion

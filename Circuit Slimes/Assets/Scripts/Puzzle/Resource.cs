@@ -18,6 +18,7 @@ namespace Puzzle
 
         private Text Text { get; set; }
         private Draggable Draggable { get; set; }
+        private bool CanEdit { get; set; }
 
         #endregion
 
@@ -45,10 +46,11 @@ namespace Puzzle
 
         #region === UI Methods ===
 
-        public void DefineUI(Text text, Draggable draggable)
+        public void DefineUI(Text text, Draggable draggable, bool canEdit)
         {
             this.Text = text;
             this.Draggable = draggable;
+            this.CanEdit = canEdit;
 
             this.UpdateUI();
         }
@@ -63,7 +65,7 @@ namespace Puzzle
             
             if (this.Draggable != null)
             {
-                this.Draggable.enabled = this.Available();
+                this.Draggable.enabled = (this.CanEdit || this.Available());
             }
         }
 
