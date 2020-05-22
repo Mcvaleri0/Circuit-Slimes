@@ -57,6 +57,7 @@ namespace Puzzle {
             if(!_new) crossing.Update(available);
         }
 
+
         public void RegisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
         {
             this.Crossings.TryGetValue(crossingCoords, out var crossing);
@@ -66,16 +67,8 @@ namespace Puzzle {
 
             crossing.MarkExplored(exploredPath);
 
-            if (crossing.FullyExplored()) crossing.ClearExplored();
-        }
-
-        public List<LevelBoard.Directions> GetUnexplored(Vector2Int crossingCoords)
-        {
-            this.Crossings.TryGetValue(crossingCoords, out var crossing);
-
-            if (crossing == null) return null;
-
-            return crossing.GetUnexplored();
+            Debug.Log("Register Explored - " + crossingCoords + " -> " + exploredPath);
+            Debug.Log(crossing.AvailableToString());
         }
 
         public void UnregisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
@@ -86,6 +79,46 @@ namespace Puzzle {
             if (crossing == null) return;
 
             crossing.UnmarkExplored(exploredPath);
+
+            Debug.Log("Unregister Explored - " + crossingCoords + " -> " + exploredPath);
+            Debug.Log(crossing.AvailableToString());
+        }
+
+
+        public List<LevelBoard.Directions> GetUnexplored(Vector2Int crossingCoords)
+        {
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
+
+            if (crossing == null) return null;
+
+            return crossing.GetUnexplored();
+        }
+
+        public Dictionary<LevelBoard.Directions, int> GetUtilities(Vector2Int crossingCoords)
+        {
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
+
+            if (crossing == null) return null;
+
+            return crossing.GetUtilities();
+        }
+
+
+        public void AddChildToCrossing(Vector2Int parentCoords, LevelBoard.Directions dir, Vector2Int childCoords)
+        {
+            if(this.Crossings.TryGetValue(parentCoords, out var parent) &&
+               this.Crossings.TryGetValue(childCoords, out var child))
+            {
+                parent.AddChild(dir, child);
+            }
+        }
+
+        public void RemoveChildFromCrossing(Vector2Int parentCoords, LevelBoard.Directions dir)
+        {
+            if (this.Crossings.TryGetValue(parentCoords, out var parent))
+            {
+                parent.RemoveChild(dir);
+            }
         }
         #endregion
     }

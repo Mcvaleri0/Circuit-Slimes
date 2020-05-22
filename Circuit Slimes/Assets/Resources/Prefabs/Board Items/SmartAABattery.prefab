@@ -62,7 +62,7 @@ MonoBehaviour:
   State: 0
   MaxCharges: 0
   StartingCharges: 2
-  ChargeType: 0
+  ChargeType: 1
 --- !u!1 &3095368419694737856
 GameObject:
   m_ObjectHideFlags: 0

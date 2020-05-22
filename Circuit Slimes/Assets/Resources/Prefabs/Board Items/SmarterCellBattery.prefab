@@ -49,7 +49,7 @@ MonoBehaviour:
   State: 0
   MaxCharges: 0
   StartingCharges: 1
-  ChargeType: 0
+  ChargeType: 2
 --- !u!65 &618420960203682235
 BoxCollider:
   m_ObjectHideFlags: 0
