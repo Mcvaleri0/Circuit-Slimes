@@ -23,8 +23,6 @@ namespace Puzzle
 
         public GameObject TilesObj { get; private set; }
 
-        public List<string> Permissions { get; private set; }
-
         public Dictionary<string, Resource> ResourcesAvailable { get; private set; }
 
         public WinCondition WinCondition { get; private set; }
@@ -53,16 +51,14 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
+            Initialize(board, new List<Piece>(), new List<Tile>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, 
-                               List<string> permissions, WinCondition winCondition,
-                               Dictionary<string, Resource> resources)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles,
+                        WinCondition winCondition, Dictionary<string, Resource> resources)
         {
             this.Board  = board;
             this.Pieces = pieces;
-            this.Permissions = permissions;
             this.WinCondition = winCondition;
             this.ResourcesAvailable = resources;
 
@@ -242,21 +238,6 @@ namespace Puzzle
             {
                 return false;
             }
-        }
-
-        #endregion
-
-
-        #region === Permission Methods ===
-
-        public void AddPermission(string prefab)
-        {
-            this.Permissions.Add(prefab);
-        }
-
-        public void RemovePermission(string prefab)
-        {
-            this.Permissions.Remove(prefab);
         }
 
         #endregion

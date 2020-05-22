@@ -65,7 +65,13 @@ namespace Creator.UI.ModeUI
             return this.AllItems;
         }
 
-#endregion
+
+        public override bool AbleToEditOptions()
+        {
+            return true;
+        }
+
+        #endregion
 
     }
 }

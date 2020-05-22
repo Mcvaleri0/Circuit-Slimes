@@ -6,25 +6,25 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 using Level;
+using Puzzle;
 using Creator.Editor;
 
 
 
 namespace Creator.UI.Drawer
 {
-    public class Option : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+    public class Option : MonoBehaviour
     {
         #region /* Puzzle Attributes */
 
         private PuzzleEditor Editor { get; set; }
-        private string Item { get; set; }
 
         #endregion
 
 
-        #region /* Moviment Attirbutes */
+        #region /* Resource Attributes */
         
-        private Vector3 StartPosition { get; set; }
+        private Resource Resource { get; set; }
 
         #endregion
 
@@ -32,71 +32,84 @@ namespace Creator.UI.Drawer
 
         #region === Init Methods ===
 
-        public static GameObject CreateOption(PuzzleEditor editor, Object optionPrefab,
-                        Transform inside, string name, bool isChoice)
+        public static GameObject CreateOption(PuzzleEditor editor, DrawerController controller,
+                                    Object prefab, Transform parent, string name, bool ableToEdit)
         {
-            GameObject newObj = (GameObject) GameObject.Instantiate(optionPrefab, inside);
+            GameObject newObj = (GameObject) GameObject.Instantiate(prefab, parent);
             newObj.name = name;
 
-            Transform sprite = GetSprite(newObj, isChoice);
-
-            string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, name);
-            sprite.GetComponent<Image>().sprite = Resources.Load<Sprite>(spritePath);
+            Initialize(editor, controller, newObj.transform, ableToEdit, name);
 
             return newObj;
         }
 
 
-        private static Transform GetSprite(GameObject newObj, bool isChoice)
+        private static void Initialize(PuzzleEditor editor, DrawerController controller, Transform newObj, bool ableToEdit, string name)
         {
-            if (isChoice)
-            {
-                return newObj.transform.Find("Sprite");
-            }
-            else
-            {
-                return newObj.transform.Find("Resource").Find("Sprite");
-            }
+            GameObject buttons = newObj.Find("PlusMinus").gameObject;
+
+            Transform resource = newObj.Find("Resource");
+            Transform sprite = resource.Find("Sprite");
+
+            Text amountText = resource.Find("Amount").GetComponent<Text>();
+            Option optionScp = newObj.GetComponent<Option>();
+
+            Draggable draggable = sprite.GetComponent<Draggable>();
+
+            InitializeButtons(buttons, ableToEdit);
+            InitiliazeSprite(sprite, name);
+            draggable.Initialize(controller, optionScp);
+            optionScp.Initialize(editor, name, amountText, draggable, ableToEdit);
         }
 
 
-        public void Initialize(PuzzleEditor editor, string item)
+        private static void InitializeButtons(GameObject buttons, bool ableToEdit)
+        {
+            buttons.SetActive(ableToEdit);
+        }
+
+
+        private static void InitiliazeSprite(Transform sprite, string name)
+        {
+            string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, name);
+            sprite.GetComponent<Image>().sprite = Resources.Load<Sprite>(spritePath);
+        }
+
+
+        private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable, bool ableToEdit)
         {
             this.Editor = editor;
-            this.Item   = item;
+
+            this.Resource = this.Editor.GetResource(item);
+            this.Resource.DefineUI(text, draggable, ableToEdit);
         }
 
         #endregion
 
 
-        #region === Placing Methods ===
+        #region === Resource / Permisson Methods ===
         
+        public void Increase()
+        {
+            this.Resource.Increase();
+        }
+
+
+        public void Decrease()
+        {
+            this.Resource.Decrease();
+        }
+
+
         public void PlaceItem()
         {
-            this.Editor.PlaceItem(this.Item);
-        }
-
-        #endregion
-
-
-        #region === Movement Methods ===
-
-        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
-        {
-            this.StartPosition = this.transform.position;
-        }
-        
-
-        void IDragHandler.OnDrag(PointerEventData eventData)
-        {
-            transform.position = Input.mousePosition;
+            this.Editor.PlaceItem(this.Resource);
         }
 
 
-        void IEndDragHandler.OnEndDrag(PointerEventData data)
+        public string Name()
         {
-            this.transform.position = this.StartPosition;
-            this.StartPosition = Vector3.zero;
+            return this.Resource.Name;
         }
 
         #endregion

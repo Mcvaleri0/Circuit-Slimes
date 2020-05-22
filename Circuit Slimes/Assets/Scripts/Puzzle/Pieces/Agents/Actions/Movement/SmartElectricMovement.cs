@@ -10,7 +10,9 @@ namespace Puzzle.Actions
 {
     public class SmartElectricMovement : Move
     {
-        private bool Crossing = false;
+        protected bool Crossing = false;
+
+        protected Vector2Int OrigCoords;
 
         public SmartElectricMovement() : base() { }
 
@@ -90,14 +92,24 @@ namespace Puzzle.Actions
         public override bool Confirm(Agent agent)
         {
             if (agent is SmartElectricSlime slime) {
-                var origCoords = slime.Coords;
+                this.OrigCoords = slime.Coords;
+
                 var tile = slime.TileAt(this.MoveCoords);
 
+                // If there is still a Solder Tile there
                 if (tile != null && tile.Type == Tile.Types.Solder)
                 {
+                    // If the Move is confirmed
                     if (base.Confirm(slime))
                     {
-                        if(this.Crossing) slime.RegisterExploredPath(origCoords, this.Direction);
+                        // If agent is at a crossing
+                        if (this.Crossing)
+                        {
+                            var cameFrom = (LevelBoard.Directions)((((int) this.OrigOrientation) + 4) % 8);
+
+                            slime.RegisterExploredPath(this.OrigCoords, cameFrom);
+                            slime.RegisterExploredPath(this.OrigCoords, this.Direction);
+                        }
 
                         return true;
                     }
@@ -111,10 +123,13 @@ namespace Puzzle.Actions
         {
             if(agent is SmartElectricSlime slime)
             {
-                var oppositeDir = (LevelBoard.Directions) ((((int) this.Direction) + 4) % 8);
-                var origCoords  = LevelBoard.GetAdjacentCoords(slime.Coords, oppositeDir);
+                if(this.Crossing)
+                {
+                    var cameFrom = (LevelBoard.Directions)((((int) this.OrigOrientation) + 4) % 8);
 
-                slime.UnregisterExploredPath(origCoords, this.Direction);
+                    slime.UnregisterExploredPath(this.OrigCoords, cameFrom);
+                    slime.UnregisterExploredPath(this.OrigCoords, this.Direction);
+                }                
             }
 
             return base.Undo(agent);

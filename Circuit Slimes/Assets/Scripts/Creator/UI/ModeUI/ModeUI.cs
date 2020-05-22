@@ -73,7 +73,7 @@ namespace Creator.UI.ModeUI
 
         public void UpdateInfo()
         {
-            this.Menu.Update(this.MenuOptions());
+            this.Menu.UpdateOptions(this.MenuOptions());
         }
 
         #endregion
@@ -101,11 +101,16 @@ namespace Creator.UI.ModeUI
         
         private void InitializeMenu(Transform canvas)
         {
-            this.Menu = new DrawerController(this.Editor, canvas, this.MenuOptions());
+            Transform drawerSystem = canvas.Find("DrawerSystem");
+            this.Menu = drawerSystem.GetComponent<DrawerController>();
+                
+            this.Menu.Initialize(this.Editor, drawerSystem, this.MenuOptions(), this);
         }
 
 
         public abstract List<string> MenuOptions();
+
+        public abstract bool AbleToEditOptions();
 
         #endregion
     }

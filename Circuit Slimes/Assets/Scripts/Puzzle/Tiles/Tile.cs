@@ -35,6 +35,7 @@ namespace Puzzle
             Transform parent = puzzle.TilesObj.transform;
 
             GameObject obj = Tile.Instantiate(parent, prefabName, coords);
+            obj.name = prefabName;
 
             Tile tile = obj.GetComponent<Tile>();
 

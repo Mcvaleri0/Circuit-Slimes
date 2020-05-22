@@ -18,8 +18,7 @@ namespace Level
         public const string ITEMS_PATH  = "Prefabs/Board Items";
         public const string BUTTON_PATH = "Prefabs/Button";
 
-        public const string CHOICE_PATH = "Prefabs/Creator/Drawer/Choice";
-        public const string RESOURCE_PATH = "Prefabs/Creator/Drawer/Resource";
+        public const string OPTION_PATH = "Prefabs/Creator/Drawer/Option";
 
         public const string ITEMS_SPRITES_PATH = "Sprites";
 

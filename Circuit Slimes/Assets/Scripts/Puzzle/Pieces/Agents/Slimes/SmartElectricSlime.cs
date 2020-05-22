@@ -18,7 +18,6 @@ namespace Puzzle.Pieces.Slimes
             base.Start();
 
             this.KnownActions.Clear();
-            this.KnownActions.Add(new Charge());
             this.KnownActions.Add(new SmartElectricMovement());
 
             this.Stats = new Statistics(10, 10, 10);
@@ -58,19 +57,21 @@ namespace Puzzle.Pieces.Slimes
             this.Hivemind.UpdateCrossing(crossingCoords, available);
         }
 
+
         public void RegisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
         {
             this.Hivemind.RegisterExplored(crossingCoords, chosenDirection);
         }
 
-        public List<LevelBoard.Directions> GetUnexploredPaths(Vector2Int crossingCoords)
-        {
-            return this.Hivemind.GetUnexplored(crossingCoords);
-        }
-
         public void UnregisterExploredPath(Vector2Int crossingCoords, LevelBoard.Directions chosenDirection)
         {
             this.Hivemind.UnregisterExplored(crossingCoords, chosenDirection);
+        }
+
+
+        public List<LevelBoard.Directions> GetUnexploredPaths(Vector2Int crossingCoords)
+        {
+            return this.Hivemind.GetUnexplored(crossingCoords);
         }
         #endregion
     }

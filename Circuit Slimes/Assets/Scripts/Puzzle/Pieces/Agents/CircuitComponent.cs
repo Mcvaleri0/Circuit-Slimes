@@ -20,7 +20,8 @@ namespace Puzzle.Pieces.Components
         public enum ChargeTypes
         {
             Basic,
-            Smart
+            Smart,
+            Smarter
         }
 
         [SerializeField]
@@ -175,6 +176,9 @@ namespace Puzzle.Pieces.Components
 
                 case ChargeTypes.Smart:
                     return "SmartElectricSlime";
+
+                case ChargeTypes.Smarter:
+                    return "SmarterElectricSlime";
             }
         }
         #endregion
