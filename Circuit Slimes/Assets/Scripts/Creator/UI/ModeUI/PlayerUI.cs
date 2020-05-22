@@ -36,8 +36,7 @@ namespace Creator.UI.ModeUI
 
         override public List<string> MenuOptions()
         {
-            //return this.Editor.Resources();
-            return this.Editor.Permissions();
+            return this.Editor.Resources();
         }
 
 

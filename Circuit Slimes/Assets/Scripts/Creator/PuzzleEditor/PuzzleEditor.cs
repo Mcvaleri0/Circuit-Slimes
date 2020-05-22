@@ -246,27 +246,6 @@ namespace Creator.Editor
         #endregion
 
 
-        #region === Permissions Methods ===
-
-        public List<string> Permissions()
-        {
-            return this.Puzzle.Permissions;
-        }
-
-        public void AddPermission(string prefab)
-        {
-            this.Puzzle.AddPermission(prefab);
-        }
-
-
-        public void RemovePermission(string prefab)
-        {
-            this.Puzzle.RemovePermission(prefab);
-        }
-
-        #endregion
-
-
         #region === Resources Methods ===
 
         public List<string> Resources()

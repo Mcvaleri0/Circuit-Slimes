@@ -24,7 +24,6 @@ namespace Puzzle.Data
         public BoardData    Board;
         public PieceData[]  Pieces;
         public TileData[]   Tiles;
-        public string[]     Permissions;
         public ResourceData[] ResourcesAvailable;
         public WinCondition.Conditions Condition;
 
@@ -104,8 +103,6 @@ namespace Puzzle.Data
             this.Tiles = tilesData.ToArray();
             #endregion
 
-            this.Permissions = puzzle.Permissions.ToArray();
-
             #region Resources
             List<Resource> resources = puzzle.ResourcesAvailable.Values.Where(r => r.WorthSaving()).ToList();
             int nResources = resources.Count;
@@ -170,18 +167,6 @@ namespace Puzzle.Data
             }
             #endregion
 
-            #region Create Permissions
-            List<string> permList = new List<string>();
-
-            if (puzzleData.Permissions != null)
-            {
-                foreach (string perm in puzzleData.Permissions)
-                {
-                    permList.Add(perm);
-                }
-            }
-            #endregion
-
             #region Resources
             Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
 
@@ -195,7 +180,7 @@ namespace Puzzle.Data
             #endregion
 
             // Initialiaze Puzzle
-            puzzle.Initialize(board, pieceList, tileList, permList, new WinCondition(puzzleData.Condition), resources);
+            puzzle.Initialize(board, pieceList, tileList, new WinCondition(puzzleData.Condition), resources);
 
             return puzzle;
         }

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 using Level;
+using Puzzle;
 using Creator.Editor;
 
 
@@ -22,11 +23,11 @@ namespace Creator.UI.Drawer
         #endregion
 
 
-        //#region /* Moviment Attirbutes */
+        #region /* Resource Attributes */
         
-        //private Vector3 StartPosition { get; set; }
-
-        //#endregion
+        private Resource Resource { get; set; }
+        
+        #endregion
 
 
 
@@ -53,11 +54,7 @@ namespace Creator.UI.Drawer
             string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, name);
             sprite.GetComponent<Image>().sprite = Resources.Load<Sprite>(spritePath);
 
-            if (ableToEdit)
-            {
-                resource.Find("Amount").gameObject.SetActive(true);
-            }
-            else
+            if (!ableToEdit)
             {
                 option.Find("PlusMinus").gameObject.SetActive(false);
             }
@@ -78,6 +75,8 @@ namespace Creator.UI.Drawer
         {
             this.Editor = editor;
             this.Item   = item;
+
+            this.Resource = this.Editor.GetResource(this.Item);
         }
 
         #endregion
@@ -87,13 +86,13 @@ namespace Creator.UI.Drawer
         
         public void Increase()
         {
-            this.Editor.AddPermission(this.Item);
+            this.Resource.Increase();
         }
 
 
         public void Decrease()
         {
-            this.Editor.RemovePermission(this.Item);
+            this.Resource.Decrease();
         }
 
 
@@ -101,29 +100,6 @@ namespace Creator.UI.Drawer
         {
             this.Editor.PlaceItem(this.Item);
         }
-
-        #endregion
-
-
-        #region === Movement Methods ===
-
-        //void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
-        //{
-        //    this.StartPosition = this.transform.position;
-        //}
-        
-
-        //void IDragHandler.OnDrag(PointerEventData eventData)
-        //{
-        //    transform.position = Input.mousePosition;
-        //}
-
-
-        //void IEndDragHandler.OnEndDrag(PointerEventData data)
-        //{
-        //    this.transform.position = this.StartPosition;
-        //    this.StartPosition = Vector3.zero;
-        //}
 
         #endregion
     }
