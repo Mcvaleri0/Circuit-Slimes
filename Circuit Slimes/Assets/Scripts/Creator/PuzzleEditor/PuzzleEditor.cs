@@ -151,6 +151,9 @@ namespace Creator.Editor
                 {
                     GameObject.Destroy(item.gameObject);
                     this.Selection.RemoveItemFromWhiteList(item);
+
+                    Resource resource = this.GetResource(item.name);
+                    resource.Increase();
                 }
                 else
                 {
