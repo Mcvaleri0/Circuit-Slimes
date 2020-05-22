@@ -60,7 +60,7 @@ namespace Creator.Editor
         
         public void PlaceItem(Resource resource)
         {
-            if ((this.Selection.BoardHover()) && (resource.Available()))
+            if (this.Selection.BoardHover())
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 

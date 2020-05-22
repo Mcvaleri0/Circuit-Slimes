@@ -99,8 +99,11 @@ namespace Puzzle
 
         public void Decrease()
         {
-            this.Amount = Mathf.Max(0, this.Amount - 1);
-            this.UpdateUI();
+            if (!CanEdit)
+            {
+                this.Amount = Mathf.Max(0, this.Amount - 1);
+                this.UpdateUI();
+            }
         }
 
         #endregion
