@@ -8,7 +8,8 @@ public class BoardBuilder
 
     //BOARD PROPERTIES
     private static readonly float BoardThickness = 0.5f;
-    private static readonly float BordersWidth = 0.5f;
+    private static readonly float BordersWidth  = 1.0f;
+    private static readonly float BordersOffset = 1.0f;
     private static readonly float YLevel = 1;
 
     private static readonly int Subspaces = 3;
@@ -145,9 +146,12 @@ public class BoardBuilder
         }
     }
 
+
+
     //Build the mesh for the base
-    private static Mesh CreateBoardBaseMesh(int width, int height, float unitSize)
+    private static Mesh CreateBoardBaseMesh(int width, int height, float unitSize, List<int>[] allPorts)
     {
+
         //Create the mesh
         Mesh mesh = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
@@ -159,33 +163,91 @@ public class BoardBuilder
         var quad = new RectangleQuad(0, 0, w, h);
         quad.Build(vertices, triangles);
 
+
         #region  Create Borders
 
-        //horizontal
+        float offset = 0.0f;
+
+        //horizontal 
         var topStrip = new Strip();
         var bottomStrip = new Strip();
-        for (var i = 0; i < width + 1; i++)
-        {
-            var edge = new Edge(unitSize * i, h, unitSize * i, h + BordersWidth);
-            topStrip.AddEdge(edge);
 
-            edge = new Edge(unitSize * i, -BordersWidth, unitSize * i, 0);
-            bottomStrip.AddEdge(edge);
+        var topPorts  = allPorts[1];
+        var bottomPorts = allPorts[3];
+
+        var edgei = new Edge(0, h, 0, h + BordersWidth);
+        topStrip.AddEdge(edgei);
+
+        edgei = new Edge(0, -BordersWidth, 0, 0);
+        bottomStrip.AddEdge(edgei);
+
+        for (var i = 0; i < width; i++)
+        {
+            //top
+            offset = (topPorts.Exists(u => u == i))? BordersOffset : 0.0f;
+
+            var edge0 = new Edge(unitSize * i + 0.1f, h, unitSize * i + 0.1f, h + BordersWidth + offset);
+            var edge1 = new Edge(unitSize * i + 1.9f, h, unitSize * i + 1.9f, h + BordersWidth + offset);
+            topStrip.AddEdge(edge0);
+            topStrip.AddEdge(edge1);
+
+            //bottom
+            offset = (bottomPorts.Exists(u => u == i))? BordersOffset : 0.0f;
+
+            edge0 = new Edge(unitSize * i + 0.1f, -BordersWidth - offset, unitSize * i + 0.1f, 0);
+            edge1 = new Edge(unitSize * i + 1.9f, -BordersWidth - offset, unitSize * i + 1.9f, 0);
+            bottomStrip.AddEdge(edge0);
+            bottomStrip.AddEdge(edge1);
         }
+
+        edgei = new Edge(unitSize * width, h, unitSize * width, h + BordersWidth);
+        topStrip.AddEdge(edgei);
+
+        edgei = new Edge(unitSize * width, -BordersWidth, unitSize * width, 0);
+        bottomStrip.AddEdge(edgei);
+
         var top = topStrip.Build(vertices, triangles);
         var bottom = bottomStrip.Build(vertices, triangles);
+
 
         //vertical
         var leftStrip = new Strip();
         var rightStrip = new Strip();
-        for (var i = 0; i < height + 1; i++)
-        {
-            var edge = new Edge(0, unitSize * i, -BordersWidth, unitSize * i);
-            leftStrip.AddEdge(edge);
 
-            edge = new Edge(w + BordersWidth, unitSize * i, w, unitSize * i);
-            rightStrip.AddEdge(edge);
+        var leftPorts = allPorts[0];
+        var rightPorts = allPorts[2];
+
+        edgei = new Edge(0, 0, -BordersWidth, 0);
+        leftStrip.AddEdge(edgei);
+
+        edgei = new Edge(w + BordersWidth, 0, w, 0);
+        rightStrip.AddEdge(edgei);
+
+        for (var i = 0; i < height; i++)
+        {
+            //left
+            offset = (leftPorts.Exists(u => u == i)) ? BordersOffset : 0.0f;
+
+            var edge0 = new Edge(0, unitSize * i + 0.1f, -BordersWidth - offset, unitSize * i + 0.1f);
+            var edge1 = new Edge(0, unitSize * i + 1.9f, -BordersWidth - offset, unitSize * i + 1.9f);
+            leftStrip.AddEdge(edge0);
+            leftStrip.AddEdge(edge1);
+
+            //right
+            offset = (rightPorts.Exists(u => u == i)) ? BordersOffset : 0.0f;
+
+            edge0 = new Edge(w + BordersWidth + offset, unitSize * i + 0.1f, w, unitSize * i + 0.1f);
+            edge1 = new Edge(w + BordersWidth + offset, unitSize * i + 1.9f, w, unitSize * i + 1.9f);
+            rightStrip.AddEdge(edge0);
+            rightStrip.AddEdge(edge1);
         }
+
+        edgei = new Edge(0, unitSize * height, -BordersWidth, unitSize * height);
+        leftStrip.AddEdge(edgei);
+
+        edgei = new Edge(w + BordersWidth, unitSize * height, w, unitSize * height);
+        rightStrip.AddEdge(edgei);
+
         var left = leftStrip.Build(vertices, triangles);
         var right = rightStrip.Build(vertices, triangles);
 
@@ -308,6 +370,135 @@ public class BoardBuilder
         return mesh;
     }
 
+
+    //Spawn 3d models of ports
+    private static void CreatePorts(int width, int height, float unitSize, List<int>[] allPorts, Transform parentTransf)
+    {
+        List<GameObject> singlePortModels = new List<GameObject>();
+        List<GameObject> doublePortModels = new List<GameObject>();
+
+        singlePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port1"));
+        singlePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port3"));
+        singlePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port6"));
+        singlePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port8"));
+        singlePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port9"));
+
+        doublePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port2"));
+        doublePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port4"));
+        doublePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port5"));
+        doublePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port7"));
+        doublePortModels.Add(Resources.Load<GameObject>("Prefabs/Ports/Port10"));
+
+        var h = height * unitSize;
+        var w = width * unitSize;
+
+        //horizontal 
+        var skip0 = false;
+        var ports0 = allPorts[1];
+        var skip1 = false;
+        var ports1 = allPorts[3];
+        for (var i = 0; i < width; i++)
+        {
+            //top
+            if (ports0.Exists(u => u == i))
+            {
+                if (skip0) { skip0 = false; continue; }
+
+                GameObject portModel = null;
+
+                //double port
+                if ( i+1 < width && ports0.Exists(u => u == i + 1))
+                {
+                    skip0 = true;
+                    portModel = doublePortModels[Random.Range(0, doublePortModels.Count())];
+                }
+                //single Port 
+                else
+                {
+                    portModel = singlePortModels[Random.Range(0, singlePortModels.Count())];
+                }
+                var obj = GameObject.Instantiate(portModel, new Vector3(unitSize * i, YLevel, h), Quaternion.Euler(0, 180, 0));
+                obj.transform.parent = parentTransf;
+            }
+
+            //bottom
+            if (ports1.Exists(u => u == i))
+            {
+                if (skip1) { skip1 = false; continue; }
+
+                GameObject portModel = null;
+
+                //double port
+                if (i + 1 < width && ports1.Exists(u => u == i + 1))
+                {
+                    skip1 = true;
+                    portModel = doublePortModels[Random.Range(0, doublePortModels.Count())];
+                }
+                //single Port 
+                else
+                {
+                    portModel = singlePortModels[Random.Range(0, singlePortModels.Count())];
+                }
+                var obj = GameObject.Instantiate(portModel, new Vector3(unitSize * i, YLevel, 0), Quaternion.Euler(0, 0, 0));
+                obj.transform.parent = parentTransf;
+                obj.transform.localScale = Vector3.Scale(obj.transform.localScale, new Vector3(-1,1,1));
+            }
+        }
+
+
+        //vertical 
+        skip0 = false;
+        ports0 = allPorts[0];
+        skip1 = false;
+        ports1 = allPorts[2];
+        for (var i = 0; i < height; i++)
+        {
+            //top
+            if (ports0.Exists(u => u == i))
+            {
+                if (skip0) { skip0 = false; continue; }
+
+                GameObject portModel = null;
+
+                //double port
+                if (i + 1 < height && ports0.Exists(u => u == i + 1))
+                {
+                    skip0 = true;
+                    portModel = doublePortModels[Random.Range(0, doublePortModels.Count())];
+                }
+                //single Port 
+                else
+                {
+                    portModel = singlePortModels[Random.Range(0, singlePortModels.Count())];
+                }
+                var obj = GameObject.Instantiate(portModel, new Vector3(0, YLevel, unitSize * i), Quaternion.Euler(0, 90, 0));
+                obj.transform.parent = parentTransf;
+            }
+
+            //bottom
+            if (ports1.Exists(u => u == i))
+            {
+                if (skip1) { skip1 = false; continue; }
+
+                GameObject portModel = null;
+
+                //double port
+                if (i + 1 < height && ports1.Exists(u => u == i + 1))
+                {
+                    skip1 = true;
+                    portModel = doublePortModels[Random.Range(0, doublePortModels.Count())];
+                }
+                //single Port 
+                else
+                {
+                    portModel = singlePortModels[Random.Range(0, singlePortModels.Count())];
+                }
+                var obj = GameObject.Instantiate(portModel, new Vector3(w, YLevel, unitSize * i), Quaternion.Euler(0, -90, 0));
+                obj.transform.parent = parentTransf;
+                obj.transform.localScale = Vector3.Scale(obj.transform.localScale, new Vector3(-1, 1, 1));
+            }
+        }
+    }
 
 
     private class Line
@@ -910,11 +1101,17 @@ public class BoardBuilder
         var lineMaterial = mats[1];
 
 
-        // LINES
-        if(height >= 3 && width >= 3)
+        var allPorts = new List<int>[4];
+        allPorts[0] = new List<int>();
+        allPorts[1] = new List<int>();
+        allPorts[2] = new List<int>();
+        allPorts[3] = new List<int>();
+
+        // ==== LINES ====
+        if (height >= 3 && width >= 3)
         {
             //board ports
-            var allPorts = GeneratePorts(width, height);
+            allPorts = GeneratePorts(width, height);
 
             //grid
             var gridw = width * Subspaces;
@@ -932,8 +1129,8 @@ public class BoardBuilder
             grid.BuildLines(gameObject, lineMaterial);
         }
 
-        // BOARD MESH
-        Mesh mesh = CreateBoardBaseMesh(width, height, unitSize);
+        // ==== BOARD MESH ====
+        Mesh mesh = CreateBoardBaseMesh(width, height, unitSize, allPorts);
 
         //Set mesh
         gameObject.GetComponent<MeshFilter>().mesh = mesh;
@@ -944,6 +1141,9 @@ public class BoardBuilder
         outln.OutlineMode = QuickOutline.Mode.OutlineVisible;
         outln.OutlineColor = new Color32(7, 80, 73, 255);
         outln.OutlineWidth = 5;
+
+        // ==== PORTS MESHES ====
+        CreatePorts(width, height, unitSize, allPorts, parent);
 
         return;
     }
