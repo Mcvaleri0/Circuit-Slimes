@@ -11,36 +11,33 @@ using Creator.Editor;
 
 namespace Creator.UI.Drawer
 {
-    public class DrawerController
+    public class DrawerController : MonoBehaviour
     {
-        #region /* Puzzle Editor */
+        #region /* Other Controllers */
         
         private PuzzleEditor Editor { get; set; }
+        private ModeUI.ModeUI Mode { get; set; }
 
         #endregion
 
 
-        #region /* Open Button Attributes */
+        #region /* Drawer Attributes */
 
         private GameObject OpenButton { get; set; }
-
-        #endregion
-
-
-        #region /* Inside Attributes */
+        private GameObject CloseButton { get; set; }
 
         private Transform Inside { get; set; }
+        private Transform QuickSelect { get; set; }
 
-        private Object Choice { get; set; }
+        private Object OptionPrefab { get; set; }
 
         #endregion
 
 
-        #region /* Quick Selection Attributes */
+        #region /* Drawer Animation Attributes */
 
-        private Transform QuickSelect { get; set; }
-
-        private Object Resource { get; set; }
+        public bool DrawerOpen { get; set; }
+        private Animator Animator { get; set; }
 
         #endregion
 
@@ -48,19 +45,23 @@ namespace Creator.UI.Drawer
 
         #region === Init Methods ===
 
-        public DrawerController(PuzzleEditor Editor, Transform canvas, List<string> options)
+        public void Initialize(PuzzleEditor Editor, Transform DrawerSystem, List<string> options, ModeUI.ModeUI mode)
         {
             this.Editor = Editor;
+            this.Mode = mode;
 
-            Transform drawer = canvas.Find("DrawerSystem").Find("Drawer");
+            Transform drawer = DrawerSystem.Find("Drawer");
 
-            this.OpenButton = drawer.Find("OpenDrawer").gameObject;
+            this.OpenButton  = drawer.Find("OpenDrawer").gameObject;
+            this.CloseButton = drawer.Find("CloseDrawer").gameObject;
 
             this.Inside = drawer.Find("Inside");
-            this.Choice = Resources.Load(FileHelper.CHOICE_PATH);
-
             this.QuickSelect = drawer.Find("QuickSelect");
-            this.Resource = Resources.Load(FileHelper.RESOURCE_PATH);
+
+            this.OptionPrefab = Resources.Load(FileHelper.OPTION_PATH);
+
+            this.DrawerOpen = false;
+            this.Animator = drawer.GetComponent<Animator>();
 
             this.Populate(options);
         }
@@ -72,27 +73,22 @@ namespace Creator.UI.Drawer
         
         private void Populate(List<string> options)
         {
-            Object option;
             Transform parent;
 
-            bool isChoice = (options.Count < 4); 
-
-            if (isChoice)
+            if (options.Count < 4)
             {
-                option = this.Resource;
                 parent = this.QuickSelect;
                 this.OpenButton.SetActive(false);
             }
             else
             {
-                option = this.Choice;
                 parent = this.Inside;
                 this.OpenButton.SetActive(true);
             }
             
             foreach (string opt in options)
             {
-                GameObject newObj = Option.CreateOption(this.Editor, option, parent, opt, isChoice);
+                Option.CreateOption(this.Editor, this, this.OptionPrefab, parent, opt, this.Mode.AbleToEditOptions());
             }
         }
 
@@ -113,12 +109,28 @@ namespace Creator.UI.Drawer
         }
 
 
-        public void Update(List<string> newOptions)
+        public void UpdateOptions(List<string> newOptions)
         {
             this.Clear();
             this.Populate(newOptions);
         }
 
+        #endregion
+
+
+        #region === Drawer Animation ===
+        
+        public void Close()
+        {
+            if (this.DrawerOpen)
+            {
+                this.Animator.Play("CloseDrawer");
+                this.CloseButton.SetActive(false);
+                this.OpenButton.SetActive(true);
+                this.DrawerOpen = false;
+            }
+        }
+        
         #endregion
     }
 }

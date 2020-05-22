@@ -40,6 +40,12 @@ namespace Creator.UI.ModeUI
             return this.Editor.Permissions();
         }
 
+
+        public override bool AbleToEditOptions()
+        {
+            return false;
+        }
+
         #endregion
 
     }
