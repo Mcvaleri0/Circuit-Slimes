@@ -106,6 +106,12 @@ namespace Creator.UI.Drawer
             this.Editor.PlaceItem(this.Resource);
         }
 
+
+        public string Name()
+        {
+            return this.Resource.Name;
+        }
+
         #endregion
     }
 }
