@@ -1,0 +1,15 @@
+{
+    "Board": {
+        "Width": 10,
+        "Height": 10
+    },
+    "Pieces": [],
+    "Tiles": [],
+    "Permissions": [
+        "SmartAABattery",
+        "SmartCellBattery",
+        "9VBattery"
+    ],
+    "ResourcesAvailable": [],
+    "Condition": 0
+}

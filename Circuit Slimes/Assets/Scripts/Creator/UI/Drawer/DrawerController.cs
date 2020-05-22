@@ -75,7 +75,7 @@ namespace Creator.UI.Drawer
         {
             Transform parent;
 
-            if (options.Count < 4)
+            if (options.Count <= 4)
             {
                 parent = this.QuickSelect;
                 this.OpenButton.SetActive(false);
