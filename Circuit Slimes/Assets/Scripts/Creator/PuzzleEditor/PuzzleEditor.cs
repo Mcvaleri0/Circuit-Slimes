@@ -57,31 +57,33 @@ namespace Creator.Editor
 
 
         #region === Items Methods ===
-
-        public void PlaceItem(string itemName)
+        
+        public void PlaceItem(Resource resource)
         {
-            if (this.Selection.BoardHover())
+            if ((this.Selection.BoardHover()) && (resource.Available()))
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (itemName.Contains("Tile"))
+                if (resource.isTile())
                 {
-                    Tile res = this.Puzzle.CreateTile(Tile.GetType(itemName), coords);
+                    Tile res = this.Puzzle.CreateTile(Tile.GetType(resource.Name), coords);
                     
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
                 else
                 {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(itemName), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
 
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
             }

@@ -47,7 +47,6 @@ namespace Creator.UI.Drawer
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
             this.StartPosition = this.transform.position;
-            //this.Controller.Close();
         }
 
 

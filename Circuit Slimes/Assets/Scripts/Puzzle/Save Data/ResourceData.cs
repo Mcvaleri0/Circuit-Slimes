@@ -15,7 +15,7 @@ namespace Puzzle.Data
 
         public ResourceData(Resource resource)
         {
-            this.Name   = resource.Prefab;
+            this.Name   = resource.Name;
             this.Amount = resource.Amount;
         }
 

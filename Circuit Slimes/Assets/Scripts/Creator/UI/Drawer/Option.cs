@@ -13,12 +13,11 @@ using Creator.Editor;
 
 namespace Creator.UI.Drawer
 {
-    public class Option : MonoBehaviour/*, IDragHandler, IBeginDragHandler, IEndDragHandler*/
+    public class Option : MonoBehaviour
     {
         #region /* Puzzle Attributes */
 
         private PuzzleEditor Editor { get; set; }
-        private string Item { get; set; }
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace Creator.UI.Drawer
         #region /* Resource Attributes */
         
         private Resource Resource { get; set; }
-        
+
         #endregion
 
 
@@ -39,44 +38,50 @@ namespace Creator.UI.Drawer
             GameObject newObj = (GameObject) GameObject.Instantiate(prefab, parent);
             newObj.name = name;
 
-            InitializeUI(newObj.transform, name, ableToEdit);
-            InitializeFunctionality(newObj, editor, controller, name);
+            Initialize(editor, controller, newObj.transform, ableToEdit, name);
 
             return newObj;
         }
 
 
-        private static void InitializeUI(Transform option, string name, bool ableToEdit)
+        private static void Initialize(PuzzleEditor editor, DrawerController controller, Transform newObj, bool ableToEdit, string name)
         {
-            Transform resource = option.Find("Resource");
-            Transform sprite   = resource.Find("Sprite");
+            GameObject buttons = newObj.Find("PlusMinus").gameObject;
 
+            Transform resource = newObj.Find("Resource");
+            Transform sprite = resource.Find("Sprite");
+
+            Text amountText = resource.Find("Amount").GetComponent<Text>();
+            Option optionScp = newObj.GetComponent<Option>();
+
+            Draggable draggable = sprite.GetComponent<Draggable>();
+
+            InitializeButtons(buttons, ableToEdit);
+            InitiliazeSprite(sprite, name);
+            draggable.Initialize(controller, optionScp);
+            optionScp.Initialize(editor, name, amountText, draggable);
+        }
+
+
+        private static void InitializeButtons(GameObject buttons, bool ableToEdit)
+        {
+            buttons.SetActive(ableToEdit);
+        }
+
+
+        private static void InitiliazeSprite(Transform sprite, string name)
+        {
             string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, name);
             sprite.GetComponent<Image>().sprite = Resources.Load<Sprite>(spritePath);
-
-            if (!ableToEdit)
-            {
-                option.Find("PlusMinus").gameObject.SetActive(false);
-            }
         }
 
 
-        private static void InitializeFunctionality(GameObject obj, PuzzleEditor editor,
-                                DrawerController controller, string name)
-        {
-            Option option = obj.GetComponent<Option>();
-            option.InitializeOption(editor, name);
-            
-            obj.GetComponentInChildren<Draggable>().Initialize(controller, option);
-        }
-
-
-        public void InitializeOption(PuzzleEditor editor, string item)
+        private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable)
         {
             this.Editor = editor;
-            this.Item   = item;
 
-            this.Resource = this.Editor.GetResource(this.Item);
+            this.Resource = this.Editor.GetResource(item);
+            this.Resource.DefineUI(text, draggable);
         }
 
         #endregion
@@ -98,7 +103,7 @@ namespace Creator.UI.Drawer
 
         public void PlaceItem()
         {
-            this.Editor.PlaceItem(this.Item);
+            this.Editor.PlaceItem(this.Resource);
         }
 
         #endregion
