@@ -73,16 +73,10 @@ namespace Creator
         {
             if (this.IgnoreInput(finger)) return;
 
-            //if we have an item to place, place it
-            if (this.PuzzleEditor.HasItemToPlace())
-            {
-                this.PuzzleEditor.PlaceItem();
-            }
-
             //if double click delete
-            else if (this.SelectionSystem.DoubleClick())
+            if (this.SelectionSystem.DoubleClick())
             {
-                this.PuzzleEditor.RemoveItemSelected();
+                this.PuzzleEditor.RotateItem();
             }
         }
 
@@ -92,8 +86,7 @@ namespace Creator
             //ignore finger up that happened over the ui
             if (finger.StartedOverGui) { return; }
 
-            // If we have an item to place then it must be placed
-            if (!this.PuzzleEditor.HasItemToPlace())
+            if (this.SelectionSystem.Dragging)
             {
                 this.SelectionSystem.EndDrag();
             }
@@ -104,19 +97,15 @@ namespace Creator
         {
             if (this.IgnoreInput(finger)) return;
 
-            // If we have an item to place then it must be placed
-            if (!this.PuzzleEditor.HasItemToPlace())
+            //Drag Item
+            if (this.SelectionSystem.Dragging)
             {
-                //Drag Item
-                if (this.SelectionSystem.Dragging)
-                {
-                    this.PuzzleEditor.MoveItem();
-                }
-                //if something is selected prepare drag
-                else if (this.SelectionSystem.SomethingSelected())
-                {
-                    this.SelectionSystem.PrepareDrag();
-                }
+                this.PuzzleEditor.MoveItem();
+            }
+            //if something is selected prepare drag
+            else if (this.SelectionSystem.SomethingSelected())
+            {
+                this.SelectionSystem.PrepareDrag();
             }
         }
 
@@ -159,7 +148,7 @@ namespace Creator
         #endregion
 
 
-        #region === Init/Update Methods ===
+        #region === Controller Methods ===
 
         public void Initialize(Puzzle.Puzzle puzzle, bool creator)
         {
@@ -171,6 +160,7 @@ namespace Creator
 
             this.InitializeUI();
         }
+
 
         public void UpdateInfo(Puzzle.Puzzle puzzle)
         {

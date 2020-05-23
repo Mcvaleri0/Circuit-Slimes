@@ -115,8 +115,11 @@
             ]
         }
     ],
-    "Permissions": [
-        "SolderCandy"
+    "ResourcesAvailable": [
+        {
+            "Name": "SolderCandy",
+            "Amount": 1
+        }
     ],
     "Condition": 0
 }

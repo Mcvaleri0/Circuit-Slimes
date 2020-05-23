@@ -432,6 +432,7 @@ namespace Puzzle
                                         LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             GameObject obj = Instantiate(puzzle, prefabName, coords);
+            obj.name = prefabName;
 
             var piece = obj.GetComponent<Piece>();
 

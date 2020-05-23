@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Game;
 using Puzzle;
+using Creator.UI.Drawer;
 using Creator.Editor;
 using Creator.Selection;
 
@@ -30,12 +31,17 @@ namespace Creator.UI.ModeUI
         #endregion
 
 
-        #region /* UI Attributes */
+        #region /* Save Attributes */
 
         public Transform SaveButton { get; private set; }
 
-        private ScrollMenu ScrollMenu { get; set; }
+        #endregion
 
+
+        #region /* Options Menu Attributes */
+        
+        private DrawerController Menu { get; set; }
+        
         #endregion
 
 
@@ -50,16 +56,14 @@ namespace Creator.UI.ModeUI
             this.Selection  = selection;
             this.Mode       = mode;
 
-            this.SaveButton = canvas.Find("Save Button");
-
             this.Initialize(canvas);
         }
 
 
         private void Initialize(Transform canvas)
         {
-            this.InitializeSaveButton();
-            this.InitializeScrollMenu(canvas);
+            this.InitializeButtons(canvas);
+            this.InitializeMenu(canvas);
         }
 
         #endregion
@@ -69,7 +73,7 @@ namespace Creator.UI.ModeUI
 
         public void UpdateInfo()
         {
-            this.ScrollMenu.UpdateContent(this.MenuOptions(), this.Editor.Permissions());
+            this.Menu.UpdateOptions(this.MenuOptions());
         }
 
         #endregion
@@ -77,24 +81,37 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        public abstract void InitializeSaveButton();
+        private void InitializeButtons(Transform canvas)
+        {
+            Transform buttons = canvas.Find("Buttons");
+            RectTransform rectTransform = buttons.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
+
+            this.SaveButton = buttons.Find("Save Button");
+            this.InitializeSave();
+        }
+
+
+        public abstract void InitializeSave();
 
         #endregion
 
 
-        #region === Scroll Menu Methods ===
-
-        private void InitializeScrollMenu(Transform canvas)
+        #region === Options Methods ===
+        
+        private void InitializeMenu(Transform canvas)
         {
-            Transform menu = canvas.Find("Scroll Menu");
-
-            this.ScrollMenu = new ScrollMenu(this.Editor, this.Selection, this.Mode,
-                                    menu, this.MenuOptions(), this.Editor.Permissions());
+            Transform drawerSystem = canvas.Find("DrawerSystem");
+            this.Menu = drawerSystem.GetComponent<DrawerController>();
+                
+            this.Menu.Initialize(this.Editor, drawerSystem, this.MenuOptions(), this);
         }
+
 
         public abstract List<string> MenuOptions();
 
-        #endregion
+        public abstract bool AbleToEditOptions();
 
+        #endregion
     }
 }

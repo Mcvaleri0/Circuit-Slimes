@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 using Puzzle;
 using Creator.Selection;
-using Creator.UI.Buttons;
 
 
 
@@ -23,9 +22,6 @@ namespace Creator.Editor
         #region /* Puzzle Attributes */
 
         public Puzzle.Puzzle Puzzle { get; private set; }
-
-        private string Item { get; set; }
-        private OptionButton ItemButton { get; set; }
 
         List<Transform> ItemsPlaced { get; set; }
 
@@ -61,64 +57,35 @@ namespace Creator.Editor
 
 
         #region === Items Methods ===
-
-        public bool HasItemToPlace()
-        {
-            return this.Item != null;
-        }
-
-
-        public void ItemToPlace(string itemName, OptionButton itemButton)
-        {
-            if (this.HasItemToPlace())
-            {
-                this.ItemButton.Deselect();
-            }
-
-            this.Item = itemName;
-            this.ItemButton = itemButton;
-        }
-
-
-        public void RemoveItemToPlace()
-        {
-            this.ItemButton.Deselect();
-
-            this.Item = null;
-            this.ItemButton = null;
-        }
-
-
-        public void PlaceItem()
+        
+        public void PlaceItem(Resource resource)
         {
             if (this.Selection.BoardHover())
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (this.Item.Contains("Tile"))
+                if (resource.isTile())
                 {
-                    Tile res = this.Puzzle.CreateTile(Tile.GetType(this.Item), coords);
+                    Tile res = this.Puzzle.CreateTile(Tile.GetType(resource.Name), coords);
                     
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
                 else
                 {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(this.Item), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
 
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
-            }
-            else
-            {
-                this.RemoveItemToPlace();
             }
         }
 
@@ -149,6 +116,9 @@ namespace Creator.Editor
                     GameObject.Destroy(objToRemove);
                     this.Selection.RemoveItemFromWhiteList(objToRemove.transform);
                     this.ItemsPlaced.Remove(objToRemove.transform);
+
+                    Resource resource = this.GetResource(objToRemove.name);
+                    resource.Increase();
                 }
             }
         }
@@ -181,6 +151,9 @@ namespace Creator.Editor
                 {
                     GameObject.Destroy(item.gameObject);
                     this.Selection.RemoveItemFromWhiteList(item);
+
+                    Resource resource = this.GetResource(item.name);
+                    resource.Increase();
                 }
                 else
                 {
@@ -220,6 +193,15 @@ namespace Creator.Editor
                 {
                     this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
+            }
+        }
+
+
+        public void RotateItem()
+        {
+            if (this.Selection.SomethingSelected() && this.Selection.PieceSelected())
+            {
+                this.Puzzle.RotatePieceRight(this.Selection.Piece);
             }
         }
 
@@ -281,22 +263,17 @@ namespace Creator.Editor
         #endregion
 
 
-        #region === Permissions Methods ===
+        #region === Resources Methods ===
 
-        public List<string> Permissions()
+        public List<string> Resources()
         {
-            return this.Puzzle.Permissions;
-        }
-
-        public void AddPermission(string prefab)
-        {
-            this.Puzzle.AddPermission(prefab);
+            return this.Puzzle.GetAllResources();
         }
 
 
-        public void RemovePermission(string prefab)
+        public Resource GetResource(string name)
         {
-            this.Puzzle.RemovePermission(prefab);
+            return this.Puzzle.GetResource(name);
         }
 
         #endregion

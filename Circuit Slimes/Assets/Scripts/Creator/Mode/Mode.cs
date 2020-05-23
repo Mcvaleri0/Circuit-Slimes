@@ -33,6 +33,5 @@ namespace Creator.Mode
         public abstract void DefineSelectableList();
 
         #endregion
-
     }
 }
