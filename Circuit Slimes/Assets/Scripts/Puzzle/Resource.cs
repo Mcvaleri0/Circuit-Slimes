@@ -90,16 +90,19 @@ namespace Puzzle
 
         #region === Amount Methods ===
 
-        public void Increase()
+        public void Increase(bool buttonClicked = false)
         {
-            this.Amount++;
-            this.UpdateUI();
+            if (!this.CanEdit || buttonClicked)
+            {
+                this.Amount++;
+                this.UpdateUI();
+            }
         }
 
 
-        public void Decrease()
+        public void Decrease(bool buttonClicked = false)
         {
-            if (!CanEdit)
+            if (!this.CanEdit || buttonClicked)
             {
                 this.Amount = Mathf.Max(0, this.Amount - 1);
                 this.UpdateUI();

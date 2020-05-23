@@ -25,6 +25,7 @@ namespace Creator.UI.Drawer
         #region /* Resource Attributes */
         
         private Resource Resource { get; set; }
+        private bool CanEdit { get; set; }
 
         #endregion
 
@@ -79,6 +80,7 @@ namespace Creator.UI.Drawer
         private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable, bool ableToEdit)
         {
             this.Editor = editor;
+            this.CanEdit = ableToEdit;
 
             this.Resource = this.Editor.GetResource(item);
             this.Resource.DefineUI(text, draggable, ableToEdit);
@@ -91,13 +93,13 @@ namespace Creator.UI.Drawer
         
         public void Increase()
         {
-            this.Resource.Increase();
+            this.Resource.Increase(true);
         }
 
 
         public void Decrease()
         {
-            this.Resource.Decrease();
+            this.Resource.Decrease(true);
         }
 
 

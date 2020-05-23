@@ -227,6 +227,11 @@ namespace Creator.Selection
 
             if (this.Selected != null)
             {
+                if (!this.BoardHover())
+                {
+                    Debug.LogError("fora board");
+                }
+
                 Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
 
                 // submits new item's position
