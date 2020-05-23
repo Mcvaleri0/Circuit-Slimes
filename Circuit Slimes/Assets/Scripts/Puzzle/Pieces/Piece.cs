@@ -30,7 +30,8 @@ namespace Puzzle
             Electric,
             Water,
             Solder,
-            SElectric
+            SElectric,
+            SMElectric
         }
 
         public enum ComponentTypes
@@ -41,7 +42,12 @@ namespace Puzzle
             CellBattery,
             AABattery,
             V9Battery,
+            SmartCellBattery,
+            SmartAABattery,
             SmartV9Battery,
+            SmarterCellBattery,
+            SmarterAABattery,
+            SmarterV9Battery,
             SingleChip,
             DoubleChip,
             SquareChip,
@@ -170,6 +176,9 @@ namespace Puzzle
                     case "SmartElectricSlime":
                         return SlimeTypes.SElectric;
 
+                    case "SmarterElectricSlime":
+                        return SlimeTypes.SMElectric;
+
                     default:
                         return SlimeTypes.None;
                 }
@@ -194,8 +203,23 @@ namespace Puzzle
                     case "9VBattery":
                         return ComponentTypes.V9Battery;
 
+                    case "SmartCellBattery":
+                        return ComponentTypes.SmartCellBattery;
+
+                    case "SmartAABattery":
+                        return ComponentTypes.SmartAABattery;
+
                     case "Smart9VBattery":
                         return ComponentTypes.SmartV9Battery;
+
+                    case "SmarterCellBattery":
+                        return ComponentTypes.SmarterCellBattery;
+
+                    case "SmarterAABattery":
+                        return ComponentTypes.SmarterAABattery;
+
+                    case "Smarter9VBattery":
+                        return ComponentTypes.SmarterV9Battery;
 
                     case "SingleChip":
                         return ComponentTypes.SingleChip;
@@ -291,6 +315,9 @@ namespace Puzzle
 
                     case SlimeTypes.SElectric:
                         return "SmartElectric";
+                    
+                    case SlimeTypes.SMElectric:
+                        return "SmarterElectric";
                 }
             }
 
@@ -327,6 +354,21 @@ namespace Puzzle
 
                     case ComponentTypes.SolderTile:
                         return "SolderTile";
+                    
+                    case ComponentTypes.SmartCellBattery:
+                        return "SmartCellBattery";
+
+                    case ComponentTypes.SmartAABattery:
+                        return "SmartAABattery";
+
+                    case ComponentTypes.SmarterCellBattery:
+                        return "SmarterCellBattery";
+
+                    case ComponentTypes.SmarterAABattery:
+                        return "SmarterAABattery";
+
+                    case ComponentTypes.SmarterV9Battery:
+                        return "Smarter9VBattery";
 
                     default:
                         return "";
@@ -390,6 +432,7 @@ namespace Puzzle
                                         LevelBoard.Directions ori = LevelBoard.Directions.South, int turn = 0)
         {
             GameObject obj = Instantiate(puzzle, prefabName, coords);
+            obj.name = prefabName;
 
             var piece = obj.GetComponent<Piece>();
 

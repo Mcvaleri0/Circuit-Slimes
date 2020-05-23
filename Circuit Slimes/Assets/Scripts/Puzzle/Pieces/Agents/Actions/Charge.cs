@@ -18,6 +18,10 @@ namespace Puzzle.Actions
 
         private bool Crossing = false;
 
+        private LevelBoard.Directions CameFrom;
+
+        private LevelBoard.Directions EnteredBy;
+
         public Charge() { }
 
         public Charge(CircuitComponent component) 
@@ -36,8 +40,8 @@ namespace Puzzle.Actions
             this.Crossing = crossing;
         }
 
-        #region === Action Methods ===
 
+        #region === Action Methods ===
         override public Action Available(Agent agent)
         {
             if (agent is ElectricSlime slime)
@@ -80,6 +84,19 @@ namespace Puzzle.Actions
             if(agent.PieceAt(this.ComponentCoords) == this.Component &&
                this.Component.Stats.Food < this.Component.Stats.MaxFood)
             {
+                if(this.Crossing && agent is SmartElectricSlime slime)
+                {
+                    this.CameFrom = (LevelBoard.Directions)((((int) slime.Orientation) + 4) % 8);
+
+                    slime.RegisterExploredPath(slime.Coords, this.CameFrom);
+
+                    this.EnteredBy = LevelBoard.GetDirection(slime.Coords, this.ComponentCoords);
+                    slime.RegisterExploredPath(slime.Coords, this.EnteredBy);
+
+                    if (slime is SmarterElectricSlime smarter)
+                        smarter.CrossingLog.Push(new KeyValuePair<Vector2Int, LevelBoard.Directions>(slime.Coords, this.EnteredBy));
+                }
+
                 this.ChargeCoords = agent.Coords;
 
                 this.Component.Stats.Food++;
@@ -114,7 +131,10 @@ namespace Puzzle.Actions
 
                 if(this.Crossing && slime is SmartElectricSlime smart)
                 {
-                    smart.UnregisterExploredPath(this.ChargeCoords, outDir);
+                    smart.UnregisterExploredPath(this.ChargeCoords, this.CameFrom);
+                    smart.UnregisterExploredPath(slime.Coords, this.EnteredBy);
+
+                    if (smart is SmarterElectricSlime smarter) smarter.CrossingLog.Pop();
                 }
 
                 return true;

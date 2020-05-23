@@ -800,47 +800,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4063971826650101453, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4599292162361201981, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 573a61a340055524a9a1e26ff5876d34,
-        type: 3}
-    - target: {fileID: 4599292162361201981, guid: fb6f4036eeae96d45a2f79eb193b6543,
-        type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4599292162853185233, guid: fb6f4036eeae96d45a2f79eb193b6543,
         type: 3}
       propertyPath: m_LocalPosition.x

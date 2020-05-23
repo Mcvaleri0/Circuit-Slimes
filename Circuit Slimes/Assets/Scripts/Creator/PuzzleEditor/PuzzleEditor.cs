@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 using Puzzle;
 using Creator.Selection;
-using Creator.UI.Buttons;
 
 
 
@@ -58,31 +57,33 @@ namespace Creator.Editor
 
 
         #region === Items Methods ===
-
-        public void PlaceItem(string itemName)
+        
+        public void PlaceItem(Resource resource)
         {
-            if (this.Selection.BoardHover())
+            if ((this.Selection.BoardHover()) && (resource.Available()))
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (itemName.Contains("Tile"))
+                if (resource.isTile())
                 {
-                    Tile res = this.Puzzle.CreateTile(Tile.GetType(itemName), coords);
+                    Tile res = this.Puzzle.CreateTile(Tile.GetType(resource.Name), coords);
                     
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
                 else
                 {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(itemName), coords);
+                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
 
                     if (res != null)
                     {
                         this.Selection.AddItemToWhiteList(res.transform);
                         this.ItemsPlaced.Add(res.transform);
+                        resource.Decrease();
                     }
                 }
             }
@@ -115,6 +116,9 @@ namespace Creator.Editor
                     GameObject.Destroy(objToRemove);
                     this.Selection.RemoveItemFromWhiteList(objToRemove.transform);
                     this.ItemsPlaced.Remove(objToRemove.transform);
+
+                    Resource resource = this.GetResource(objToRemove.name);
+                    resource.Increase();
                 }
             }
         }
@@ -147,6 +151,9 @@ namespace Creator.Editor
                 {
                     GameObject.Destroy(item.gameObject);
                     this.Selection.RemoveItemFromWhiteList(item);
+
+                    Resource resource = this.GetResource(item.name);
+                    resource.Increase();
                 }
                 else
                 {
@@ -242,27 +249,6 @@ namespace Creator.Editor
                 this.ChangeItemPosition(pieceTransform, oldPos);
             }
 
-        }
-
-        #endregion
-
-
-        #region === Permissions Methods ===
-
-        public List<string> Permissions()
-        {
-            return this.Puzzle.Permissions;
-        }
-
-        public void AddPermission(string prefab)
-        {
-            this.Puzzle.AddPermission(prefab);
-        }
-
-
-        public void RemovePermission(string prefab)
-        {
-            this.Puzzle.RemovePermission(prefab);
         }
 
         #endregion
