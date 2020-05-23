@@ -5,6 +5,7 @@ using Puzzle.Board;
 using Puzzle.Pieces;
 using Puzzle.Pieces.Slimes;
 using Puzzle.Pieces.Components;
+using System.CodeDom;
 
 namespace Puzzle.Actions
 {
@@ -26,11 +27,12 @@ namespace Puzzle.Actions
 
             Dictionary<LevelBoard.Directions, int> utilities = null;
 
+            // If this is a Crossing
             if(adjacents.Count > 2)
             {
                 crossing = true;
 
-                var slime = (SmarterElectricSlime)agent;
+                var slime = (SmarterElectricSlime) agent;
 
                 slime.UpdateCrossing(slime.Coords, new List<LevelBoard.Directions>(adjacents.Keys));
 
@@ -60,7 +62,7 @@ namespace Puzzle.Actions
                     if ((piece != null && !(piece is CircuitComponent)) ||
                         (piece is CircuitComponent component && component.Stats.Food >= component.Stats.MaxFood)) continue;
 
-                    // If this Direction has not been explored
+                    // If this is a Crossing get the Directions utility
                     if (crossing && utilities.ContainsKey(dir)) utility += utilities[dir];
 
                     // If the utility is better going this way
@@ -88,12 +90,13 @@ namespace Puzzle.Actions
         public override bool Confirm(Agent agent)
         {
             if (agent is SmarterElectricSlime slime) {
-                var origCoords = slime.Coords;
                 var tile = slime.TileAt(this.MoveCoords);
 
                 // If there still is a Solder Tile at that Space
                 if (tile != null && tile.Type == Tile.Types.Solder)
                 {
+                    var origCoords = slime.Coords;
+
                     // If the Slime can still Move there
                     if (base.Confirm(slime))
                     {
@@ -101,26 +104,17 @@ namespace Puzzle.Actions
                         if (this.Crossing)
                         {
                             // Calculate direction from which the Slime came
-                            var invDir = (LevelBoard.Directions)((((int) this.OrigOrientation) + 4) % 8);
+                            var invDir = LevelBoard.InvertDirection(this.OrigOrientation);
 
                             slime.RegisterExploredPath(origCoords, invDir);         // Register it as explored
                             slime.RegisterExploredPath(origCoords, this.Direction); // Register the chosen direction as explored
 
-                            // If the Slime has come from a Crossing
-                            if (slime.CrossingLog.Count > 0)
-                            {
-                                var last = slime.CrossingLog.Peek(); // Get last visited Crossing
+                            // If another Crossing had been visited, register the connection
+                            if(slime.CrossingLog.Count > 0) this.RegisterConnectedCrossings(slime, origCoords);
 
-                                // If the last visited Crossing is not the present Crossing
-                                if (last.Key != origCoords)
-                                {
-                                    // Add this Crossing as the last one's child
-                                    slime.AddChildToCrossing(last.Key, last.Value, origCoords);
-                                }
-                            }
-
-                            // Save this as the last visited Crossing
-                            slime.CrossingLog.Push(new KeyValuePair<Vector2Int, LevelBoard.Directions>(origCoords, this.Direction));
+                            // Save this as the last departed Crossing
+                            var pair = new KeyValuePair<Vector2Int, LevelBoard.Directions>(origCoords, this.Direction);
+                            slime.CrossingLog.Push(pair);
                         }
 
                         return true;
@@ -135,25 +129,51 @@ namespace Puzzle.Actions
         {
             if(agent is SmarterElectricSlime slime)
             {
-                // Calculate direction from which the Slime originally came from
-                var invDir = (LevelBoard.Directions)((((int)this.OrigOrientation) + 4) % 8);
+                if (this.Crossing)
+                {
+                    // Unregister this Crossing from the Agent's visited
+                    slime.CrossingLog.Pop();
 
-                // Calculate inverse movement direction
-                var oppositeDir = (LevelBoard.Directions) ((((int) this.Direction) + 4) % 8);
+                    // If the Slime has visited another Crossing before
+                    if (slime.CrossingLog.Count > 0) this.UnregisterConnectedCrossings(slime, this.OrigCoords);
 
-                // Calculate Slime's original coordinates
-                var origCoords  = LevelBoard.GetAdjacentCoords(slime.Coords, oppositeDir);
+                    // Calculate direction from which the Slime originally came from
+                    var invDir = LevelBoard.InvertDirection(this.OrigOrientation);
 
-                // Unregister explorations
-                slime.UnregisterExploredPath(origCoords, invDir);
-                slime.UnregisterExploredPath(origCoords, this.Direction);
-
-                // Revert to previous last visited Crossing
-                slime.CrossingLog.Pop();
+                    // Unregister explorations
+                    slime.UnregisterExploredPath(this.OrigCoords, invDir);
+                    slime.UnregisterExploredPath(this.OrigCoords, this.Direction);
+                }                
             }
 
             // Undo Move
             return base.Undo(agent);
+        }
+        #endregion
+
+        #region AUX Methods
+        public void RegisterConnectedCrossings(SmarterElectricSlime smarter, Vector2Int crossingCoords)
+        {
+            var last = smarter.CrossingLog.Peek(); // Get last visited Crossing
+
+            // If the last visited Crossing is not the present Crossing
+            if (last.Key != crossingCoords)
+            {
+                // Register the connection of the Crossings
+                smarter.RegisterCrossingConnection(last.Key, last.Value, crossingCoords);
+            }
+        }
+
+        public void UnregisterConnectedCrossings(SmarterElectricSlime smarter, Vector2Int crossingCoords)
+        {
+            var last = smarter.CrossingLog.Peek(); // Get last visited Crossing
+
+            // If the last visited Crossing is not the present Crossing
+            if (last.Key != crossingCoords)
+            {
+                // Add this Crossing as the last one's child
+                smarter.UnregisterCrossingConnection(last.Key, last.Value, crossingCoords);
+            }
         }
         #endregion
     }
