@@ -237,11 +237,6 @@
             ]
         }
     ],
-    "ResourcesAvailable": [
-        {
-            "Name": "SmartCellBattery",
-            "Amount": 5
-        }
-    ],
+    "ResourcesAvailable": [],
     "Condition": 0
 }

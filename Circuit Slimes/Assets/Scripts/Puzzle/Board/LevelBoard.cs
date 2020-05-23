@@ -550,6 +550,11 @@ namespace Puzzle.Board
 
             return (Directions) Enum.Parse(typeof(Directions), newDir.ToString());
         }
+
+        public static LevelBoard.Directions InvertDirection(LevelBoard.Directions dir)
+        {
+            return (LevelBoard.Directions)((((int) dir) + 4) % 8);
+        }
         #endregion
     }
 }

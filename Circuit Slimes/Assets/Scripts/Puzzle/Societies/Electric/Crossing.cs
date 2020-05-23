@@ -7,7 +7,7 @@ namespace Puzzle {
     {
         public Dictionary<LevelBoard.Directions, int> Available { get; private set; }
 
-        public Dictionary<LevelBoard.Directions, Crossing> Children { get; private set; }
+        public Dictionary<LevelBoard.Directions, Crossing> Connections { get; private set; }
 
         
         public Crossing(List<LevelBoard.Directions> availableDirs)
@@ -19,7 +19,7 @@ namespace Puzzle {
                 this.Available.Add(dir, 1);
             }
 
-            this.Children = new Dictionary<LevelBoard.Directions, Crossing>();
+            this.Connections = new Dictionary<LevelBoard.Directions, Crossing>();
         }
 
 
@@ -35,7 +35,7 @@ namespace Puzzle {
             foreach(var dir in toRemove)
             {
                 this.Available.Remove(dir);
-                this.Children.Remove(dir);
+                this.Connections.Remove(dir);
             }
 
             foreach(var dir in available)
@@ -45,6 +45,7 @@ namespace Puzzle {
         }
 
 
+        #region Exploration
         public void MarkExplored(LevelBoard.Directions dir)
         {
             if (!this.Available.ContainsKey(dir)) this.Available.Add(dir, 1);
@@ -60,47 +61,80 @@ namespace Puzzle {
         }
 
 
-        public void AddChild(LevelBoard.Directions dir, Crossing child)
-        {
-            if (this.Available.ContainsKey(dir) && !this.Children.ContainsKey(dir))
-                this.Children.Add(dir, child);
-        }
-
-        public void RemoveChild(LevelBoard.Directions dir)
-        {
-            if (this.Children.ContainsKey(dir)) this.Children.Remove(dir);
-        }
-
-
         public List<LevelBoard.Directions> GetUnexplored()
         {
             var unexplored = new List<LevelBoard.Directions>();
 
             foreach (var pair in this.Available)
             {
-                if (pair.Value >= 0) unexplored.Add(pair.Key);
+                if (pair.Value > 0) unexplored.Add(pair.Key);
             }
 
             return unexplored;
         }
 
-        public int GetTotalUtility()
+        public bool FullyExplored()
+        {
+            foreach (var pair in this.Available)
+            {
+                if (pair.Value >= 0) return false;
+            }
+
+            return true;
+        }
+
+
+        public void ClearExplored()
+        {
+            this.Available.Clear();
+        }
+
+        #endregion
+
+
+        #region Connection
+        public void AddConnection(LevelBoard.Directions dir, Crossing other)
+        {
+            if (this.Available.ContainsKey(dir) && !this.Connections.ContainsKey(dir))
+                this.Connections.Add(dir, other);
+        }
+
+        public void RemoveConnection(LevelBoard.Directions dir)
+        {
+            if (this.Connections.ContainsKey(dir)) this.Connections.Remove(dir);
+        }
+        #endregion
+
+
+        #region Utility
+        public int GetTotalUtility(LevelBoard.Directions reachedFrom)
         {
             var utility = 0;
 
-            foreach(var pair in this.GetUtilities())
+            var invDir = LevelBoard.InvertDirection(reachedFrom);
+
+            foreach(var pair in this.Available)
             {
                 var dir = pair.Key;
 
-                if (this.Children.ContainsKey(dir))
-                {
-                    utility += this.Children[dir].GetTotalUtility();
-                }
-                else
-                {
-                    utility += pair.Value;
-                }
+                if (dir == invDir) continue;
+
+                utility += this.GetUtility(dir);
             }
+
+            return utility;
+        }
+
+        public int GetUtility(LevelBoard.Directions dir)
+        {
+            var utility = 0;
+
+            if (!this.Available.ContainsKey(dir)) return utility;
+
+            utility = this.Available[dir];
+
+            if (this.Connections.ContainsKey(dir))
+                utility = this.Connections[dir].GetTotalUtility(dir);
 
             return utility;
         }
@@ -113,32 +147,12 @@ namespace Puzzle {
             {
                 var dir = pair.Key;
 
-                var utility = pair.Value;
-
-                if (this.Children.ContainsKey(dir))
-                    utility = this.Children[dir].GetTotalUtility();
-
-                utilities.Add(dir, utility);
+                utilities.Add(dir, this.GetUtility(dir));
             }
 
             return utilities;
         }
-
-
-        public bool FullyExplored()
-        {
-            foreach(var pair in this.Available)
-            {
-                if (pair.Value >= 0) return false;
-            }
-
-            return true;
-        }
-
-        public void ClearExplored()
-        {
-            this.Available.Clear();
-        }
+        #endregion
 
 
         public string AvailableToString()
