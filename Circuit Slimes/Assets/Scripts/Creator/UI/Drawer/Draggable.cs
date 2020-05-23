@@ -48,6 +48,7 @@ namespace Creator.UI.Drawer
         {
             this.StartPosition = this.transform.localPosition;
             this.Controller.AddToQuick(this.Option.Name());
+            this.Controller.Close();
         }
 
 
