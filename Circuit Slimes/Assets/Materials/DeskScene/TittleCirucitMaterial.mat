@@ -78,7 +78,7 @@ Material:
     - _ASEOutlineColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color0: {r: 1, g: 0, b: 0.9104991, a: 0}
     - _EmissionColor: {r: 0.9952283, g: 1, b: 0, a: 1}
-    - _OutlineColor: {r: 0.19338006, g: 0.0016019973, b: 0.33962262, a: 0}
+    - _OutlineColor: {r: 0.32942972, g: 0, b: 0.5849056, a: 0}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 0}
     - _SpecRange: {r: 1.29, g: 1.87, b: 0, a: 0}
     - _Tint: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0}

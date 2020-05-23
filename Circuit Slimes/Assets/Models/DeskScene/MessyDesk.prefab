@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 896609813209518869}
   - component: {fileID: 7280052921393483229}
   m_Layer: 0
-  m_Name: BezierCurve.002
+  m_Name: Cable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2471,7 +2471,7 @@ GameObject:
   - component: {fileID: 1515021565201594825}
   - component: {fileID: 1140632968495309748}
   m_Layer: 0
-  m_Name: BezierCurve.001
+  m_Name: Cable2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4616,7 +4616,7 @@ GameObject:
   - component: {fileID: 2068026938166268680}
   - component: {fileID: 3500409248863593682}
   m_Layer: 0
-  m_Name: Cylinder.004
+  m_Name: Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6067,7 +6067,7 @@ GameObject:
   - component: {fileID: 8463220674083306372}
   - component: {fileID: 2554979612839011510}
   m_Layer: 0
-  m_Name: Cube.007
+  m_Name: PowerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7878,7 +7878,7 @@ GameObject:
   - component: {fileID: 4836797526804719864}
   - component: {fileID: 5189879124545690671}
   m_Layer: 0
-  m_Name: Osciloscope.002
+  m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7891,13 +7891,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6922588671639676759}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005050907, y: -0.0118343495, z: 0.004380412}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.5178496, y: 0.6201444, z: 0.45271078, w: 0.37723422}
+  m_LocalPosition: {x: -0.00511, y: -0.01173, z: 0.00446}
+  m_LocalScale: {x: 0.01558861, y: 0.0112343505, z: 0.013939797}
   m_Children: []
   m_Father: {fileID: 5804329884458282054}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 189.834, y: -71.93799, z: -93.12799}
 --- !u!33 &4836797526804719864
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7905,7 +7905,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6922588671639676759}
-  m_Mesh: {fileID: -6932468371896986436, guid: 1e30ed1b978352b4481ca6aff0604d4c, type: 3}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &5189879124545690671
 MeshRenderer:
   m_ObjectHideFlags: 0
