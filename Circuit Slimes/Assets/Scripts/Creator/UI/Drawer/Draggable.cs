@@ -46,7 +46,7 @@ namespace Creator.UI.Drawer
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
-            this.StartPosition = this.transform.position;
+            this.StartPosition = this.transform.localPosition;
             this.Controller.AddToQuick(this.Option.Name());
         }
 
@@ -59,7 +59,7 @@ namespace Creator.UI.Drawer
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
-            this.transform.position = this.StartPosition;
+            this.transform.localPosition = this.StartPosition;
             this.Option.PlaceItem();
         }
 
