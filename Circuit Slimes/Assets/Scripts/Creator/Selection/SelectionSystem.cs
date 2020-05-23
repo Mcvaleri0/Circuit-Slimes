@@ -242,10 +242,10 @@ namespace Creator.Selection
                     this.Tile.enabled = true;
                 }
 
-                //if (!this.BoardHover())
-                //{
-                //    this.Editor.RemoveItemSelected();
-                //}
+                if (!this.BoardHover())
+                {
+                    this.Editor.RemoveItemSelected();
+                }
             }
         }
 

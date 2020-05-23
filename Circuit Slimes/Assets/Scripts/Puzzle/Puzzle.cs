@@ -150,6 +150,13 @@ namespace Puzzle
         }
 
 
+        public bool RotatePieceRight(Piece piece)
+        {
+            LevelBoard.Directions newDir = LevelBoard.GetNextDirection(piece.Orientation, 2);
+            return this.RotatePiece(piece, newDir);
+        }
+
+
         public Piece GetPiece(Vector2Int coords)
         {
             return this.Board.GetPiece(coords);

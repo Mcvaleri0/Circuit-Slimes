@@ -197,6 +197,15 @@ namespace Creator.Editor
         }
 
 
+        public void RotateItem()
+        {
+            if (this.Selection.SomethingSelected() && this.Selection.PieceSelected())
+            {
+                this.Puzzle.RotatePieceRight(this.Selection.Piece);
+            }
+        }
+
+
         private void ChangeItemPosition(Transform item, Vector3 newPos)
         {
             item.position = newPos;

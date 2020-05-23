@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Puzzle.Pieces;
@@ -22,7 +23,8 @@ namespace Puzzle.Board
             West      =  4,
             SouthWest =  5,
             South     =  6,
-            SouthEast =  7
+            SouthEast =  7,
+            NumberOfDirs
         }
 
         public static readonly Vector2Int[] DirectionalVectors =
@@ -539,6 +541,14 @@ namespace Puzzle.Board
             Debug.Log("Angle: " + angle);
 
             return dir;
+        }
+
+
+        public static LevelBoard.Directions GetNextDirection(Directions direction, int incr)
+        {
+            int newDir = (((int) direction) + incr) % ((int) Directions.NumberOfDirs);
+
+            return (Directions) Enum.Parse(typeof(Directions), newDir.ToString());
         }
         #endregion
     }
