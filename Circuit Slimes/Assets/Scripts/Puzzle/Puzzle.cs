@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Puzzle.Board;
 using Puzzle.Pieces;
@@ -22,9 +23,10 @@ namespace Puzzle
 
         public GameObject TilesObj { get; private set; }
 
-        public List<string> Permissions { get; private set; }
+        public Dictionary<string, Resource> ResourcesAvailable { get; private set; }
 
         public WinCondition WinCondition { get; private set; }
+
         #endregion
 
 
@@ -49,15 +51,16 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new List<string>(), new WinCondition(WinCondition.Conditions.None));
+            Initialize(board, new List<Piece>(), new List<Tile>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
         }
 
-        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles, List<string> permissions, WinCondition winCondition)
+        public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles,
+                        WinCondition winCondition, Dictionary<string, Resource> resources)
         {
             this.Board  = board;
             this.Pieces = pieces;
-            this.Permissions = permissions;
             this.WinCondition = winCondition;
+            this.ResourcesAvailable = resources;
 
             this.Agents = new List<Agent>();
 
@@ -144,6 +147,13 @@ namespace Puzzle
         public bool RotatePiece(Piece piece, LevelBoard.Directions orientation)
         {
             return this.Board.RotatePiece(piece, orientation);
+        }
+
+
+        public bool RotatePieceRight(Piece piece)
+        {
+            LevelBoard.Directions newDir = LevelBoard.GetNextDirection(piece.Orientation, 2);
+            return this.RotatePiece(piece, newDir);
         }
 
 
@@ -240,16 +250,26 @@ namespace Puzzle
         #endregion
 
 
-        #region === Permission Methods ===
+        #region === Resources Methods ===
 
-        public void AddPermission(string prefab)
+        public Resource GetResource(string prefab)
         {
-            this.Permissions.Add(prefab);
+            try
+            {
+                return this.ResourcesAvailable[prefab];
+            }
+            catch (KeyNotFoundException)
+            {
+                Resource resource = new Resource(prefab);
+                this.ResourcesAvailable[prefab] = resource;
+                return resource;
+            }
         }
 
-        public void RemovePermission(string prefab)
+
+        public List<string> GetAllResources()
         {
-            this.Permissions.Remove(prefab);
+            return this.ResourcesAvailable.Keys.ToList();
         }
 
         #endregion

@@ -24,19 +24,25 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             base.SaveButton.gameObject.SetActive(false);
         }
-
+        
         #endregion
 
 
-        #region === Scroll Menu Methods ===
+        #region === Options Methods ===
 
         override public List<string> MenuOptions()
         {
-            return this.Editor.Permissions();
+            return this.Editor.Resources();
+        }
+
+
+        public override bool AbleToEditOptions()
+        {
+            return false;
         }
 
         #endregion

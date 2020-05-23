@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,7 +24,7 @@ namespace Puzzle.Data
         public BoardData    Board;
         public PieceData[]  Pieces;
         public TileData[]   Tiles;
-        public string[]     Permissions;
+        public ResourceData[] ResourcesAvailable;
         public WinCondition.Conditions Condition;
 
         public PuzzleData(Puzzle puzzle)
@@ -102,7 +103,17 @@ namespace Puzzle.Data
             this.Tiles = tilesData.ToArray();
             #endregion
 
-            this.Permissions = puzzle.Permissions.ToArray();
+            #region Resources
+            List<Resource> resources = puzzle.ResourcesAvailable.Values.Where(r => r.Available()).ToList();
+            int nResources = resources.Count;
+
+            this.ResourcesAvailable = new ResourceData[nResources];
+
+            for (int i = 0; i < nResources; i++)
+            {
+                this.ResourcesAvailable[i] = new ResourceData(resources[i]);
+            }
+            #endregion
 
             this.Condition = puzzle.WinCondition.Condition;
         }
@@ -156,20 +167,20 @@ namespace Puzzle.Data
             }
             #endregion
 
-            #region Create Permissions
-            List<string> permList = new List<string>();
+            #region Resources
+            Dictionary<string, Resource> resources = new Dictionary<string, Resource>();
 
-            if (puzzleData.Permissions != null)
+            if (puzzleData.ResourcesAvailable != null)
             {
-                foreach (string perm in puzzleData.Permissions)
+                foreach (ResourceData resource in puzzleData.ResourcesAvailable)
                 {
-                    permList.Add(perm);
+                    resources.Add(resource.Name, resource.CreateResource());
                 }
             }
             #endregion
 
             // Initialiaze Puzzle
-            puzzle.Initialize(board, pieceList, tileList, permList, new WinCondition(puzzleData.Condition));
+            puzzle.Initialize(board, pieceList, tileList, new WinCondition(puzzleData.Condition), resources);
 
             return puzzle;
         }

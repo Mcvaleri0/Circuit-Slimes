@@ -241,6 +241,11 @@ namespace Creator.Selection
                     //re-enable tile  (visual)
                     this.Tile.enabled = true;
                 }
+
+                if (!this.BoardHover())
+                {
+                    this.Editor.RemoveItemSelected();
+                }
             }
         }
 

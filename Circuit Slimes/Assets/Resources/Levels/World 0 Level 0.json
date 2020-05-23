@@ -237,6 +237,11 @@
             ]
         }
     ],
-    "Permissions": [],
+    "ResourcesAvailable": [
+        {
+            "Name": "SmartCellBattery",
+            "Amount": 5
+        }
+    ],
     "Condition": 0
 }

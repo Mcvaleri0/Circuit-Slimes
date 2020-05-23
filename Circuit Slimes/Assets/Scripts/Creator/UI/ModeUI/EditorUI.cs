@@ -33,7 +33,7 @@ namespace Creator.UI.ModeUI
 
         #region === Buttons Methods ===
 
-        override public void InitializeSaveButton()
+        override public void InitializeSave()
         {
             #if UNITY_EDITOR
                 RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
@@ -53,7 +53,7 @@ namespace Creator.UI.ModeUI
         #endregion
 
 
-        #region === Scroll Menu Methods ===
+        #region === Options Methods ===
 
         override public List<string> MenuOptions()
         {
@@ -65,7 +65,13 @@ namespace Creator.UI.ModeUI
             return this.AllItems;
         }
 
-#endregion
+
+        public override bool AbleToEditOptions()
+        {
+            return true;
+        }
+
+        #endregion
 
     }
 }
