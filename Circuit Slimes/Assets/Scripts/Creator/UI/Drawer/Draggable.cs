@@ -12,6 +12,7 @@ namespace Creator.UI.Drawer
         #region /* Drag Attributes */
 
         private Vector3 StartPosition { get; set; }
+        private bool Dragging { get; set; }
 
         #endregion
 
@@ -26,9 +27,22 @@ namespace Creator.UI.Drawer
         #region /* Option Attributes */
         
         private Option Option { get; set; }
-        
+
         #endregion
 
+
+
+        #region === Unity Events ===
+
+        private void LateUpdate()
+        {
+            if (this.Dragging)
+            {
+                this.transform.position = Input.mousePosition;
+            }
+        }
+
+        #endregion
 
 
         #region === Init Methods ===
@@ -37,6 +51,8 @@ namespace Creator.UI.Drawer
         {
             this.Controller = controller;
             this.Option = option;
+
+            this.Dragging = false;
         }
         
         #endregion
@@ -47,6 +63,8 @@ namespace Creator.UI.Drawer
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
         {
             this.StartPosition = this.transform.localPosition;
+            this.Dragging = true;
+
             this.Controller.AddToQuick(this.Option.Name());
             this.Controller.Close();
         }
@@ -54,13 +72,15 @@ namespace Creator.UI.Drawer
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
-            this.transform.position = Input.mousePosition;
+            //this.transform.position = Input.mousePosition;
         }
 
 
         void IEndDragHandler.OnEndDrag(PointerEventData eventData)
         {
             this.transform.localPosition = this.StartPosition;
+            this.Dragging = false;
+
             this.Option.PlaceItem();
         }
 
