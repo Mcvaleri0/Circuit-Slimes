@@ -86,10 +86,10 @@ namespace Creator
             //ignore finger up that happened over the ui
             if (finger.StartedOverGui) { return; }
 
-            if (this.SelectionSystem.Dragging)
-            {
-                this.SelectionSystem.EndDrag();
-            }
+            //if (this.SelectionSystem.Dragging)
+            //{
+            //    this.SelectionSystem.EndDrag();
+            //}
         }
 
 
@@ -98,12 +98,12 @@ namespace Creator
             if (this.IgnoreInput(finger)) return;
 
             //Drag Item
-            if (this.SelectionSystem.Dragging)
-            {
-                this.PuzzleEditor.MoveItem();
-            }
+            //if (this.SelectionSystem.Dragging)
+            //{
+            //    this.PuzzleEditor.MoveItem();
+            //}
             //if something is selected prepare drag
-            else if (this.SelectionSystem.SomethingSelected())
+            /*else */if (this.SelectionSystem.SomethingSelected())
             {
                 this.SelectionSystem.PrepareDrag();
             }

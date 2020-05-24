@@ -201,21 +201,23 @@ namespace Creator.Selection
 
             if (this.Selected != null)
             {
-                this.Dragging = true;
-                this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
+                //this.Dragging = true;
+                //this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
-                Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
-                this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+                //Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
+                //this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
 
-                // one of them is always null
-                this.Piece = this.Selected.GetComponent<Piece>();
-                this.Tile = this.Selected.GetComponent<Tile>();
+                //// one of them is always null
+                //this.Piece = this.Selected.GetComponent<Piece>();
+                //this.Tile = this.Selected.GetComponent<Tile>();
 
-                //reset and disable tile temporarily (visual) 
-                if (this.TileSelected())
-                {
-                    this.Tile.enabled = false;
-                }
+                ////reset and disable tile temporarily (visual) 
+                //if (this.TileSelected())
+                //{
+                //    this.Tile.enabled = false;
+                //}
+
+                //this.Editor.RemoveItemSelected();
 
             }
         }
