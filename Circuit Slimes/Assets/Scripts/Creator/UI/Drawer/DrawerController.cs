@@ -106,6 +106,9 @@ namespace Creator.UI.Drawer
 
         private void Clear()
         {
+            this.QuickItems.Clear();
+            this.QuickObjs.Clear();
+
             this.Clear(this.QuickSelect);
             this.Clear(this.Inside);
         }

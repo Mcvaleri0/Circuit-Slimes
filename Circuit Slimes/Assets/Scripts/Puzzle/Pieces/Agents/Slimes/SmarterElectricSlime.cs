@@ -40,14 +40,14 @@ namespace Puzzle.Pieces.Slimes
             return this.Hivemind.GetUtilities(crossingCoords);
         }
 
-        public void AddChildToCrossing(Vector2Int parentCoords, LevelBoard.Directions dir, Vector2Int childCoords)
+        public void RegisterCrossingConnection(Vector2Int start, LevelBoard.Directions dir, Vector2Int end)
         {
-            this.Hivemind.AddChildToCrossing(parentCoords, dir, childCoords);
+            this.Hivemind.AddCrossingConnection(start, dir, end);
         }
 
-        public void AddChildUndo(Vector2Int parentCoords, LevelBoard.Directions dir, Vector2Int childCoords)
+        public void UnregisterCrossingConnection(Vector2Int start, LevelBoard.Directions dir, Vector2Int end)
         {
-            this.Hivemind.AddChildToCrossing(parentCoords, dir, childCoords);
+            this.Hivemind.RemoveCrossingConnection(start, dir, end);
         }
         #endregion
     }

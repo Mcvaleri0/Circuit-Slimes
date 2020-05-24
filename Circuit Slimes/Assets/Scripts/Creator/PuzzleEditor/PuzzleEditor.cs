@@ -60,7 +60,7 @@ namespace Creator.Editor
         
         public void PlaceItem(Resource resource)
         {
-            if ((this.Selection.BoardHover()) && (resource.Available()))
+            if (this.Selection.BoardHover())
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
@@ -193,6 +193,15 @@ namespace Creator.Editor
                 {
                     this.ChangeItemPosition(this.Selection.Selected, curPosition);
                 }
+            }
+        }
+
+
+        public void RotateItem()
+        {
+            if (this.Selection.SomethingSelected() && this.Selection.PieceSelected())
+            {
+                this.Puzzle.RotatePieceRight(this.Selection.Piece);
             }
         }
 

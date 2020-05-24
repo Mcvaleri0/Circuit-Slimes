@@ -76,7 +76,7 @@ namespace Creator
             //if double click delete
             if (this.SelectionSystem.DoubleClick())
             {
-                this.PuzzleEditor.RemoveItemSelected();
+                this.PuzzleEditor.RotateItem();
             }
         }
 

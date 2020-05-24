@@ -104,20 +104,23 @@ namespace Puzzle {
         }
 
 
-        public void AddChildToCrossing(Vector2Int parentCoords, LevelBoard.Directions dir, Vector2Int childCoords)
+        public void AddCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dir, Vector2Int endCoords)
         {
-            if(this.Crossings.TryGetValue(parentCoords, out var parent) &&
-               this.Crossings.TryGetValue(childCoords, out var child))
+            if(this.Crossings.TryGetValue(startCoords, out var start) &&
+               this.Crossings.TryGetValue(endCoords, out var end))
             {
-                parent.AddChild(dir, child);
+                start.AddConnection(dir, end);
+                end.AddConnection(LevelBoard.InvertDirection(dir), start);
             }
         }
 
-        public void RemoveChildFromCrossing(Vector2Int parentCoords, LevelBoard.Directions dir)
+        public void RemoveCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dir, Vector2Int endCoords)
         {
-            if (this.Crossings.TryGetValue(parentCoords, out var parent))
+            if (this.Crossings.TryGetValue(startCoords, out var start) &&
+               this.Crossings.TryGetValue(endCoords, out var end))
             {
-                parent.RemoveChild(dir);
+                start.RemoveConnection(dir);
+                end.RemoveConnection(LevelBoard.InvertDirection(dir));
             }
         }
         #endregion

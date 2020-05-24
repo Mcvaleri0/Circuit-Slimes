@@ -12,6 +12,8 @@ public class MainMenu : MonoBehaviour
 {
     #region /* Buttons */
 
+    private Canvas MenuCanvas;
+
     private Button PlayButton;
     private Button LevelEditButton;
     private Button ReadMeButton;
@@ -37,11 +39,15 @@ public class MainMenu : MonoBehaviour
     #endregion
 
 
+    private MainMenuCameraController MenuCamera;
+
 
     #region === Unity Events ===
     private void Awake()
     {
         this.Controller = GameController.CreateGameController();
+
+        this.MenuCamera = GameObject.Find("MenuCamera").GetComponent<MainMenuCameraController>();
     }
 
 
@@ -54,14 +60,12 @@ public class MainMenu : MonoBehaviour
         QuitButton = GameObject.Find("QuitButton").GetComponent<Button>();
 
         ReadMeButtonText = ReadMeButton.GetComponentInChildren<Text>();
-
         ReadMeInfo = transform.Find("ReadMe Info");
 
+        //CALLBACK FUNCTIONS
         PlayButton.onClick.AddListener(() => this.Controller.ShowLevelMenu(GameController.LEVELS));
         LevelEditButton.onClick.AddListener(() => this.Controller.ShowLevelMenu(GameController.CREATOR));
-
         ReadMeButton.onClick.AddListener(() => ReadMeCallBack());
-
         QuitButton.onClick.AddListener(() => this.Controller.QuitGame());
     }
 
@@ -79,21 +83,23 @@ public class MainMenu : MonoBehaviour
 
             ReadMeInfo.gameObject.SetActive(true);
 
-            PlayButton.enabled = false;
-            LevelEditButton.enabled = false;
+            PlayButton.interactable = false;
+            LevelEditButton.interactable = false;
+
+            this.MenuCamera.GoToInfo();
         }
         else
         {
             ReadMeButtonText.text = "Read Me";
-            ReadMeButtonText.color = new Color32(6, 183, 128, 255); //green
+            ReadMeButtonText.color = new Color32(172, 255, 226, 255); //green
 
             ReadMeInfo.gameObject.SetActive(false);
 
-            PlayButton.enabled = true;
-            LevelEditButton.enabled = true;
-        }
+            PlayButton.interactable = true;
+            LevelEditButton.interactable = true;
 
-        
+            this.MenuCamera.GoToMenu();
+        }
     }
 
     #endregion

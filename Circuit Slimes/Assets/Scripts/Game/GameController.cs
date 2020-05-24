@@ -38,6 +38,7 @@ namespace Game
 
         private GameObject MainMenu { get; set; }
         private GameObject QuitButton { get; set; }
+        private MainMenuCameraController MenuCamera { get; set; }
 
         #endregion
 
@@ -45,6 +46,8 @@ namespace Game
         #region /* Level Menu Attributes */
         
         private LevelMenu LevelMenu { get; set; }
+
+        private bool StartGame = false;
 
         #endregion
 
@@ -101,6 +104,19 @@ namespace Game
         private void Start()
         {
             //Application.targetFrameRate = 60;
+
+            this.MenuCamera.GoToSplashScreen();
+            this.HideMainMenu();
+        }
+
+        private void Update()
+        {
+            if (!this.StartGame && Input.anyKey)
+            {
+                this.StartGame = true;
+                this.MenuCamera.GoToMenu();
+                this.ShowMainMenu();
+            }
         }
 
 
@@ -240,6 +256,11 @@ namespace Game
             {
                 this.QuitButton = GameObject.Find("QuitButton");
             }
+
+            if(this.MenuCamera == null)
+            {
+                this.MenuCamera = GameObject.Find("MenuCamera").GetComponent<MainMenuCameraController>();
+            }
         }
 
 
@@ -261,6 +282,8 @@ namespace Game
         {
             this.LevelMenu.Hide();
             this.ShowMainMenu();
+
+            this.MenuCamera.GoToMenu();
         }
 
         #endregion
@@ -284,6 +307,15 @@ namespace Game
         {
             this.HideMainMenu();
             this.LevelMenu.Show(nextScene);
+
+            if(nextScene == GameController.LEVELS)
+            {
+                this.MenuCamera.GoToPlay();
+            }
+            else if(nextScene == GameController.CREATOR)
+            {
+                this.MenuCamera.GoToEdit();
+            }
         }
 
         #endregion
