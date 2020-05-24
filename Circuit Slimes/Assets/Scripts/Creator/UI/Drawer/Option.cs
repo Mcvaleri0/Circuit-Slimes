@@ -83,7 +83,10 @@ namespace Creator.UI.Drawer
             this.CanEdit = ableToEdit;
 
             this.Resource = this.Editor.GetResource(item);
-            this.Resource.DefineUI(text, draggable, ableToEdit);
+            if (this.Resource != null)
+            {
+                this.Resource.DefineUI(text, draggable, ableToEdit);
+            }
         }
 
         #endregion

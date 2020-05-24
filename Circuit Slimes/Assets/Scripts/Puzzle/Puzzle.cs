@@ -254,6 +254,11 @@ namespace Puzzle
 
         public Resource GetResource(string prefab)
         {
+            if (prefab == "")
+            {
+                return null;
+            }
+
             try
             {
                 return this.ResourcesAvailable[prefab];
