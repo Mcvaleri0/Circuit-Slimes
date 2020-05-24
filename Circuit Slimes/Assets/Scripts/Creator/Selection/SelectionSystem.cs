@@ -204,7 +204,6 @@ namespace Creator.Selection
                 //this.Dragging = true;
                 //this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
-                //Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
                 //this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
 
                 //// one of them is always null
@@ -217,38 +216,45 @@ namespace Creator.Selection
                 //    this.Tile.enabled = false;
                 //}
 
+                this.Dragging = true;
+
                 this.Editor.RemoveItemSelected();
 
+                this.Editor.InitializeMovingItem(this.Selected);
             }
         }
 
 
         public void EndDrag()
         {
+
+            //if (this.Selected != null)
+            if (this.Selected.Equals(null))
+            {
+                //Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
+
+                //// submits new item's position
+                //if (this.PieceSelected())
+                //{
+                //    this.Editor.MovePiece(newPos, this.Piece);
+                //}
+                //else
+                //{
+                //    this.Editor.MoveTile(newPos, this.Tile);
+
+                //    //re-enable tile  (visual)
+                //    this.Tile.enabled = true;
+                //}
+
+                //if (!this.BoardHover())
+                //{
+                //    this.Editor.RemoveItemSelected();
+                //}
+
+                this.Editor.PlaceMovingItem();
+            }
             this.Dragging = false;
 
-            if (this.Selected != null)
-            {
-                Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
-
-                // submits new item's position
-                if (this.PieceSelected())
-                {
-                    this.Editor.MovePiece(newPos, this.Piece);
-                }
-                else
-                {
-                    this.Editor.MoveTile(newPos, this.Tile);
-
-                    //re-enable tile  (visual)
-                    this.Tile.enabled = true;
-                }
-
-                if (!this.BoardHover())
-                {
-                    this.Editor.RemoveItemSelected();
-                }
-            }
         }
 
         #endregion

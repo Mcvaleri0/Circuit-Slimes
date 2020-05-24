@@ -78,18 +78,23 @@ namespace Creator
             {
                 this.PuzzleEditor.RotateItem();
             }
+            else if (!this.SelectionSystem.Dragging && this.SelectionSystem.SomethingSelected())
+            {
+                this.SelectionSystem.PrepareDrag();
+            }
+
         }
 
 
         private void OnInputUp(Lean.Touch.LeanFinger finger)
         {
             //ignore finger up that happened over the ui
-            if (finger.StartedOverGui) { return; }
+            //if (finger.StartedOverGui) { return; }
 
-            //if (this.SelectionSystem.Dragging)
-            //{
-            //    this.SelectionSystem.EndDrag();
-            //}
+            if (this.SelectionSystem.Dragging)
+            {
+                this.SelectionSystem.EndDrag();
+            }
         }
 
 
@@ -103,10 +108,11 @@ namespace Creator
             //    this.PuzzleEditor.MoveItem();
             //}
             //if something is selected prepare drag
-            /*else */if (this.SelectionSystem.SomethingSelected())
-            {
-                this.SelectionSystem.PrepareDrag();
-            }
+            //else if (this.SelectionSystem.SomethingSelected())
+            //if (this.SelectionSystem.SomethingSelected())
+            //{
+            //    this.SelectionSystem.PrepareDrag();
+            //}
         }
 
         #endregion
@@ -180,7 +186,7 @@ namespace Creator
 
         private void InitializePuzzleInfo(Puzzle.Puzzle puzzle)
         {
-            this.PuzzleEditor = new PuzzleEditor(puzzle);
+            this.PuzzleEditor = new PuzzleEditor(this, puzzle);
         }
 
 
