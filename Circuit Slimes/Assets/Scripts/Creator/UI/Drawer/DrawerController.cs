@@ -87,20 +87,21 @@ namespace Creator.UI.Drawer
         
         private void Populate(List<string> options)
         {
-            if (options.Count <= QUICK_MAX)
-            {
-                this.PopulateQuickSelection(options);
-                this.OpenButton.SetActive(false);
-            }
-            else
-            {
+            //if (options.Count <= QUICK_MAX)
+            //{
+            //    this.PopulateQuickSelection(options);
+            //    this.OpenButton.SetActive(false);
+            //}
+            //else
+            //{
                 foreach (string opt in options)
                 {
                     Option.CreateOption(this.Editor, this, this.OptionPrefab, this.Inside, opt, this.Mode.AbleToEditOptions());
+                    this.AddToQuick(opt);
                 }
 
-                this.OpenButton.SetActive(true);
-            }
+            //this.OpenButton.SetActive(false);
+            //}
         }
 
 
