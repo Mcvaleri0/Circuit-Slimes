@@ -105,17 +105,23 @@ namespace Game
         {
             //Application.targetFrameRate = 60;
 
-            this.MenuCamera.GoToSplashScreen();
-            this.HideMainMenu();
+            if (SceneManager.GetActiveScene().name == MAIN_MENU)
+            {
+                this.MenuCamera.GoToSplashScreen();
+                this.HideMainMenu();
+            }
         }
 
         private void Update()
         {
-            if (!this.StartGame && Input.anyKey)
+            if (SceneManager.GetActiveScene().name == MAIN_MENU)
             {
-                this.StartGame = true;
-                this.MenuCamera.GoToMenu();
-                this.ShowMainMenu();
+                if (!this.StartGame && Input.anyKey)
+                {
+                    this.StartGame = true;
+                    this.MenuCamera.GoToMenu();
+                    this.ShowMainMenu();
+                }
             }
         }
 
