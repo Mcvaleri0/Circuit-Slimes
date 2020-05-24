@@ -217,7 +217,7 @@ namespace Creator.Selection
                 //    this.Tile.enabled = false;
                 //}
 
-                //this.Editor.RemoveItemSelected();
+                this.Editor.RemoveItemSelected();
 
             }
         }
