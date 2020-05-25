@@ -119,6 +119,10 @@
         {
             "Name": "SolderCandy",
             "Amount": 1
+        },
+        {
+            "Name": "SmartAABattery",
+            "Amount": 1
         }
     ],
     "Condition": 0
