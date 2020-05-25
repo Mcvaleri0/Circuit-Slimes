@@ -38,9 +38,9 @@ namespace Creator.UI.ModeUI
             #if UNITY_EDITOR
                 RectTransform saveRect = base.SaveButton.GetComponent<RectTransform>();
 
-                saveRect.pivot = new Vector2(1, 1);
-                float x = -30; //x margin
-                float y = -30; //y margin
+                saveRect.pivot = new Vector2(0, 0);
+                float x = -150; //x margin
+                float y = 0; //y margin
 
                 saveRect.anchoredPosition = new Vector2(x, y);
 

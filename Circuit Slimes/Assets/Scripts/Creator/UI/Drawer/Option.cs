@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 using Level;
 using Puzzle;
+using Puzzle.Board;
 using Creator.Editor;
 
 

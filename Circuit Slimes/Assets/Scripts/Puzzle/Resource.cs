@@ -16,7 +16,7 @@ namespace Puzzle
         public string Name { get; private set; }
         public int Amount { get; private set; }
 
-        private List<Text> Texts { get; set; }
+        public List<Text> Texts { get; set; }
         public List<Draggable> Draggables { get; private set; }
         private bool CanEdit { get; set; }
 

@@ -7,8 +7,7 @@ using Level;
 using Puzzle;
 using Creator.UI.Drawer;
 using Creator.Selection;
-
-
+using Puzzle.Board;
 
 namespace Creator.Editor
 {
@@ -40,6 +39,7 @@ namespace Creator.Editor
         private Option MovingOption { get; set; }
         private Draggable MovingDrag { get; set; }
         private Text MovingText { get; set; }
+        private LevelBoard.Directions direction { get; set; }
 
         #endregion
 
@@ -123,7 +123,7 @@ namespace Creator.Editor
             }
             else
             {
-                Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
+                Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords, this.direction);
 
                 if (res != null)
                 {
@@ -270,6 +270,12 @@ namespace Creator.Editor
             this.MovigStartPos = this.Puzzle.Discretize(selected.position);
             this.MovingOption.Initialize(this, selected.name, this.MovingText, this.MovingDrag, this.Mode.AbleToEditOptions());
             this.MovingDrag.InitializeDrag();
+
+            Piece piece = selected.GetComponentInChildren<Piece>();
+            if (piece != null)
+            {
+                this.direction = piece.Orientation;
+            }
         }
 
 
