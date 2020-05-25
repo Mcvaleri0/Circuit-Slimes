@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 using Level;
 using Creator.Editor;
-
-
+using Puzzle;
+using Puzzle.Board;
 
 namespace Creator.UI.Drawer
 {
@@ -52,6 +52,8 @@ namespace Creator.UI.Drawer
 
         #endregion
 
+        /* audio */
+        private AudioManager AudioManager;
 
 
         #region === Init Methods ===
@@ -78,6 +80,8 @@ namespace Creator.UI.Drawer
             this.Animator = drawer.GetComponent<Animator>();
 
             this.Populate(options);
+
+            this.AudioManager = FindObjectOfType<AudioManager>();
         }
 
         #endregion
@@ -87,19 +91,10 @@ namespace Creator.UI.Drawer
         
         private void Populate(List<string> options)
         {
-            if (options.Count <= QUICK_MAX)
+            foreach (string opt in options)
             {
-                this.PopulateQuickSelection(options);
-                this.OpenButton.SetActive(false);
-            }
-            else
-            {
-                foreach (string opt in options)
-                {
-                    Option.CreateOption(this.Editor, this, this.OptionPrefab, this.Inside, opt, this.Mode.AbleToEditOptions());
-                }
-
-                this.OpenButton.SetActive(true);
+                Option.CreateOption(this.Editor, this, this.OptionPrefab, this.Inside, opt, this.Mode.AbleToEditOptions());
+                this.AddToQuick(opt);
             }
         }
 
@@ -133,7 +128,14 @@ namespace Creator.UI.Drawer
 
 
         #region === Drawer Animation Methods ===
-        
+
+        public void SwooshSound()
+        {
+            this.AudioManager.Play("DrawerSwoosh");
+            AudioManager.PlayRandom("ButtonClick1", "ButtonClick2", "ButtonClick3");
+        }
+
+
         public void Close()
         {
             if (this.DrawerOpen)
@@ -170,6 +172,13 @@ namespace Creator.UI.Drawer
                     this.QuickItems.Dequeue();
                     
                     GameObject objToDestroy = this.QuickObjs.Dequeue();
+
+                    Resource resource = this.Editor.GetResource(objToDestroy.name);
+                    Text text = objToDestroy.GetComponentInChildren<Text>();
+                    Draggable draggable = objToDestroy.GetComponentInChildren<Draggable>();
+                    resource.Draggables.Remove(draggable);
+                    resource.Texts.Remove(text);
+
                     GameObject.Destroy(objToDestroy);
                 }
 

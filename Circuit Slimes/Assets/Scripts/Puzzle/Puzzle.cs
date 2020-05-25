@@ -17,6 +17,8 @@ namespace Puzzle
 
         public List<Agent> Agents { get; private set; }
 
+        public List<Tile> Tiles { get; private set; }
+
         public LevelBoard Board { get; private set; }
 
         public GameObject PiecesObj { get; private set; }
@@ -59,6 +61,7 @@ namespace Puzzle
         {
             this.Board  = board;
             this.Pieces = pieces;
+            this.Tiles  = tiles;
             this.WinCondition = winCondition;
             this.ResourcesAvailable = resources;
 
@@ -194,6 +197,8 @@ namespace Puzzle
                 return null;
             }
 
+            this.Tiles.Add(tile);
+
             return tile;
         }
 
@@ -254,6 +259,11 @@ namespace Puzzle
 
         public Resource GetResource(string prefab)
         {
+            if (prefab == "")
+            {
+                return null;
+            }
+
             try
             {
                 return this.ResourcesAvailable[prefab];

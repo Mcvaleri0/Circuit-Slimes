@@ -73,6 +73,28 @@ namespace Puzzle.Pieces.Slimes
         {
             return this.Hivemind.GetUnexplored(crossingCoords);
         }
+
+
+        public virtual bool CommunicateInfo(Vector2Int crossingCoords, LevelBoard.Directions dirIn, LevelBoard.Directions dirOut)
+        {
+            // Register path chosen to exit present Crossing
+            this.RegisterExploredPath(crossingCoords, dirOut);
+
+            // Register path by which the present Crossing was reached
+            this.RegisterExploredPath(crossingCoords, LevelBoard.InvertDirection(dirIn));
+
+            return true;
+        }
+
+        public virtual void RollBackInfo(Vector2Int crossingCoords, LevelBoard.Directions dirIn, LevelBoard.Directions dirOut, bool connected)
+        {
+            // Unregister path by which the present Crossing was reached
+            this.UnregisterExploredPath(crossingCoords, LevelBoard.InvertDirection(dirIn));
+
+            // Unregister path chosen to exit present Crossing
+            this.UnregisterExploredPath(crossingCoords, dirOut);
+        }
+
         #endregion
     }
 }

@@ -25,6 +25,11 @@ namespace Creator.Mode
             this.Selection.WhiteListAllItens();
         }
 
+        public override bool AbleToEditOptions()
+        {
+            return true;
+        }
+
         #endregion
 
     }

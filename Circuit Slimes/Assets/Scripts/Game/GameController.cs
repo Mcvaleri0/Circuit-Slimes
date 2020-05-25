@@ -91,6 +91,15 @@ namespace Game
         #endregion
 
 
+        #region /* Audio Atributes */
+
+        private AudioManager AudioManager { get; set; }
+        private const string AUDIO_PREFAB_PATH = "Prefabs/Game/AudioManager";
+        private const string AUDIO_NAME = "AudioManager";
+
+        #endregion
+
+
         #region /* Hint Attributes */
 
         private HintController Hint { get; set; }
@@ -105,17 +114,23 @@ namespace Game
         {
             //Application.targetFrameRate = 60;
 
-            this.MenuCamera.GoToSplashScreen();
-            this.HideMainMenu();
+            if (SceneManager.GetActiveScene().name == MAIN_MENU)
+            {
+                this.MenuCamera.GoToSplashScreen();
+                this.HideMainMenu();
+            }
         }
 
         private void Update()
         {
-            if (!this.StartGame && Input.anyKey)
+            if (SceneManager.GetActiveScene().name == MAIN_MENU)
             {
-                this.StartGame = true;
-                this.MenuCamera.GoToMenu();
-                this.ShowMainMenu();
+                if (!this.StartGame && Input.anyKey)
+                {
+                    this.StartGame = true;
+                    this.MenuCamera.GoToMenu();
+                    this.ShowMainMenu();
+                }
             }
         }
 
@@ -146,6 +161,9 @@ namespace Game
                 controllerObj.name = CONTROLLER_NAME;
 
                 GameObject.DontDestroyOnLoad(controllerObj);
+
+                //Audio Controller
+                controllerObj.GetComponent<GameController>().InitializeAudioManager();
             }
 
             GameController controller = controllerObj.GetComponent<GameController>();
@@ -182,11 +200,15 @@ namespace Game
             if (SceneManager.GetActiveScene().name == MAIN_MENU)
             {
                 this.InitializeMainMenu();
+
+                this.AudioManager.PlayMusic("MenuBackgroundMusic");
             }
             else
             {
                 this.Puzzle = this.LevelController.LoadLevel();
                 this.InitialiazeControllers();
+
+                this.AudioManager.PlayMusic("LevelBackgroundMusic");
             }
         }
 
@@ -462,6 +484,21 @@ namespace Game
             {
                 this.ButtonController.ReInitialize();
             }
+        }
+
+        #endregion
+
+
+        #region === Audio Manager
+
+        public void InitializeAudioManager()
+        {
+            //spawn AudioManager as child of game controller
+            GameObject AudioManagerObj = GameObject.Instantiate(Resources.Load(AUDIO_PREFAB_PATH)) as GameObject;
+            AudioManagerObj.transform.parent = transform;
+            AudioManagerObj.name = AUDIO_NAME;
+            this.AudioManager = AudioManagerObj.GetComponent<AudioManager>();
+
         }
 
         #endregion

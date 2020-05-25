@@ -41,6 +41,9 @@ public class MainMenu : MonoBehaviour
 
     private MainMenuCameraController MenuCamera;
 
+    private AudioManager AudioManager;
+
+
 
     #region === Unity Events ===
     private void Awake()
@@ -48,6 +51,8 @@ public class MainMenu : MonoBehaviour
         this.Controller = GameController.CreateGameController();
 
         this.MenuCamera = GameObject.Find("MenuCamera").GetComponent<MainMenuCameraController>();
+
+        this.AudioManager = FindObjectOfType<AudioManager>();
     }
 
 
@@ -72,10 +77,25 @@ public class MainMenu : MonoBehaviour
     #endregion
 
 
-    #region === CallBack Functions ===
+    #region === Sound Functions ===
+
+    public void InfoSound()
+    {
+        AudioManager.Play("ReadInfo");
+    }
+
+    public void HoverSound() {
+        AudioManager.Play("ButtonHover2");
+    }
+
+    public  void ClickSound()
+    {
+        AudioManager.PlayRandom("ButtonClick1", "ButtonClick2", "ButtonClick3");
+    }
 
     void ReadMeCallBack()
     {
+
         if (!ReadMeInfo.gameObject.activeSelf)
         {
             ReadMeButtonText.text = "Close";

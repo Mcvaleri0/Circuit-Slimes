@@ -1,0 +1,286 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2956385392159069218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2956385392159069220}
+  - component: {fileID: 2956385392159069221}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2956385392159069220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956385392159069218}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2956385392159069221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956385392159069218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f2a385cc0868854b8e3dff0ef53ce17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: MenuBackgroundMusic
+    clip: {fileID: 8300000, guid: f5aea5ce8d92ed84d8b83bcdaa30b0a4, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    mixerGroup: {fileID: -2245564853199703813, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: LevelBackgroundMusic
+    clip: {fileID: 8300000, guid: ea00dcf32dc98524ea57e214d751ade5, type: 3}
+    volume: 1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0
+    loop: 1
+    mixerGroup: {fileID: -2245564853199703813, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonClick1
+    clip: {fileID: 8300000, guid: e9deaa8b020934949bde4b52ff0e9404, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonClick2
+    clip: {fileID: 8300000, guid: a65d4842e23de0c4eba5c5d6a9b46fa7, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonClick3
+    clip: {fileID: 8300000, guid: 0b4c933851722bf4ca6aa0380d9f1449, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonHover1
+    clip: {fileID: 8300000, guid: 5349d6119c217714a9d76ba407bdc821, type: 3}
+    volume: 1
+    volumeVariance: 0.1
+    pitch: 1
+    pitchVariance: 0.2
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonHover2
+    clip: {fileID: 8300000, guid: 5946bc44781058d4ab5bd0a617c7a5fa, type: 3}
+    volume: 0.1
+    volumeVariance: 0
+    pitch: 1
+    pitchVariance: 0.3
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeElectric1
+    clip: {fileID: 8300000, guid: d107984ac47a7354e9949381b353fd69, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeElectric2
+    clip: {fileID: 8300000, guid: c49b23fdc4645e94295fb4fc1e3a705e, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeElectric3
+    clip: {fileID: 8300000, guid: 88379d43d33cd9a4d834018eb130da84, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeElectricExplosion
+    clip: {fileID: 8300000, guid: 2cbc2e51952992b418821c30357f6bb8, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: PickUp
+    clip: {fileID: 8300000, guid: 2a2542232c4538442b33f29870f4bba7, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: Drop
+    clip: {fileID: 8300000, guid: 2939b28781e400e4a9efe65522e6f7af, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeEat1
+    clip: {fileID: 8300000, guid: 0637ef69fae5dff45b3ce637da7548d5, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeEat2
+    clip: {fileID: 8300000, guid: e2493cc52e042224290ab831f0cfb961, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimePlace1
+    clip: {fileID: 8300000, guid: 23c95cd312f2e5f4fbe5233d4a278835, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimePlace2
+    clip: {fileID: 8300000, guid: d10739d351e3a2a49807d2297e9d4d59, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeSolder
+    clip: {fileID: 8300000, guid: a40257d9399e8a94ba7b278a1884369f, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: SlimeDie
+    clip: {fileID: 8300000, guid: 6c12e52c306876a43856aa6f9d65ed78, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonGrab
+    clip: {fileID: 8300000, guid: a13057267c81685439b64b29fa329fad, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ButtonRelease
+    clip: {fileID: 8300000, guid: f54e6a649276ac24c9459071e4e94e1a, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: PlopItem
+    clip: {fileID: 8300000, guid: c077bc0e596fe0749af279aa62dae7e9, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: 4643655337402467817, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: ReadInfo
+    clip: {fileID: 8300000, guid: fb19d030dc36c4945b44020d16755d67, type: 3}
+    volume: 1
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
+  - name: DrawerSwoosh
+    clip: {fileID: 8300000, guid: 59461993ce5c00048b081a9877ab891d, type: 3}
+    volume: 0.6
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}
