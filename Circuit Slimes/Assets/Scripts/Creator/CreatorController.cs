@@ -52,6 +52,7 @@ namespace Creator
         #region === Input Events ===
 
         private Lean.Touch.LeanFingerFilter InputFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 1, null);
+        private Lean.Touch.LeanFingerFilter RightFilter = new Lean.Touch.LeanFingerFilter(Lean.Touch.LeanFingerFilter.FilterType.AllFingers, true, 1, 2, null);
 
 
         private bool IgnoreInput(Lean.Touch.LeanFinger finger)
@@ -71,17 +72,22 @@ namespace Creator
     
         private void OnInputDown(Lean.Touch.LeanFinger finger)
         {
-            if (this.IgnoreInput(finger)) return;
+            //if (this.IgnoreInput(finger)) return;
 
-            //if double click delete
-            if (this.SelectionSystem.DoubleClick())
+            if (this.RightFilter.GetFingers().Contains(finger))
             {
                 this.PuzzleEditor.RotateItem();
             }
-            else if (!this.SelectionSystem.Dragging && this.SelectionSystem.SomethingSelected())
-            {
-                this.SelectionSystem.PrepareDrag();
-            }
+
+            //if double click delete
+            //if (Input.GetKeyDown(KeyCode.Mouse1))
+            ////if (this.SelectionSystem.DoubleClick())
+            //{
+            //}
+            //else if (!this.SelectionSystem.Dragging && this.SelectionSystem.SomethingSelected())
+            //{
+            //    this.SelectionSystem.PrepareDrag();
+            //}
 
         }
 
@@ -113,6 +119,11 @@ namespace Creator
             //{
             //    this.SelectionSystem.PrepareDrag();
             //}
+            if (!this.SelectionSystem.Dragging && this.SelectionSystem.SomethingSelected())
+            {
+                this.SelectionSystem.PrepareDrag();
+            }
+
         }
 
         #endregion
