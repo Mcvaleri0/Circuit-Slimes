@@ -17,7 +17,7 @@ namespace Puzzle
         public int Amount { get; private set; }
 
         private List<Text> Texts { get; set; }
-        private Draggable Draggable { get; set; }
+        private List<Draggable> Draggables { get; set; }
         private bool CanEdit { get; set; }
 
         #endregion
@@ -31,6 +31,7 @@ namespace Puzzle
             this.Name = prefab;
             this.Amount = 0;
             this.Texts  = new List<Text>();
+            this.Draggables = new List<Draggable>();
         }
         
         
@@ -39,6 +40,7 @@ namespace Puzzle
             this.Name = prefab;
             this.Amount = amount;
             this.Texts = new List<Text>();
+            this.Draggables = new List<Draggable>();
         }
 
         #endregion
@@ -48,9 +50,13 @@ namespace Puzzle
 
         public void DefineUI(Text text, Draggable draggable, bool canEdit)
         {
-            this.Texts.Add(text);
-            this.Draggable = draggable;
             this.CanEdit = canEdit;
+            this.Texts.Add(text);
+            
+            if (draggable != null)
+            {
+                this.Draggables.Add(draggable);
+            }
 
             this.UpdateUI();
         }
@@ -62,10 +68,12 @@ namespace Puzzle
             {
                 text.text = this.Amount.ToString();
             }
-            
-            if (this.Draggable != null)
+
+
+            bool enabled = (this.CanEdit || this.Available());
+            foreach (Draggable drag in this.Draggables)
             {
-                this.Draggable.enabled = (this.CanEdit || this.Available());
+                drag.enabled = enabled;
             }
         }
 

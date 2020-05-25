@@ -18,6 +18,7 @@ namespace Creator.Editor
 
         private CreatorController Controller { get; set; }
         public SelectionSystem Selection { get; set; }
+        public Mode.Mode Mode { get; set; }
 
         #endregion
 
@@ -60,7 +61,7 @@ namespace Creator.Editor
         {
             Object prefab = UnityEngine.Resources.Load(FileHelper.OPTION_PATH);
 
-            GameObject item = Option.CreateOption(this, null, prefab, this.Controller.transform.Find("Canvas"), "", true);
+            GameObject item = Option.CreateOption(this, null, prefab, this.Controller.transform.Find("Canvas"), "", false);
             item.name = "MovingItem";
 
             Transform resource = item.transform.Find("Resource");
@@ -264,7 +265,7 @@ namespace Creator.Editor
         {
             Option.InitiliazeSprite(this.MovingSprite, selected.name);
             this.MovigStartPos = this.Puzzle.Discretize(selected.position);
-            this.MovingOption.Initialize(this, selected.name, this.MovingText, this.MovingDrag, true);
+            this.MovingOption.Initialize(this, selected.name, this.MovingText, this.MovingDrag, this.Mode.AbleToEditOptions());
             this.MovingDrag.InitializeDrag();
         }
 

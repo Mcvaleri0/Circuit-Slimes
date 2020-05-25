@@ -227,7 +227,6 @@ namespace Creator.Selection
 
         public void EndDrag()
         {
-
             //if (this.Selected != null)
             if (this.Selected.Equals(null))
             {
@@ -254,7 +253,6 @@ namespace Creator.Selection
                 this.Editor.PlaceMovingItem();
             }
             this.Dragging = false;
-
         }
 
         #endregion

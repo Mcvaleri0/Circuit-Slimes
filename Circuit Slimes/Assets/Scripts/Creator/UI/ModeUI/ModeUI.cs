@@ -110,7 +110,10 @@ namespace Creator.UI.ModeUI
 
         public abstract List<string> MenuOptions();
 
-        public abstract bool AbleToEditOptions();
+        public bool AbleToEditOptions()
+        {
+            return this.Mode.AbleToEditOptions();
+        }
 
         #endregion
     }

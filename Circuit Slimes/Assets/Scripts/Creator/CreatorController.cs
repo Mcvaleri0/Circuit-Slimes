@@ -161,7 +161,7 @@ namespace Creator
             this.InitializePuzzleInfo(puzzle);
 
             this.InitializeSelectionSystem();
-
+            
             this.InitializePlayerCreatorMode(creator);
 
             this.InitializeUI();
@@ -173,7 +173,7 @@ namespace Creator
             this.PuzzleEditor.UpdatePuzzle(puzzle);
 
             this.SelectionSystem.UpdateInfo();
-
+            
             this.InitializePlayerCreatorMode(this.Creator);
 
             this.UIController.UpdateUI();
@@ -222,6 +222,8 @@ namespace Creator
             {
                 this.Mode = new Player(this.SelectionSystem);
             }
+
+            this.PuzzleEditor.Mode = this.Mode;
 
             this.Mode.DefineSelectableList();
         }
