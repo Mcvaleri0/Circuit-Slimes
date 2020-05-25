@@ -50,6 +50,42 @@
                 6,
                 6
             ]
+        },
+        {
+            "PrefabName": "SquareChip",
+            "Coords": [
+                {
+                    "x": 1,
+                    "y": 0
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "WaterCandy",
+            "Coords": [
+                {
+                    "x": 5,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 4,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                6
+            ]
         }
     ],
     "Tiles": [
