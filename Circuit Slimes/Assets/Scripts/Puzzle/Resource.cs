@@ -17,7 +17,7 @@ namespace Puzzle
         public int Amount { get; private set; }
 
         private List<Text> Texts { get; set; }
-        private List<Draggable> Draggables { get; set; }
+        public List<Draggable> Draggables { get; private set; }
         private bool CanEdit { get; set; }
 
         #endregion

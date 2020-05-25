@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 using Level;
 using Creator.Editor;
-
-
+using Puzzle;
 
 namespace Creator.UI.Drawer
 {
@@ -161,6 +160,11 @@ namespace Creator.UI.Drawer
                     this.QuickItems.Dequeue();
                     
                     GameObject objToDestroy = this.QuickObjs.Dequeue();
+
+                    Resource resource = this.Editor.GetResource(objToDestroy.name);
+                    Draggable draggable = objToDestroy.GetComponentInChildren<Draggable>();
+                    resource.Draggables.Remove(draggable);
+
                     GameObject.Destroy(objToDestroy);
                 }
 
