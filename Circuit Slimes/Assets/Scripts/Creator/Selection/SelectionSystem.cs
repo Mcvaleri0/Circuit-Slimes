@@ -78,6 +78,17 @@ namespace Creator.Selection
         }
 
 
+        private Transform updateSelection()
+        {
+            Transform Current = this.Manager.GetCurrentSelection();
+
+            this.Piece = Current.GetComponentInChildren<Piece>();
+            this.Tile = Current.GetComponentInChildren<Tile>();
+            
+            return Current;
+        }
+
+
         public bool PieceSelected()
         {
             return this.Piece != null;
@@ -92,7 +103,7 @@ namespace Creator.Selection
 
         public bool SomethingSelected()
         {
-            return this.Manager.GetCurrentSelection() != null;
+            return this.updateSelection() != null;
         }
 
 
@@ -143,7 +154,7 @@ namespace Creator.Selection
 
         public GameObject GameObjectSelected() 
         {
-            return this.Manager.GetCurrentSelection().gameObject;
+            return this.updateSelection().gameObject;
         }
 
 
@@ -168,11 +179,11 @@ namespace Creator.Selection
             {
                 this.TimeFirstClick = Time.time;
                 this.SingleClick = true;
-                this.LastClicked = this.Manager.GetCurrentSelection();
+                this.LastClicked = this.updateSelection();
             }
             else
             {
-                Transform clicked = this.Manager.GetCurrentSelection();
+                Transform clicked = this.updateSelection();
                 if (((Time.time - this.TimeFirstClick) > DOUBLE_CLICK_WINDOW) ||
                     (this.LastClicked != clicked))
                 {
@@ -197,7 +208,7 @@ namespace Creator.Selection
 
         public void PrepareDrag()
         {
-            this.Selected = this.Manager.GetCurrentSelection();
+            this.Selected = this.updateSelection();
 
             if (this.Selected != null)
             {

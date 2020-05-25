@@ -248,9 +248,12 @@ namespace Creator.Editor
 
         public void RotateItem()
         {
-            if (this.Selection.SomethingSelected() && this.Selection.PieceSelected())
+            if (this.Selection.SomethingSelected())
             {
-                this.Puzzle.RotatePieceRight(this.Selection.Piece);
+                if (this.Selection.PieceSelected())
+                {
+                    this.Puzzle.RotatePieceRight(this.Selection.Piece);
+                }
             }
         }
 
