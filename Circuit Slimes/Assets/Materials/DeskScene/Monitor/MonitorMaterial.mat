@@ -81,13 +81,13 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimOffset: -0.45
-    - _RimPower: 0.32
+    - _RimPower: 1.11
     - _ShadowOffset: 1.23
     - _ShadowScale: 1.16
     - _SmoothnessTextureChannel: 0
-    - _SpecularGloss: 0.81
+    - _SpecularGloss: 0.1
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 0.21
+    - _SpecularIntensity: 0.03
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
