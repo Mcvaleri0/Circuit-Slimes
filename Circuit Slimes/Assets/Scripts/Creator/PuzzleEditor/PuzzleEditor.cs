@@ -69,6 +69,7 @@ namespace Creator.Editor
             this.MovingOption = item.GetComponent<Option>();
             this.MovingDrag = this.MovingSprite.GetComponent<Draggable>();
             this.MovingText = resource.Find("Amount").GetComponent<Text>();
+            this.direction = LevelBoard.Directions.South;
         }
 
         #endregion
