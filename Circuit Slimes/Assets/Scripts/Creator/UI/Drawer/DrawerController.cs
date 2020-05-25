@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 using Level;
 using Creator.Editor;
-
-
+using Puzzle;
 
 namespace Creator.UI.Drawer
 {
@@ -87,19 +86,10 @@ namespace Creator.UI.Drawer
         
         private void Populate(List<string> options)
         {
-            if (options.Count <= QUICK_MAX)
+            foreach (string opt in options)
             {
-                this.PopulateQuickSelection(options);
-                this.OpenButton.SetActive(false);
-            }
-            else
-            {
-                foreach (string opt in options)
-                {
-                    Option.CreateOption(this.Editor, this, this.OptionPrefab, this.Inside, opt, this.Mode.AbleToEditOptions());
-                }
-
-                this.OpenButton.SetActive(true);
+                Option.CreateOption(this.Editor, this, this.OptionPrefab, this.Inside, opt, this.Mode.AbleToEditOptions());
+                this.AddToQuick(opt);
             }
         }
 
@@ -170,6 +160,11 @@ namespace Creator.UI.Drawer
                     this.QuickItems.Dequeue();
                     
                     GameObject objToDestroy = this.QuickObjs.Dequeue();
+
+                    Resource resource = this.Editor.GetResource(objToDestroy.name);
+                    Draggable draggable = objToDestroy.GetComponentInChildren<Draggable>();
+                    resource.Draggables.Remove(draggable);
+
                     GameObject.Destroy(objToDestroy);
                 }
 

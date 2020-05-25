@@ -1,4 +1,4 @@
-﻿using Puzzle.Data;
+using Puzzle.Data;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -6,8 +6,9 @@ using UnityEngine;
 
 using Puzzle.Pieces;
 using Game;
-
-
+using Puzzle.Tiles;
+using Puzzle.Pieces.Slimes;
+using Puzzle.Pieces.Components;
 
 namespace Puzzle
 {
@@ -56,6 +57,16 @@ namespace Puzzle
         #endregion
 
 
+        #region /* AASMA Analytics */
+        public bool AASMAMetrics = false;
+
+        private List<int> ReachedTilesPerTurn;
+
+        private List<SolderTile> Unreached;
+
+        private int TileCount;
+        #endregion
+
 
         #region === Init / Update Puzzle Info ===
 
@@ -67,6 +78,8 @@ namespace Puzzle
 
             this.Puzzle = puzzle;
             this.WinCondition = this.Puzzle.WinCondition;
+
+            if(this.AASMAMetrics) this.InitAASMAMetrics();
         }
 
 
@@ -77,9 +90,32 @@ namespace Puzzle
             this.Puzzle = puzzle;
             this.WinCondition = this.Puzzle.WinCondition;
 
+            this.Turn = 0;
+            this.StoppedAgents = 0;
+
+            if (this.AASMAMetrics)  this.InitAASMAMetrics();
+
             this.Restart();
         }
 
+
+        private void InitAASMAMetrics()
+        {
+            this.ReachedTilesPerTurn = new List<int>();
+
+            this.Unreached = new List<SolderTile>();
+
+            foreach (var tile in this.Puzzle.Tiles)
+            {
+                if (tile is SolderTile tl &&
+                   !(this.Puzzle.GetPiece(tl.Coords) is CircuitComponent))
+                {
+                    this.Unreached.Add(tl);
+                }
+            }
+
+            this.TileCount = this.Unreached.Count;
+        }
         #endregion
 
 
@@ -94,6 +130,15 @@ namespace Puzzle
         // Update is called once per frame
         void Update()
         {
+            if (this.AASMAMetrics && Input.GetKeyUp(KeyCode.Backspace))
+            {
+                this.CalculateExplorationRate();
+
+                var explored = 1 - (float) this.Unreached.Count / (float) this.TileCount;
+
+                Debug.Log("Explored: " + explored);
+            }
+
             switch(this.State)
             {
                 default:
@@ -212,6 +257,8 @@ namespace Puzzle
                         if (agent.State != Agent.States.Waiting) return;
                     }
 
+                    if(this.AASMAMetrics) this.CalculateReachedTiles();
+
                     this.Turn++;
 
                     this.State = RunState.Idle;
@@ -223,6 +270,9 @@ namespace Puzzle
                     if (this.RewindAgents())
                     {
                         this.State = RunState.Idle;
+
+                        if (this.AASMAMetrics) this.ReachedTilesPerTurn.RemoveAt(this.Turn - 1);
+
                         this.Turn--;
 
                         if (this.Turn == 0)
@@ -304,5 +354,44 @@ namespace Puzzle
 
         #endregion
 
+
+        #region === AASMA Analytics ===
+        private void CalculateReachedTiles()
+        {
+            var count = 0;
+
+            var nextUnreached = new List<SolderTile>();
+
+            foreach(var tile in this.Unreached)
+            {
+                var piece = this.Puzzle.GetPiece(tile.Coords);
+
+                if (piece is ElectricSlime)
+                {
+                    count++;
+                }
+                else
+                {
+                    nextUnreached.Add(tile);
+                }
+            }
+
+            this.Unreached = nextUnreached;
+
+            this.ReachedTilesPerTurn.Add(count);
+        }
+
+        private void CalculateExplorationRate()
+        {
+            float sum = 0;
+
+            foreach(var val in this.ReachedTilesPerTurn)
+            {
+                sum += val;
+            }
+
+            Debug.Log("Exploration rate: " + (sum / (float) this.Turn));
+        }
+        #endregion
     }
 }

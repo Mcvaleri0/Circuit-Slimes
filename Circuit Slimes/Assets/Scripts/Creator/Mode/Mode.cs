@@ -32,6 +32,8 @@ namespace Creator.Mode
 
         public abstract void DefineSelectableList();
 
+        public abstract bool AbleToEditOptions();
+
         #endregion
     }
 }

@@ -60,28 +60,42 @@ namespace Creator.UI.Drawer
 
         #region === Drag Methods ===
 
-        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+        public void InitializeDrag()
         {
             this.StartPosition = this.transform.localPosition;
             this.Dragging = true;
 
-            this.Controller.AddToQuick(this.Option.Name());
-            this.Controller.Close();
+            if (this.Controller != null)
+            {
+                this.Controller.AddToQuick(this.Option.Name());
+                this.Controller.Close();
+            }
         }
 
 
-        void IDragHandler.OnDrag(PointerEventData eventData)
-        {
-            //this.transform.position = Input.mousePosition;
-        }
-
-
-        void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+        public void EndDrag()
         {
             this.transform.localPosition = this.StartPosition;
             this.Dragging = false;
 
             this.Option.PlaceItem();
+        }
+
+
+        void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
+        {
+            this.InitializeDrag();
+        }
+
+
+        void IDragHandler.OnDrag(PointerEventData eventData)
+        {
+        }
+
+
+        void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+        {
+            this.EndDrag();
         }
 
         #endregion
