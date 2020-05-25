@@ -82,9 +82,12 @@ namespace Creator.Selection
         {
             Transform Current = this.Manager.GetCurrentSelection();
 
-            this.Piece = Current.GetComponentInChildren<Piece>();
-            this.Tile = Current.GetComponentInChildren<Tile>();
-            
+            if (Current != null)
+            {
+                this.Piece = Current.GetComponentInChildren<Piece>();
+                this.Tile = Current.GetComponentInChildren<Tile>();
+            }
+
             return Current;
         }
 
