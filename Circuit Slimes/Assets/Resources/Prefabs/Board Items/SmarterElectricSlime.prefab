@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Turn: 0
   State: 0
-  DeadEnds: 1
+  DeadEnds: 0
   PathBlocked: 0
 --- !u!1001 &2029777349487552471
 PrefabInstance:

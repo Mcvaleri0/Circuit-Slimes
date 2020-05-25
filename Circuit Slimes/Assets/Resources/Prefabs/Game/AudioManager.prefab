@@ -274,3 +274,13 @@ MonoBehaviour:
     mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
       type: 2}
     source: {fileID: 0}
+  - name: DrawerSwoosh
+    clip: {fileID: 8300000, guid: 59461993ce5c00048b081a9877ab891d, type: 3}
+    volume: 0.6
+    volumeVariance: 0.2
+    pitch: 1
+    pitchVariance: 0.4
+    loop: 0
+    mixerGroup: {fileID: -2383735526609613324, guid: 5061f80bd3bffa54499a54ca4b7b6f3c,
+      type: 2}
+    source: {fileID: 0}

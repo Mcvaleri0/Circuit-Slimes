@@ -52,6 +52,8 @@ namespace Creator.UI.Drawer
 
         #endregion
 
+        /* audio */
+        private AudioManager AudioManager;
 
 
         #region === Init Methods ===
@@ -78,6 +80,8 @@ namespace Creator.UI.Drawer
             this.Animator = drawer.GetComponent<Animator>();
 
             this.Populate(options);
+
+            this.AudioManager = FindObjectOfType<AudioManager>();
         }
 
         #endregion
@@ -124,7 +128,14 @@ namespace Creator.UI.Drawer
 
 
         #region === Drawer Animation Methods ===
-        
+
+        public void SwooshSound()
+        {
+            this.AudioManager.Play("DrawerSwoosh");
+            AudioManager.PlayRandom("ButtonClick1", "ButtonClick2", "ButtonClick3");
+        }
+
+
         public void Close()
         {
             if (this.DrawerOpen)
