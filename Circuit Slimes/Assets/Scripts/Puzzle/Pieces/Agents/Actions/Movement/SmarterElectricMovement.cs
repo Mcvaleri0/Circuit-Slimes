@@ -9,30 +9,36 @@ using System.CodeDom;
 
 namespace Puzzle.Actions
 {
-    public class SmarterElectricMovement : SmartElectricMovement
+    public class SmarterElectricMovement : Move
     {
+        protected bool Crossing = false;
+
+        protected Vector2Int OrigCoords;
+
+        protected bool RegisteredConnection = false;
+
         public SmarterElectricMovement() : base() { }
 
         public SmarterElectricMovement(LevelBoard.Directions dir, Vector2Int coords, bool crossing) :
-            base(dir, coords, crossing) { }
+            base(dir, coords) { this.Crossing = crossing; }
 
 
         #region Action Methods
-        override public Action Available(Agent agent)
+        public override Action Available(Agent agent)
         {
-            var adjacents = CheckAdjacentSolderTiles(agent);
+            var adjacents = this.CheckAdjacentSolderTiles(agent);
 
             #region Crossing Attributes
             var crossing = false;
 
             Dictionary<LevelBoard.Directions, int> utilities = null;
 
+            var slime = (SmarterElectricSlime)agent;
+
             // If this is a Crossing
-            if(adjacents.Count > 2)
+            if (adjacents.Count > 2)
             {
                 crossing = true;
-
-                var slime = (SmarterElectricSlime) agent;
 
                 slime.UpdateCrossing(slime.Coords, new List<LevelBoard.Directions>(adjacents.Keys));
 
@@ -42,7 +48,7 @@ namespace Puzzle.Actions
 
             var start = ((int)(agent.Orientation)) / 2;
 
-            var maxUtility = int.MinValue;
+            var maxUtility = float.MinValue;
             var bestChoice = LevelBoard.Directions.None;
             var isMove     = true;
 
@@ -55,15 +61,25 @@ namespace Puzzle.Actions
                 // If there is an adjacent Solder Tile
                 if(adjacents.TryGetValue(dir, out var piece))
                 {
-                    var utility = 1;
+                    var utility = (4 - i) * 0.25f;
+
+                    // If this is a Crossing get the Directions utility
+                    if (crossing && utilities.ContainsKey(dir)) utility += utilities[dir];
+
+                    if (dir == LevelBoard.InvertDirection(agent.Orientation))
+                    {
+                        if (utility > 0) utility *= 0.5f;
+                        else             utility *= 2f;
+                    }
 
                     // If there's a Piece that is not a Component
                     // Or a Component that is at capacity, check the next Direction
                     if ((piece != null && !(piece is CircuitComponent)) ||
-                        (piece is CircuitComponent component && component.Stats.Food >= component.Stats.MaxFood)) continue;
-
-                    // If this is a Crossing get the Directions utility
-                    if (crossing && utilities.ContainsKey(dir)) utility += utilities[dir];
+                        (piece is CircuitComponent component && component.Stats.Food >= component.Stats.MaxFood))
+                    {
+                        if(utility > maxUtility) slime.PathBlocked = true;
+                        continue;
+                    }
 
                     // If the utility is better going this way
                     if(utility > maxUtility)
@@ -95,7 +111,7 @@ namespace Puzzle.Actions
                 // If there still is a Solder Tile at that Space
                 if (tile != null && tile.Type == Tile.Types.Solder)
                 {
-                    var origCoords = slime.Coords;
+                    this.OrigCoords = slime.Coords;
 
                     // If the Slime can still Move there
                     if (base.Confirm(slime))
@@ -103,22 +119,15 @@ namespace Puzzle.Actions
                         // If it's departing a Crossing
                         if (this.Crossing)
                         {
-                            // Calculate direction from which the Slime came
-                            var invDir = LevelBoard.InvertDirection(this.OrigOrientation);
-
-                            slime.RegisterExploredPath(origCoords, invDir);         // Register it as explored
-                            slime.RegisterExploredPath(origCoords, this.Direction); // Register the chosen direction as explored
-
-                            // If another Crossing had been visited, register the connection
-                            if(slime.CrossingLog.Count > 0) this.RegisterConnectedCrossings(slime, origCoords);
-
-                            // Save this as the last departed Crossing
-                            var pair = new KeyValuePair<Vector2Int, LevelBoard.Directions>(origCoords, this.Direction);
-                            slime.CrossingLog.Push(pair);
+                            this.RegisteredConnection = slime.CommunicateInfo(this.OrigCoords, this.OrigOrientation, this.Direction);
                         }
 
                         return true;
                     }
+                }
+                else
+                {
+                    slime.PathBlocked = true;
                 }
             }
 
@@ -131,18 +140,7 @@ namespace Puzzle.Actions
             {
                 if (this.Crossing)
                 {
-                    // Unregister this Crossing from the Agent's visited
-                    slime.CrossingLog.Pop();
-
-                    // If the Slime has visited another Crossing before
-                    if (slime.CrossingLog.Count > 0) this.UnregisterConnectedCrossings(slime, this.OrigCoords);
-
-                    // Calculate direction from which the Slime originally came from
-                    var invDir = LevelBoard.InvertDirection(this.OrigOrientation);
-
-                    // Unregister explorations
-                    slime.UnregisterExploredPath(this.OrigCoords, invDir);
-                    slime.UnregisterExploredPath(this.OrigCoords, this.Direction);
+                    slime.RollBackInfo(this.OrigCoords, this.OrigOrientation, this.Direction, this.RegisteredConnection);
                 }                
             }
 
@@ -151,29 +149,35 @@ namespace Puzzle.Actions
         }
         #endregion
 
+
         #region AUX Methods
-        public void RegisterConnectedCrossings(SmarterElectricSlime smarter, Vector2Int crossingCoords)
+        protected Dictionary<LevelBoard.Directions, Piece> CheckAdjacentSolderTiles(Agent agent)
         {
-            var last = smarter.CrossingLog.Peek(); // Get last visited Crossing
+            Dictionary<LevelBoard.Directions, Piece> adjacents = new Dictionary<LevelBoard.Directions, Piece>();
 
-            // If the last visited Crossing is not the present Crossing
-            if (last.Key != crossingCoords)
+            // For each cardinal direction
+            for (var i = 0; i < 4; i++)
             {
-                // Register the connection of the Crossings
-                smarter.RegisterCrossingConnection(last.Key, last.Value, crossingCoords);
-            }
-        }
+                var dir = (LevelBoard.Directions)(i * 2); // Create Direction
 
-        public void UnregisterConnectedCrossings(SmarterElectricSlime smarter, Vector2Int crossingCoords)
-        {
-            var last = smarter.CrossingLog.Peek(); // Get last visited Crossing
+                // Get coordinates of adjacent Space in that Direction
+                var coords = LevelBoard.GetAdjacentCoords(agent.Coords, dir);
 
-            // If the last visited Crossing is not the present Crossing
-            if (last.Key != crossingCoords)
-            {
-                // Add this Crossing as the last one's child
-                smarter.UnregisterCrossingConnection(last.Key, last.Value, crossingCoords);
+                // Get Tile at that Space
+                var tile = agent.TileAt(coords);
+
+                // If there's a Solder Tile there
+                if (tile != null && tile.Type == Tile.Types.Solder)
+                {
+                    // Get Piece at that Space
+                    var piece = agent.PieceAt(coords);
+
+                    // Add adjacency
+                    adjacents.Add(dir, piece);
+                }
             }
+
+            return adjacents;
         }
         #endregion
     }

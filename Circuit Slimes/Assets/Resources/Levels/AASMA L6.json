@@ -67,23 +67,6 @@
             "Orientations": [
                 6
             ]
-        },
-        {
-            "PrefabName": "Smart9VBattery",
-            "Coords": [
-                {
-                    "x": 0,
-                    "y": 0
-                },
-                {
-                    "x": 1,
-                    "y": 0
-                }
-            ],
-            "Orientations": [
-                6,
-                6
-            ]
         }
     ],
     "Tiles": [
@@ -237,6 +220,19 @@
             ]
         }
     ],
-    "ResourcesAvailable": [],
+    "ResourcesAvailable": [
+        {
+            "Name": "9VBattery",
+            "Amount": 2
+        },
+        {
+            "Name": "Smart9VBattery",
+            "Amount": 2
+        },
+        {
+            "Name": "Smarter9VBattery",
+            "Amount": 2
+        }
+    ],
     "Condition": 0
 }

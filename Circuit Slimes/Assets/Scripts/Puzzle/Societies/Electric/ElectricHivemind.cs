@@ -50,7 +50,8 @@ namespace Puzzle {
         {
             bool _new;
 
-            if (!this.Crossings.ContainsKey(crossingCoords)) this.Crossings.Add(crossingCoords, new Crossing(available)); _new = true;
+            if (!this.Crossings.ContainsKey(crossingCoords))
+                this.Crossings.Add(crossingCoords, new Crossing(crossingCoords, available)); _new = true;
 
             var crossing = this.Crossings[crossingCoords];
 
@@ -67,8 +68,41 @@ namespace Puzzle {
 
             crossing.MarkExplored(exploredPath);
 
-            Debug.Log("Register Explored - " + crossingCoords + " -> " + exploredPath);
-            Debug.Log(crossing.AvailableToString());
+            /*Debug.Log("Register Explored - " + crossingCoords + " -> " + exploredPath);
+
+            var utilities = crossing.GetUtilities();
+
+            var utils = "{";
+
+            foreach (var pair in utilities)
+            {
+                utils += " (" + pair.Key + ", " + pair.Value + ")";
+            }
+
+            Debug.Log(crossingCoords + " Utils: " + utils);*/
+        }
+
+        public void RegisterDeadEnd(Vector2Int crossingCoords, LevelBoard.Directions deadEnd)
+        {
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
+
+            // Should never happen
+            if (crossing == null) return;
+
+            crossing.MarkDeadEnd(deadEnd);
+
+            /*Debug.Log("Register Dead End - " + crossingCoords + " -> " + deadEnd);
+
+            var utilities = crossing.GetUtilities();
+
+            var utils = "{";
+
+            foreach (var pair in utilities)
+            {
+                utils += " (" + pair.Key + ", " + pair.Value + ")";
+            }
+
+            Debug.Log(crossingCoords + " Utils: " + utils);*/
         }
 
         public void UnregisterExplored(Vector2Int crossingCoords, LevelBoard.Directions exploredPath)
@@ -80,8 +114,41 @@ namespace Puzzle {
 
             crossing.UnmarkExplored(exploredPath);
 
-            Debug.Log("Unregister Explored - " + crossingCoords + " -> " + exploredPath);
-            Debug.Log(crossing.AvailableToString());
+            /*Debug.Log("Unregister Explored - " + crossingCoords + " -> " + exploredPath);
+
+            var utilities = crossing.GetUtilities();
+
+            var utils = "{";
+
+            foreach (var pair in utilities)
+            {
+                utils += " (" + pair.Key + ", " + pair.Value + ")";
+            }
+
+            Debug.Log(crossingCoords + " Utils: " + utils);*/
+        }
+
+        public void UnregisterDeadEnd(Vector2Int crossingCoords, LevelBoard.Directions deadEnd)
+        {
+            this.Crossings.TryGetValue(crossingCoords, out var crossing);
+
+            // Should never happen
+            if (crossing == null) return;
+
+            crossing.UnmarkDeadEnd(deadEnd);
+
+            /*Debug.Log("Unregister Dead End - " + crossingCoords + " -> " + deadEnd);
+
+            var utilities = crossing.GetUtilities();
+
+            var utils = "{";
+
+            foreach (var pair in utilities)
+            {
+                utils += " (" + pair.Key + ", " + pair.Value + ")";
+            }
+
+            Debug.Log(crossingCoords + " Utils: " + utils);*/
         }
 
 
@@ -100,27 +167,56 @@ namespace Puzzle {
 
             if (crossing == null) return null;
 
-            return crossing.GetUtilities();
+            var utilities = crossing.GetUtilities();
+            /*
+            var utils = "{";
+
+            foreach(var pair in utilities)
+            {
+                utils += " (" + pair.Key + ", " + pair.Value + ")";
+            }
+
+            Debug.Log(crossingCoords + " Utils: " + utils);*/
+
+            return utilities;
         }
 
 
-        public void AddCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dir, Vector2Int endCoords)
+        public bool AddCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dirOut,
+            Vector2Int endCoords, LevelBoard.Directions dirIn)
         {
             if(this.Crossings.TryGetValue(startCoords, out var start) &&
                this.Crossings.TryGetValue(endCoords, out var end))
             {
-                start.AddConnection(dir, end);
-                end.AddConnection(LevelBoard.InvertDirection(dir), start);
+                var first  = start.AddConnection(dirOut, end);
+
+                var invDir = LevelBoard.InvertDirection(dirIn);
+
+                var second = end.AddConnection(invDir, start);
+
+                //if(first)  Debug.Log("Added connection between " + startCoords + " through " + dirOut + " to " + endCoords);
+                //if(second) Debug.Log("Added connection between " + endCoords   + " through " + invDir + " to " + startCoords);
+
+                return first || second;                
             }
+
+            return false;
         }
 
-        public void RemoveCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dir, Vector2Int endCoords)
+        public void RemoveCrossingConnection(Vector2Int startCoords, LevelBoard.Directions dirOut,
+            Vector2Int endCoords, LevelBoard.Directions dirIn)
         {
             if (this.Crossings.TryGetValue(startCoords, out var start) &&
                this.Crossings.TryGetValue(endCoords, out var end))
             {
-                start.RemoveConnection(dir);
-                end.RemoveConnection(LevelBoard.InvertDirection(dir));
+                start.RemoveConnection(dirOut);
+
+                var invDir = LevelBoard.InvertDirection(dirIn);
+
+                end.RemoveConnection(invDir);
+
+                Debug.Log("Removed connection between " + startCoords + " through " + dirOut + " to " + endCoords);
+                Debug.Log("Removed connection between " + endCoords   + " through " + invDir + " to " + startCoords);
             }
         }
         #endregion
