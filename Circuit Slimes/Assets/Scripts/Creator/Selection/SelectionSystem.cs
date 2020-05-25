@@ -201,52 +201,58 @@ namespace Creator.Selection
 
             if (this.Selected != null)
             {
+                //this.Dragging = true;
+                //this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
+
+                //this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+
+                //// one of them is always null
+                //this.Piece = this.Selected.GetComponent<Piece>();
+                //this.Tile = this.Selected.GetComponent<Tile>();
+
+                ////reset and disable tile temporarily (visual) 
+                //if (this.TileSelected())
+                //{
+                //    this.Tile.enabled = false;
+                //}
+
                 this.Dragging = true;
-                this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
-                Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, PosInScreenSpace.z);
-                this.Offset = this.Selected.position - Camera.main.ScreenToWorldPoint(newPosition);
+                this.Editor.RemoveItemSelected();
 
-                // one of them is always null
-                this.Piece = this.Selected.GetComponent<Piece>();
-                this.Tile = this.Selected.GetComponent<Tile>();
-
-                //reset and disable tile temporarily (visual) 
-                if (this.TileSelected())
-                {
-                    this.Tile.enabled = false;
-                }
-
+                this.Editor.InitializeMovingItem(this.Selected);
             }
         }
 
 
         public void EndDrag()
         {
-            this.Dragging = false;
-
-            if (this.Selected != null)
+            //if (this.Selected != null)
+            if (this.Selected.Equals(null))
             {
-                Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
+                //Vector2Int newPos = this.Editor.Discretize(this.Selected.position);
 
-                // submits new item's position
-                if (this.PieceSelected())
-                {
-                    this.Editor.MovePiece(newPos, this.Piece);
-                }
-                else
-                {
-                    this.Editor.MoveTile(newPos, this.Tile);
+                //// submits new item's position
+                //if (this.PieceSelected())
+                //{
+                //    this.Editor.MovePiece(newPos, this.Piece);
+                //}
+                //else
+                //{
+                //    this.Editor.MoveTile(newPos, this.Tile);
 
-                    //re-enable tile  (visual)
-                    this.Tile.enabled = true;
-                }
+                //    //re-enable tile  (visual)
+                //    this.Tile.enabled = true;
+                //}
 
-                if (!this.BoardHover())
-                {
-                    this.Editor.RemoveItemSelected();
-                }
+                //if (!this.BoardHover())
+                //{
+                //    this.Editor.RemoveItemSelected();
+                //}
+
+                this.Editor.PlaceMovingItem();
             }
+            this.Dragging = false;
         }
 
         #endregion

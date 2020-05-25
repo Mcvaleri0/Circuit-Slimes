@@ -39,12 +39,6 @@ namespace Creator.UI.ModeUI
             return this.Editor.Resources();
         }
 
-
-        public override bool AbleToEditOptions()
-        {
-            return false;
-        }
-
         #endregion
 
     }

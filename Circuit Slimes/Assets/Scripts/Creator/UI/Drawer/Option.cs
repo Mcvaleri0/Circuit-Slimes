@@ -70,20 +70,23 @@ namespace Creator.UI.Drawer
         }
 
 
-        private static void InitiliazeSprite(Transform sprite, string name)
+        public static void InitiliazeSprite(Transform sprite, string name)
         {
             string spritePath = Path.Combine(FileHelper.ITEMS_SPRITES_PATH, name);
             sprite.GetComponent<Image>().sprite = Resources.Load<Sprite>(spritePath);
         }
 
 
-        private void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable, bool ableToEdit)
+        public void Initialize(PuzzleEditor editor, string item, Text text, Draggable draggable, bool ableToEdit)
         {
             this.Editor = editor;
             this.CanEdit = ableToEdit;
 
             this.Resource = this.Editor.GetResource(item);
-            this.Resource.DefineUI(text, draggable, ableToEdit);
+            if (this.Resource != null)
+            {
+                this.Resource.DefineUI(text, draggable, ableToEdit);
+            }
         }
 
         #endregion

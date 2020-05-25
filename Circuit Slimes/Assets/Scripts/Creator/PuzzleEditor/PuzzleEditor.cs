@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Level;
 using Puzzle;
+using Creator.UI.Drawer;
 using Creator.Selection;
 
 
@@ -14,7 +16,9 @@ namespace Creator.Editor
     {
         #region /* Creator Sub-Components */
 
+        private CreatorController Controller { get; set; }
         public SelectionSystem Selection { get; set; }
+        public Mode.Mode Mode { get; set; }
 
         #endregion
 
@@ -23,7 +27,19 @@ namespace Creator.Editor
 
         public Puzzle.Puzzle Puzzle { get; private set; }
 
-        List<Transform> ItemsPlaced { get; set; }
+        private List<Transform> ItemsPlaced { get; set; }
+
+        #endregion
+
+
+        #region /* Moving Item Attributes */
+
+        private Transform MovingSprite { get; set; }
+        private Vector2Int MovigStartPos { get; set; }
+        
+        private Option MovingOption { get; set; }
+        private Draggable MovingDrag { get; set; }
+        private Text MovingText { get; set; }
 
         #endregion
 
@@ -31,10 +47,28 @@ namespace Creator.Editor
 
         #region === Init Methods ===
 
-        public PuzzleEditor(Puzzle.Puzzle puzzle)
+        public PuzzleEditor(CreatorController Controller, Puzzle.Puzzle puzzle)
         {
+            this.Controller = Controller;
             this.Puzzle = puzzle;
             this.ItemsPlaced = new List<Transform>();
+
+            this.InitializeMovingItem();
+        }
+
+
+        private void InitializeMovingItem()
+        {
+            Object prefab = UnityEngine.Resources.Load(FileHelper.OPTION_PATH);
+
+            GameObject item = Option.CreateOption(this, null, prefab, this.Controller.transform.Find("Canvas"), "", false);
+            item.name = "MovingItem";
+
+            Transform resource = item.transform.Find("Resource");
+            this.MovingSprite = resource.Find("Sprite");
+            this.MovingOption = item.GetComponent<Option>();
+            this.MovingDrag = this.MovingSprite.GetComponent<Draggable>();
+            this.MovingText = resource.Find("Amount").GetComponent<Text>();
         }
 
         #endregion
@@ -64,29 +98,44 @@ namespace Creator.Editor
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (resource.isTile())
+                if (!this.PlaceResource(resource, coords) && this.Selection.Dragging)
                 {
-                    Tile res = this.Puzzle.CreateTile(Tile.GetType(resource.Name), coords);
-                    
-                    if (res != null)
-                    {
-                        this.Selection.AddItemToWhiteList(res.transform);
-                        this.ItemsPlaced.Add(res.transform);
-                        resource.Decrease();
-                    }
-                }
-                else
-                {
-                    Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
-
-                    if (res != null)
-                    {
-                        this.Selection.AddItemToWhiteList(res.transform);
-                        this.ItemsPlaced.Add(res.transform);
-                        resource.Decrease();
-                    }
+                    this.PlaceResource(resource, this.MovigStartPos);
                 }
             }
+        }
+
+
+        private bool PlaceResource(Resource resource, Vector2Int coords)
+        {
+            if (resource.isTile())
+            {
+                Tile res = this.Puzzle.CreateTile(Tile.GetType(resource.Name), coords);
+
+                if (res != null)
+                {
+                    this.Selection.AddItemToWhiteList(res.transform);
+                    this.ItemsPlaced.Add(res.transform);
+                    resource.Decrease();
+
+                    return true;
+                }
+            }
+            else
+            {
+                Piece res = this.Puzzle.CreatePiece(new Piece.Characteristics(resource.Name), coords);
+
+                if (res != null)
+                {
+                    this.Selection.AddItemToWhiteList(res.transform);
+                    this.ItemsPlaced.Add(res.transform);
+                    resource.Decrease();
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 
@@ -209,6 +258,21 @@ namespace Creator.Editor
         private void ChangeItemPosition(Transform item, Vector3 newPos)
         {
             item.position = newPos;
+        }
+
+
+        public void InitializeMovingItem(Transform selected)
+        {
+            Option.InitiliazeSprite(this.MovingSprite, selected.name);
+            this.MovigStartPos = this.Puzzle.Discretize(selected.position);
+            this.MovingOption.Initialize(this, selected.name, this.MovingText, this.MovingDrag, this.Mode.AbleToEditOptions());
+            this.MovingDrag.InitializeDrag();
+        }
+
+
+        public void PlaceMovingItem()
+        {
+            this.MovingDrag.EndDrag();
         }
 
         #endregion
