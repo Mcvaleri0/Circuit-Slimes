@@ -1,0 +1,172 @@
+{
+    "Board": {
+        "Width": 8,
+        "Height": 6
+    },
+    "Pieces": [
+        {
+            "PrefabName": "GreenLED",
+            "Coords": [
+                {
+                    "x": 7,
+                    "y": 3
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "DoubleChip",
+            "Coords": [
+                {
+                    "x": 2,
+                    "y": 5
+                },
+                {
+                    "x": 5,
+                    "y": 0
+                }
+            ],
+            "Orientations": [
+                0,
+                0
+            ]
+        },
+        {
+            "PrefabName": "SingleChip",
+            "Coords": [
+                {
+                    "x": 7,
+                    "y": 0
+                },
+                {
+                    "x": 3,
+                    "y": 4
+                }
+            ],
+            "Orientations": [
+                6,
+                6
+            ]
+        },
+        {
+            "PrefabName": "SquareChip",
+            "Coords": [
+                {
+                    "x": 4,
+                    "y": 1
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 7,
+                    "y": 5
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "AABattery",
+            "Coords": [
+                {
+                    "x": 0,
+                    "y": 2
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        }
+    ],
+    "Tiles": [
+        {
+            "PrefabName": "SolderTile",
+            "Coords": [
+                {
+                    "x": 7,
+                    "y": 2
+                },
+                {
+                    "x": 5,
+                    "y": 2
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 0,
+                    "y": 3
+                },
+                {
+                    "x": 7,
+                    "y": 3
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                },
+                {
+                    "x": 0,
+                    "y": 4
+                },
+                {
+                    "x": 1,
+                    "y": 4
+                },
+                {
+                    "x": 2,
+                    "y": 4
+                },
+                {
+                    "x": 5,
+                    "y": 1
+                },
+                {
+                    "x": 6,
+                    "y": 1
+                },
+                {
+                    "x": 7,
+                    "y": 1
+                }
+            ]
+        }
+    ],
+    "ResourcesAvailable": [
+        {
+            "Name": "SolderCandy",
+            "Amount": 5
+        },
+        {
+            "Name": "SolderSlime",
+            "Amount": 1
+        },
+        {
+            "Name": "WaterCandy",
+            "Amount": 2
+        },
+        {
+            "Name": "WaterSlime",
+            "Amount": 1
+        },
+        {
+            "Name": "DoubleChip",
+            "Amount": 3
+        },
+        {
+            "Name": "SingleChip",
+            "Amount": 3
+        }
+    ],
+    "Condition": 0
+}

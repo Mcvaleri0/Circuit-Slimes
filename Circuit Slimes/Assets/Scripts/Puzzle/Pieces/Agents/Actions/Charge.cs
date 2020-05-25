@@ -19,9 +19,11 @@ namespace Puzzle.Actions
 
         private bool Crossing = false;
 
-        private LevelBoard.Directions CameFrom;
+        private LevelBoard.Directions OrigOrientation;
 
-        private LevelBoard.Directions EnteredBy;
+        private LevelBoard.Directions WentTo;
+
+        private bool RegisteredConnection = false;
 
         public Charge() { }
 
@@ -85,9 +87,11 @@ namespace Puzzle.Actions
             if(agent.PieceAt(this.ComponentCoords) == this.Component &&
                this.Component.Stats.Food < this.Component.Stats.MaxFood)
             {
-                this.SaveSmartInfo(agent);
-
                 this.ChargeCoords = agent.Coords;
+
+                this.OrigOrientation = agent.Orientation;
+
+                this.SaveSmartInfo(agent);
 
                 this.Component.Stats.Food++;
 
@@ -114,10 +118,8 @@ namespace Puzzle.Actions
 
                 this.Component.ReleaseCharge(slime, this.ChargeCoords);
 
-                var outDir = LevelBoard.GetDirection(this.ChargeCoords, this.Component.Coords);
-
-                slime.RotateInBoard(outDir);
-                slime.Rotate(outDir, 1f);
+                slime.RotateInBoard(this.OrigOrientation);
+                slime.Rotate(this.OrigOrientation, 1f);
 
                 this.DeleteSmartInfo(agent);
 
@@ -135,36 +137,12 @@ namespace Puzzle.Actions
             if (this.Crossing && agent is SmartElectricSlime smart)
             {
                 // Save the Direction the Slime reached the Crossing from
-                this.CameFrom = LevelBoard.InvertDirection(smart.Orientation);
-
-                // Register it as explored for that crossing
-                smart.RegisterExploredPath(smart.Coords, this.CameFrom);
+                this.OrigOrientation = smart.Orientation;
 
                 // Save Direction Slime entered component by/left crossing from
-                this.EnteredBy = LevelBoard.GetDirection(smart.Coords, this.ComponentCoords);
+                this.WentTo = LevelBoard.GetDirection(smart.Coords, this.ComponentCoords);
 
-                // Register it as explored for that crossing
-                smart.RegisterExploredPath(smart.Coords, this.EnteredBy);
-
-                // If Smart Slime is Smarter
-                if (smart is SmarterElectricSlime smarter)
-                {
-                    // If the Slime has come from a Crossing
-                    if (smarter.CrossingLog.Count > 0)
-                    {
-                        var last = smarter.CrossingLog.Peek(); // Get last visited Crossing
-
-                        // If the last visited Crossing is not the present Crossing
-                        if (last.Key != smart.Coords)
-                        {
-                            // Add this Crossing as the last one's child
-                            smarter.RegisterCrossingConnection(last.Key, last.Value, smart.Coords);
-                        }
-                    }
-
-                    // Save this Crossing as its most recently visited, and Direction from whic it left
-                    smarter.CrossingLog.Push(new KeyValuePair<Vector2Int, LevelBoard.Directions>(smarter.Coords, this.EnteredBy));
-                }
+                this.RegisteredConnection = smart.CommunicateInfo(this.ChargeCoords, this.OrigOrientation, this.WentTo);
             }
         }
 
@@ -173,23 +151,7 @@ namespace Puzzle.Actions
             // If this is a Crossing
             if (this.Crossing && agent is SmartElectricSlime smart)
             {
-                // Unregister this exploration of the Crossing
-                smart.UnregisterExploredPath(this.ChargeCoords, this.CameFrom);
-                smart.UnregisterExploredPath(this.ChargeCoords, this.EnteredBy);
-
-                if (smart is SmarterElectricSlime smarter && smarter.CrossingLog.Count > 0)
-                {
-                    smarter.CrossingLog.Pop();
-
-                    if (smarter.CrossingLog.Count > 0)
-                    {
-                        var last = smarter.CrossingLog.Peek();
-
-                        if (last.Key == this.ChargeCoords) return;
-
-                        smarter.UnregisterCrossingConnection(last.Key, last.Value, this.ChargeCoords);
-                    }
-                }
+                smart.RollBackInfo(this.ChargeCoords, this.OrigOrientation, this.WentTo, this.RegisteredConnection);
             }
         }
         #endregion

@@ -5,21 +5,29 @@ using Puzzle.Board;
 namespace Puzzle {
     public class Crossing
     {
-        public Dictionary<LevelBoard.Directions, int> Available { get; private set; }
+        public Vector2Int Coords { get; private set; }
+
+        public Dictionary<LevelBoard.Directions, int> Explorations { get; private set; }
 
         public Dictionary<LevelBoard.Directions, Crossing> Connections { get; private set; }
 
+        public List<LevelBoard.Directions> DeadEnds { get; private set; }
+
         
-        public Crossing(List<LevelBoard.Directions> availableDirs)
+        public Crossing(Vector2Int coords, List<LevelBoard.Directions> availableDirs)
         {
-            this.Available = new Dictionary<LevelBoard.Directions, int>();
+            this.Coords = coords;
+
+            this.Explorations = new Dictionary<LevelBoard.Directions, int>();
 
             foreach(var dir in availableDirs)
             {
-                this.Available.Add(dir, 1);
+                this.Explorations.Add(dir, 0);
             }
 
             this.Connections = new Dictionary<LevelBoard.Directions, Crossing>();
+
+            this.DeadEnds = new List<LevelBoard.Directions>();
         }
 
 
@@ -27,20 +35,21 @@ namespace Puzzle {
         {
             var toRemove = new List<LevelBoard.Directions>();
 
-            foreach(var dir in this.Available.Keys)
+            foreach(var dir in this.Explorations.Keys)
             {
                 if (!available.Contains(dir)) toRemove.Add(dir);
             }
 
             foreach(var dir in toRemove)
             {
-                this.Available.Remove(dir);
+                this.Explorations.Remove(dir);
                 this.Connections.Remove(dir);
+                if(this.DeadEnds.Contains(dir)) this.DeadEnds.Remove(dir);
             }
 
             foreach(var dir in available)
             {
-                if (!this.Available.ContainsKey(dir)) this.Available.Add(dir, 1);
+                if (!this.Explorations.ContainsKey(dir)) this.Explorations.Add(dir, 0);
             }
         }
 
@@ -48,16 +57,30 @@ namespace Puzzle {
         #region Exploration
         public void MarkExplored(LevelBoard.Directions dir)
         {
-            if (!this.Available.ContainsKey(dir)) this.Available.Add(dir, 1);
+            if (!this.Explorations.ContainsKey(dir)) this.Explorations.Add(dir, 0);
 
-            this.Available[dir] = this.Available[dir] - 1;
+            this.Explorations[dir] = this.Explorations[dir] + 1;
+        }
+
+        public void MarkDeadEnd(LevelBoard.Directions dir)
+        {
+            if (!this.Explorations.ContainsKey(dir)) this.Explorations.Add(dir, 0);
+
+            if(!this.DeadEnds.Contains(dir)) this.DeadEnds.Add(dir);
         }
 
         public void UnmarkExplored(LevelBoard.Directions dir)
         {
-            if (!this.Available.ContainsKey(dir)) this.Available.Add(dir, 0);
+            if (!this.Explorations.ContainsKey(dir)) this.Explorations.Add(dir, 1);
 
-            this.Available[dir] = this.Available[dir] + 1;
+            this.Explorations[dir] = this.Explorations[dir] - 1;
+        }
+
+        public void UnmarkDeadEnd(LevelBoard.Directions dir)
+        {
+            if (!this.Explorations.ContainsKey(dir)) this.Explorations.Add(dir, 1);
+
+            if(this.DeadEnds.Contains(dir)) this.DeadEnds.Remove(dir);
         }
 
 
@@ -65,38 +88,55 @@ namespace Puzzle {
         {
             var unexplored = new List<LevelBoard.Directions>();
 
-            foreach (var pair in this.Available)
+            foreach (var pair in this.Explorations)
             {
-                if (pair.Value > 0) unexplored.Add(pair.Key);
+                if (pair.Value == 0) unexplored.Add(pair.Key);
             }
 
             return unexplored;
         }
 
-        public bool FullyExplored()
+        public int GetTotalUnexplored(Vector2Int origin)
         {
-            foreach (var pair in this.Available)
+            var total = 0;
+
+            foreach (var pair in this.Explorations)
             {
-                if (pair.Value >= 0) return false;
+                var dir = pair.Key;
+
+                // How many explorations have there been
+                var explorations = pair.Value;
+
+                // If it has been explored and leads to a crossing
+                if (explorations > 0 && this.Connections.ContainsKey(dir))
+                {
+                    var connectedCrossing = this.Connections[dir];
+
+                    if (origin == connectedCrossing.Coords) continue;
+
+                    // Get the to explore total of that crossing
+                    total += connectedCrossing.GetTotalUnexplored(this.Coords);
+                }
+
+                // Unexplored
+                else if (explorations == 0) total += 1;
             }
 
-            return true;
+            return total;
         }
-
-
-        public void ClearExplored()
-        {
-            this.Available.Clear();
-        }
-
         #endregion
 
 
         #region Connection
-        public void AddConnection(LevelBoard.Directions dir, Crossing other)
+        public bool AddConnection(LevelBoard.Directions dir, Crossing other)
         {
-            if (this.Available.ContainsKey(dir) && !this.Connections.ContainsKey(dir))
+            if (this.Explorations.ContainsKey(dir) && !this.Connections.ContainsKey(dir))
+            {
                 this.Connections.Add(dir, other);
+                return true;
+            }
+
+            return false;
         }
 
         public void RemoveConnection(LevelBoard.Directions dir)
@@ -107,34 +147,18 @@ namespace Puzzle {
 
 
         #region Utility
-        public int GetTotalUtility(LevelBoard.Directions reachedFrom)
-        {
-            var utility = 0;
-
-            var invDir = LevelBoard.InvertDirection(reachedFrom);
-
-            foreach(var pair in this.Available)
-            {
-                var dir = pair.Key;
-
-                if (dir == invDir) continue;
-
-                utility += this.GetUtility(dir);
-            }
-
-            return utility;
-        }
-
         public int GetUtility(LevelBoard.Directions dir)
         {
-            var utility = 0;
+            var utility = int.MinValue;
 
-            if (!this.Available.ContainsKey(dir)) return utility;
+            if (!this.Explorations.ContainsKey(dir)) return utility;
 
-            utility = this.Available[dir];
+            if (this.DeadEnds.Contains(dir)) return int.MinValue;
+
+            utility = 1 - this.Explorations[dir]; // How many have gone in that direction
 
             if (this.Connections.ContainsKey(dir))
-                utility = this.Connections[dir].GetTotalUtility(dir);
+                utility += this.Connections[dir].GetTotalUnexplored(this.Coords); // Paths unexplored
 
             return utility;
         }
@@ -143,7 +167,7 @@ namespace Puzzle {
         {
             var utilities = new Dictionary<LevelBoard.Directions, int>();
 
-            foreach(var pair in this.Available)
+            foreach(var pair in this.Explorations)
             {
                 var dir = pair.Key;
 
@@ -155,11 +179,11 @@ namespace Puzzle {
         #endregion
 
 
-        public string AvailableToString()
+        public string ExplorationsToString()
         {
             var text = "{";
 
-            foreach(var pair in this.Available)
+            foreach(var pair in this.Explorations)
             {
                 text += " (" + pair.Key + ", " + pair.Value + ")";
             }
