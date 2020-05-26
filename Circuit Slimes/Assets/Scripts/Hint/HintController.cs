@@ -38,7 +38,7 @@ namespace Hint
 
                 case "Tutorial Level 2":
 
-                    title = "Hint";
+                    title = "Tutorial";
                     message = "Press play to see how the Water Slime behaves with Electric Slimes around. Notice what happens to the circuit where the Water Slime attacks the Electric Slime.";
                     break;
 
@@ -50,45 +50,40 @@ namespace Hint
 
                 case "World 0 Level 0":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "Remember how on Tutorial Level 2, the Solder Slime blocked the Electric Slime's path? Sometimes that can help you.";
                     break;
 
                 case "World 0 Level 1":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "Electric Slimes can only walk along the cables and make 90 degree turns. Other Slimes can move diagonally, maybe consider that.";
                     break;
 
                 case "World 0 Level 2":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "By now, if you have observed the Electric Slimes with care, you might have an idea of how they chose to move through the circuits. Think on that and the solution will be clear.";
                     break;
 
                 case "World 0 Level 3":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "This board is mirrored, so... If you solve one side, you will know the answer to both. \nHow do you keep the Red LEDs from getting lit up ? ";
                     break;
 
                 case "World 0 Level 4":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "The Green LED on the left is simple enough to light up. The right one requires that the candy be placed strategically around near the Slime to the Right.";
                     break;
 
                 case "World N Chip Choke":
 
-                    title = "Tutorial";
+                    title = "Hint";
                     message = "Chips can be a useful tool, slimes cannot go through them and must try to go around.";
                     break;
 
-                case "World N Diagonal Dahs":
-
-                    title = "Tutorial";
-                    message = "All you need to know is in the name.";
-                    break;
             }
 
             return new string[] {title, message};
