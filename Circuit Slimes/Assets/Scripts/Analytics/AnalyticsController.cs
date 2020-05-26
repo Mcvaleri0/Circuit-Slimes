@@ -9,11 +9,22 @@ public class AnalyticsController : MonoBehaviour
 {
     #region /* Custom Events */
 
-    public const string RESTART_CLICKED = "RestartButtonClicked";
-    public const string PIECE_DELETED   = "PieceDeleted";
-    public const string PIECE_LOCATION  = "PieceLocation";
+    public const string RESTART       = "RestartLevel";
+    public const string ATTEMP_SOLVED = "AttempLevelSolved";
+    public const string PIECE_DELETED = "PieceDeleted";
+    public const string PIECE_MOVED   = "PieceMoved";
+    public const string PIECE_PLACED  = "PiecePlaced";
+
+    #endregion
+
+
+    #region /* Auxliar Names */
+
+    private const string LEVEL_KEY = "Level";
+    private const string PIECE_KEY = "Piece";
     
     #endregion
+
 
 
     #region === General Info Methods ===
@@ -73,11 +84,29 @@ public class AnalyticsController : MonoBehaviour
         AnalyticsEvent.LevelSkip(name);
     }
 
+    
+    public void LevelRestart(string name)
+    {
+        List<string> keys = new List<string> { LEVEL_KEY };
+        List<object> info = new List<object> { name };
+
+        this.Custum(RESTART, keys, info);
+    }
+
+
+    public void AttemptLevelSolved(string name)
+    {
+        List<string> keys = new List<string> { LEVEL_KEY };
+        List<object> info = new List<object> { name };
+
+        this.Custum(ATTEMP_SOLVED, keys, info);
+    }
+
     #endregion
 
 
     #region === Tutorial Info Methods ===
-    
+
     public void TutoralStart(string name)
     {
         AnalyticsEvent.TutorialStart(name);
@@ -98,12 +127,50 @@ public class AnalyticsController : MonoBehaviour
     #endregion
 
 
-    #region === Custom Events Info Methods ===
-    
-    public void Custom(string name)
+    #region === Piece Info Methods ===
+
+    public void DeletePiece(string level, string name)
     {
-        AnalyticsEvent.Custom(name);
+        List<string> keys = new List<string> { LEVEL_KEY, PIECE_KEY };
+        List<object> info = new List<object> { level, name };
+
+        this.Custum(RESTART, keys, info);
     }
-    
+
+
+    public void PieceMoved(string level, string name)
+    {
+        List<string> keys = new List<string> { LEVEL_KEY, PIECE_KEY };
+        List<object> info = new List<object> { level, name };
+
+        this.Custum(PIECE_MOVED, keys, info);
+    }
+
+
+    public void PiecePlaced(string level, string name)
+    {
+        List<string> keys = new List<string> { LEVEL_KEY, PIECE_KEY };
+        List<object> info = new List<object> { level, name };
+
+        this.Custum(PIECE_PLACED, keys, info);
+    }
+
+    #endregion
+
+
+    #region === Custam Info Methods ===
+
+    private void Custum(string Event, List<string> keys, List<object> info)
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>();
+
+        for (int i = 0; i < keys.Count; i++)
+        {
+            data.Add(keys[i], info[i]);
+        }
+
+        Analytics.CustomEvent(Event, data);
+    }
+
     #endregion
 }

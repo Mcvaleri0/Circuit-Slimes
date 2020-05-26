@@ -20,6 +20,8 @@ namespace Level
 
         private int nLevels { get; set; }
 
+        public List<string> LevelsCompleted { get; set; }
+
         #endregion
 
 
@@ -43,6 +45,8 @@ namespace Level
             this.CurrentLevel = this.Levels[this.CurrentInd];
 
             this.HintController = hintController;
+
+            this.LevelsCompleted = new List<string>();
         }
 
 
@@ -98,6 +102,12 @@ namespace Level
             Debug.Log("Puzzle Saved. Wait for the file to update");
         }
 
+
+        public void LevelCompleted(string level)
+        {
+            this.LevelsCompleted.Add(level);
+        }
+
         #endregion
 
 
@@ -143,6 +153,11 @@ namespace Level
         private bool ValidName(string name)
         {
             return ((name.Length > 0) && (!this.Levels.Contains(name)));
+        }
+
+
+        public bool isCompleted(string name) {
+            return this.LevelsCompleted.Contains(name);
         }
 
         #endregion

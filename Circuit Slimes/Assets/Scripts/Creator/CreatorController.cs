@@ -25,7 +25,7 @@ namespace Creator
 
         #region /* Puzzle Atributes */
 
-        private GameController PuzzleController { get; set; }
+        public GameController PuzzleController { get; set; }
 
         private PuzzleEditor PuzzleEditor { get; set; }
 
@@ -45,6 +45,13 @@ namespace Creator
 
         public bool Creator { get; private set; }
 
+        #endregion
+
+
+        #region /* Analytics Attributes */
+        
+        public bool saveAnalytics { get; set; }
+        
         #endregion
 
 
@@ -197,7 +204,7 @@ namespace Creator
 
         private void InitializePuzzleInfo(Puzzle.Puzzle puzzle)
         {
-            this.PuzzleEditor = new PuzzleEditor(this, puzzle);
+            this.PuzzleEditor = new PuzzleEditor(this, this.PuzzleController.AnalyticsController, puzzle);
         }
 
 
@@ -233,6 +240,8 @@ namespace Creator
             {
                 this.Mode = new Player(this.SelectionSystem);
             }
+
+            this.saveAnalytics = creator;
 
             this.PuzzleEditor.Mode = this.Mode;
 

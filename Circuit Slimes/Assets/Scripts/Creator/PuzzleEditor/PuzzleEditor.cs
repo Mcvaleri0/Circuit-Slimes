@@ -18,6 +18,7 @@ namespace Creator.Editor
         private CreatorController Controller { get; set; }
         public SelectionSystem Selection { get; set; }
         public Mode.Mode Mode { get; set; }
+        private AnalyticsController AnalyticsController { get; set; }
 
         #endregion
 
@@ -47,9 +48,10 @@ namespace Creator.Editor
 
         #region === Init Methods ===
 
-        public PuzzleEditor(CreatorController Controller, Puzzle.Puzzle puzzle)
+        public PuzzleEditor(CreatorController Controller, AnalyticsController analyticsController, Puzzle.Puzzle puzzle)
         {
             this.Controller = Controller;
+            this.AnalyticsController = analyticsController;
             this.Puzzle = puzzle;
             this.ItemsPlaced = new List<Transform>();
 
@@ -99,10 +101,31 @@ namespace Creator.Editor
             {
                 Vector2Int coords = this.Selection.BoardCoords();
 
-                if (!this.PlaceResource(resource, coords) && this.Selection.Dragging)
+                if (!this.PlaceResource(resource, coords))
                 {
-                    this.PlaceResource(resource, this.MovigStartPos);
+                    if (this.Selection.Dragging)
+                    {
+                        this.PlaceResource(resource, this.MovigStartPos);
+                    }
                 }
+                else if (this.Controller.saveAnalytics)
+                {
+                    string level = this.Controller.PuzzleController.LevelController.CurrentLevel;
+
+                    if (this.Selection.Dragging)
+                    {
+                        this.AnalyticsController.PieceMoved(level, resource.Name);
+                    }
+                    else
+                    {
+                        this.AnalyticsController.PiecePlaced(level, resource.Name);
+                    }
+                }
+            }
+            else if (this.Controller.saveAnalytics && this.Selection.Dragging)
+            {
+                string level = this.Controller.PuzzleController.LevelController.CurrentLevel;
+                this.AnalyticsController.DeletePiece(level, resource.Name);
             }
         }
 

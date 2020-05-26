@@ -59,15 +59,6 @@ public class PopUpSystem: MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            this.PopUp("hi there fellow", "hya buddy boi", false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            this.PopUp("hi there fellow", "hya buddy boi", true);
-        }
     }
 
 }

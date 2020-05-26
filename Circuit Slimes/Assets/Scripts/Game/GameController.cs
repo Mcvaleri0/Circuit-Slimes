@@ -114,6 +114,8 @@ namespace Game
         private const string ANALYTICS_PREFAB_PATH = "Prefabs/Game/AnalyticsController";
         private const string ANALYTICS_NAME = "AnalyticsController";
 
+        public bool Won { get; set; }
+
         #endregion
 
 
@@ -179,9 +181,9 @@ namespace Game
 
                 //hint controller
                 gameController.InitializeHints();
-                
+
                 // analytics
-                controllerScrp.InitializeAnalytics();
+                gameController.InitializeAnalytics();
             }
 
             GameController controller = controllerObj.GetComponent<GameController>();
@@ -333,7 +335,8 @@ namespace Game
         {
             if (SceneManager.GetActiveScene().name == LEVELS)
             {
-                //this.AnalyticsController.LevelQuit();
+                string level = this.LevelController.CurrentLevel;
+                this.AnalyticsController.LevelQuit(level);
             }
 
             this.LoadScene(GameController.MAIN_MENU);
@@ -398,6 +401,11 @@ namespace Game
             if (nextScene == LEVELS)
             {
                 this.AnalyticsController.LevelStart(level);
+
+                if (this.LevelController.isCompleted(level))
+                {
+                    this.AnalyticsController.AttemptLevelSolved(level);
+                }
             }
 
             this.LevelMenu.Hide();
@@ -413,11 +421,20 @@ namespace Game
                 this.Puzzle.Destroy();
             }
 
+            string level = this.LevelController.CurrentLevel;
+            if (this.Won)
+            {
+                this.LevelController.LevelCompleted(level);
+                this.AnalyticsController.LevelComplete(level);
+            }
+            else
+            {
+                this.AnalyticsController.LevelSkip(level);
+            }
+
             this.Puzzle = this.LevelController.NextLevel();
 
             this.UpdateControllers();
-
-            //AnalyticsEvent.LevelSkip(this.LevelController.CurrentInd);
         }
 
 
@@ -482,6 +499,8 @@ namespace Game
                 this.PuzzleController = controller.GetComponent<PuzzleController>();
                 this.PuzzleController.Initialize(this.Puzzle);
             }
+
+            this.Won = false;
         }
 
 
@@ -538,7 +557,6 @@ namespace Game
             AudioManagerObj.transform.parent = transform;
             AudioManagerObj.name = AUDIO_NAME;
             this.AudioManager = AudioManagerObj.GetComponent<AudioManager>();
-
         }
 
         #endregion
@@ -618,6 +636,9 @@ namespace Game
 
         public void Restart()
         {
+            string level = this.LevelController.CurrentLevel;
+            this.AnalyticsController.LevelRestart(level);
+
             this.PuzzleController.Restart();
         }
 

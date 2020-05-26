@@ -167,6 +167,7 @@ namespace Puzzle
                         if(this.WinCondition.Verify(this.Puzzle))
                         {
                             Debug.Log("WIN");
+                            this.GameController.Won = true;
                             var popupsys = GameObject.Find("BackgroundPop").GetComponent<PopUpSystem>();
                             popupsys.PopUp("Level Cleared", "Good Job! Click the button below to progress to the next level.", true);
                         }
