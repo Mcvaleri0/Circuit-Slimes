@@ -24,7 +24,7 @@ namespace Level
         
         private string CurrentLevel { get; set; }
 
-        private int CurrentInd { get; set; }
+        public int CurrentInd { get; set; }
 
         #endregion
 

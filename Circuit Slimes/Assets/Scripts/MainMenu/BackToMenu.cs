@@ -41,7 +41,10 @@ public class BackToMenu : MonoBehaviour
     {
         BackButton = transform.GetComponent<Button>();
         
-        BackButton.onClick.AddListener(() => this.Controller.LoadScene(GameController.MAIN_MENU));
+        BackButton.onClick.AddListener(() => {
+            //this.Controller.AnalyticsController.LevelQuit();
+            this.Controller.LoadScene(GameController.MAIN_MENU);
+        });
     }
 
     #endregion

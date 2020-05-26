@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 using UI;
@@ -107,6 +108,15 @@ namespace Game
         #endregion
 
 
+        #region /* Analytics Attributes */
+        
+        public AnalyticsController AnalyticsController { get; private set; }
+        private const string ANALYTICS_PREFAB_PATH = "Prefabs/Game/AnalyticsController";
+        private const string ANALYTICS_NAME = "AnalyticsController";
+
+        #endregion
+
+
 
         #region === Unity Events ===
 
@@ -163,7 +173,10 @@ namespace Game
                 GameObject.DontDestroyOnLoad(controllerObj);
 
                 //Audio Controller
-                controllerObj.GetComponent<GameController>().InitializeAudioManager();
+                GameController controllerScrp = controllerObj.GetComponent<GameController>();
+                controllerScrp.InitializeAudioManager();
+                
+                controllerScrp.InitializeAnalytics();
             }
 
             GameController controller = controllerObj.GetComponent<GameController>();
@@ -174,6 +187,8 @@ namespace Game
 
         public void QuitGame()
         {
+            this.AnalyticsController.GameOver();
+
             #if UNITY_EDITOR
                  UnityEditor.EditorApplication.isPlaying = false;
             #else
@@ -362,6 +377,8 @@ namespace Game
 
         public void ChooseLevel(string level, string nextScene)
         {
+            this.AnalyticsController.LevelStart(level);
+
             this.LevelMenu.Hide();
             this.LevelController.Current(level);
             this.LoadScene(nextScene);
@@ -378,6 +395,8 @@ namespace Game
             this.Puzzle = this.LevelController.NextLevel();
 
             this.UpdateControllers();
+
+            //AnalyticsEvent.LevelSkip(this.LevelController.CurrentInd);
         }
 
 
@@ -603,5 +622,20 @@ namespace Game
 
         #endregion
 
+
+        #region === Analytics Methods ===
+        
+        public void InitializeAnalytics()
+        {
+            //spawn AudioManager as child of game controller
+            GameObject AnalyticsObj = GameObject.Instantiate(Resources.Load(ANALYTICS_PREFAB_PATH)) as GameObject;
+            AnalyticsObj.transform.parent = transform;
+            AnalyticsObj.name = ANALYTICS_NAME;
+            this.AnalyticsController = AnalyticsObj.GetComponent<AnalyticsController>();
+
+            this.AnalyticsController.GameStart();
+        }
+
+        #endregion
     }
 }
