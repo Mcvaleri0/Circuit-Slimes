@@ -162,8 +162,13 @@ namespace Game
 
                 GameObject.DontDestroyOnLoad(controllerObj);
 
+                var gameController = controllerObj.GetComponent<GameController>();
+
                 //Audio Controller
-                controllerObj.GetComponent<GameController>().InitializeAudioManager();
+                gameController.InitializeAudioManager();
+
+                //hint controller
+                gameController.InitializeHints();
             }
 
             GameController controller = controllerObj.GetComponent<GameController>();
@@ -205,6 +210,8 @@ namespace Game
             }
             else
             {
+                this.LevelController.HintController = this.Hint;
+
                 this.Puzzle = this.LevelController.LoadLevel();
                 this.InitialiazeControllers();
 
@@ -246,8 +253,6 @@ namespace Game
             this.InitializeUI();
 
             this.InitializeCamera();
-
-            this.InitializeHints();
         }
 
 
@@ -349,7 +354,9 @@ namespace Game
         {
             if (this.LevelController == null)
             {
-                this.LevelController = new LevelController();
+                this.LevelController = new LevelController(this.Hint);
+
+                this.Hint.LevelController = this.LevelController;
             }
         }
 

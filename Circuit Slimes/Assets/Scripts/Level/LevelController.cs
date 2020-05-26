@@ -11,8 +11,11 @@ namespace Level
 {
     public class LevelController
     {
+        public Hint.HintController HintController;
+
+
         #region /* Level List */
-        
+
         public List<string> Levels { get; private set; }
 
         private int nLevels { get; set; }
@@ -22,7 +25,7 @@ namespace Level
 
         #region /* Current Level */
         
-        private string CurrentLevel { get; set; }
+        public string CurrentLevel { get; private set; }
 
         private int CurrentInd { get; set; }
 
@@ -32,12 +35,14 @@ namespace Level
 
         #region === Init Methods ===
         
-        public LevelController()
+        public LevelController(Hint.HintController hintController)
         {
             this.GetLevels();
 
             this.CurrentInd = 0;
             this.CurrentLevel = this.Levels[this.CurrentInd];
+
+            this.HintController = hintController;
         }
 
 
@@ -72,6 +77,9 @@ namespace Level
 
         public Puzzle.Puzzle LoadLevel()
         {
+
+            this.HintController.ShowTutorial();
+
             return PuzzleData.Load(this.CurrentLevel);
         }
 
