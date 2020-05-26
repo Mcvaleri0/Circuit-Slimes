@@ -105,6 +105,7 @@ namespace Puzzle.Actions
         {
             if (agent is ElectricSlime slime) {
                 this.Component.ReceiveCharge(slime);
+                GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("SlimeElectric1");
             }
 
             return true;

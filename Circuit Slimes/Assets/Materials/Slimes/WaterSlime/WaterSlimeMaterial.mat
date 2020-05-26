@@ -94,7 +94,7 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineWidth1: 0.07
     - _Parallax: 0.02
-    - _RimOffset: 0.71
+    - _RimOffset: 0.02
     - _RimPower: 0
     - _ShadowOffset: 0.45
     - _ShadowScale: 1.04
@@ -115,4 +115,4 @@ Material:
     - _FaceOffset: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0.21012294, b: 0.745283, a: 0}
     - _OutlineColor1: {r: 0, g: 0.30588236, b: 0.6901961, a: 0}
-    - _RimLightColor: {r: 0.759434, g: 0.9846447, b: 1, a: 0}
+    - _RimLightColor: {r: 0.013082955, g: 0.14434813, b: 0.3962264, a: 0}

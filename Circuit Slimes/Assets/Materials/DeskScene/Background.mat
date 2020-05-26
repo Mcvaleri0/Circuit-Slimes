@@ -82,8 +82,8 @@ Material:
     - _Parallax: 0.02
     - _RimOffset: -1.18
     - _RimPower: 0
-    - _ShadowOffset: 0.86
-    - _ShadowScale: 1.08
+    - _ShadowOffset: 1.05
+    - _ShadowScale: 0.6
     - _SmoothnessTextureChannel: 0
     - _SpecularGloss: 0
     - _SpecularHighlights: 1
@@ -97,4 +97,4 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimLightColor: {r: 0, g: 0, b: 0, a: 0}
-    - _Tint: {r: 0.58728486, g: 0.4485582, b: 0.9056604, a: 0}
+    - _Tint: {r: 0.5338354, g: 0.26059094, b: 0.9056604, a: 0}

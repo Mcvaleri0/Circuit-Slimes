@@ -119,6 +119,8 @@ namespace Creator.Editor
                     this.ItemsPlaced.Add(res.transform);
                     resource.Decrease();
 
+                    GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("PlopItem");
+
                     return true;
                 }
             }
@@ -132,6 +134,13 @@ namespace Creator.Editor
                     this.ItemsPlaced.Add(res.transform);
                     resource.Decrease();
 
+                    if(res is Puzzle.Pieces.Slimes.Slime)
+                    {
+                        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayRandom("SlimePlace1", "SlimePlace2");
+                    }
+
+                    GameObject.FindObjectOfType<AudioManager>().Play("PlopItem");
+                    
                     return true;
                 }
             }

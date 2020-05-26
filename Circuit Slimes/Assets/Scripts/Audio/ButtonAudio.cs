@@ -25,11 +25,16 @@ public class ButtonAudio : MonoBehaviour
 
     public void GrabSound()
     {
-        AudioManager.PlayRandom("ButtonGrab");
+        AudioManager.Play("ButtonGrab");
     }
 
     public void ReleaseSound()
     {
-        AudioManager.PlayRandom("ButtonRelease");
+        AudioManager.Play("ButtonRelease");
+    }
+
+    public void ReadInfoSound()
+    {
+        AudioManager.Play("ReadInfo");
     }
 }
