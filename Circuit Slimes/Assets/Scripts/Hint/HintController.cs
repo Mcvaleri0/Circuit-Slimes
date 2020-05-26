@@ -98,9 +98,12 @@ namespace Hint
             var title = info[0];
             var message = info[1];
 
-            var popupsys = GameObject.Find("BackgroundPop").GetComponent<PopUpSystem>();
-            popupsys.PopUp(title, message, false);
-
+            GameObject backPop = GameObject.Find("BackgroundPop");
+            if (backPop != null)
+            {
+                var popupsys = backPop.GetComponent<PopUpSystem>();
+                popupsys.PopUp(title, message, false);
+            }
         }
 
 
