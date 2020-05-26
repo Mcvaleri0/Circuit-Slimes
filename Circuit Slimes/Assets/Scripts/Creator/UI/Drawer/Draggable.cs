@@ -34,6 +34,12 @@ namespace Creator.UI.Drawer
 
         #region === Unity Events ===
 
+        private AudioManager AudioManager;
+        private void Start()
+        {
+            this.AudioManager = FindObjectOfType<AudioManager>();
+        }
+
         private void LateUpdate()
         {
             if (this.Dragging)
@@ -70,6 +76,8 @@ namespace Creator.UI.Drawer
                 this.Controller.AddToQuick(this.Option.Name());
                 this.Controller.Close();
             }
+
+            AudioManager.Play("PickUp");
         }
 
 
@@ -79,6 +87,8 @@ namespace Creator.UI.Drawer
             this.Dragging = false;
 
             this.Option.PlaceItem();
+
+            AudioManager.Play("Drop");
         }
 
 

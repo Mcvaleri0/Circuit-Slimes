@@ -156,7 +156,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: PickUp
     clip: {fileID: 8300000, guid: 2a2542232c4538442b33f29870f4bba7, type: 3}
-    volume: 1
+    volume: 0.4
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4
@@ -166,7 +166,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: Drop
     clip: {fileID: 8300000, guid: 2939b28781e400e4a9efe65522e6f7af, type: 3}
-    volume: 1
+    volume: 0.4
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4

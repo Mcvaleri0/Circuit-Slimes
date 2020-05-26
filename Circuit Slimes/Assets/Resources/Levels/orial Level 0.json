@@ -1,0 +1,10 @@
+{
+    "Board": {
+        "Width": 8,
+        "Height": 8
+    },
+    "Pieces": [],
+    "Tiles": [],
+    "ResourcesAvailable": [],
+    "Condition": 0
+}

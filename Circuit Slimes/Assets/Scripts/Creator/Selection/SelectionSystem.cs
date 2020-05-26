@@ -52,7 +52,6 @@ namespace Creator.Selection
         #endregion
 
 
-
         public SelectionSystem(PuzzleEditor editor, SelectionManager manager, GameController controller)
         {
             this.Editor     = editor;
@@ -215,6 +214,7 @@ namespace Creator.Selection
 
             if (this.Selected != null)
             {
+
                 //this.Dragging = true;
                 //this.PosInScreenSpace = Camera.main.WorldToScreenPoint(this.Selected.position);
 
