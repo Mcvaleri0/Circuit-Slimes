@@ -93,6 +93,8 @@ namespace Puzzle.Actions
                     // Increment Food
                     agent.Stats.Food++;
 
+                    GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayRandom("SlimeEat1", "SlimeEat2");
+
                     return true;
                 }
             }

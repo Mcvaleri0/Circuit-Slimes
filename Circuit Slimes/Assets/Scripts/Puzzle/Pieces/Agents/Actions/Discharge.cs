@@ -114,6 +114,9 @@ namespace Puzzle.Actions
                 this.Charge.Reveal();
                 
                 component.Stats.Food--;
+
+                GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayRandom("SlimeElectric2", "SlimeElectric3");
+
             }
 
             return true;

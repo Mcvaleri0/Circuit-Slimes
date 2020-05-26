@@ -176,7 +176,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: SlimeEat1
     clip: {fileID: 8300000, guid: 0637ef69fae5dff45b3ce637da7548d5, type: 3}
-    volume: 1
+    volume: 0.5
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4
@@ -186,7 +186,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: SlimeEat2
     clip: {fileID: 8300000, guid: e2493cc52e042224290ab831f0cfb961, type: 3}
-    volume: 1
+    volume: 0.5
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4
@@ -196,7 +196,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: SlimePlace1
     clip: {fileID: 8300000, guid: 23c95cd312f2e5f4fbe5233d4a278835, type: 3}
-    volume: 1
+    volume: 0.3
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4
@@ -206,7 +206,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: SlimePlace2
     clip: {fileID: 8300000, guid: d10739d351e3a2a49807d2297e9d4d59, type: 3}
-    volume: 1
+    volume: 0.3
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4
@@ -256,7 +256,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: PlopItem
     clip: {fileID: 8300000, guid: c077bc0e596fe0749af279aa62dae7e9, type: 3}
-    volume: 1
+    volume: 0.4
     volumeVariance: 0.2
     pitch: 1
     pitchVariance: 0.4

@@ -77,6 +77,9 @@ namespace Puzzle.Actions
                         agent.RemoveTile(this.MoveCoords);
 
                         GameObject.Destroy(tile.gameObject);
+
+                        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("SlimeElectricExplosion");
+                        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayRandom("SlimeElectric2", "SlimeElectric3");
                     }
 
                     if (!this.TargetDeactivated)
