@@ -323,11 +323,22 @@ namespace Game
             this.MenuCamera.GoToMenu();
         }
 
+
+        public void BackButton()
+        {
+            if (SceneManager.GetActiveScene().name == LEVELS)
+            {
+                //this.AnalyticsController.LevelQuit();
+            }
+
+            this.LoadScene(GameController.MAIN_MENU);
+        }
+
         #endregion
 
 
         #region === Level Menu Methods ===
-        
+
         private void InitializeLevelMenu()
         {
             if (this.LevelMenu == null)
@@ -377,7 +388,10 @@ namespace Game
 
         public void ChooseLevel(string level, string nextScene)
         {
-            this.AnalyticsController.LevelStart(level);
+            if (nextScene == LEVELS)
+            {
+                this.AnalyticsController.LevelStart(level);
+            }
 
             this.LevelMenu.Hide();
             this.LevelController.Current(level);
