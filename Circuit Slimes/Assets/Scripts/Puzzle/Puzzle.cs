@@ -53,7 +53,7 @@ namespace Puzzle
 
         public void Initialize(LevelBoard board)
         {
-            Initialize(board, new List<Piece>(), new List<Tile>(), new WinCondition(WinCondition.Conditions.None), new Dictionary<string, Resource>());
+            Initialize(board, new List<Piece>(), new List<Tile>(), new WinCondition(WinCondition.Conditions.GLED_On_RLED_Off), new Dictionary<string, Resource>());
         }
 
         public void Initialize(LevelBoard board, List<Piece> pieces, List<Tile> tiles,

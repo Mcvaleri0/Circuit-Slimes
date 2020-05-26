@@ -1,15 +1,27 @@
 {
     "Board": {
-        "Width": 5,
-        "Height": 5
+        "Width": 8,
+        "Height": 8
     },
     "Pieces": [
         {
-            "PrefabName": "CellBattery",
+            "PrefabName": "AABattery",
             "Coords": [
                 {
-                    "x": 2,
-                    "y": 0
+                    "x": 1,
+                    "y": 6
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 2
                 }
             ],
             "Orientations": [
@@ -17,31 +29,14 @@
             ]
         },
         {
-            "PrefabName": "SolderSlime",
+            "PrefabName": "RedLED",
             "Coords": [
                 {
-                    "x": 3,
-                    "y": 2
+                    "x": 5,
+                    "y": 1
                 }
             ],
             "Orientations": [
-                6
-            ]
-        },
-        {
-            "PrefabName": "SolderCandy",
-            "Coords": [
-                {
-                    "x": 2,
-                    "y": 2
-                },
-                {
-                    "x": 0,
-                    "y": 2
-                }
-            ],
-            "Orientations": [
-                6,
                 6
             ]
         },
@@ -49,8 +44,8 @@
             "PrefabName": "GreenLED",
             "Coords": [
                 {
-                    "x": 2,
-                    "y": 4
+                    "x": 1,
+                    "y": 1
                 }
             ],
             "Orientations": [
@@ -63,49 +58,56 @@
             "PrefabName": "SolderTile",
             "Coords": [
                 {
-                    "x": 2,
-                    "y": 0
+                    "x": 1,
+                    "y": 5
                 },
                 {
-                    "x": 4,
+                    "x": 1,
                     "y": 2
                 },
                 {
-                    "x": 2,
+                    "x": 5,
+                    "y": 2
+                },
+                {
+                    "x": 5,
                     "y": 1
+                },
+                {
+                    "x": 1,
+                    "y": 1
+                },
+                {
+                    "x": 1,
+                    "y": 3
+                },
+                {
+                    "x": 5,
+                    "y": 3
                 },
                 {
                     "x": 3,
-                    "y": 1
+                    "y": 4
                 },
                 {
-                    "x": 4,
-                    "y": 1
-                },
-                {
-                    "x": 2,
-                    "y": 3
-                },
-                {
-                    "x": 4,
-                    "y": 3
-                },
-                {
-                    "x": 3,
-                    "y": 3
+                    "x": 1,
+                    "y": 4
                 },
                 {
                     "x": 2,
+                    "y": 4
+                },
+                {
+                    "x": 4,
+                    "y": 4
+                },
+                {
+                    "x": 5,
                     "y": 4
                 }
             ]
         }
     ],
-    "ResourcesAvailable": [
-        {
-            "Name": "SolderCandy",
-            "Amount": 1
-        }
-    ],
+    "ResourcesAvailable": [],
     "Condition": 1
 }

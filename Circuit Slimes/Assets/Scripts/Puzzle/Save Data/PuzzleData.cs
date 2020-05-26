@@ -25,7 +25,7 @@ namespace Puzzle.Data
         public PieceData[]  Pieces;
         public TileData[]   Tiles;
         public ResourceData[] ResourcesAvailable;
-        public WinCondition.Conditions Condition;
+        public WinCondition.Conditions Condition = WinCondition.Conditions.GLED_On_RLED_Off;
 
         public PuzzleData(Puzzle puzzle)
         {

@@ -538,6 +538,8 @@ namespace Puzzle.Pieces
             // Foreach match
             foreach (var match in sortedMatches)
             {
+                if (match.Value > range) break;
+
                 var target = match.Key; // Get Potential Target
 
                 var currentPosition = this.Coords; // Our Coords

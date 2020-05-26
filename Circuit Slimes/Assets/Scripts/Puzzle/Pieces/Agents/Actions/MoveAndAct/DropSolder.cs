@@ -50,8 +50,9 @@ namespace Puzzle.Actions
                     agent.CreateTile(Tile.Types.Solder, agent.Coords);
 
                     agent.Stats.Food--;
-                }
 
+                    GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("SlimeSolder");
+                }
                 return true;
             }
 

@@ -63,11 +63,11 @@
             ]
         },
         {
-            "PrefabName": "WaterSlime",
+            "PrefabName": "AABattery",
             "Coords": [
                 {
-                    "x": 7,
-                    "y": 5
+                    "x": 0,
+                    "y": 2
                 }
             ],
             "Orientations": [
@@ -75,11 +75,23 @@
             ]
         },
         {
-            "PrefabName": "AABattery",
+            "PrefabName": "RedLED",
             "Coords": [
                 {
-                    "x": 0,
+                    "x": 2,
                     "y": 2
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 5,
+                    "y": 5
                 }
             ],
             "Orientations": [
@@ -93,22 +105,10 @@
             "Coords": [
                 {
                     "x": 7,
-                    "y": 2
-                },
-                {
-                    "x": 5,
-                    "y": 2
-                },
-                {
-                    "x": 2,
-                    "y": 2
-                },
-                {
-                    "x": 0,
                     "y": 3
                 },
                 {
-                    "x": 7,
+                    "x": 0,
                     "y": 3
                 },
                 {
@@ -138,6 +138,18 @@
                 {
                     "x": 7,
                     "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                },
+                {
+                    "x": 7,
+                    "y": 2
+                },
+                {
+                    "x": 5,
+                    "y": 2
                 }
             ]
         }
@@ -168,5 +180,5 @@
             "Amount": 3
         }
     ],
-    "Condition": 0
+    "Condition": 1
 }
