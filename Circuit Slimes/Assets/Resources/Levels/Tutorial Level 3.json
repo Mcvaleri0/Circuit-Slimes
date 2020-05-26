@@ -1,0 +1,134 @@
+{
+    "Board": {
+        "Width": 10,
+        "Height": 7
+    },
+    "Pieces": [
+        {
+            "PrefabName": "AABattery",
+            "Coords": [
+                {
+                    "x": 1,
+                    "y": 5
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        },
+        {
+            "PrefabName": "GreenLED",
+            "Coords": [
+                {
+                    "x": 8,
+                    "y": 5
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        },
+        {
+            "PrefabName": "RedLED",
+            "Coords": [
+                {
+                    "x": 8,
+                    "y": 1
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 1,
+                    "y": 1
+                }
+            ],
+            "Orientations": [
+                2
+            ]
+        }
+    ],
+    "Tiles": [
+        {
+            "PrefabName": "SolderTile",
+            "Coords": [
+                {
+                    "x": 2,
+                    "y": 3
+                },
+                {
+                    "x": 1,
+                    "y": 3
+                },
+                {
+                    "x": 3,
+                    "y": 3
+                },
+                {
+                    "x": 4,
+                    "y": 3
+                },
+                {
+                    "x": 5,
+                    "y": 3
+                },
+                {
+                    "x": 1,
+                    "y": 4
+                },
+                {
+                    "x": 5,
+                    "y": 4
+                },
+                {
+                    "x": 6,
+                    "y": 5
+                },
+                {
+                    "x": 7,
+                    "y": 5
+                },
+                {
+                    "x": 8,
+                    "y": 5
+                },
+                {
+                    "x": 5,
+                    "y": 5
+                },
+                {
+                    "x": 5,
+                    "y": 2
+                },
+                {
+                    "x": 5,
+                    "y": 1
+                },
+                {
+                    "x": 6,
+                    "y": 1
+                },
+                {
+                    "x": 7,
+                    "y": 1
+                },
+                {
+                    "x": 8,
+                    "y": 1
+                }
+            ]
+        }
+    ],
+    "ResourcesAvailable": [
+        {
+            "Name": "WaterCandy",
+            "Amount": 2
+        }
+    ],
+    "Condition": 1
+}

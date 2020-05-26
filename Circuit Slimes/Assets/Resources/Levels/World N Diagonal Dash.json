@@ -1,0 +1,136 @@
+{
+    "Board": {
+        "Width": 7,
+        "Height": 9
+    },
+    "Pieces": [
+        {
+            "PrefabName": "9VBattery",
+            "Coords": [
+                {
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "x": 2,
+                    "y": 0
+                }
+            ],
+            "Orientations": [
+                6,
+                6
+            ]
+        },
+        {
+            "PrefabName": "GreenLED",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 8
+                }
+            ],
+            "Orientations": [
+                6
+            ]
+        },
+        {
+            "PrefabName": "WaterSlime",
+            "Coords": [
+                {
+                    "x": 6,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 8
+                }
+            ],
+            "Orientations": [
+                6,
+                6
+            ]
+        }
+    ],
+    "Tiles": [
+        {
+            "PrefabName": "SolderTile",
+            "Coords": [
+                {
+                    "x": 0,
+                    "y": 1
+                },
+                {
+                    "x": 2,
+                    "y": 1
+                },
+                {
+                    "x": 6,
+                    "y": 8
+                },
+                {
+                    "x": 5,
+                    "y": 8
+                },
+                {
+                    "x": 4,
+                    "y": 8
+                },
+                {
+                    "x": 0,
+                    "y": 4
+                },
+                {
+                    "x": 1,
+                    "y": 4
+                },
+                {
+                    "x": 2,
+                    "y": 4
+                },
+                {
+                    "x": 3,
+                    "y": 6
+                },
+                {
+                    "x": 2,
+                    "y": 6
+                },
+                {
+                    "x": 4,
+                    "y": 6
+                },
+                {
+                    "x": 1,
+                    "y": 2
+                },
+                {
+                    "x": 0,
+                    "y": 2
+                },
+                {
+                    "x": 2,
+                    "y": 2
+                }
+            ]
+        }
+    ],
+    "ResourcesAvailable": [
+        {
+            "Name": "WaterCandy",
+            "Amount": 2
+        },
+        {
+            "Name": "SolderCandy",
+            "Amount": 10
+        },
+        {
+            "Name": "SolderSlime",
+            "Amount": 2
+        },
+        {
+            "Name": "SolderTile",
+            "Amount": 3
+        }
+    ],
+    "Condition": 1
+}
